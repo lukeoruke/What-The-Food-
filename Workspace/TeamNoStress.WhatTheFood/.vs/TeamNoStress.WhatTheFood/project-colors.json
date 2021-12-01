@@ -1,0 +1,26 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "9cc340a2-0fbf-41b9-bb62-7240b62ffb51": {
+      "ProjectGuid": "9cc340a2-0fbf-41b9-bb62-7240b62ffb51",
+      "DisplayName": "TeamNoStress.WhatTheFood.Logging",
+      "ColorIndex": 0
+    },
+    "10df30a4-f3b3-4021-b3c9-752c5f072795": {
+      "ProjectGuid": "10df30a4-f3b3-4021-b3c9-752c5f072795",
+      "DisplayName": "TeamNoStress.WhatTheFood.Services",
+      "ColorIndex": 1
+    },
+    "24456db8-9791-4d1f-bb82-2147cc45bf86": {
+      "ProjectGuid": "24456db8-9791-4d1f-bb82-2147cc45bf86",
+      "DisplayName": "TeamNoStress.WhatTheFood.Logging.Tests",
+      "ColorIndex": 2
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    }
+  },
+  "NextColorIndex": 3
+}

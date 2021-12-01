@@ -1,0 +1,12 @@
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.Logging\bin\Debug\net6.0\TeamNoStress.WhatTheFood.Logging.deps.json
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.Logging\bin\Debug\net6.0\TeamNoStress.WhatTheFood.Logging.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.Logging\bin\Debug\net6.0\ref\TeamNoStress.WhatTheFood.Logging.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.Logging\bin\Debug\net6.0\TeamNoStress.WhatTheFood.Logging.pdb
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.Logging\obj\Debug\net6.0\TeamNoStress.WhatTheFood.Logging.csproj.AssemblyReference.cache
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.Logging\obj\Debug\net6.0\TeamNoStress.WhatTheFood.Logging.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.Logging\obj\Debug\net6.0\TeamNoStress.WhatTheFood.Logging.AssemblyInfoInputs.cache
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.Logging\obj\Debug\net6.0\TeamNoStress.WhatTheFood.Logging.AssemblyInfo.cs
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.Logging\obj\Debug\net6.0\TeamNoStress.WhatTheFood.Logging.csproj.CoreCompileInputs.cache
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.Logging\obj\Debug\net6.0\TeamNoStress.WhatTheFood.Logging.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.Logging\obj\Debug\net6.0\ref\TeamNoStress.WhatTheFood.Logging.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.Logging\obj\Debug\net6.0\TeamNoStress.WhatTheFood.Logging.pdb

@@ -1,0 +1,15 @@
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\obj\Debug\net6.0\TeamNoStress.WhatTheFood.DataAccessLayer.csproj.AssemblyReference.cache
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\obj\Debug\net6.0\TeamNoStress.WhatTheFood.DataAccessLayer.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\obj\Debug\net6.0\TeamNoStress.WhatTheFood.DataAccessLayer.AssemblyInfoInputs.cache
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\obj\Debug\net6.0\TeamNoStress.WhatTheFood.DataAccessLayer.AssemblyInfo.cs
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\obj\Debug\net6.0\TeamNoStress.WhatTheFood.DataAccessLayer.csproj.CoreCompileInputs.cache
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\bin\Debug\net6.0\TeamNoStress.WhatTheFood.DataAccessLayer.deps.json
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\bin\Debug\net6.0\TeamNoStress.WhatTheFood.DataAccessLayer.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\bin\Debug\net6.0\ref\TeamNoStress.WhatTheFood.DataAccessLayer.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\bin\Debug\net6.0\TeamNoStress.WhatTheFood.DataAccessLayer.pdb
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\bin\Debug\net6.0\TeamNoStress.WhatTheFood.Domain.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\bin\Debug\net6.0\TeamNoStress.WhatTheFood.Domain.pdb
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\obj\Debug\net6.0\TeamNoStress.WhatTheFood.DataAccessLayer.csproj.CopyComplete
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\obj\Debug\net6.0\TeamNoStress.WhatTheFood.DataAccessLayer.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\obj\Debug\net6.0\ref\TeamNoStress.WhatTheFood.DataAccessLayer.dll
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Workspace\TeamNoStress.WhatTheFood\TeamNoStress.WhatTheFood.DataAccessLayer\obj\Debug\net6.0\TeamNoStress.WhatTheFood.DataAccessLayer.pdb

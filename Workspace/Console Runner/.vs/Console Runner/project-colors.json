@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "60ce2ebe-978f-472b-9a21-86cf2df3fea9": {
+      "ProjectGuid": "60ce2ebe-978f-472b-9a21-86cf2df3fea9",
+      "DisplayName": "Console Runner",
+      "ColorIndex": 0
+    }
+  },
+  "NextColorIndex": 1
+}

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Matth\\Documents\\GitHub\\What-The-Food-\\Workspace\\Console Runner\\Console Runner\\Console Runner.csproj": {}
+    "C:\\Users\\Luke\\Documents\\GitHub\\What-The-Food-\\Workspace\\Console Runner\\Console Runner\\Console Runner.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Matth\\Documents\\GitHub\\What-The-Food-\\Workspace\\Console Runner\\Console Runner\\Console Runner.csproj": {
+    "C:\\Users\\Luke\\Documents\\GitHub\\What-The-Food-\\Workspace\\Console Runner\\Console Runner\\Console Runner.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Matth\\Documents\\GitHub\\What-The-Food-\\Workspace\\Console Runner\\Console Runner\\Console Runner.csproj",
+        "projectUniqueName": "C:\\Users\\Luke\\Documents\\GitHub\\What-The-Food-\\Workspace\\Console Runner\\Console Runner\\Console Runner.csproj",
         "projectName": "Console Runner",
-        "projectPath": "C:\\Users\\Matth\\Documents\\GitHub\\What-The-Food-\\Workspace\\Console Runner\\Console Runner\\Console Runner.csproj",
-        "packagesPath": "C:\\Users\\Matth\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Matth\\Documents\\GitHub\\What-The-Food-\\Workspace\\Console Runner\\Console Runner\\obj\\",
+        "projectPath": "C:\\Users\\Luke\\Documents\\GitHub\\What-The-Food-\\Workspace\\Console Runner\\Console Runner\\Console Runner.csproj",
+        "packagesPath": "C:\\Users\\Luke\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Luke\\Documents\\GitHub\\What-The-Food-\\Workspace\\Console Runner\\Console Runner\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Matth\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Luke\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -40,6 +40,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.0, )"
+            },
             "NHibernate": {
               "target": "Package",
               "version": "[5.3.10, )"

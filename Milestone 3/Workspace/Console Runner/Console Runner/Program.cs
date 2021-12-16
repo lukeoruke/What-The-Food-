@@ -97,6 +97,7 @@ while (!loggedIn)
             break;
         }
         else
+            if(input != "exit")
             Console.WriteLine("not valid command");
 
         /* checks if the current sessions email is null. This is to catch cases where user information was modified mid session 

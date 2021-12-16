@@ -116,6 +116,6 @@ while (!loggedIn)
             loggedIn = false;
         }
     }
-}
 
-archiver.archiveStopThread();
+    Environment.Exit(0);
+}

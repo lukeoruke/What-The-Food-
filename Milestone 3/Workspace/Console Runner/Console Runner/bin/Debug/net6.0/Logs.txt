@@ -1,0 +1,22 @@
+-------Start of logs-------
+12/15/2021 9:44:02 AM Catagory: Data Store test page: Account Creation Successful: False An error occurred while saving the entity changes. See the inner exception for details.: User: admin
+12/15/2021 1:37:11 PM Catagory: Data Store test page: Login Successful: True : User: admin
+12/15/2021 1:42:09 PM Catagory: Data Store test page: Login Successful: True : User: admin
+12/15/2021 1:43:16 PM Catagory: Data Store test page: Login Successful: True : User: admin
+12/15/2021 1:43:22 PM Catagory: Data Store test page: Login Successful: False Invalid Password: User: admin
+12/15/2021 1:43:25 PM Catagory: Data Store test page: Login Successful: True : User: admin
+12/15/2021 1:48:03 PM Catagory: Data Store test page: Login Successful: True : User: admin
+12/15/2021 1:48:08 PM Catagory: Data Store test page: Account Creation Successful: True : User: 
+12/15/2021 1:48:33 PM Catagory: Data Store test page: Account Creation Successful: True : User: tesasda
+12/15/2021 3:01:30 PM Catagory: Data Store test page: Login Successful: True : User: UnitTestAdmin
+12/15/2021 3:01:40 PM Catagory: Data Store test page: Account Deletion Successful: True : User: UnitTestAdmin
+12/15/2021 4:03:36 PM Catagory: Data Store test page: Login Successful: True : User: admin
+12/15/2021 4:08:29 PM Catagory: Data Store test page: Login Successful: True : User: admin
+12/15/2021 4:09:40 PM Catagory: Data Store test page: Login Successful: True : User: admin
+12/15/2021 4:09:47 PM Catagory: Data Store test page: Account Creation Successful: True : User: matt
+12/15/2021 4:09:56 PM Catagory: Data Store test page: Login Successful: False Invalid Password: User: es
+12/15/2021 4:09:57 PM Catagory: Data Store test page: Login Successful: False Invalid Password: User: es
+12/15/2021 4:11:12 PM Catagory: Data Store test page: Login Successful: False Invalid Password: User: d
+12/15/2021 4:12:03 PM Catagory: Data Store test page: Login Successful: False Invalid Password: User: s
+12/15/2021 4:12:05 PM Catagory: Data Store test page: Login Successful: False Invalid Password: User: s
+12/15/2021 4:29:47 PM Catagory: Data Store test page: Login Successful: True : User: admin

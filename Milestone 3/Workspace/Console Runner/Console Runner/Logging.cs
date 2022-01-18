@@ -200,7 +200,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": Login Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user);
+                log("category: " + category + " " + pageName + ": Login Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user);
                 return true;
             }
             catch
@@ -214,7 +214,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": Deactivation Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
+                log("category: " + category + " " + pageName + ": Deactivation Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
                     + " Target Account: " + target);
                 return true;
             }
@@ -229,7 +229,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": Enabling Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
+                log("category: " + category + " " + pageName + ": Enabling Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
                     + " Target Account: " + target);
                 return true;
             }
@@ -244,7 +244,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": Promotion Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
+                log("category: " + category + " " + pageName + ": Promotion Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
                     + " Account Promoted: " + promoted);
                 return true;
             }
@@ -259,7 +259,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": Account Creation Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user);
+                log("category: " + category + " " + pageName + ": Account Creation Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user);
                 return true;
             }
             catch
@@ -273,7 +273,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": Account Deletion Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user);
+                log("category: " + category + " " + pageName + ": Account Deletion Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user);
                 return true;
             }
             catch
@@ -287,7 +287,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": Account Name Change Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
+                log("category: " + category + " " + pageName + ": Account Name Change Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
                     + "Changed From: " + prevName + ": Changed To:" + newName);
                 return true;
             }
@@ -302,7 +302,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": Account Name Change Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
+                log("category: " + category + " " + pageName + ": Account Name Change Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
                     + "Changed From: " + prevEmail + ": Changed To:" + newEmail);
                 return true;
             }
@@ -317,7 +317,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": Account Password Change Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user);
+                log("category: " + category + " " + pageName + ": Account Password Change Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user);
                 return true;
             }
             catch
@@ -331,7 +331,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": Account Flag Change Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
+                log("category: " + category + " " + pageName + ": Account Flag Change Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
                     + " Added Flags: " + added + " Removed Flags: " + removed);
                 return true;
             }
@@ -346,7 +346,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": Data Request Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
+                log("category: " + category + " " + pageName + ": Data Request Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
                     + " Send To: " + sendTo);
                 return true;
             }
@@ -361,7 +361,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": AMR Change Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
+                log("category: " + category + " " + pageName + ": AMR Change Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
                     + " AMR Changed From: " + from + " AMR Changed To: " + to);
                 return true;
             }
@@ -376,7 +376,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": Review Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
+                log("category: " + category + " " + pageName + ": Review Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
                     + " Product: " + product + " Rating: " + rating + " Review: ");
                 return true;
             }
@@ -391,7 +391,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": History Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
+                log("category: " + category + " " + pageName + ": History Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
                     + " Product: " + product + " Index In History: " + index);
                 return true;
             }
@@ -406,7 +406,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": Scan Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
+                log("category: " + category + " " + pageName + ": Scan Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
                     + " Product: " + product);
                 return true;
             }
@@ -421,7 +421,7 @@ namespace Console_Runner
         {
             try
             {
-                log("Catagory: " + category + " " + pageName + ": Action Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
+                log("category: " + category + " " + pageName + ": Action Successful: " + isSuccess.ToString() + " " + failCase + ": User: " + user
                     + " " + info);
                 return true;
             }

@@ -6,6 +6,8 @@ using System.IO;
 using System.IO.Compression;
 using System.Threading;
 using System.Threading.Tasks;
+using ICSharpCode.SharpZipLib.GZip;
+using ICSharpCode.SharpZipLib.Tar;
 
 namespace Console_Runner
 {
@@ -13,11 +15,13 @@ namespace Console_Runner
     {
         private Thread _archiveThread;
         private string _currentMonth;
+        private string _archiveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile); //dir location of where archives are to be stored.
+        private string _archiveFolder;
 
         public Archiving()
         {
             _currentMonth = DateTime.Now.ToString("MMMM");
-            this._checkToArchive();
+            _archiveFolder = Path.Combine(_archiveDirectory, "Log Archive");
         }
 
         //will start the thread
@@ -32,18 +36,18 @@ namespace Console_Runner
         private void _archiveActivate()
         {
             //get working on the minute
-            string current = DateTime.Now.ToString("s");
+            string current = DateTime.Now.ToString("s"); //2009-06-15T13:45:30
             string offset = current.Substring(current.Length - 2);
             int numSecOff = Int32.Parse(offset);
 
-            Thread.Sleep(1000 * numSecOff);
+            Thread.Sleep(1000 * (60 - numSecOff));
 
             //get working on the hour
             current = DateTime.Now.ToString("s");
             offset = current.Substring(current.Length - 5, current.Length - 3);
             int numHourOff = Int32.Parse(offset);
 
-            Thread.Sleep(1000 * 60 * numHourOff);
+            Thread.Sleep(1000 * 60 * (60 - numHourOff));
 
             while (true)
             {
@@ -71,55 +75,44 @@ namespace Console_Runner
         //code that handles checking if we need to archive the current logs
         private bool _checkToArchive()
         {
-            if (!File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive.zip")))
+            /**Intended to only be ran if a "Log Archive" directory does not exist. If so, create a directory that will hold archived files.
+             * NOTE: Upon Archive object being created this code is ran. HOWEVER, if for whatever reason if someone on the machine were to alter this file,
+             *       a deletion or file name change, this code will create the new file.
+             */
+            if (!File.Exists(_archiveFolder))
             {
-                Directory.CreateDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive"));
-                ZipFile.CreateFromDirectory(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive"),
-                    Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive.zip"));
+                Directory.CreateDirectory(Path.Combine(_archiveDirectory, "Log Archive"));
+                Console.WriteLine(Path.Combine(_archiveDirectory, "Log Archive"));
             }
-
-            Console.WriteLine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive.zip"));
 
             try
             {
                 if (_newMonth())
                 {
                     DateTime currentDate = DateTime.Now;
-                    string[] lines = System.IO.File.ReadAllLines(Path.Combine(Environment.CurrentDirectory, "Logs.txt"));
 
-                    int cuttoff = _findCutoff(lines, currentDate);
+                    /**
+                     * 
+                     * CODE FOR PULLING LOGS OLDER THAN 30 DAY FROM DATABASE
+                     * 
+                     */
 
-                    using (FileStream zipToOpen = new FileStream(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Log Archive.zip")
-                        , FileMode.Open))
+                    String tgzName = Path.Combine(_archiveFolder, _currentMonth + ".tar.gz"); //tar.gz file name (directory location and name)
+                    String fileName = Path.Combine(Environment.CurrentDirectory, "logs.txt"); //file to be compressed (directory location and name)
+
+                    using (var oStream = File.Create(tgzName))                          //creating a tar.gz file to which we are storing to
+                    using (var gStream = new GZipOutputStream(oStream))                 //the stream filter for writing compressed data
+                    using (var tarArchive = TarArchive.CreateOutputTarArchive(gStream)) //archiving the data from one file to another
                     {
-                        using (ZipArchive zipArchive = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
-                        {
-                            ZipArchiveEntry newFile = zipArchive.CreateEntry(_currentMonth + " Logs.txt");
-                            using (StreamWriter sw = new StreamWriter(newFile.Open()))
-                            {
-                                Console.WriteLine("Archive Log file created.");
-                                sw.WriteLine("-------Start of logs-------");
-                                for (int i = 1; i < cuttoff; i++)
-                                {
-                                    sw.WriteLine(lines[i]);
-                                }
-                            }
-                        }
+                        tarArchive.RootPath = Path.GetDirectoryName(fileName);
+
+                        var entry = TarEntry.CreateEntryFromFile(fileName);
+                        entry.Name = Path.GetFileName(fileName);
+
+                        tarArchive.WriteEntry(entry, true);
                     }
 
-                    File.Delete(Path.Combine(Environment.CurrentDirectory, "Logs.txt"));
-                    using (StreamWriter sw = new StreamWriter(Path.Combine(Environment.CurrentDirectory, " Logs.txt")))
-                    {
-                        sw.WriteLine("-------Start of logs-------");
-                        for (int i = cuttoff; i < lines.Length; i++)
-                        {
-                            sw.WriteLine(lines[i]);
-                        }
-                    }
-
-                    File.Move(Path.Combine(Environment.CurrentDirectory, "Logs.txt"), Path.Combine(Environment.CurrentDirectory, "Log Storage"));
-
-                    _currentMonth = currentDate.ToString("MMMM");
+                    _currentMonth = currentDate.ToString("MMMM"); //once all archiving is done, set a new _currentMonth
 
                     return true;
                 }

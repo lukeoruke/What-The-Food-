@@ -278,3 +278,4 @@ C:\Users\Daniel\Documents\GitHub\What-The-Food-\Milestone 3\Workspace\Console Ru
 C:\Users\Daniel\Documents\GitHub\What-The-Food-\Milestone 3\Workspace\Console Runner\Console Runner\obj\Debug\net6.0\ref\Console Runner.dll
 C:\Users\Daniel\Documents\GitHub\What-The-Food-\Milestone 3\Workspace\Console Runner\Console Runner\obj\Debug\net6.0\Console Runner.pdb
 C:\Users\Daniel\Documents\GitHub\What-The-Food-\Milestone 3\Workspace\Console Runner\Console Runner\obj\Debug\net6.0\Console Runner.genruntimeconfig.cache
+C:\Users\Daniel\Documents\GitHub\What-The-Food-\Milestone 3\Workspace\Console Runner\Console Runner\bin\Debug\net6.0\ICSharpCode.SharpZipLib.dll

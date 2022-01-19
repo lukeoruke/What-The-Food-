@@ -16,11 +16,17 @@ namespace UnitTest
             {
                 //Arange
                 string tester = "unitTester";
-                Account acc = makeTestUser(tester);
+                Account acc = new Account();
+                acc.Email = tester;
+                acc.Password = "password1";
+                acc.Fname = "fname";
+                acc.Lname = "lname";
+                acc.accessLevel = 1;
                 //Act
                 um.UserSignUp(acc);
                 //Assert
                 Assert.True(context.accounts.Find(acc.Email) != null);
+                
             }
 
             [Fact]
@@ -28,11 +34,16 @@ namespace UnitTest
             public void deleteUserSuccess()
             {
                 //Arange
-                Account currentUser = makeAdmin();
-                string tester = "unitTester";
-                makeTestUser(tester);
+                string tester = "UnitTestUser";
+                Account acc = new Account();
+                acc.Email = tester;
+                acc.Password = "password1";
+                acc.Fname = "fname";
+                acc.Lname = "lname";
+                acc.accessLevel = 1;
+                um.UserSignUp(acc);
                 //Act
-                um.UserDelete(currentUser, tester);
+                um.UserDelete(acc, tester);
                 //Assert
                 Assert.True(context.accounts.Find("UnitTestUser") == null);
             }
@@ -42,15 +53,22 @@ namespace UnitTest
                 //Arange
                 Account currentUser = makeAdmin();
                 string newTester = "newTester";
-                Account testUser = makeTestUser(newTester);
+                string tester = "UnitTestUser";
+                Account acc = new Account();
+                acc.Email = tester;
+                acc.Password = "password1";
+                acc.Fname = "fname";
+                acc.Lname = "lname";
+                acc.accessLevel = 1;
+                um.UserSignUp(acc);
                 string nName = "new name";
                 string nlName = "new last name";
                 string nPassword = "NewPassword";
                 //act
-                um.UserUpdateData(currentUser, testUser.Email, nName, nlName, nPassword);
-                testUser = context.accounts.Find(testUser.Email);
+                um.UserUpdateData(currentUser, acc.Email, nName, nlName, nPassword);
+                acc = context.accounts.Find(acc.Email);
                 //Assert
-                Assert.True(testUser.Fname == nName && testUser.Lname == nlName && testUser.Password == nPassword);
+                Assert.True(acc.Fname == nName && acc.Lname == nlName && acc.Password == nPassword);
             }
 
             public Account makeAdmin()
@@ -65,21 +83,6 @@ namespace UnitTest
                 currentUser.Fname = "fname";
                 currentUser.Lname = "lname";
                 currentUser.accessLevel = 2;
-                um.UserSignUp(currentUser);
-                return currentUser;
-            }
-            public Account makeTestUser(string pk)
-            {
-                if (context.accounts.Find(pk) != null)
-                {
-                    context.accounts.Remove(context.accounts.Find(pk));
-                }
-                Account currentUser = new Account();
-                currentUser.Email = pk;
-                currentUser.Password = "password1";
-                currentUser.Fname = "fname";
-                currentUser.Lname = "lname";
-                currentUser.accessLevel = 1;
                 um.UserSignUp(currentUser);
                 return currentUser;
             }

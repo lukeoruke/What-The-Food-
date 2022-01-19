@@ -63,7 +63,7 @@ while (!loggedIn)
         else
         if (input == "userreaddata") //reads data from a specified account
         {
-            um.UserReadData();
+            um.getUserAcc();
         }
         else
         if (input == "userupdatedata") //Updates data of a specified account
@@ -109,9 +109,9 @@ while (!loggedIn)
             loggedIn = false;
         }
         else
-        if (!(um.UserReadData(currentUser.Email).isAdmin() == currentUser.isAdmin()) || !(um.UserReadData(currentUser.Email).isActive == currentUser.isActive))
+        if (!(um.getUserAcc(currentUser.Email).isAdmin() == currentUser.isAdmin()) || !(um.getUserAcc(currentUser.Email).isActive == currentUser.isActive))
         {
-            Console.WriteLine((!um.UserReadData(currentUser.Email).Equals(currentUser)));
+            Console.WriteLine((!um.getUserAcc(currentUser.Email).Equals(currentUser)));
             Console.WriteLine("account object was modified");
             loggedIn = false;
         }

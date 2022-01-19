@@ -111,3 +111,6 @@
 12/15/2021 4:29:05 PM Catagory: Data Store test page: Account Deletion Successful: False ADMIN ACCESS NEEDED: User: Admin
 12/15/2021 4:29:12 PM Catagory: Data Store test page: Action Successful: False ADMIN ACCESS NEEDED: User: Admin ADMIN ACCESS NEEDED TO UPDATE USER DATA
 12/15/2021 4:29:12 PM Catagory: Data Store test page: Account Deletion Successful: False ADMIN ACCESS NEEDED: User: Admin
+1/19/2022 11:31:37 AM Catagory: Data Store test page: Action Successful: False ADMIN ACCESS NEEDED: User: Admin ADMIN ACCESS NEEDED TO UPDATE USER DATA
+1/19/2022 11:31:37 AM Catagory: Data Store test page: Account Deletion Successful: False ADMIN ACCESS NEEDED: User: Admin
+1/19/2022 1:38:37 PM Catagory: Data Store test page: Account Deletion Successful: False ADMIN ACCESS NEEDED: User: Admin

@@ -30,6 +30,16 @@ namespace Class1
             optionsBuilder.UseMySql("server = localhost; user = root; password = myPassword; Database = ef", 
                 new MySqlServerVersion(new Version(8, 0, 27)));
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Logs>().HasKey(table => new
+            {
+                table.Date,
+                table.Time,
+                table.toLog
+            });
+        }
         public DbSet<Account> accounts{ get; set; }
+        public DbSet<Logs> logs { get; set; }
     }
 }

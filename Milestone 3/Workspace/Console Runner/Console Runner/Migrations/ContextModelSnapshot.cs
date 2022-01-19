@@ -45,6 +45,22 @@ namespace Console_Runner.Migrations
 
                     b.ToTable("accounts");
                 });
+
+            modelBuilder.Entity("User.Logs", b =>
+                {
+                    b.Property<string>("Date")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Time")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("toLog")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Date", "Time", "toLog");
+
+                    b.ToTable("logs");
+                });
 #pragma warning restore 612, 618
         }
     }

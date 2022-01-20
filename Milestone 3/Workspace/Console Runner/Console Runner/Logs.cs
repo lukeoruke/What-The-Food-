@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace User
+namespace Logger
 {
     /*
      * Account class that will represent the contents of a user's account

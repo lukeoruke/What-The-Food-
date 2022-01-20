@@ -8,6 +8,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
+using Logger;
+using Class1;
 
 namespace Console_Runner
 {
@@ -44,7 +46,7 @@ namespace Console_Runner
 
             //get working on the hour
             current = DateTime.Now.ToString("s");
-            offset = current.Substring(current.Length - 5, current.Length - 3);
+            offset = current.Substring(current.Length - 5, 2); Console.WriteLine("CURRENT OFFEST IS: " + offset);
             int numHourOff = Int32.Parse(offset);
 
             Thread.Sleep(1000 * 60 * (60 - numHourOff));
@@ -155,27 +157,9 @@ namespace Console_Runner
 
     public class Logging
     {
-        string filePath = Path.Combine(Environment.CurrentDirectory, "Logs.txt"); //path to logs file
-
         //logging objects
         public Logging()
         {
-            Console.WriteLine(filePath);
-            try
-            {
-                if (!File.Exists(filePath))
-                {
-                    using (StreamWriter sw = new StreamWriter(filePath))
-                    {
-                        Console.WriteLine("Log file created.");
-                        sw.WriteLine("-------Start of logs-------");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine(ex.Message);
-            }
         }
 
         //base logging function that will write to the log.txt file. Will append logging information to the end of current date and time.
@@ -183,14 +167,21 @@ namespace Console_Runner
         {
             try
             {
-                using (StreamWriter sw = File.AppendText(filePath))
+                Logs record = new Logs();
+                record.Date = DateTime.Now.ToLongDateString();
+                record.Time = DateTime.Now.ToString("H:mm:ss");
+                record.toLog = toLog;
+
+                using (var context = new Context())
                 {
-                    sw.WriteLine(DateTime.Now.ToString() + " " + toLog);
+                    context.logs.Add(record);
+                    context.SaveChanges();
                 }
                 return true;
             }
             catch (Exception e)
             {
+                Console.WriteLine("LOGGIN ERROR! PLEASE LOOK INTO ASAP: " + e.ToString());
                 return false;
             }
         }

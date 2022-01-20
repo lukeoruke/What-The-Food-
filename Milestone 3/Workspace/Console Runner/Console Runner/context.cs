@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using User;
 using Pomelo.EntityFrameworkCore.MySql;
 using Microsoft.Extensions.DependencyInjection;
+using Logger;
 
 namespace Class1
 {

@@ -18,7 +18,7 @@ namespace Logger
         //Log getter
         public string toLog { get; set; }
 
-        public string ToString()
+        public override string ToString()
         {
             return Date + " " + Time + " " + toLog;
         }

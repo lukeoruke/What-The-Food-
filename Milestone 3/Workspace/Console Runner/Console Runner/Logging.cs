@@ -38,7 +38,7 @@ namespace Console_Runner
         private void _archiveActivate()
         {
             //get working on the minute
-            string current = DateTime.Now.ToString("s"); //2009-06-15T13:45:30
+            string current = DateTime.Now.ToString("s"); //in the format 2009-06-15T13:45:30
             string offset = current.Substring(current.Length - 2);
             int numSecOff = Int32.Parse(offset);
 
@@ -90,43 +90,56 @@ namespace Console_Runner
 
             try
             {
+                Console.WriteLine("RUNNING");
                 if (_newMonth())
                 {
                     DateTime currentDate = DateTime.Now;
 
-                    /**
-                     * 
-                     * CODE FOR PULLING LOGS OLDER THAN 30 DAY FROM DATABASE
-                     * 
-                     */
-
-                    using (var context = new Context())
+                    string newFileName = Path.Combine(_archiveDirectory, (DateTime.Now.ToString("Y") + ".txt"));
+                    using (StreamWriter sw = File.CreateText(newFileName))
                     {
-                        foreach (var oldlogs in context.logs)
-                        {
-                            DateTime logDate = Convert.ToDateTime(oldlogs.Date);
-                            if ( (int)DateTime.Now.Subtract(logDate).Days >= 30 ) //get the integer value of days between now and the log in question,
-                                                                                  //if greater than or equal to 30 days then execute
-                            {
+                        Console.WriteLine("Archive Log file created.");
+                        sw.WriteLine("-------Start of logs-------");
 
+                        using (var context = new Context())
+                        {
+                            DateTime logDate;
+                            foreach (var oldLogs in context.logs)
+                            {
+                                logDate = Convert.ToDateTime(oldLogs.Date + " " + oldLogs.Time);             //get the string value of Date from Logs datastore and convert to DateTime
+                                Console.WriteLine(oldLogs.ToString());
+                                if ((int)DateTime.Now.Subtract(logDate).Seconds >= 30)                      //get the integer value of days between now and the log in question,
+                                                                                                            //if greater than or equal to 30 days then execute
+                                {
+                                    sw.WriteLine(oldLogs.ToString());
+                                    context.Remove(oldLogs);
+                                }
                             }
+
+                            context.SaveChanges();
                         }
+
                     }
 
-                    String tgzName = Path.Combine(_archiveFolder, _currentMonth + ".tar.gz"); //tar.gz file name (directory location and name)
-                    String fileName = Path.Combine(Environment.CurrentDirectory, "logs.txt"); //file to be compressed (directory location and name)
+                    FileInfo fInfo = new FileInfo(newFileName);
+                    fInfo.IsReadOnly = true;                    //set this new archive file to read only 
+
+                    String tgzName = Path.Combine(_archiveFolder, DateTime.Now.ToString("Y") + ".tar.gz"); //tar.gz file name (directory location and name)
 
                     using (var oStream = File.Create(tgzName))                          //creating a tar.gz file to which we are storing to
                     using (var gStream = new GZipOutputStream(oStream))                 //the stream filter for writing compressed data
                     using (var tarArchive = TarArchive.CreateOutputTarArchive(gStream)) //archiving the data from one file to another
                     {
-                        tarArchive.RootPath = Path.GetDirectoryName(fileName);
+                        tarArchive.RootPath = Path.GetDirectoryName(newFileName);
 
-                        var entry = TarEntry.CreateEntryFromFile(fileName);
-                        entry.Name = Path.GetFileName(fileName);
+                        var entry = TarEntry.CreateEntryFromFile(newFileName);
+                        entry.Name = Path.GetFileName(newFileName);
 
                         tarArchive.WriteEntry(entry, true);
                     }
+
+                    fInfo.IsReadOnly = false;
+                    File.Delete(newFileName);
 
                     _currentMonth = currentDate.ToString("MMMM"); //once all archiving is done, set a new _currentMonth
 
@@ -140,7 +153,6 @@ namespace Console_Runner
                 Console.WriteLine("ERROR IN ARCHIVING: " + ex.Message);
                 return false;
             }
-
         }
 
         //checks to see if the current month has changed

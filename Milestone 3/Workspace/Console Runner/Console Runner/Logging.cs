@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Permissions;
 using System.Linq;
 using System.Text;
 using System.IO;
@@ -16,14 +17,17 @@ namespace Console_Runner
     public class Archiving
     {
         private Thread _archiveThread;
-        private string _currentMonth;
-        private string _archiveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile); //dir location of where archives are to be stored.
-        private string _archiveFolder;
+        private readonly string _archiveName = "Logs Archive";
+        private readonly string _archiveDefault = Path.Combine(Directory.GetCurrentDirectory(), "Logs Archive");    //default location of logs archive
+        private string _currentMonth;       //current month
+        private string _archiveDirectory;   //the path of the directory that the archive folder will be stored in
+        private string _archiveFolder;      //the actual path of the archive folder
 
         public Archiving()
         {
             _currentMonth = DateTime.Now.ToString("MMMM");
-            _archiveFolder = Path.Combine(_archiveDirectory, "Log Archive");
+            _archiveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile); //dir location of where archives are to be stored.
+            _archiveFolder = Path.Combine(_archiveDirectory, _archiveName);
         }
 
         //will start the thread
@@ -56,6 +60,7 @@ namespace Console_Runner
                 this._checkToArchive();
                 Thread.Sleep(1000 * 60 * 60); //check every hour on the hour
             }
+
             this.archiveStopThread();
         }
 
@@ -82,15 +87,38 @@ namespace Console_Runner
              *       a deletion or file name change, this code will create the new file.
              * TODO: CHECK TO MAKE SURE THE LOCATION WE ARE WRITING TO IS ACCESSABLE FOR US TO USE
              */
-            if (!File.Exists(_archiveFolder))
+
+
+
+            if (!File.Exists(_archiveFolder))               //check if folder we want to archive to exists
             {
-                Directory.CreateDirectory(Path.Combine(_archiveDirectory, "Log Archive"));
-                Console.WriteLine(Path.Combine(_archiveDirectory, "Log Archive"));
+                var isWritable = dirIsWritable(_archiveDirectory);
+
+                if (isWritable)                   //checks if the desired directory to host log archives exist AND if we are able to write to
+                {
+                    Directory.CreateDirectory(_archiveFolder);
+                    Console.WriteLine("Archive Created: " + _archiveFolder);
+                }
+                else
+                {
+                    _archiveFolder = _archiveDefault;   //set new logs archive location to be stored in the project folder since we know we have permissions
+                    Console.WriteLine("Error creating Logs Archive:" +
+                                        "\nLogs Archive has been rerouted to: " + _archiveFolder);
+                    Directory.CreateDirectory(_archiveFolder);
+                    Console.WriteLine("Archive Created: " + _archiveFolder);
+                }
+            }
+            else if (!dirIsWritable(_archiveFolder))    //if for some reason Logs Archive exists AND we can no longer write to it 
+            {
+                _archiveFolder = _archiveDefault;       //set new logs archive location to be stored in the project folder since we know we have permissions
+                Console.WriteLine("Error Can No Longer Write To Logs Archive:" +
+                                    "\nLogs Archive has been rerouted to: " + _archiveFolder);
+                Directory.CreateDirectory(_archiveFolder);
+                Console.WriteLine("Archive Created: " + _archiveFolder);
             }
 
             try
             {
-                Console.WriteLine("RUNNING");
                 if (_newMonth())
                 {
                     DateTime currentDate = DateTime.Now;
@@ -155,6 +183,26 @@ namespace Console_Runner
             }
         }
 
+        private bool dirIsWritable(string path)
+        {
+            try
+            {
+                using (FileStream fs = File.Create(Path.Combine(path, Path.GetRandomFileName()), 1, FileOptions.DeleteOnClose))
+                {
+                    //try to create a file in the directory to check if we have write permissions
+                    //File.Create(String,Int32,FileOptions)
+                    //String: the path of the file we are creating
+                    //Int32: size of the buffer
+                    //FileOptions: special options that describe how to create/overwrite the file. In this case once we close the file it will delete
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         //checks to see if the current month has changed
         private bool _newMonth()
         {
@@ -186,6 +234,7 @@ namespace Console_Runner
         //logging objects
         public Logging()
         {
+
         }
 
         //base logging function that will write to the log.txt file. Will append logging information to the end of current date and time.

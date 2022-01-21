@@ -46,7 +46,7 @@ namespace Console_Runner
 
             //get working on the hour
             current = DateTime.Now.ToString("s");
-            offset = current.Substring(current.Length - 5, 2); Console.WriteLine("CURRENT OFFEST IS: " + offset);
+            offset = current.Substring(current.Length - 5, 2);
             int numHourOff = Int32.Parse(offset);
 
             Thread.Sleep(1000 * 60 * (60 - numHourOff));
@@ -80,6 +80,7 @@ namespace Console_Runner
             /**Intended to only be ran if a "Log Archive" directory does not exist. If so, create a directory that will hold archived files.
              * NOTE: Upon Archive object being created this code is ran. HOWEVER, if for whatever reason if someone on the machine were to alter this file,
              *       a deletion or file name change, this code will create the new file.
+             * TODO: CHECK TO MAKE SURE THE LOCATION WE ARE WRITING TO IS ACCESSABLE FOR US TO USE
              */
             if (!File.Exists(_archiveFolder))
             {
@@ -98,6 +99,19 @@ namespace Console_Runner
                      * CODE FOR PULLING LOGS OLDER THAN 30 DAY FROM DATABASE
                      * 
                      */
+
+                    using (var context = new Context())
+                    {
+                        foreach (var oldlogs in context.logs)
+                        {
+                            DateTime logDate = Convert.ToDateTime(oldlogs.Date);
+                            if ( (int)DateTime.Now.Subtract(logDate).Days >= 30 ) //get the integer value of days between now and the log in question,
+                                                                                  //if greater than or equal to 30 days then execute
+                            {
+
+                            }
+                        }
+                    }
 
                     String tgzName = Path.Combine(_archiveFolder, _currentMonth + ".tar.gz"); //tar.gz file name (directory location and name)
                     String fileName = Path.Combine(Environment.CurrentDirectory, "logs.txt"); //file to be compressed (directory location and name)

@@ -85,10 +85,8 @@ namespace Console_Runner
             /**Intended to only be ran if a "Log Archive" directory does not exist. If so, create a directory that will hold archived files.
              * NOTE: Upon Archive object being created this code is ran. HOWEVER, if for whatever reason if someone on the machine were to alter this file,
              *       a deletion or file name change, this code will create the new file.
-             * TODO: CHECK TO MAKE SURE THE LOCATION WE ARE WRITING TO IS ACCESSABLE FOR US TO USE
+             * TODO: INTEGRATION TESTING FOR DIRECTORY ACCESSABILITY ERRORS
              */
-
-
 
             if (!File.Exists(_archiveFolder))               //check if folder we want to archive to exists
             {
@@ -212,20 +210,6 @@ namespace Console_Runner
             }
             else
                 return false;
-        }
-
-        private int _findCutoff(string[] text, DateTime curr)
-        {
-            double diff = Int32.MaxValue;
-            int cutoff = 1;
-            while (diff > 30)
-            {
-                diff = curr.Subtract(DateTime.Parse(text[cutoff].Substring(0, 10))).TotalDays;
-                if (diff < 30)
-                    return cutoff;
-                cutoff++;
-            }
-            return cutoff;
         }
     }
 

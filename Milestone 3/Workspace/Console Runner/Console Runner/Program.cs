@@ -6,12 +6,17 @@ using Microsoft.Extensions.DependencyInjection;
 using User;
 using Class1;
 using Console_Runner;
-
+using static Console_Runner.Authorization;
 
 UM um = new UM();
 Archiving archiver = new Archiving();
 archiver.archiveStartThread();
+Role_User user = new Role_User();
+Console.WriteLine(user.ToString());
 
+Role_Admin adam = new Role_Admin();
+Console.WriteLine(adam.ToString());
+Console.WriteLine();
 if(um.AdminCount() == 0)
 {
     Account admin = new Account();
@@ -22,7 +27,10 @@ if(um.AdminCount() == 0)
     admin.Fname = "matt";
     admin.Lname = "q";
     um.UserSignUp(admin);
+    //Console.WriteLine(admin.role.ToString());
+    //admin.role = adam;
 }
+
 
 
 

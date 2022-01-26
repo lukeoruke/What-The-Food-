@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using static Console_Runner.Authorization;
 
 namespace User
 {
@@ -24,6 +25,8 @@ namespace User
         public int accessLevel { get; set; }
         //Password getter and setter
         //[System.ComponentModel.DataAnnotations.Required]
+        public Role_User role { get; set; }
+
         public bool isActive { get; set; }
 
         public string Password { get; set; }

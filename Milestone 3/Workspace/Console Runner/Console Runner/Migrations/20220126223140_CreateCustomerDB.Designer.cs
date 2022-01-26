@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Console_Runner.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220126220638_CreateCustomerDB")]
+    [Migration("20220126223140_CreateCustomerDB")]
     partial class CreateCustomerDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,6 +29,22 @@ namespace Console_Runner.Migrations
                     b.HasKey("accessLevel");
 
                     b.ToTable("Role_User");
+                });
+
+            modelBuilder.Entity("Logger.Logs", b =>
+                {
+                    b.Property<string>("Date")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Time")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("toLog")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Date", "Time", "toLog");
+
+                    b.ToTable("logs");
                 });
 
             modelBuilder.Entity("User.Account", b =>

@@ -29,6 +29,22 @@ namespace Console_Runner.Migrations
                     b.ToTable("Role_User");
                 });
 
+            modelBuilder.Entity("Logger.Logs", b =>
+                {
+                    b.Property<string>("Date")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Time")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("toLog")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Date", "Time", "toLog");
+
+                    b.ToTable("logs");
+                });
+
             modelBuilder.Entity("User.Account", b =>
                 {
                     b.Property<string>("Email")

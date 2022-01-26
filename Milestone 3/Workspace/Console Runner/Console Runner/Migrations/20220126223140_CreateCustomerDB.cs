@@ -13,6 +13,23 @@ namespace Console_Runner.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "logs",
+                columns: table => new
+                {
+                    Date = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Time = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    toLog = table.Column<string>(type: "varchar(255)", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_logs", x => new { x.Date, x.Time, x.toLog });
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Role_User",
                 columns: table => new
                 {
@@ -63,6 +80,9 @@ namespace Console_Runner.Migrations
         {
             migrationBuilder.DropTable(
                 name: "accounts");
+
+            migrationBuilder.DropTable(
+                name: "logs");
 
             migrationBuilder.DropTable(
                 name: "Role_User");

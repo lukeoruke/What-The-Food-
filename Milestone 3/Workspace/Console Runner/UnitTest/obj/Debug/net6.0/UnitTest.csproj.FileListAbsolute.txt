@@ -298,3 +298,4 @@ C:\Users\Matth\Documents\GitHub\What-The-Food-\Milestone 3\Workspace\Console Run
 C:\Users\Matth\Documents\GitHub\What-The-Food-\Milestone 3\Workspace\Console Runner\UnitTest\obj\Debug\net6.0\ref\UnitTest.dll
 C:\Users\Matth\Documents\GitHub\What-The-Food-\Milestone 3\Workspace\Console Runner\UnitTest\obj\Debug\net6.0\UnitTest.pdb
 C:\Users\Matth\Documents\GitHub\What-The-Food-\Milestone 3\Workspace\Console Runner\UnitTest\obj\Debug\net6.0\UnitTest.genruntimeconfig.cache
+C:\Users\Matth\Documents\GitHub\What-The-Food-\Milestone 3\Workspace\Console Runner\UnitTest\bin\Debug\net6.0\ICSharpCode.SharpZipLib.dll

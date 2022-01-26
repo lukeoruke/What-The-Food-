@@ -26,9 +26,10 @@ if(um.AdminCount() == 0)
     admin.isActive = true;
     admin.Fname = "matt";
     admin.Lname = "q";
+    admin.role = adam;
     um.UserSignUp(admin);
     //Console.WriteLine(admin.role.ToString());
-    admin.role = adam;
+    
 }
 
 

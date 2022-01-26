@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using User;
 using Pomelo.EntityFrameworkCore.MySql;
 using Microsoft.Extensions.DependencyInjection;
+using static Console_Runner.Authorization;
 
 namespace Class1
 {

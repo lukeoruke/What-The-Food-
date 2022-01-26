@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Console_Runner.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20211215035830_CreateCustomerDB")]
+    [Migration("20220126220638_CreateCustomerDB")]
     partial class CreateCustomerDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,6 +19,17 @@ namespace Console_Runner.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("Console_Runner.Authorization+Role_User", b =>
+                {
+                    b.Property<int>("accessLevel")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.HasKey("accessLevel");
+
+                    b.ToTable("Role_User");
+                });
 
             modelBuilder.Entity("User.Account", b =>
                 {
@@ -43,9 +54,25 @@ namespace Console_Runner.Migrations
                     b.Property<bool>("isActive")
                         .HasColumnType("tinyint(1)");
 
+                    b.Property<int>("roleaccessLevel")
+                        .HasColumnType("int");
+
                     b.HasKey("Email");
 
+                    b.HasIndex("roleaccessLevel");
+
                     b.ToTable("accounts");
+                });
+
+            modelBuilder.Entity("User.Account", b =>
+                {
+                    b.HasOne("Console_Runner.Authorization+Role_User", "role")
+                        .WithMany()
+                        .HasForeignKey("roleaccessLevel")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("role");
                 });
 #pragma warning restore 612, 618
         }

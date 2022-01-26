@@ -9,9 +9,6 @@ using User;
 namespace Console_Runner
 {
 
-
-
-
     //Current user management class
     public class UM
     {

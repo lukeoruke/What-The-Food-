@@ -5,9 +5,11 @@ using static Console_Runner.Authorization;
 
 namespace User
 {
+
     /*
      * Account class that will represent the contents of a user's account
      */
+
     public class Account
     {
         //Email getter and setter
@@ -25,6 +27,7 @@ namespace User
         public int accessLevel { get; set; }
         //Password getter and setter
         //[System.ComponentModel.DataAnnotations.Required]
+        
         public Role_User role { get; set; }
 
         public bool isActive { get; set; }

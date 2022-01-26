@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,8 @@ namespace Console_Runner
     {
         public class Role_User
         {
-            protected int accessLevel { get; set; }
+            [System.ComponentModel.DataAnnotations.Key]
+            public int accessLevel { get; set; }
             protected bool scanAccess { get; set; }
             protected bool editOwnAccount { get; set; }
             protected bool editOtherAccount { get; set; }

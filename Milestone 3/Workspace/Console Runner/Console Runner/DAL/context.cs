@@ -8,6 +8,7 @@ using User;
 using Pomelo.EntityFrameworkCore.MySql;
 using Microsoft.Extensions.DependencyInjection;
 using Logger;
+using static Console_Runner.Authorization;
 
 namespace Class1
 {
@@ -28,7 +29,7 @@ namespace Class1
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql("server = localhost; user = root; password = myPassword; Database = ef", 
+            optionsBuilder.UseMySql("server = localhost; user = root; password = myPassword; Database = ef",
                 new MySqlServerVersion(new Version(8, 0, 27)));
         }
         protected override void OnModelCreating(ModelBuilder builder)
@@ -40,7 +41,9 @@ namespace Class1
                 table.toLog
             });
         }
-        public DbSet<Account> accounts{ get; set; }
+        public DbSet<Account> accounts { get; set; }
         public DbSet<Logs> logs { get; set; }
+
+        public DbSet<Role_User> permissions{get; set;}
     }
 }

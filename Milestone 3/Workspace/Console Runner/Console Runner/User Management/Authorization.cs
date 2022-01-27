@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using User;
 
 namespace Console_Runner
 {
@@ -12,12 +13,12 @@ namespace Console_Runner
         public class Role_User
         {
             [System.ComponentModel.DataAnnotations.Key]
+            public String email{ get; set; }
             public int accessLevel { get; set; }
-            protected bool scanAccess { get; set; }
-            protected bool editOwnAccount { get; set; }
-            protected bool editOtherAccount { get; set; }
-            protected bool promotAdmin { get; set; }
-
+            public bool scanAccess { get; set; }
+            public bool editOwnAccount { get; set; }
+            public bool editOtherAccount { get; set; }
+            public bool promotAdmin { get; set; }
             public Role_User()
             {
                 accessLevel = 1;
@@ -25,6 +26,16 @@ namespace Console_Runner
                 editOwnAccount = true;
                 editOtherAccount = false;
                 promotAdmin = false;
+            }
+            public Role_User(String email)
+            {
+                this.email = email;
+                accessLevel = 1;
+                scanAccess = true;
+                editOwnAccount = true;
+                editOtherAccount = false;
+                promotAdmin = false;
+
             }
 
 
@@ -35,8 +46,9 @@ namespace Console_Runner
         }
         public class Role_Admin : Role_User
         {
-            public Role_Admin()
+            public Role_Admin(String email)
             {
+                this.email = email;
                 this.accessLevel = 2;
                 this.scanAccess = true;
                 this.editOwnAccount = true;

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using User;
+using static Console_Runner.Authorization;
 
 namespace Console_Runner
 {
@@ -35,8 +36,11 @@ namespace Console_Runner
                         Console.WriteLine("email already in use");
                         return false;
                     }
+                    Role_User newRule = new Role_User(acc.Email);
+                    context.permissions.Add(newRule);
                     //acc.isActive = true;
                     context.accounts.Add(acc);
+                    
                     context.SaveChanges();
                     logger.logAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
                 }

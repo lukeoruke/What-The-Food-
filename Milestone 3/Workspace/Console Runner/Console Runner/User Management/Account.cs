@@ -28,7 +28,7 @@ namespace User
         //Password getter and setter
         //[System.ComponentModel.DataAnnotations.Required]
         
-        public Role_User role { get; set; }
+       // public Role_User role { get; set; }
 
         public bool isActive { get; set; }
 

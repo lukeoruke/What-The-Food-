@@ -37,19 +37,8 @@ namespace Console_Runner
                         return false;
                     }
                     user_permissions newRule = new user_permissions();
-                    newRule.setUser_permissions(acc, "scanFood");
-                    context.permissions.Add(newRule);
-
-                    user_permissions newRule1 = new user_permissions();
-                    newRule1.setUser_permissions(acc, "editOwnAccount");
-                    context.permissions.Add(newRule1);
-
-                    user_permissions newRule2 = new user_permissions();
-                    newRule2.setUser_permissions(acc, "leaveReview");
-                    context.permissions.Add(newRule2);
+                    newRule.defualtUserPermissions(acc.Email);
                     acc.isActive = true;
-                    //acc.user_Permissions.Add(newRule);
-                    //acc.user_Permissions.Add(newRule1);
                     context.accounts.Add(acc);
                     
 
@@ -112,8 +101,9 @@ namespace Console_Runner
 		 */
         public bool UserDelete(Account currentUser, string targetPK)
         {
+            user_permissions permissions = new user_permissions();
             string email = targetPK;
-            if (!currentUser.isAdmin() || !currentUser.isActive)
+            if (!permissions.hasPermission(email, "editOwnAccount"))
             {
                 logger.logAccountDeletion(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email);
                 return false;
@@ -441,6 +431,10 @@ namespace Console_Runner
                     Console.WriteLine("Enter lname");
                     acc.Lname = Console.ReadLine();
                     acc.isActive = true;
+                    user_permissions newRule = new user_permissions();
+                    newRule.defualtUserPermissions(acc.Email);
+                    acc.isActive = true;
+                    context.accounts.Add(acc);
                     context.accounts.Add(acc);
                     context.SaveChanges();
                     logger.logAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);

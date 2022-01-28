@@ -20,17 +20,10 @@ namespace User
         public string Fname { get; set; }
         //Last name setter and getter
         public string Lname { get; set; }
-        /*accessLevel getter and setter
-         * 0 No account
-         * 1 user account
-         * 2 Admin account
-         */
+
         public int accessLevel { get; set; }
         //Password getter and setter
-        //[System.ComponentModel.DataAnnotations.Required]
 
-        // public Role_User role { get; set; }
-        //public List<user_permissions> user_Permissions{get; set;}
 
         public bool isActive { get; set; }
 
@@ -38,7 +31,6 @@ namespace User
 
         public Account()
         {
-            //user_Permissions = new List<user_permissions>();
         }
         public string ToString()
         {

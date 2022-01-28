@@ -40,6 +40,8 @@ namespace Class1
                 table.Time,
                 table.toLog
             });
+
+            //Sets a composite key of email+permission for the permissions table.
             builder.Entity<user_permissions>().HasKey(table => new
             {
                 table.email,
@@ -47,6 +49,7 @@ namespace Class1
             });
         }
         public DbSet<Account> accounts { get; set; }
+
         public DbSet<Logs> logs { get; set; }
 
         public DbSet<user_permissions> permissions{get; set;}

@@ -2,7 +2,7 @@ using Class1;
 using Console_Runner;
 using User;
 using Xunit;
-
+//---------------------------------NOTICE, THIS FILE NOT BEEN UPDATED WITH THE CHANGES TO AUTHORIZATION AND WILL NOT WORK AS EXPECTED-----------------------------------
 namespace UnitTest
 {
     public class UnitTest1
@@ -21,7 +21,6 @@ namespace UnitTest
                 acc.Password = "password1";
                 acc.Fname = "fname";
                 acc.Lname = "lname";
-                acc.accessLevel = 1;
                 //Act
                 um.UserSignUp(acc);
                 //Assert
@@ -40,7 +39,6 @@ namespace UnitTest
                 acc.Password = "password1";
                 acc.Fname = "fname";
                 acc.Lname = "lname";
-                acc.accessLevel = 1;
                 um.UserSignUp(acc);
                 //Act
                 um.UserDelete(acc, tester);
@@ -59,7 +57,6 @@ namespace UnitTest
                 acc.Password = "password1";
                 acc.Fname = "fname";
                 acc.Lname = "lname";
-                acc.accessLevel = 1;
                 um.UserSignUp(acc);
                 string nName = "new name";
                 string nlName = "new last name";
@@ -82,7 +79,6 @@ namespace UnitTest
                 currentUser.Password = "pass";
                 currentUser.Fname = "fname";
                 currentUser.Lname = "lname";
-                currentUser.accessLevel = 2;
                 um.UserSignUp(currentUser);
                 return currentUser;
             }

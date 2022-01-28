@@ -44,6 +44,6 @@ namespace Class1
         public DbSet<Account> accounts { get; set; }
         public DbSet<Logs> logs { get; set; }
 
-        public DbSet<Role_User> permissions{get; set;}
+        public DbSet<user_permissions> permissions{get; set;}
     }
 }

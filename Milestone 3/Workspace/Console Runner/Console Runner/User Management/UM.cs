@@ -36,11 +36,16 @@ namespace Console_Runner
                         Console.WriteLine("email already in use");
                         return false;
                     }
-                    Role_User newRule = new Role_User(acc.Email);
+                    user_permissions newRule = new user_permissions(acc.Email, "scanFood");
                     context.permissions.Add(newRule);
-                    //acc.isActive = true;
+                    user_permissions newRule1 = new user_permissions(acc.Email, "editOwnAccount");
+                    context.permissions.Add(newRule1);
+
+                    acc.isActive = true;
+                    acc.user_Permissions.Add(newRule);
                     context.accounts.Add(acc);
                     
+
                     context.SaveChanges();
                     logger.logAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
                 }
@@ -379,6 +384,7 @@ namespace Console_Runner
                 return false;
             }
         }
+
         //returns the number of admins in the database
         public int AdminCount()
         {

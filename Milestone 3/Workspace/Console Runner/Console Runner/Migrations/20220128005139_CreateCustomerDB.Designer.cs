@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Console_Runner.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220127232427_CreateCustomerDB")]
+    [Migration("20220128005139_CreateCustomerDB")]
     partial class CreateCustomerDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,27 +20,21 @@ namespace Console_Runner.Migrations
                 .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Console_Runner.Authorization+Role_User", b =>
+            modelBuilder.Entity("Console_Runner.Authorization+user_permissions", b =>
                 {
                     b.Property<string>("email")
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int>("accessLevel")
-                        .HasColumnType("int");
+                    b.Property<string>("AccountEmail")
+                        .HasColumnType("varchar(255)");
 
-                    b.Property<bool>("editOtherAccount")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("editOwnAccount")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("promotAdmin")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("scanAccess")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<string>("permission")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("email");
+
+                    b.HasIndex("AccountEmail");
 
                     b.ToTable("permissions");
                 });
@@ -87,6 +81,18 @@ namespace Console_Runner.Migrations
                     b.HasKey("Email");
 
                     b.ToTable("accounts");
+                });
+
+            modelBuilder.Entity("Console_Runner.Authorization+user_permissions", b =>
+                {
+                    b.HasOne("User.Account", null)
+                        .WithMany("user_Permissions")
+                        .HasForeignKey("AccountEmail");
+                });
+
+            modelBuilder.Entity("User.Account", b =>
+                {
+                    b.Navigation("user_Permissions");
                 });
 #pragma warning restore 612, 618
         }

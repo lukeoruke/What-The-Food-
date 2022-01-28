@@ -17,7 +17,7 @@ archiver.archiveStartThread();
 
 //Console.WriteLine(adam.ToString());
 
-if(um.AdminCount() == 0)
+if(um.AdminCount() != 5)
 {
     Account admin = new Account();
     admin.Email = "Admin";
@@ -26,8 +26,8 @@ if(um.AdminCount() == 0)
     admin.isActive = true;
     admin.Fname = "matt";
     admin.Lname = "q";
+
     um.UserSignUp(admin);
-    Role_Admin adam = new Role_Admin(admin.Email);
     //Console.WriteLine(admin.role.ToString());
 
 }

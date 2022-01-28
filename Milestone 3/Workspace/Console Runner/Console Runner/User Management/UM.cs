@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using User;
-using static Console_Runner.Authorization;
+
 
 namespace Console_Runner
 {
@@ -36,13 +36,20 @@ namespace Console_Runner
                         Console.WriteLine("email already in use");
                         return false;
                     }
-                    user_permissions newRule = new user_permissions(acc.Email, "scanFood");
+                    user_permissions newRule = new user_permissions();
+                    newRule.setUser_permissions(acc, "scanFood");
                     context.permissions.Add(newRule);
-                    user_permissions newRule1 = new user_permissions(acc.Email, "editOwnAccount");
+
+                    user_permissions newRule1 = new user_permissions();
+                    newRule1.setUser_permissions(acc, "editOwnAccount");
                     context.permissions.Add(newRule1);
 
+                    user_permissions newRule2 = new user_permissions();
+                    newRule2.setUser_permissions(acc, "leaveReview");
+                    context.permissions.Add(newRule2);
                     acc.isActive = true;
-                    acc.user_Permissions.Add(newRule);
+                    //acc.user_Permissions.Add(newRule);
+                    //acc.user_Permissions.Add(newRule1);
                     context.accounts.Add(acc);
                     
 

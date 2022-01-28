@@ -55,38 +55,26 @@ namespace Console_Runner.Migrations
                 {
                     email = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    permission = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    AccountEmail = table.Column<string>(type: "varchar(255)", nullable: true)
+                    permission = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_permissions", x => x.email);
-                    table.ForeignKey(
-                        name: "FK_permissions_accounts_AccountEmail",
-                        column: x => x.AccountEmail,
-                        principalTable: "accounts",
-                        principalColumn: "Email");
+                    table.PrimaryKey("PK_permissions", x => new { x.email, x.permission });
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_permissions_AccountEmail",
-                table: "permissions",
-                column: "AccountEmail");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "accounts");
+
+            migrationBuilder.DropTable(
                 name: "logs");
 
             migrationBuilder.DropTable(
                 name: "permissions");
-
-            migrationBuilder.DropTable(
-                name: "accounts");
         }
     }
 }

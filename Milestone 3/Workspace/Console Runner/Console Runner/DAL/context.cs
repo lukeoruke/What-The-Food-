@@ -8,7 +8,7 @@ using User;
 using Pomelo.EntityFrameworkCore.MySql;
 using Microsoft.Extensions.DependencyInjection;
 using Logger;
-using static Console_Runner.Authorization;
+using Console_Runner;
 
 namespace Class1
 {
@@ -40,10 +40,16 @@ namespace Class1
                 table.Time,
                 table.toLog
             });
+            builder.Entity<user_permissions>().HasKey(table => new
+            {
+                table.email,
+                table.permission
+            });
         }
         public DbSet<Account> accounts { get; set; }
         public DbSet<Logs> logs { get; set; }
 
         public DbSet<user_permissions> permissions{get; set;}
+
     }
 }

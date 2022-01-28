@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Console_Runner;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using static Console_Runner.Authorization;
+
 
 namespace User
 {
@@ -29,14 +30,15 @@ namespace User
         //[System.ComponentModel.DataAnnotations.Required]
 
         // public Role_User role { get; set; }
-        public List<user_permissions> user_Permissions{get; set;}
+        //public List<user_permissions> user_Permissions{get; set;}
 
         public bool isActive { get; set; }
 
         public string Password { get; set; }
+
         public Account()
         {
-            user_Permissions = new List<user_permissions>();
+            //user_Permissions = new List<user_permissions>();
         }
         public string ToString()
         {

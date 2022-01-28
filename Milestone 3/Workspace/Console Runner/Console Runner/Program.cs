@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using User;
 using Class1;
 using Console_Runner;
-using static Console_Runner.Authorization;
 
 UM um = new UM();
 Archiving archiver = new Archiving();

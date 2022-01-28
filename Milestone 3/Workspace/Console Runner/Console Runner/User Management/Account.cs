@@ -32,7 +32,7 @@ namespace User
         public Account()
         {
         }
-        public string ToString()
+        public override string  ToString()
         {
             int pass = this.Password.Length;
             string stars = "";

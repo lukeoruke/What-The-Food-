@@ -16,8 +16,6 @@ archiver.archiveStartThread();
 
 //Console.WriteLine(adam.ToString());
 
-if(um.AdminCount() != 5)
-{
     Account admin = new Account();
     admin.Email = "Admin";
     admin.Password = "pass";
@@ -27,18 +25,5 @@ if(um.AdminCount() != 5)
     admin.Lname = "q";
 
     um.UserSignUp(admin);
-    //Console.WriteLine(admin.role.ToString());
 
-}
-
-bool loggedIn = false;
-
-while (!loggedIn)
-{
-    Console.Write("Please sign in. \nEmail: ");
-    string id = Console.ReadLine();
-    Console.Write("\nPassword: ");
-    string password = Console.ReadLine();
-    Account currentUser = um.signIn(id, password);
     Environment.Exit(0);
-}

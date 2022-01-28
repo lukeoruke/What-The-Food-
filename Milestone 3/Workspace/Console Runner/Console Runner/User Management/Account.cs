@@ -45,12 +45,13 @@ namespace User
 
         public bool isAdmin()
         {
-            return this.accessLevel >= 2;
+            user_permissions permissions = new();
+            return permissions.hasPermission(Email, "createAdmin");
 
         }
         public bool isUser()
         {
-            return this.accessLevel >= 1;
+            return !isAdmin();
         }
 
     }

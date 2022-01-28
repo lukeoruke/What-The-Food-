@@ -22,7 +22,11 @@ namespace Console_Runner
             logger = new Logging();
         }
 
-
+        public bool hasPermission(string email, string permission)
+        {
+            user_permissions permissions = new user_permissions();
+            return permissions.hasPermission(email, permission);
+        }
 
         //User sign up will take in an account object and persist it to the db.
         public bool UserSignUp(Account acc)
@@ -101,9 +105,8 @@ namespace Console_Runner
 		 */
         public bool UserDelete(Account currentUser, string targetPK)
         {
-            user_permissions permissions = new user_permissions();
             string email = targetPK;
-            if (!permissions.hasPermission(email, "deleteAccount"))
+            if (!hasPermission(email, "deleteAccount"))
             {
                 logger.logAccountDeletion(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email);
                 return false;
@@ -117,7 +120,7 @@ namespace Console_Runner
                     {
                         return false;
                     }
-                    if (permissions.hasPermission(targetPK,"createAdmin") && (AdminCount() < 2))
+                    if (hasPermission(targetPK,"createAdmin") && (AdminCount() < 2))
                     {
                         Console.WriteLine("Deleting this account would result in there being no admins.");
                         return false;
@@ -353,9 +356,10 @@ namespace Console_Runner
 
         public bool promoteToAdmin(Account currentUser, string targetPK)
         {
+            
             try
             {
-                if (currentUser.isAdmin() && currentUser.isActive)
+                if (hasPermission(currentUser.Email,"createAdmin") && currentUser.isActive)
                 {
                     using (var context = new Context())
                     {
@@ -365,7 +369,6 @@ namespace Console_Runner
                             Console.WriteLine("No such account exists");
                             return false;
                         }
-                        acc.accessLevel = 2;
                         context.Update(acc);
                         context.SaveChanges();
                         logger.logAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
@@ -392,7 +395,7 @@ namespace Console_Runner
             {
                 foreach (var account in context.accounts)
                 {
-                    if (account.accessLevel >= 2 && account.isActive) count++;
+                    if (hasPermission(account.Email, "createAdmin") && account.isActive) count++;
                 }
             }
             return count;

@@ -21,7 +21,7 @@ namespace User
         //Last name setter and getter
         public string Lname { get; set; }
 
-        public int accessLevel { get; set; }
+        //public int accessLevel { get; set; }
         //Password getter and setter
 
 

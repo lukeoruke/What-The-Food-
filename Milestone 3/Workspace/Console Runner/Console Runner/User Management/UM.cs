@@ -78,7 +78,7 @@ namespace Console_Runner
                         Lname = last,
                         Password = pass,
                         isActive = true,
-                        accessLevel = 1
+                        //accessLevel = 1
                     };
                     context.accounts.Add(acc);
                     context.SaveChanges();
@@ -103,7 +103,7 @@ namespace Console_Runner
         {
             user_permissions permissions = new user_permissions();
             string email = targetPK;
-            if (!permissions.hasPermission(email, "editOwnAccount"))
+            if (!permissions.hasPermission(email, "deleteAccount"))
             {
                 logger.logAccountDeletion(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email);
                 return false;
@@ -117,7 +117,7 @@ namespace Console_Runner
                     {
                         return false;
                     }
-                    if (acc.isAdmin() && (AdminCount() < 2))
+                    if (permissions.hasPermission(targetPK,"createAdmin") && (AdminCount() < 2))
                     {
                         Console.WriteLine("Deleting this account would result in there being no admins.");
                         return false;
@@ -163,9 +163,10 @@ namespace Console_Runner
         {
             bool fNameChanged = false, lNameChanged = false, passwordChanged = false;
             string fTemp = "", lTemp = "", pTemp = "";
+            user_permissions permissions = new user_permissions();
             if (currentUser.Email != targetPK)
             {
-                if (!currentUser.isAdmin() || !currentUser.isActive)
+                if (!permissions.hasPermission(targetPK,"editOtherAccount") || !currentUser.isActive)
                 {
                     logger.logGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
                     return false;
@@ -312,7 +313,8 @@ namespace Console_Runner
 		 */
         public bool EnableAccount(Account currentUser, string targetPK)
         {
-            if (!currentUser.isAdmin() || !currentUser.isActive)
+            user_permissions permissions = new user_permissions();
+            if (!permissions.hasPermission(currentUser.Email, "enableAccount") || !currentUser.isActive)
             {
                 logger.logAccountEnabling(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
                 return false;

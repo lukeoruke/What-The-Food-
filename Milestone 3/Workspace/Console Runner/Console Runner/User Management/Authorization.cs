@@ -29,20 +29,23 @@ namespace Console_Runner
         }
         public void defualtUserPermissions(string email)
         {
-            user_permissions permissions = new user_permissions();
-            permissions.addPermission(email, "scanFood");
-            permissions.addPermission(email, "editOwnAccount");
-            permissions.addPermission(email, "leaveReview");
-            permissions.addPermission(email, "deleteOwnAccount");
-            permissions.addPermission(email, "historyAccess");
-            permissions.addPermission(email, "AMR");
-            permissions.addPermission(email, "foodFlag");
+            addPermission(email, "scanFood");
+            addPermission(email, "editOwnAccount");
+            addPermission(email, "leaveReview");
+            addPermission(email, "deleteOwnAccount");
+            addPermission(email, "historyAccess");
+            addPermission(email, "AMR");
+            addPermission(email, "foodFlag");
         }
 
         public void defualtAdminPermissions(string email)
         {
+            
             defualtUserPermissions(email);
-
+            addPermission(email, "enableAccount");
+            addPermission(email, "disableAccount");
+            addPermission(email, "deleteAccount");
+            addPermission(email, "createAdmin");
         }
 
         public void addPermission(string email, string permission)

@@ -29,7 +29,7 @@ namespace Class1
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySql("server = localhost; user = root; password = myPassword; Database = ef", 
+            optionsBuilder.UseMySql("server = localhost; user = root; password = myPassword; Database = ef",
                 new MySqlServerVersion(new Version(8, 0, 27)));
         }
         protected override void OnModelCreating(ModelBuilder builder)
@@ -52,6 +52,18 @@ namespace Class1
         public DbSet<Account> accounts{ get; set; }
         public DbSet<Logs> logs { get; set; }
         public DbSet<History> history { get; set; }
+            //Sets a composite key of email+permission for the permissions table.
+            builder.Entity<user_permissions>().HasKey(table => new
+            {
+                table.email,
+                table.permission
+            });
+        }
+        public DbSet<Account> accounts { get; set; }
+
+        public DbSet<Logs> logs { get; set; }
+
+        public DbSet<user_permissions> permissions{get; set;}
 
     }
 }

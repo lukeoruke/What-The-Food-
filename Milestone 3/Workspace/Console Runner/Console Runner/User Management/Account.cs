@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Console_Runner;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using static Console_Runner.Authorization;
+
 
 namespace User
 {
@@ -19,22 +20,19 @@ namespace User
         public string Fname { get; set; }
         //Last name setter and getter
         public string Lname { get; set; }
-        /*accessLevel getter and setter
-         * 0 No account
-         * 1 user account
-         * 2 Admin account
-         */
-        public int accessLevel { get; set; }
+
+        //public int accessLevel { get; set; }
         //Password getter and setter
-        //[System.ComponentModel.DataAnnotations.Required]
-        
-        public Role_User role { get; set; }
+
 
         public bool isActive { get; set; }
 
         public string Password { get; set; }
 
-        public string ToString()
+        public Account()
+        {
+        }
+        public override string  ToString()
         {
             int pass = this.Password.Length;
             string stars = "";
@@ -47,12 +45,13 @@ namespace User
 
         public bool isAdmin()
         {
-            return this.accessLevel >= 2;
+            user_permissions permissions = new();
+            return permissions.hasPermission(Email, "createAdmin");
 
         }
         public bool isUser()
         {
-            return this.accessLevel >= 1;
+            return !isAdmin();
         }
 
     }

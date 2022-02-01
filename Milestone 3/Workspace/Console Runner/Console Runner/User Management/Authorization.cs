@@ -1,48 +1,91 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Class1;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using User;
 
 namespace Console_Runner
-{
-    public class Authorization
+{  
+    public class user_permissions
     {
-        public class Role_User
+        public string email{ get; set; }
+        public string permission { get; set; }
+
+        private Context context = new Context();
+        public user_permissions()
         {
-            [System.ComponentModel.DataAnnotations.Key]
-            public int accessLevel { get; set; }
-            protected bool scanAccess { get; set; }
-            protected bool editOwnAccount { get; set; }
-            protected bool editOtherAccount { get; set; }
-            protected bool promotAdmin { get; set; }
+            email = "";
+            permission = "";
 
-            public Role_User()
-            {
-                accessLevel = 1;
-                scanAccess = true;
-                editOwnAccount = true;
-                editOtherAccount = false;
-                promotAdmin = false;
-            }
-
-
-            public string ToString()
-            {
-                return "Permission Level: " + accessLevel.ToString() + " \nHasScanPermission: " + scanAccess.ToString() + " \nHasEditOwnAccountPermission: " + editOwnAccount.ToString() + " \nHasEditOtherAccountPermission: " + editOtherAccount.ToString() + " \nHasPromotToAdminPermission: " + promotAdmin.ToString() + "\n";
-            }
         }
-        public class Role_Admin : Role_User
+        public void setUserPermissions(string email, string permission)
         {
-            public Role_Admin()
-            {
-                this.accessLevel = 2;
-                this.scanAccess = true;
-                this.editOwnAccount = true;
-                this.editOtherAccount = true;
-                this.promotAdmin = true;
-            }
+            this.email = email;
+            this.permission = permission;
         }
+        /* contains a package of the defualt permissions that will be assigned to all new user accounts.
+        * Email: the PK of the account we are giving these permissions to
+        */
+        public void defualtUserPermissions(string email)
+        {
+            
+            addPermission(email, "scanFood");
+            addPermission(email, "editOwnAccount");
+            addPermission(email, "leaveReview");
+            addPermission(email, "deleteOwnAccount");
+            addPermission(email, "historyAccess");
+            addPermission(email, "AMR");
+            addPermission(email, "foodFlag");
+
+        }
+        /* contains a package of the defualt permissions that will be assigned to all new admin accounts.
+         * Email: the PK of the account we are giving these permissions to
+         */
+        public void defualtAdminPermissions(string email)
+        {
+            
+            //defualtUserPermissions(email);
+            addPermission(email, "enableAccount");
+            addPermission(email, "disableAccount");
+            addPermission(email, "deleteAccount");
+            addPermission(email, "createAdmin");
+            addPermission(email, "editOtherAccount");
+        }
+
+       /* adds specified permission to specified account
+       * Email: the PK of the account we are giving these permissions to
+       * permission: the permission being added to the specified email
+       */
+        public void addPermission(string email, string permission)
+        {
+            user_permissions newPermission = new user_permissions();
+            newPermission.setUserPermissions(email, permission);
+            Context context = new Context();
+            if (context.permissions.Find(email,permission) == null)
+            {
+                context.permissions.Add(newPermission);
+                context.SaveChanges();
+            }
+                
+        }
+
+        //Email of the user being checked, permission name being checked. Returns true of user has permission, false otherwise.
+        public bool hasPermission(string email, string permission)
+        {
+            if (context.permissions.Find(email, permission) != null)
+            {
+                return true;
+            }
+            return false;
+            
+        }
+
+
     }
+
+
 }

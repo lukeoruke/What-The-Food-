@@ -2,7 +2,7 @@ using Class1;
 using Console_Runner;
 using User;
 using Xunit;
-
+//---------------------------------NOTICE, THIS FILE NOT BEEN UPDATED WITH THE CHANGES TO AUTHORIZATION AND WILL NOT WORK AS EXPECTED-----------------------------------
 namespace UnitTest
 {
     public class UnitTest1
@@ -21,7 +21,6 @@ namespace UnitTest
                 acc.Password = "password1";
                 acc.Fname = "fname";
                 acc.Lname = "lname";
-                acc.accessLevel = 1;
                 //Act
                 um.UserSignUp(acc);
                 //Assert
@@ -40,7 +39,8 @@ namespace UnitTest
                 acc.Password = "password1";
                 acc.Fname = "fname";
                 acc.Lname = "lname";
-                acc.accessLevel = 1;
+                user_permissions permissions = new();
+                permissions.defualtAdminPermissions(acc.Email);
                 um.UserSignUp(acc);
                 //Act
                 um.UserDelete(acc, tester);
@@ -51,21 +51,27 @@ namespace UnitTest
             public void updateSuccess()
             {
                 //Arange
-                Account currentUser = makeAdmin();
-                string newTester = "newTester";
-                string tester = "UnitTestUser";
+                Account admin = new();
+                admin.Email = "admin email";
+                admin.Password = "admin pass";
+                admin.Fname = "Test";
+                admin.Lname = "Test";
+                user_permissions permissions = new();
+                permissions.defualtAdminPermissions(admin.Email);
+                um.UserSignUp(admin);
+                
+                string tester = "newdude";
                 Account acc = new Account();
                 acc.Email = tester;
                 acc.Password = "password1";
                 acc.Fname = "fname";
                 acc.Lname = "lname";
-                acc.accessLevel = 1;
                 um.UserSignUp(acc);
                 string nName = "new name";
                 string nlName = "new last name";
                 string nPassword = "NewPassword";
                 //act
-                um.UserUpdateData(currentUser, acc.Email, nName, nlName, nPassword);
+                um.UserUpdateData(admin, acc.Email, nName, nlName, nPassword);
                 acc = context.accounts.Find(acc.Email);
                 //Assert
                 Assert.True(acc.Fname == nName && acc.Lname == nlName && acc.Password == nPassword);
@@ -82,7 +88,6 @@ namespace UnitTest
                 currentUser.Password = "pass";
                 currentUser.Fname = "fname";
                 currentUser.Lname = "lname";
-                currentUser.accessLevel = 2;
                 um.UserSignUp(currentUser);
                 return currentUser;
             }

@@ -10,25 +10,27 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Console_Runner.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220126223449_CreateCustomerDB")]
+    [Migration("20220128192537_CreateCustomerDB")]
     partial class CreateCustomerDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "6.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            modelBuilder.Entity("Console_Runner.Authorization+Role_User", b =>
+            modelBuilder.Entity("Console_Runner.user_permissions", b =>
                 {
-                    b.Property<int>("accessLevel")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("email")
+                        .HasColumnType("varchar(255)");
 
-                    b.HasKey("accessLevel");
+                    b.Property<string>("permission")
+                        .HasColumnType("varchar(255)");
 
-                    b.ToTable("Role_User");
+                    b.HasKey("email", "permission");
+
+                    b.ToTable("permissions");
                 });
 
             modelBuilder.Entity("Logger.Logs", b =>
@@ -70,25 +72,9 @@ namespace Console_Runner.Migrations
                     b.Property<bool>("isActive")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<int>("roleaccessLevel")
-                        .HasColumnType("int");
-
                     b.HasKey("Email");
 
-                    b.HasIndex("roleaccessLevel");
-
                     b.ToTable("accounts");
-                });
-
-            modelBuilder.Entity("User.Account", b =>
-                {
-                    b.HasOne("Console_Runner.Authorization+Role_User", "role")
-                        .WithMany()
-                        .HasForeignKey("roleaccessLevel")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("role");
                 });
 #pragma warning restore 612, 618
         }

@@ -32,6 +32,7 @@ namespace Console_Runner
         */
         public void defualtUserPermissions(string email)
         {
+            
             addPermission(email, "scanFood");
             addPermission(email, "editOwnAccount");
             addPermission(email, "leaveReview");
@@ -39,6 +40,7 @@ namespace Console_Runner
             addPermission(email, "historyAccess");
             addPermission(email, "AMR");
             addPermission(email, "foodFlag");
+
         }
         /* contains a package of the defualt permissions that will be assigned to all new admin accounts.
          * Email: the PK of the account we are giving these permissions to
@@ -46,11 +48,12 @@ namespace Console_Runner
         public void defualtAdminPermissions(string email)
         {
             
-            defualtUserPermissions(email);
+            //defualtUserPermissions(email);
             addPermission(email, "enableAccount");
             addPermission(email, "disableAccount");
             addPermission(email, "deleteAccount");
             addPermission(email, "createAdmin");
+            addPermission(email, "editOtherAccount");
         }
 
        /* adds specified permission to specified account
@@ -61,8 +64,13 @@ namespace Console_Runner
         {
             user_permissions newPermission = new user_permissions();
             newPermission.setUserPermissions(email, permission);
-            context.permissions.Add(newPermission);
-            context.SaveChanges();
+            Context context = new Context();
+            if (context.permissions.Find(email,permission) == null)
+            {
+                context.permissions.Add(newPermission);
+                context.SaveChanges();
+            }
+                
         }
 
         //Email of the user being checked, permission name being checked. Returns true of user has permission, false otherwise.

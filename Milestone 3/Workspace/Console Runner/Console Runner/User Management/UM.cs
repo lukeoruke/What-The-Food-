@@ -125,9 +125,23 @@ namespace Console_Runner
                         Console.WriteLine("Deleting this account would result in there being no admins.");
                         return false;
                     }
+                    
+                    user_permissions permissions = new();
+                    permissions.email = acc.Email;
+                    permissions.permission = "scanFood";
+                    context.Remove(permissions);
+
+                    foreach (var permission in context.permissions)
+                    {
+                        if(permission.email == email)
+                        {
+                            context.Remove(permission);
+                        }
+                    }
                     context.Remove(acc);
                     context.SaveChanges();
                     logger.logAccountDeletion(UM_CATEGORY, "test page", true, "", email);
+                
                 }
                 Console.WriteLine("UM operation was successful");
                 return true;
@@ -138,7 +152,6 @@ namespace Console_Runner
                 return false;
             }
         }
-
 
         //will return an account object from the DB given a PK from the argument field
         public Account getUserAcc(string targetPK)
@@ -170,7 +183,7 @@ namespace Console_Runner
             user_permissions permissions = new user_permissions();
             if (currentUser.Email != targetPK)
             {
-                if (!permissions.hasPermission(targetPK,"editOtherAccount") || !currentUser.isActive)
+                if (!permissions.hasPermission(currentUser.Email,"editOtherAccount") || !currentUser.isActive)
                 {
                     logger.logGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
                     return false;
@@ -370,6 +383,8 @@ namespace Console_Runner
                             Console.WriteLine("No such account exists");
                             return false;
                         }
+                        user_permissions permissions = new();
+                        permissions.defualtAdminPermissions(targetPK);
                         context.Update(acc);
                         context.SaveChanges();
                         logger.logAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);

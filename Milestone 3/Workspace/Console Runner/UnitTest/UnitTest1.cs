@@ -39,6 +39,8 @@ namespace UnitTest
                 acc.Password = "password1";
                 acc.Fname = "fname";
                 acc.Lname = "lname";
+                user_permissions permissions = new();
+                permissions.defualtAdminPermissions(acc.Email);
                 um.UserSignUp(acc);
                 //Act
                 um.UserDelete(acc, tester);
@@ -49,9 +51,16 @@ namespace UnitTest
             public void updateSuccess()
             {
                 //Arange
-                Account currentUser = makeAdmin();
-                string newTester = "newTester";
-                string tester = "UnitTestUser";
+                Account admin = new();
+                admin.Email = "admin email";
+                admin.Password = "admin pass";
+                admin.Fname = "Test";
+                admin.Lname = "Test";
+                user_permissions permissions = new();
+                permissions.defualtAdminPermissions(admin.Email);
+                um.UserSignUp(admin);
+                
+                string tester = "newdude";
                 Account acc = new Account();
                 acc.Email = tester;
                 acc.Password = "password1";
@@ -62,7 +71,7 @@ namespace UnitTest
                 string nlName = "new last name";
                 string nPassword = "NewPassword";
                 //act
-                um.UserUpdateData(currentUser, acc.Email, nName, nlName, nPassword);
+                um.UserUpdateData(admin, acc.Email, nName, nlName, nPassword);
                 acc = context.accounts.Find(acc.Email);
                 //Assert
                 Assert.True(acc.Fname == nName && acc.Lname == nlName && acc.Password == nPassword);

@@ -8,6 +8,7 @@ using User;
 using Pomelo.EntityFrameworkCore.MySql;
 using Microsoft.Extensions.DependencyInjection;
 using Logger;
+using Console_Runner;
 
 namespace Class1
 {
@@ -39,8 +40,18 @@ namespace Class1
                 table.Time,
                 table.toLog
             });
+
+            builder.Entity<History>().HasKey(table => new
+            {
+                table.email,
+                table.foodItems
+            });
         }
+
+
         public DbSet<Account> accounts{ get; set; }
         public DbSet<Logs> logs { get; set; }
+        public DbSet<History> history { get; set; }
+
     }
 }

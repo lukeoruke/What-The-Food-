@@ -399,3 +399,9 @@ FodyWeavers.xsd
 
 # macOS
 .DS_Store
+
+#vsCode
+/.vscode
+
+#Ionide
+/.ionide

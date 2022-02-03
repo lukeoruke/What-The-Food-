@@ -22,6 +22,12 @@ namespace Console_Runner
             permission = "";
 
         }
+        public user_permissions(string email, string permission)
+        {
+            this.email = email;
+            this.permission = permission;
+
+        }
         public void setUserPermissions(string email, string permission)
         {
             this.email = email;

@@ -20,6 +20,7 @@ namespace Console_Runner.DAL
 
         public bool userExists(string email)
         {
+            
             if (context.accounts.Find(email) != null)
             {
                 return true;
@@ -29,28 +30,50 @@ namespace Console_Runner.DAL
 
         public Account getAccount(string email)
         {
-            Account acc = context.accounts.Find(email);
-            if (acc != null)
+            try
             {
-                return acc;
-            }
-            else
+                Account acc = context.accounts.Find(email);
+                if (acc != null)
+                {
+                    return acc;
+                }
+                else
+                {
+                    throw new Exception("account not found exception");
+                }
+            }catch (Exception ex)
             {
-                throw new Exception("account not found exception");
+                return null;
             }
+          
 
         }
         public bool addAccount(Account acc)
         {
-            context.accounts.Add(acc);
-            context.SaveChanges();
-            return true;
+            try
+            {
+                context.accounts.Add(acc);
+                context.SaveChanges();
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
+            }
+            
+            
         }
         public bool removeAccount(Account acc)
         {
-            context.Remove(acc);
-            context.SaveChanges();
-            return true;
+            try
+            {
+                context.Remove(acc);
+                context.SaveChanges();
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
+            }
+            
         }
         /////////////////////////////////////////////////////////////Permissions////////////////////////////////////////////////////////////////////////////////////////////////
         public bool hasPermission(string email, string permission)
@@ -60,6 +83,19 @@ namespace Console_Runner.DAL
                 return true;
             }
             return false ;
+        }
+        public bool addPermision(string email, string permission)
+        {
+            try
+            {
+                user_permissions newPermission = new user_permissions(email, permission);
+                context.permissions.Add(newPermission);
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
+            }
+            
         }
 
     }

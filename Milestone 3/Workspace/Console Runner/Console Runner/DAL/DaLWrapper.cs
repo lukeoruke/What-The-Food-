@@ -18,7 +18,7 @@ namespace Console_Runner.DAL
 
         /////////////////////////////////////////////////////////////Accounts////////////////////////////////////////////////////////////////////////////////////////////////
 
-        public bool userExists(string email)
+        public bool accountExists(string email)
         {
             
             if (context.accounts.Find(email) != null)
@@ -66,10 +66,27 @@ namespace Console_Runner.DAL
         {
             try
             {
-                context.Remove(acc);
-                context.SaveChanges();
+                if(accountExists(acc.Email))
+                {
+                    context.Remove(acc);
+                    context.SaveChanges();
+                }
                 return true;
             }catch (Exception ex)
+            {
+                return false;
+            }
+            
+        }
+
+        public bool updateAccount(Account acc)
+        {
+            try
+            {
+                context.accounts.Update(acc);
+                context.SaveChanges(true);
+                return true;
+            }catch(Exception ex)
             {
                 return false;
             }
@@ -78,24 +95,80 @@ namespace Console_Runner.DAL
         /////////////////////////////////////////////////////////////Permissions////////////////////////////////////////////////////////////////////////////////////////////////
         public bool hasPermission(string email, string permission)
         {
-            if (context.permissions.Find(email, permission) != null)
-            {
-                return true;
-            }
-            return false ;
+            return context.permissions.Find(email, permission) != null;
         }
-        public bool addPermision(string email, string permission)
+        public bool addPermission(string email, string permission)
         {
             try
             {
                 user_permissions newPermission = new user_permissions(email, permission);
-                context.permissions.Add(newPermission);
+                if (context.permissions.Find(email, permission) == null)
+                {
+                    context.permissions.Add(newPermission);
+                    context.SaveChanges();
+                }
                 return true;
             }catch (Exception ex)
             {
                 return false;
             }
             
+        }
+        public bool removePermision(string email, string permission)
+        {
+            try
+            {
+                user_permissions newPermission = new user_permissions(email, permission);
+                if(hasPermission(email, permission))
+                {
+                    context.permissions.Remove(newPermission);
+                    context.SaveChanges();
+                    return true;
+                }
+            }catch (Exception ex)
+            {
+                return false;
+            }
+            return false;
+        }
+
+        public List<user_permissions>  getAllUserPermissions(string email)
+        {
+            List<user_permissions> alluserPermissions = new List<user_permissions>();
+            foreach (var permissions in context.permissions)
+            {
+                if(permissions.email == email)
+                {
+                    alluserPermissions.Add(permissions);
+                }
+            }
+            return alluserPermissions;
+        }
+
+        public bool removeAllUserPermissions(string email)
+        {
+            foreach (var permissions in context.permissions)
+            {
+                if (permissions.email == email)
+                {
+                    context.permissions.Remove(permissions);
+                }
+            }
+            return true;
+        }
+
+        //returns the number of admins in the database
+        public int AdminCount()
+        {
+            int count = 0;
+            using (var context = new Context())
+            {
+                foreach (var account in context.accounts)
+                {
+                    if (hasPermission(account.Email, "createAdmin") && account.isActive) count++;
+                }
+            }
+            return count;
         }
 
     }

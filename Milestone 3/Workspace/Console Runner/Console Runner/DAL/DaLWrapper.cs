@@ -17,7 +17,11 @@ namespace Console_Runner.DAL
         }
 
         /////////////////////////////////////////////////////////////Accounts////////////////////////////////////////////////////////////////////////////////////////////////
-
+        /// <summary>
+        /// Used to verifying if an account exists in the database with the provided email(primary key)
+        /// </summary>
+        /// <param name="email">account email, acts as the PK</param>
+        /// <returns>true if account exists, false otherwise</returns>
         public bool accountExists(string email)
         {
             
@@ -28,6 +32,11 @@ namespace Console_Runner.DAL
             return false;
         }
 
+        /// <summary>
+        /// Used for retrieving an account object from the db
+        /// </summary>
+        /// <param name="email">Account email, acting as PK</param>
+        /// <returns>account object with the provided email(PK) assuming it exists, will return null if the account does not exist</returns>
         public Account getAccount(string email)
         {
             try
@@ -48,6 +57,11 @@ namespace Console_Runner.DAL
           
 
         }
+        /// <summary>
+        /// adds an account object to the DB
+        /// </summary>
+        /// <param name="acc"> an account object that will be added to the DB</param>
+        /// <returns>True if the operation was successful, false if it failed</returns>
         public bool addAccount(Account acc)
         {
             try
@@ -62,6 +76,11 @@ namespace Console_Runner.DAL
             
             
         }
+        /// <summary>
+        /// Removes an account from the DB
+        /// </summary>
+        /// <param name="acc">the acc object being removed from the db</param>
+        /// <returns>true if operation was ssuccessfulm false otherwise</returns>
         public bool removeAccount(Account acc)
         {
             try
@@ -79,6 +98,11 @@ namespace Console_Runner.DAL
             
         }
 
+        /// <summary>
+        /// Updates an account object in the DB. Modify the account object, then pass it into this method. The data in the DB will change to the modified version
+        /// </summary>
+        /// <param name="acc">The updated version of the acc</param>
+        /// <returns>true if operation was successful, false otherwise</returns>
         public bool updateAccount(Account acc)
         {
             try
@@ -93,6 +117,13 @@ namespace Console_Runner.DAL
             
         }
         /////////////////////////////////////////////////////////////Permissions////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        /// <summary>
+        /// Checks if the specified user has a specified permission
+        /// </summary>
+        /// <param name="email">the specified users PK</param>
+        /// <param name="permission">the permission we are checking for</param>
+        /// <returns>true if the user has the specified permission false if they do not</returns>
         public bool hasPermission(string email, string permission)
         {
             return context.permissions.Find(email, permission) != null;
@@ -114,6 +145,13 @@ namespace Console_Runner.DAL
             }
             
         }
+
+        /// <summary>
+        /// Removess a speciofied permission from the specified user
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="permission"></param>
+        /// <returns>true if operation was successful false otherwise</returns>
         public bool removePermision(string email, string permission)
         {
             try
@@ -132,6 +170,11 @@ namespace Console_Runner.DAL
             return false;
         }
 
+        /// <summary>
+        /// Gets a list of all permissions associated with a users account
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public List<user_permissions>  getAllUserPermissions(string email)
         {
             List<user_permissions> alluserPermissions = new List<user_permissions>();
@@ -145,6 +188,11 @@ namespace Console_Runner.DAL
             return alluserPermissions;
         }
 
+        /// <summary>
+        /// removes all permissions associated with an account(mainly used for cascade deletion)
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public bool removeAllUserPermissions(string email)
         {
             foreach (var permissions in context.permissions)

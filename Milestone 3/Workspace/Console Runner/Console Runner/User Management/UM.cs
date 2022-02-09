@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using User;
+using LogAndArchive;
 
 
 namespace Console_Runner
@@ -15,12 +16,13 @@ namespace Console_Runner
     public class UM
     {
         private const string UM_CATEGORY = "Data Store";
-        private Logging logger;
+        private ILogger logger;
         private IDataAccess dal;
-        public UM(IDataAccess DAL)
+        public UM(IDataAccess DAL, ILogger logging)
         {
             Console.WriteLine("Creating UM object");
             this.dal = DAL;
+            this.logger = logging;
             logger = new Logging();
         }
 

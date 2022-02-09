@@ -7,7 +7,7 @@ using User;
 
 namespace Console_Runner.DAL
 {
-    internal class DummyDaL : IDataAccess
+    public class DummyDaL : IDataAccess
     {
 
         List<Account> accounts = new();

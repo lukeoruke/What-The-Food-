@@ -8,7 +8,7 @@ using User;
 
 namespace Console_Runner.DAL
 {
-    internal class DaLWrapper
+    public class DaLWrapper : IDataAccess
     {
         Context context = new();
         public DaLWrapper()

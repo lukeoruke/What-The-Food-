@@ -14,12 +14,13 @@ namespace Console_Runner
     //Current user management class
     public class UM
     {
-        const string UM_CATEGORY = "Data Store";
-        Logging logger;
-        DaLWrapper dal = new();
-        public UM()
+        private const string UM_CATEGORY = "Data Store";
+        private Logging logger;
+        private IDataAccess dal;
+        public UM(IDataAccess DAL)
         {
             Console.WriteLine("Creating UM object");
+            this.dal = DAL;
             logger = new Logging();
         }
 

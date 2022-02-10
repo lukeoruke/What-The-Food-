@@ -21,8 +21,8 @@ namespace Console_Runner.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Lname = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    accessLevel = table.Column<int>(type: "int", nullable: false),
                     isActive = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    enabled = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     Password = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },

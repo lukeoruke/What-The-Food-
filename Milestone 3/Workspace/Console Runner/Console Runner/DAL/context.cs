@@ -47,6 +47,7 @@ namespace Class1
                 table.email,
                 table.permission
             });
+
         }
         public DbSet<Account> accounts { get; set; }
 

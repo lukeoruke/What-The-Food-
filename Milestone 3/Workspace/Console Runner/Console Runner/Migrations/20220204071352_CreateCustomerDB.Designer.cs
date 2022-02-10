@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Console_Runner.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220128192537_CreateCustomerDB")]
+    [Migration("20220204071352_CreateCustomerDB")]
     partial class CreateCustomerDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -66,8 +66,8 @@ namespace Console_Runner.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("accessLevel")
-                        .HasColumnType("int");
+                    b.Property<bool>("enabled")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("isActive")
                         .HasColumnType("tinyint(1)");

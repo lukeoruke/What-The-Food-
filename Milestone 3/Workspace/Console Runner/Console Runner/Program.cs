@@ -6,8 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 using User;
 using Class1;
 using Console_Runner;
+using LogAndArchive;
+using Console_Runner.DAL;
 
-UM um = new UM();
+IDataAccess dal = new DummyDaL();
+ILogger log = new Logging();
+UM um = new UM(dal, log);
 Archiving archiver = new Archiving();
 archiver.archiveStartThread();
 //Role_User user = new Role_User();
@@ -23,8 +27,8 @@ archiver.archiveStartThread();
     admin.isActive = true;
     admin.Fname = "matt";
     admin.Lname = "q";
-    user_permissions permissions = new user_permissions();
-    permissions.defualtAdminPermissions(admin.Email);
+    user_permissions permissions = new user_permissions(dal);
+    permissions.defaultAdminPermissions(admin.Email);
     um.UserSignUp(admin);
 
     Environment.Exit(0);

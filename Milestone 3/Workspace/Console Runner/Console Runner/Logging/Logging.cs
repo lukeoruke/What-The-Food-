@@ -12,7 +12,7 @@ using ICSharpCode.SharpZipLib.Tar;
 using Logger;
 using Class1;
 
-namespace Console_Runner
+namespace LogAndArchive
 {
     public class Archiving
     {
@@ -213,7 +213,7 @@ namespace Console_Runner
         }
     }
 
-    public class Logging
+    public class Logging : ILogger
     {
         //logging objects
         public Logging()

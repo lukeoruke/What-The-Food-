@@ -64,8 +64,8 @@ namespace Console_Runner.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("accessLevel")
-                        .HasColumnType("int");
+                    b.Property<bool>("enabled")
+                        .HasColumnType("tinyint(1)");
 
                     b.Property<bool>("isActive")
                         .HasColumnType("tinyint(1)");

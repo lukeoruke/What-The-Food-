@@ -1,10 +1,12 @@
-﻿using Class1;
+﻿//using Class1;
+using Console_Runner.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using User;
+using LogAndArchive;
 
 
 namespace Console_Runner
@@ -13,88 +15,43 @@ namespace Console_Runner
     //Current user management class
     public class UM
     {
-        const string UM_CATEGORY = "Data Store";
-        Logging logger;
-
-        public UM()
+        private const string UM_CATEGORY = "Data Store";
+        private ILogger logger;
+        private IDataAccess dal;
+        public UM(IDataAccess DAL, ILogger logging)
         {
             Console.WriteLine("Creating UM object");
+            this.dal = DAL;
+            this.logger = logging;
             logger = new Logging();
         }
 
-        public bool hasPermission(string email, string permission)
-        {
-            user_permissions permissions = new user_permissions();
-            return permissions.hasPermission(email, permission);
-        }
 
         //User sign up will take in an account object and persist it to the db.
         public bool UserSignUp(Account acc)
         {
             try
             {
-                using (var context = new Context())
-                {
-                    if (context.accounts.Find(acc.Email) != null)
-                    {
-                        Console.WriteLine("email already in use");
-                        return false;
-                    }
-                    user_permissions newRule = new user_permissions();
-                    newRule.defualtUserPermissions(acc.Email);
-                    acc.isActive = true;
-                    context.accounts.Add(acc);
-                    
 
-                    context.SaveChanges();
-                    logger.logAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
-                }
-                Console.WriteLine("UM operation was successful");
-                return true;
+                
+            if (dal.accountExists(acc.Email))
+            {
+                Console.WriteLine("email already in use");
+                return false;
+            }
+            user_permissions newRule = new user_permissions(dal);
+            newRule.defaultUserPermissions(acc.Email);
+            acc.isActive = false;
+            dal.addAccount(acc);
+            logger.logAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
+            Console.WriteLine("UM operation was successful");
+            return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                logger.logAccountCreation(UM_CATEGORY, "test page", false, ex.Message, acc.Email);
-                return false;
-            }
-
-        }
-        /*
-		 * takes params to create a new account object. If successful persists account to db
-		 */
-        public bool UserSignUp(string email, string first, string last, string pass)
-        {
-            try
-            {
-
-                using (var context = new Context())
-                {
-                    if (context.accounts.Find(email) != null)
-                    {
-                        Console.WriteLine("email already in use");
-                        return false;
-                    }
-                    var acc = new Account()
-                    {
-                        Email = email,
-                        Fname = first,
-                        Lname = last,
-                        Password = pass,
-                        isActive = true,
-                        //accessLevel = 1
-                    };
-                    context.accounts.Add(acc);
-                    context.SaveChanges();
-                    logger.logAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
-                }
-                Console.WriteLine("UM operation was successful");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                logger.logAccountCreation(UM_CATEGORY, "test page", false, ex.Message, "");
-                return false;
+            Console.WriteLine(ex.Message);
+            logger.logAccountCreation(UM_CATEGORY, "test page", false, ex.Message, acc.Email);
+            return false;
             }
 
         }
@@ -103,52 +60,39 @@ namespace Console_Runner
 		 * Delets a user corosponding to the email provided as arg
 		 * Takes in currentUser to validate user calling method has permission to do so
 		 */
-        public bool UserDelete(Account currentUser, string targetPK)
+        public bool UserDelete(Account currentUser, string targetEmail)
         {
-            string email = targetPK;
-            if (!hasPermission(email, "deleteAccount"))
+
+            if (!dal.hasPermission(currentUser.Email, "deleteAccount"))
             {
                 logger.logAccountDeletion(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email);
                 return false;
             }
             try
             {
-                using (var context = new Context())
+                if (!dal.accountExists(targetEmail))
                 {
-                    Account acc = context.accounts.Find(targetPK);
-                    if (acc == null)
-                    {
-                        return false;
-                    }
-                    if (hasPermission(targetPK,"createAdmin") && (AdminCount() < 2))
-                    {
-                        Console.WriteLine("Deleting this account would result in there being no admins.");
-                        return false;
-                    }
-                    
-                    user_permissions permissions = new();
-                    permissions.email = acc.Email;
-                    permissions.permission = "scanFood";
-                    context.Remove(permissions);
-
-                    foreach (var permission in context.permissions)
-                    {
-                        if(permission.email == email)
-                        {
-                            context.Remove(permission);
-                        }
-                    }
-                    context.Remove(acc);
-                    context.SaveChanges();
-                    logger.logAccountDeletion(UM_CATEGORY, "test page", true, "", email);
-                
+                    return false;
                 }
-                Console.WriteLine("UM operation was successful");
+
+                Account acc = dal.getAccount(targetEmail);
+                
+                if (dal.hasPermission(targetEmail,"createAdmin") && (dal.AdminCount() < 2))
+                {
+                    Console.WriteLine("Deleting this account would result in there being no admins.");
+                    return false;
+                }
+
+                dal.removeAllUserPermissions(acc.Email);
+                dal.removeAccount(acc);
+                logger.logAccountDeletion(UM_CATEGORY, "test page", true, "", acc.Email);
+                
+                
                 return true;
             }
             catch (Exception ex)
             {
-                logger.logAccountDeletion(UM_CATEGORY, "test page", false, ex.Message, email);
+                logger.logAccountDeletion(UM_CATEGORY, "test page", false, ex.Message, targetEmail);
                 return false;
             }
         }
@@ -158,13 +102,13 @@ namespace Console_Runner
         {
             try
             {
-                using (var context = new Context())
+
+                if(dal.accountExists(targetPK))
                 {
-                    if(context.accounts.Find(targetPK) != null)
-                    {
-                        Account acc = context.accounts.Find(targetPK);
-                        return acc;
-                    }
+                    return dal.getAccount(targetPK);
+                }
+                else
+                {
                     return null;
                 }
             }
@@ -180,10 +124,10 @@ namespace Console_Runner
         {
             bool fNameChanged = false, lNameChanged = false, passwordChanged = false;
             string fTemp = "", lTemp = "", pTemp = "";
-            user_permissions permissions = new user_permissions();
+            user_permissions permissions = new user_permissions(dal);
             if (currentUser.Email != targetPK)
             {
-                if (!permissions.hasPermission(currentUser.Email,"editOtherAccount") || !currentUser.isActive)
+                if (!dal.hasPermission(currentUser.Email,"editOtherAccount") || !currentUser.isActive)
                 {
                     logger.logGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
                     return false;
@@ -191,44 +135,42 @@ namespace Console_Runner
             }
             try
             {
-                using (var context = new Context())
+
+                Account acc = dal.getAccount(targetPK);
+                if (acc == null)
                 {
-                    Account acc = context.accounts.Find(targetPK);
-                    if (acc == null)
-                    {
-                        Console.WriteLine("NULL ACCOUNT FOUND");
-                        return false;
-                    }
-                    if (nFname != null)
-                    {
-                        fTemp = acc.Fname;
-                        acc.Fname = nFname;
-                        fNameChanged = true;
-                    }
-                    if (nLname != null)
-                    {
-                        lTemp = acc.Lname;
-                        acc.Lname = nLname;
-                        lNameChanged = true;
-                    }
-                    if (npassword != null)
-                    {
-                        pTemp = acc.Password;
-                        acc.Password = npassword;
-                        passwordChanged = true;
-                    }
-
-                    context.accounts.Update(acc);
-                    context.SaveChanges();
-
-                    if (fNameChanged)
-                        logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, fTemp, nFname);
-                    if (lNameChanged)
-                        logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, lTemp, nLname);
-                    if (passwordChanged)
-                        logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, pTemp, npassword);
-
+                    Console.WriteLine("NULL ACCOUNT FOUND");
+                    return false;
                 }
+                if (nFname != "")
+                {
+                    fTemp = acc.Fname;
+                    acc.Fname = nFname;
+                    fNameChanged = true;
+                }
+                if (nLname != "")
+                {
+                    lTemp = acc.Lname;
+                    acc.Lname = nLname;
+                    lNameChanged = true;
+                }
+                if (npassword != "")
+                {
+                    pTemp = acc.Password;
+                    acc.Password = npassword;
+                    passwordChanged = true;
+                }
+
+                dal.updateAccount(acc);
+
+                if (fNameChanged)
+                    logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, fTemp, nFname);
+                if (lNameChanged)
+                    logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, lTemp, nLname);
+                if (passwordChanged)
+                    logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, pTemp, npassword);
+
+                acc.isActive = false;
                 Console.WriteLine("UM operation was successful");
                 return true;
             }
@@ -252,33 +194,14 @@ namespace Console_Runner
             if (AuthenticateUserPass(user, userPass))
             {
                 logger.logLogin(UM_CATEGORY, "test page", true, "", user);
-                return getUserAcc(user);
+                Account acc = getUserAcc(user);
+                acc.isActive = true;
+                return acc;
             }
             else
             {
                 logger.logLogin(UM_CATEGORY, "test page", false, "Invalid Password", user);
                 return null;
-            }
-        }
-        //retrieves and prints a list of all users in the databse to the console.
-        public bool GetAllUsers()
-        {
-            try
-            {
-                using (var context = new Context())
-                {
-                    foreach (var account in context.accounts)
-                    {
-                        Console.WriteLine(account.ToString());
-                    }
-                }
-                Console.WriteLine("UM operation was successful");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                logger.logGeneric(UM_CATEGORY, "test page", false, ex.Message, "No user", "Could not retrieve all users");
-                return false;
             }
         }
 
@@ -288,32 +211,30 @@ namespace Console_Runner
 		 */
         public bool DisableAccount(Account currentUser, string targetPK)
         {
-            if (!hasPermission(currentUser.Email,"disableAccount") || !currentUser.isActive)
+            if (!dal.hasPermission(currentUser.Email,"disableAccount") || !currentUser.isActive)
             {
                 logger.logAccountDeactivation(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
                 return false;
             }
             try
             {
-                using (var context = new Context())
+                if (!dal.accountExists(targetPK))
                 {
-                    Account acc = context.accounts.Find(targetPK);
-                    if (acc == null)
-                    {
-                        Console.WriteLine("No such account exists");
-                        return false;
-                    }
-                    if (acc.isAdmin() && (AdminCount() < 2))
-                    {
-                        Console.WriteLine("Disabling this account would result in there being no admins.");
-                        return false;
-                    }
-                    acc.isActive = false;
-                    context.accounts.Update(acc);
-                    context.SaveChanges();
-                    logger.logAccountDeactivation(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
-
+                    return false;
                 }
+                Account acc = dal.getAccount(targetPK);
+ 
+                if (dal.isAdmin(targetPK) && (dal.AdminCount() < 2))
+                {
+                    Console.WriteLine("Disabling this account would result in there being no admins.");
+                    return false;
+                }
+                acc.enabled = false;
+                acc.isActive = false;
+                dal.updateAccount(acc);
+                logger.logAccountDeactivation(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
+
+                
                 Console.WriteLine("UM operation was successful");
                 return true;
             }
@@ -330,28 +251,26 @@ namespace Console_Runner
 		 */
         public bool EnableAccount(Account currentUser, string targetPK)
         {
-            user_permissions permissions = new user_permissions();
-            if (!permissions.hasPermission(currentUser.Email, "enableAccount") || !currentUser.isActive)
+            user_permissions permissions = new user_permissions(dal);
+            if (!dal.hasPermission(currentUser.Email, "enableAccount") || !currentUser.isActive)
             {
                 logger.logAccountEnabling(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
                 return false;
             }
             try
             {
-                using (var context = new Context())
+                if (!dal.accountExists(targetPK))
                 {
-                    Account acc = context.accounts.Find(targetPK);
-                    if (acc == null)
-                    {
-                        Console.WriteLine("No such account exists");
-                        return false;
-                    }
-                    acc.isActive = true;
-                    context.accounts.Update(acc);
-                    context.SaveChanges(true);
-                    logger.logAccountEnabling(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
 
+                    return false;
                 }
+                Account acc = dal.getAccount(targetPK);
+
+                acc.enabled=true;
+                dal.updateAccount(acc);
+                logger.logAccountEnabling(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
+
+
                 Console.WriteLine("UM operation was successful");
                 return true;
             }
@@ -373,24 +292,22 @@ namespace Console_Runner
             
             try
             {
-                if (hasPermission(currentUser.Email,"createAdmin") && currentUser.isActive)
+                if (dal.hasPermission(currentUser.Email,"createAdmin") && currentUser.isActive)
                 {
-                    using (var context = new Context())
+                    if (!dal.accountExists(targetPK))
                     {
-                        Account acc = context.accounts.Find(targetPK);
-                        if (acc == null)
-                        {
-                            Console.WriteLine("No such account exists");
-                            return false;
-                        }
-                        user_permissions permissions = new();
-                        permissions.defualtAdminPermissions(targetPK);
-                        context.Update(acc);
-                        context.SaveChanges();
-                        logger.logAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
+                        Console.WriteLine("No such account exists");
+                        return false;
                     }
-                    Console.WriteLine("UM operation was successful");
-                    return true;
+                    Account acc = dal.getAccount(targetPK);
+                        
+                    user_permissions permissions = new(dal);
+                    permissions.defaultAdminPermissions(targetPK);
+                    dal.updateAccount(acc);
+                    logger.logAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
+                    
+                Console.WriteLine("UM operation was successful");
+                return true;
                 }
                 logger.logAccountPromote(UM_CATEGORY, "Console", false, "User is not admin and/or target account is not active", currentUser.Email, targetPK);
                 return false;
@@ -403,18 +320,6 @@ namespace Console_Runner
             }
         }
 
-        //returns the number of admins in the database
-        public int AdminCount()
-        {
-            int count = 0;
-            using (var context = new Context())
-            {
-                foreach (var account in context.accounts)
-                {
-                    if (hasPermission(account.Email, "createAdmin") && account.isActive) count++;
-                }
-            }
-            return count;
-        }
+
     }
 }

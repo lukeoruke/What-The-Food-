@@ -1,4 +1,5 @@
 ﻿using Console_Runner;
+using Console_Runner.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -27,10 +28,13 @@ namespace User
 
         public bool isActive { get; set; }
 
+        public bool enabled { get; set; }
+
         public string Password { get; set; }
 
         public Account()
         {
+            enabled = true;
         }
         public override string  ToString()
         {
@@ -43,16 +47,6 @@ namespace User
             return this.Email + " " + this.Fname + " " + this.Lname + " " + stars;
         }
 
-        public bool isAdmin()
-        {
-            user_permissions permissions = new();
-            return permissions.hasPermission(Email, "createAdmin");
-
-        }
-        public bool isUser()
-        {
-            return !isAdmin();
-        }
 
     }
     

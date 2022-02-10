@@ -14,10 +14,12 @@ namespace UnitTest
         [Fact]
         public void CreateUserSuccess()
         {
+
+            //Arange
             IDataAccess dal = new DummyDaL();
             ILogger log = new Logging();
             UM um = new UM(dal, log);
-            //Arange
+
             string tester = "unitTester";
             Account acc = new Account();
             acc.Email = tester;
@@ -27,7 +29,7 @@ namespace UnitTest
             //Act
             um.UserSignUp(acc);
             //Assert
-            Assert.True(context.accounts.Find(acc.Email) != null);
+            Assert.True(dal.accountExists(acc.Email));
                 
         }
 
@@ -36,65 +38,61 @@ namespace UnitTest
         public void deleteUserSuccess()
         {
             //Arange
-            string tester = "UnitTestUser";
-            Account acc = new Account();
-            acc.Email = tester;
-            acc.Password = "password1";
-            acc.Fname = "fname";
-            acc.Lname = "lname";
+            IDataAccess dal = new DummyDaL();
+            ILogger log = new Logging();
+            UM um = new UM(dal, log);
+
+            Account admin = new Account();
+            admin.Email = "deleteUserSuccessAdminEmail";
+            admin.Password = "password1";
+            admin.Fname = "fname";
+            admin.Lname = "lname";
             user_permissions permissions = new();
-            permissions.defualtAdminPermissions(acc.Email);
-            um.UserSignUp(acc);
+            permissions.defualtAdminPermissions(admin.Email);
+            dal.addAccount(admin);
+
+            Account acc = new Account();
+            acc.Email = "deleteUserSuccessEmail";
+            acc.Password = "t";
+            dal.addAccount(acc);
             //Act
-            um.UserDelete(acc, tester);
+            um.UserDelete(admin, acc.Email);
             //Assert
-            Assert.True(context.accounts.Find("UnitTestUser") == null);
+            Assert.True(dal.accountExists(acc.Email) == false);
         }
         [Fact]
         public void updateSuccess()
         {
             //Arange
-            Account admin = new();
-            admin.Email = "admin email";
-            admin.Password = "admin pass";
-            admin.Fname = "Test";
-            admin.Lname = "Test";
+            IDataAccess dal = new DummyDaL();
+            ILogger log = new Logging();
+            UM um = new UM(dal, log);
+
+            Account admin = new Account();
+            admin.Email = "updateUserSuccessAdminEmail";
+            admin.Password = "password1";
+            admin.Fname = "fname";
+            admin.Lname = "lname";
             user_permissions permissions = new();
             permissions.defualtAdminPermissions(admin.Email);
             um.UserSignUp(admin);
-                
-            string tester = "newdude";
+
+
             Account acc = new Account();
-            acc.Email = tester;
-            acc.Password = "password1";
-            acc.Fname = "fname";
-            acc.Lname = "lname";
+            acc.Email = "updateUserSuccessEmail";
+            acc.Password = "t";
             um.UserSignUp(acc);
+
             string nName = "new name";
             string nlName = "new last name";
             string nPassword = "NewPassword";
+
             //act
             um.UserUpdateData(admin, acc.Email, nName, nlName, nPassword);
-            acc = context.accounts.Find(acc.Email);
+            acc = dal.getAccount(acc.Email);
             //Assert
             Assert.True(acc.Fname == nName && acc.Lname == nlName && acc.Password == nPassword);
         }
 
-        public Account makeAdmin()
-        {
-            if (context.accounts.Find("Admin") != null)
-            {
-                context.accounts.Remove(context.accounts.Find("Admin"));
-            }
-            Account currentUser = new Account();
-            currentUser.Email = "Admin";
-            currentUser.Password = "pass";
-            currentUser.Fname = "fname";
-            currentUser.Lname = "lname";
-            um.UserSignUp(currentUser);
-            return currentUser;
-        }
-        
-
-}
+    }
 }

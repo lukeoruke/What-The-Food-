@@ -6,8 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 using User;
 using Class1;
 using Console_Runner;
+using LogAndArchive;
+using Console_Runner.DAL;
 
-UM um = new UM();
+IDataAccess dal = new DummyDaL();
+ILogger log = new Logging();
+UM um = new UM(dal, log);
 Archiving archiver = new Archiving();
 archiver.archiveStartThread();
 //Role_User user = new Role_User();

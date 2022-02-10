@@ -88,8 +88,7 @@ namespace Console_Runner
                 logger.logAccountDeletion(UM_CATEGORY, "test page", true, "", acc.Email);
                 
                 
-            Console.WriteLine("UM operation was successful");
-            return true;
+                return true;
             }
             catch (Exception ex)
             {

@@ -21,20 +21,20 @@ namespace Console_Runner.DAL
                     return true;
                 }
             }
-            throw new NotImplementedException();
+            return false;
         }
 
         public bool addAccount(Account acc)
         {
             accounts.Add(acc);
-            throw new NotImplementedException();
+            return true;
         }
 
         public bool addPermission(string email, string permission)
         {
             user_permissions newPermission = new user_permissions(email, permission);
             permissions.Add(newPermission);
-            throw new NotImplementedException();
+            return true;
         }
 
         public int AdminCount()
@@ -48,7 +48,6 @@ namespace Console_Runner.DAL
                 }
             }
             return count;
-            throw new NotImplementedException();
         }
 
         public Account getAccount(string email)
@@ -60,7 +59,7 @@ namespace Console_Runner.DAL
                     return accounts[i];
                 }
             }
-            throw new NotImplementedException();
+            return null;
         }
 
         public List<user_permissions> getAllUserPermissions(string email)
@@ -74,7 +73,6 @@ namespace Console_Runner.DAL
                 }
             }
             return usersPerms;
-            throw new NotImplementedException();
         }
 
         public bool hasPermission(string email, string permission)
@@ -87,13 +85,19 @@ namespace Console_Runner.DAL
                 }
             }
             return false;
-            throw new NotImplementedException();
         }
 
         public bool removeAccount(Account acc)
         {
-            accounts.Remove(acc);
-            throw new NotImplementedException();
+            for(int i = 0; i < accounts.Count;i++)
+            {
+                if(accounts[i].Email == acc.Email)
+                {
+                    accounts.RemoveAt(i);
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool removeAllUserPermissions(string email)
@@ -103,16 +107,24 @@ namespace Console_Runner.DAL
                 if (permissions[i].email == email)
                 {
                     permissions.RemoveAt(i);
+                    return true;
                 }
             }
-            throw new NotImplementedException();
+            return false ;
         }
 
         public bool removePermision(string email, string permission)
         {
-            user_permissions perm = new user_permissions(email,permission);
-            permissions.Remove(perm);
-            throw new NotImplementedException();
+            try
+            {
+                user_permissions perm = new user_permissions(email, permission);
+                permissions.Remove(perm);
+                return true;
+            }catch (Exception e)
+            {
+                return false ;
+            }
+            
         }
 
         public bool updateAccount(Account acc)
@@ -125,7 +137,7 @@ namespace Console_Runner.DAL
                     return true;
                 }
             }
-            throw new NotImplementedException();
+            return false;
         }
     }
 }

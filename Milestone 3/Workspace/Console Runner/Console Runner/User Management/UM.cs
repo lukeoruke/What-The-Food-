@@ -41,7 +41,7 @@ namespace Console_Runner
             }
             user_permissions newRule = new user_permissions(dal);
             newRule.defaultUserPermissions(acc.Email);
-            acc.isActive = true;
+            acc.isActive = false;
             dal.addAccount(acc);
             logger.logAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
             Console.WriteLine("UM operation was successful");
@@ -170,7 +170,7 @@ namespace Console_Runner
                 if (passwordChanged)
                     logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, pTemp, npassword);
 
-                
+                acc.isActive = false;
                 Console.WriteLine("UM operation was successful");
                 return true;
             }
@@ -194,7 +194,9 @@ namespace Console_Runner
             if (AuthenticateUserPass(user, userPass))
             {
                 logger.logLogin(UM_CATEGORY, "test page", true, "", user);
-                return getUserAcc(user);
+                Account acc = getUserAcc(user);
+                acc.isActive = true;
+                return acc;
             }
             else
             {

@@ -47,6 +47,7 @@ namespace UnitTest
             admin.Password = "password1";
             admin.Fname = "fname";
             admin.Lname = "lname";
+            admin.isActive = true;
             user_permissions permissions = new(dal);
             permissions.defaultAdminPermissions(admin.Email);
             um.UserSignUp(admin);
@@ -78,6 +79,7 @@ namespace UnitTest
             user_permissions permissions = new(dal);
             permissions.defaultAdminPermissions(admin.Email);
             um.UserSignUp(admin);
+            admin.isActive = true;
 
 
             Account acc = new Account();
@@ -94,6 +96,149 @@ namespace UnitTest
             acc = dal.getAccount(acc.Email);
             //Assert
             Assert.True(acc.Fname == nName && acc.Lname == nlName && acc.Password == nPassword);
+            Assert.True(acc.isActive == false);
+        }
+        [Fact]
+        public void disableSuccess()
+        {
+            //arange 
+            IDataAccess dal = new DummyDaL();
+            ILogger log = new Logging();
+            UM um = new UM(dal, log);
+
+            Account admin = new Account();
+            admin.Email = "disableSuccessAdminEmail";
+            admin.Password = "password1";
+            admin.Fname = "fname";
+            admin.Lname = "lname";
+            user_permissions permissions = new(dal);
+            permissions.defaultAdminPermissions(admin.Email);
+            um.UserSignUp(admin);
+            admin.isActive = true;
+
+            Account acc = new Account();
+            acc.Email = "DisableSuccessUserEmail";
+            acc.Password = "t";
+            acc.enabled = true;
+            um.UserSignUp(acc);
+
+            //act
+            um.DisableAccount(admin, acc.Email);
+            //Assert
+            Assert.True(dal.getAccount(acc.Email).enabled == false);
+            Assert.True(acc.isActive == false);
+        }
+        [Fact]
+        public void enableSuccess()
+        {
+            //arange 
+            IDataAccess dal = new DummyDaL();
+            ILogger log = new Logging();
+            UM um = new UM(dal, log);
+
+            Account admin = new Account();
+            admin.Email = "enableSuccessAdminEmail";
+            admin.Password = "password1";
+            admin.Fname = "fname";
+            admin.Lname = "lname";
+            user_permissions permissions = new(dal);
+            permissions.defaultAdminPermissions(admin.Email);
+            um.UserSignUp(admin);
+            admin.isActive = true;
+
+            Account acc = new Account();
+            acc.Email = "enableeSuccessUserEmail";
+            acc.Password = "t";
+            acc.enabled = false;
+            um.UserSignUp(acc);
+
+            //act
+            um.EnableAccount(admin, acc.Email);
+            //Assert
+            Assert.True(dal.getAccount(acc.Email).enabled);
+        }
+        [Fact]
+        public void getUserSuccess()
+        {
+            //arange 
+            IDataAccess dal = new DummyDaL();
+            ILogger log = new Logging();
+            UM um = new UM(dal, log);
+
+            Account acc = new Account();
+            acc.Email = "getUserSuccess";
+            acc.Password = "t";
+            acc.enabled = false;
+            um.UserSignUp(acc);
+
+            //act
+            Account temp = um.getUserAcc(acc.Email);
+            //Assert
+            Assert.True(temp == acc);
+        }
+        [Fact]
+        public void authenticatePasswordSuccess()
+        {
+            //arange 
+            IDataAccess dal = new DummyDaL();
+            ILogger log = new Logging();
+            UM um = new UM(dal, log);
+
+            Account acc = new Account();
+            acc.Email = "authenticatePasswordSuccess";
+            acc.Password = "password!";
+            um.UserSignUp(acc);
+
+            //Assert
+            Assert.True(um.AuthenticateUserPass(acc.Email, acc.Password));
+            Assert.False(um.AuthenticateUserPass(acc.Email, "t"));
+        }
+        [Fact]
+        public void signInSuccess()
+        {
+            //arange 
+            IDataAccess dal = new DummyDaL();
+            ILogger log = new Logging();
+            UM um = new UM(dal, log);
+
+            Account acc = new Account();
+            acc.Email = "signInSuccess";
+            acc.Password = "pass";
+            um.UserSignUp(acc);
+            
+            //act
+            um.signIn(acc.Email,acc.Password);
+            //Assert
+            Assert.True(acc.isActive);
+        }
+        [Fact]
+        public void promoteToAdminSuccess()
+        {
+            //arange 
+            IDataAccess dal = new DummyDaL();
+            ILogger log = new Logging();
+            UM um = new UM(dal, log);
+
+            Account admin = new Account();
+            admin.Email = "PromoteToAdminSuccessAdmin";
+            admin.Password = "password1";
+            admin.Fname = "fname";
+            admin.Lname = "lname";
+            user_permissions permissions = new(dal);
+            permissions.defaultAdminPermissions(admin.Email);
+            um.UserSignUp(admin);
+            admin.isActive = true;
+
+            Account acc = new Account();
+            acc.Email = "PromoteToAdminSuccess";
+            acc.Password = "pass";
+            um.UserSignUp(acc);
+
+            //act
+            um.promoteToAdmin(admin, acc.Email);
+
+            //Assert
+            Assert.True(dal.hasPermission(acc.Email, "createAdmin"));
         }
 
     }

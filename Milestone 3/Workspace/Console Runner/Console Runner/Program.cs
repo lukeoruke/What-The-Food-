@@ -28,7 +28,7 @@ archiver.archiveStartThread();
     admin.Fname = "matt";
     admin.Lname = "q";
     user_permissions permissions = new user_permissions(dal);
-    permissions.defualtAdminPermissions(admin.Email);
+    permissions.defaultAdminPermissions(admin.Email);
     um.UserSignUp(admin);
 
     Environment.Exit(0);

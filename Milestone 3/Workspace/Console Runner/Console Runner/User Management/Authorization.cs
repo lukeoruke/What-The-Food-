@@ -38,7 +38,7 @@ namespace Console_Runner
         /* contains a package of the defualt permissions that will be assigned to all new user accounts.
         * Email: the PK of the account we are giving these permissions to
         */
-        public void defualtUserPermissions(string email)
+        public void defaultUserPermissions(string email)
         {
             
             dal.addPermission(email, "scanFood");
@@ -53,7 +53,7 @@ namespace Console_Runner
         /* contains a package of the defualt permissions that will be assigned to all new admin accounts.
          * Email: the PK of the account we are giving these permissions to
          */
-        public void defualtAdminPermissions(string email)
+        public void defaultAdminPermissions(string email)
         {
 
             //defualtUserPermissions(email);

@@ -48,7 +48,7 @@ namespace UnitTest
             admin.Fname = "fname";
             admin.Lname = "lname";
             user_permissions permissions = new(dal);
-            permissions.defualtAdminPermissions(admin.Email);
+            permissions.defaultAdminPermissions(admin.Email);
             um.UserSignUp(admin);
 
             Account acc = new Account();
@@ -76,7 +76,7 @@ namespace UnitTest
             admin.Fname = "fname";
             admin.Lname = "lname";
             user_permissions permissions = new(dal);
-            permissions.defualtAdminPermissions(admin.Email);
+            permissions.defaultAdminPermissions(admin.Email);
             um.UserSignUp(admin);
 
 

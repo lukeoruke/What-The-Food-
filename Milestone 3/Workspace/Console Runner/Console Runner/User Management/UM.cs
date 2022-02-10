@@ -40,7 +40,7 @@ namespace Console_Runner
                 return false;
             }
             user_permissions newRule = new user_permissions(dal);
-            newRule.defualtUserPermissions(acc.Email);
+            newRule.defaultUserPermissions(acc.Email);
             acc.isActive = true;
             dal.addAccount(acc);
             logger.logAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
@@ -300,7 +300,7 @@ namespace Console_Runner
                     Account acc = dal.getAccount(targetPK);
                         
                     user_permissions permissions = new(dal);
-                    permissions.defualtAdminPermissions(targetPK);
+                    permissions.defaultAdminPermissions(targetPK);
                     dal.updateAccount(acc);
                     logger.logAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
                     

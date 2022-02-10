@@ -27,12 +27,13 @@ namespace Console_Runner.DAL
         public bool addAccount(Account acc)
         {
             accounts.Add(acc);
+
             return true;
         }
 
         public bool addPermission(string email, string permission)
         {
-            user_permissions newPermission = new user_permissions(email, permission);
+            user_permissions newPermission = new user_permissions(email, permission,this);
             permissions.Add(newPermission);
             return true;
         }
@@ -87,6 +88,18 @@ namespace Console_Runner.DAL
             return false;
         }
 
+        public bool isAdmin(string email)
+        {
+            for (int i = 0; i < permissions.Count; i++)
+            {
+                if (permissions[i].email == email && permissions[i].permission == "createAdmin")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public bool removeAccount(Account acc)
         {
             for(int i = 0; i < accounts.Count;i++)
@@ -117,7 +130,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                user_permissions perm = new user_permissions(email, permission);
+                user_permissions perm = new user_permissions(email, permission,this);
                 permissions.Remove(perm);
                 return true;
             }catch (Exception e)

@@ -47,14 +47,16 @@ namespace UnitTest
             admin.Password = "password1";
             admin.Fname = "fname";
             admin.Lname = "lname";
-            user_permissions permissions = new();
+            user_permissions permissions = new(dal);
             permissions.defualtAdminPermissions(admin.Email);
-            dal.addAccount(admin);
+            um.UserSignUp(admin);
 
             Account acc = new Account();
             acc.Email = "deleteUserSuccessEmail";
             acc.Password = "t";
-            dal.addAccount(acc);
+            acc.Fname = "fname";
+            acc.Lname = "lname";
+            um.UserSignUp(acc);
             //Act
             um.UserDelete(admin, acc.Email);
             //Assert
@@ -73,7 +75,7 @@ namespace UnitTest
             admin.Password = "password1";
             admin.Fname = "fname";
             admin.Lname = "lname";
-            user_permissions permissions = new();
+            user_permissions permissions = new(dal);
             permissions.defualtAdminPermissions(admin.Email);
             um.UserSignUp(admin);
 

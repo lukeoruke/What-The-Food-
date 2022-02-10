@@ -15,16 +15,17 @@ namespace Console_Runner
     {
         public string email{ get; set; }
         public string permission { get; set; }
-
-        DaLWrapper dal = new();
-        public user_permissions()
+        private IDataAccess dal;
+        public user_permissions(IDataAccess dal)
         {
+            this.dal = dal;
             email = "";
             permission = "";
 
         }
-        public user_permissions(string email, string permission)
+        public user_permissions(string email, string permission, IDataAccess dal)
         {
+            this.dal = dal;
             this.email = email;
             this.permission = permission;
 

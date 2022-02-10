@@ -132,7 +132,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                user_permissions newPermission = new user_permissions(email, permission);
+                user_permissions newPermission = new user_permissions(email, permission, this);
                 if (context.permissions.Find(email, permission) == null)
                 {
                     context.permissions.Add(newPermission);
@@ -156,7 +156,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                user_permissions newPermission = new user_permissions(email, permission);
+                user_permissions newPermission = new user_permissions(email, permission, this);
                 if(hasPermission(email, permission))
                 {
                     context.permissions.Remove(newPermission);
@@ -219,5 +219,19 @@ namespace Console_Runner.DAL
             return count;
         }
 
+        public bool isAdmin(string email)
+        {
+            using (var context = new Context())
+            {
+                foreach (var account in context.accounts)
+                {
+                    if (hasPermission(account.Email, "createAdmin") && account.isActive)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

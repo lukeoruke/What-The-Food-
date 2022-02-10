@@ -39,7 +39,7 @@ namespace Console_Runner
                 Console.WriteLine("email already in use");
                 return false;
             }
-            user_permissions newRule = new user_permissions();
+            user_permissions newRule = new user_permissions(dal);
             newRule.defualtUserPermissions(acc.Email);
             acc.isActive = true;
             dal.addAccount(acc);
@@ -124,7 +124,7 @@ namespace Console_Runner
         {
             bool fNameChanged = false, lNameChanged = false, passwordChanged = false;
             string fTemp = "", lTemp = "", pTemp = "";
-            user_permissions permissions = new user_permissions();
+            user_permissions permissions = new user_permissions(dal);
             if (currentUser.Email != targetPK)
             {
                 if (!dal.hasPermission(currentUser.Email,"editOtherAccount") || !currentUser.isActive)
@@ -222,7 +222,7 @@ namespace Console_Runner
                 }
                 Account acc = dal.getAccount(targetPK);
  
-                if (acc.isAdmin() && (dal.AdminCount() < 2))
+                if (dal.isAdmin(targetPK) && (dal.AdminCount() < 2))
                 {
                     Console.WriteLine("Disabling this account would result in there being no admins.");
                     return false;
@@ -249,7 +249,7 @@ namespace Console_Runner
 		 */
         public bool EnableAccount(Account currentUser, string targetPK)
         {
-            user_permissions permissions = new user_permissions();
+            user_permissions permissions = new user_permissions(dal);
             if (!dal.hasPermission(currentUser.Email, "enableAccount") || !currentUser.isActive)
             {
                 logger.logAccountEnabling(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
@@ -299,7 +299,7 @@ namespace Console_Runner
                     }
                     Account acc = dal.getAccount(targetPK);
                         
-                    user_permissions permissions = new();
+                    user_permissions permissions = new(dal);
                     permissions.defualtAdminPermissions(targetPK);
                     dal.updateAccount(acc);
                     logger.logAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);

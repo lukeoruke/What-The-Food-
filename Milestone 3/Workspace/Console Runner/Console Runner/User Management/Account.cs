@@ -25,7 +25,6 @@ namespace User
         //public int accessLevel { get; set; }
         //Password getter and setter
 
-        DaLWrapper dal = new();
 
         public bool isActive { get; set; }
 
@@ -48,16 +47,6 @@ namespace User
             return this.Email + " " + this.Fname + " " + this.Lname + " " + stars;
         }
 
-        public bool isAdmin()
-        {
-            user_permissions permissions = new();
-            return dal.hasPermission(Email, "createAdmin");
-
-        }
-        public bool isUser()
-        {
-            return !isAdmin();
-        }
 
     }
     

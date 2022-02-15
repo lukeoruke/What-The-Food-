@@ -2,12 +2,14 @@
 
 namespace Console_Runner.AMR
 {
+	// internal enum - make private, protected, or public???
 	public enum ActivityLevel
     {
 		light,
 		moderate,
 		heavy
     }
+
 	public class AMR
 	{
 		public bool IsMale { get; set; }
@@ -60,8 +62,9 @@ namespace Console_Runner.AMR
 
 		// methods
 		public double CalculateAMR()
-        {
+		{
 			if (IsCustomAMR) { return CustomAMR; }
+		}
 	}
 }
 

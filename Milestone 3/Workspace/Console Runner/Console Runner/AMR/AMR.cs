@@ -17,10 +17,7 @@ namespace Console_Runner.AMR
 			get; 
 			set
             {
-				if (value > 0)
-                {
-					Weight = value;
-                }
+				if (value > 0) { Weight = value; }
             }; 
 		}
 		public float Height 
@@ -28,10 +25,7 @@ namespace Console_Runner.AMR
 			get;
             set
             {
-				if (value > 0f)
-                {
-					Weight = value;
-                }
+				if (value > 0f) { Weight = value; }
             }; 
 		}
 		public int Age 
@@ -39,10 +33,7 @@ namespace Console_Runner.AMR
 			get; 
 			set
             {
-				if(value > 0)
-                {
-					Age = value;
-                }
+				if(value > 0) { Age = value; }
             }; 
 		}
 		public ActivityLevel Activity { get; set; }
@@ -52,27 +43,25 @@ namespace Console_Runner.AMR
 		{
             get
             {
-                if (IsCustomAMR)
-                {
-					return CustomAMR;
-                }
-				else
-                {
-					return -1;
-                }
+                if (IsCustomAMR) { return CustomAMR; }
+				else { return -1; }
             }; 
 			set
 			{
-                if (IsCustomAMR)
-                {
-					CustomAMR = value;
-                }
+                if (IsCustomAMR) { CustomAMR = value; }
             }; 
 		}
+
+		// ctor
 		public AMR()
 		{
-
+			
 		}
+
+		// methods
+		public double CalculateAMR()
+        {
+			if (IsCustomAMR) { return CustomAMR; }
 	}
 }
 

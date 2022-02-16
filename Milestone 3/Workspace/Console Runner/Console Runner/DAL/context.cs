@@ -47,7 +47,7 @@ namespace Class1
                 table.email,
                 table.permission
             });
-
+            //builder.Entity<user_permissions>().Ignore(c=> c.dataAccess);
         }
         public DbSet<Account> accounts { get; set; }
 

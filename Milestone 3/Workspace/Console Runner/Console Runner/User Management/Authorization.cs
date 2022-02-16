@@ -15,17 +15,24 @@ namespace Console_Runner
     {
         public string email{ get; set; }
         public string permission { get; set; }
-        private IDataAccess dal;
+
+        [NotMapped]
+        public IDataAccess dataAccess { get;}
+
+        public user_permissions()
+        {
+
+        }
         public user_permissions(IDataAccess dal)
         {
-            this.dal = dal;
-            email = "";
-            permission = "";
+            this.dataAccess = dal;
+            this.email = "";
+            this.permission = "";
 
         }
         public user_permissions(string email, string permission, IDataAccess dal)
         {
-            this.dal = dal;
+            this.dataAccess = dal;
             this.email = email;
             this.permission = permission;
 
@@ -40,14 +47,14 @@ namespace Console_Runner
         */
         public void defaultUserPermissions(string email)
         {
-            
-            dal.addPermission(email, "scanFood");
-            dal.addPermission(email, "editOwnAccount");
-            dal.addPermission(email, "leaveReview");
-            dal.addPermission(email, "deleteOwnAccount");
-            dal.addPermission(email, "historyAccess");
-            dal.addPermission(email, "AMR");
-            dal.addPermission(email, "foodFlag");
+
+            dataAccess.addPermission(email, "scanFood");
+            dataAccess.addPermission(email, "editOwnAccount");
+            dataAccess.addPermission(email, "leaveReview");
+            dataAccess.addPermission(email, "deleteOwnAccount");
+            dataAccess.addPermission(email, "historyAccess");
+            dataAccess.addPermission(email, "AMR");
+            dataAccess.addPermission(email, "foodFlag");
 
         }
         /* contains a package of the defualt permissions that will be assigned to all new admin accounts.
@@ -57,11 +64,11 @@ namespace Console_Runner
         {
 
             //defualtUserPermissions(email);
-            dal.addPermission(email, "enableAccount");
-            dal.addPermission(email, "disableAccount");
-            dal.addPermission(email, "deleteAccount");
-            dal.addPermission(email, "createAdmin");
-            dal.addPermission(email, "editOtherAccount");
+            dataAccess.addPermission(email, "enableAccount");
+            dataAccess.addPermission(email, "disableAccount");
+            dataAccess.addPermission(email, "deleteAccount");
+            dataAccess.addPermission(email, "createAdmin");
+            dataAccess.addPermission(email, "editOtherAccount");
         }
     }
 

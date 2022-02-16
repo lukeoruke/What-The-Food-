@@ -41,29 +41,25 @@ namespace Class1
                 table.toLog
             });
 
-            builder.Entity<History>().HasKey(table => new
-            {
-                table.email,
-                table.foodItems
-            });
-        }
-
-
-        public DbSet<Account> accounts{ get; set; }
-        public DbSet<Logs> logs { get; set; }
-        public DbSet<History> history { get; set; }
             //Sets a composite key of email+permission for the permissions table.
             builder.Entity<user_permissions>().HasKey(table => new
             {
                 table.email,
                 table.permission
             });
+
+            builder.Entity<History>().HasKey(table => new
+            {
+                table.email,
+                table.foodItems
+            });
+
         }
-        public DbSet<Account> accounts { get; set; }
+        public DbSet<Object> objectTest { get; set; }
 
+        public DbSet<Account> accounts{ get; set; }
         public DbSet<Logs> logs { get; set; }
-
-        public DbSet<user_permissions> permissions{get; set;}
-
+        public DbSet<History> history { get; set; }
+        public DbSet<user_permissions> permissions { get; set; }
     }
 }

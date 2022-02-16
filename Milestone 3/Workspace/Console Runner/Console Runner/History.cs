@@ -3,23 +3,27 @@ namespace Console_Runner
 {
 	public class History
 	{
-		private Queue<string> FoodItems;
+		public string email { get; set; }
+		public string foodItems { get; set; }
+
+		public Queue<string> foodItemsQueue;
 		private int queueSize;
 
+		
 		public History()
 		{
-			FoodItems = new Queue<string>();
+			foodItemsQueue = new Queue<string>();
 			queueSize = 25;
 		}
 
 		public int getCount()
         {
-			return FoodItems.Count;
+			return foodItemsQueue.Count;
         }
 
 		public string remove()
 		{
-			return FoodItems.Dequeue();
+			return foodItemsQueue.Dequeue();
 		}
 
 		public void add(string foodItem)
@@ -28,7 +32,7 @@ namespace Console_Runner
             {
 				remove();
             }
-			FoodItems.Enqueue(foodItem);
+			foodItemsQueue.Enqueue(foodItem);
         }		
 	}
 }

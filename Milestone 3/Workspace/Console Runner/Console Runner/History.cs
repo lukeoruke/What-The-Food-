@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Console_Runner.DAL;
+using System;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Console_Runner
 {
 	public class History
@@ -7,11 +10,24 @@ namespace Console_Runner
 		public string foodItems { get; set; }
 
 		[NotMapped]
-		
+		IDataAccess dal;
 		public History()
+        {
+
+        }
+		public History(IDataAccess dal)
 		{
-			queueSize = 25;
+			this.dal = dal;
 		}
+
+		public bool addItem()
+        {
+            try
+            {
+
+            }
+			return false;
+        }
 	}
 }
 

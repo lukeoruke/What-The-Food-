@@ -47,9 +47,15 @@ namespace Class1
                 table.email,
                 table.permission
             });
-            //builder.Entity<user_permissions>().Ignore(c=> c.dataAccess);
+            builder.Entity<History>().HasKey(table => new
+            {
+                table.email,
+                table.foodItems
+            });
         }
         public DbSet<Account> accounts { get; set; }
+
+        public DbSet<History> history { get; set; }
 
         public DbSet<Logs> logs { get; set; }
 

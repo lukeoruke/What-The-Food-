@@ -6,34 +6,12 @@ namespace Console_Runner
 		public string email { get; set; }
 		public string foodItems { get; set; }
 
-		public Queue<string> foodItemsQueue;
-		private int queueSize;
-
+		[NotMapped]
 		
 		public History()
 		{
-			foodItemsQueue = new Queue<string>();
 			queueSize = 25;
 		}
-
-		public int getCount()
-        {
-			return foodItemsQueue.Count;
-        }
-
-		public string remove()
-		{
-			return foodItemsQueue.Dequeue();
-		}
-
-		public void add(string foodItem)
-        {
-			if(getCount() == queueSize)
-            {
-				remove();
-            }
-			foodItemsQueue.Enqueue(foodItem);
-        }		
 	}
 }
 

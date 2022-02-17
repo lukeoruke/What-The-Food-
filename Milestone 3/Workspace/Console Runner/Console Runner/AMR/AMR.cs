@@ -2,7 +2,6 @@
 
 namespace Console_Runner.AMR
 {
-	// internal enum - make private, protected, or public???
 	public enum ActivityLevel
     {
 		None,
@@ -53,19 +52,36 @@ namespace Console_Runner.AMR
 		{
             get
             {
-				return IsCustomAMR ? CustomAMR : -1;
+				return IsCustomAMR ? _customAMR : -1;
             } 
 			set
 			{
-                if (IsCustomAMR) { CustomAMR = value; }
+                if (IsCustomAMR) { _customAMR = value; }
             } 
 		}
 
-		// ctor
-		public AMR()
+		// consctructors
+		public AMR(bool isMale, int weight, float height, int age, ActivityLevel activity)
 		{
-			
+			IsMale = isMale;
+			Weight = weight;
+			Height = height;
+			Age = age;
+			Activity = activity;
+			IsCustomAMR = false;
+			CustomAMR = 0;
 		}
+
+		public AMR(bool isMale, int weight, float height, int age, ActivityLevel activity, double customAMR)
+		{
+			IsMale = isMale;
+			Weight = weight;
+			Height = height;
+			Age = age;
+			Activity = activity;
+			IsCustomAMR = true;
+			CustomAMR = customAMR;
+        }
 
 		// methods
 
@@ -79,13 +95,14 @@ namespace Console_Runner.AMR
 		/// <returns>A double representing the AMR calculated from the properties in this class.</returns>
 		public double CalculateAMR()
 		{
-			if (IsCustomAMR) { return CustomAMR; }
+            if (IsCustomAMR) { return _customAMR; }
             else
             {
 				// if male, use first equation; if female, use second equation
 				double bmr = IsMale ? 66.47 + (13.75 * Weight) + (5.003 * Height) - (6.755 * Age) :
 									  655.1 + (9.563 * Weight) + (1.85 * Height) - (4.676 * Age);
-				double amr = Activity switch
+				// multiply by factor corresponding to activity level and return that product
+				return Activity switch
 				{
 					ActivityLevel.None => bmr * 1.2,
 					ActivityLevel.Light => bmr * 1.375,
@@ -94,7 +111,6 @@ namespace Console_Runner.AMR
 					ActivityLevel.Heavy => bmr * 1.9,
 					_ => bmr
 				};
-				return amr;
             }
 		}
 	}

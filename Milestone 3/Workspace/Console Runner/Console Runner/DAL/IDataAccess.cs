@@ -20,7 +20,7 @@ namespace Console_Runner.DAL
         public List<user_permissions> getAllUserPermissions(string email);
         public bool removeAllUserPermissions(string email);
         public int AdminCount();
-
+        public bool addHistoryItem();
         public bool isAdmin(string email);
     }
 }

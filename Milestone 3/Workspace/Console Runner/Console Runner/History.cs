@@ -20,14 +20,10 @@ namespace Console_Runner
 			this.dal = dal;
 		}
 
-		public bool addItem()
-        {
-            try
-            {
-
-            }
-			return false;
-        }
+		public bool addHistoryItem()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
 

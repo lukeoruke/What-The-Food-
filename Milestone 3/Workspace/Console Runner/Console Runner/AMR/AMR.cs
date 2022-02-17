@@ -2,6 +2,9 @@
 
 namespace Console_Runner.AMR
 {
+	/// <summary>
+	/// Enum that reflects the five levels of activity used in calculating AMR according to https://www.verywellfit.com/how-many-calories-do-i-need-each-day-2506873.
+	/// </summary>
 	public enum ActivityLevel
     {
 		None,
@@ -60,7 +63,16 @@ namespace Console_Runner.AMR
             } 
 		}
 
-		// consctructors
+		// constructors
+
+		/// <summary>
+		/// Constructor for non-custom AMRs.
+		/// </summary>
+		/// <param name="isMale"></param>
+		/// <param name="weight"></param>
+		/// <param name="height"></param>
+		/// <param name="age"></param>
+		/// <param name="activity"></param>
 		public AMR(bool isMale, int weight, float height, int age, ActivityLevel activity)
 		{
 			IsMale = isMale;
@@ -72,6 +84,15 @@ namespace Console_Runner.AMR
 			CustomAMR = 0;
 		}
 
+		/// <summary>
+		/// Constructor for custom AMRs.
+		/// </summary>
+		/// <param name="isMale"></param>
+		/// <param name="weight"></param>
+		/// <param name="height"></param>
+		/// <param name="age"></param>
+		/// <param name="activity"></param>
+		/// <param name="customAMR"></param>
 		public AMR(bool isMale, int weight, float height, int age, ActivityLevel activity, double customAMR)
 		{
 			IsMale = isMale;

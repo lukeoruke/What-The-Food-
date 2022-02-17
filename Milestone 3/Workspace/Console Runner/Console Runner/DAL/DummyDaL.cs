@@ -31,6 +31,11 @@ namespace Console_Runner.DAL
             return true;
         }
 
+        public bool addHistoryItem()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool addPermission(string email, string permission)
         {
             user_permissions newPermission = new user_permissions(email, permission,this);
@@ -152,5 +157,6 @@ namespace Console_Runner.DAL
             }
             return false;
         }
+
     }
 }

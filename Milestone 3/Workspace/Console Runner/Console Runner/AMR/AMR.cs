@@ -64,6 +64,7 @@ namespace Console_Runner.AMR
 		}
 
 		// constructors
+		// TODO: add default ctor to make compatible with ORM
 
 		/// <summary>
 		/// Constructor for non-custom AMRs.

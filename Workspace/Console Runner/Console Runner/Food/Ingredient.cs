@@ -12,18 +12,16 @@ namespace Food_Class_Library
         //Constructor
         public Ingredient()
         {
-
         }
         public Ingredient(string name, string description, string shorterName) {
-            Name = name;
-            Description = description;
-            ShorterName = shorterName;
+            ingredientName = name;
+            this.description = description;
+            this.shorterName = shorterName;
         }
 
         //Property Implementation
-        [System.ComponentModel.DataAnnotations.Key]
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string ShorterName { get; set; }
+        public string ingredientName { get; set; }
+        public string description { get; set; }
+        public string shorterName { get; set; }
     }
 }

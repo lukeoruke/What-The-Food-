@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace Food_Class_Library
 {
-    internal interface IIngredient
+    public interface IIngredient
     {
         // Property Signatures:
-        string Name { get; set; }
-        string Description { get; set; }
-        string ShorterName { get; set; }
+        string ingredientName { get; set; }
+        string description { get; set; }
+        string shorterName { get; set; }
 
     }
 }

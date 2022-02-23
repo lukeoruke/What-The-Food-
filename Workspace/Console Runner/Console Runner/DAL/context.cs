@@ -9,6 +9,8 @@ using Pomelo.EntityFrameworkCore.MySql;
 using Microsoft.Extensions.DependencyInjection;
 using Logger;
 using Console_Runner;
+using Console_Runner.Food;
+using Food_Class_Library;
 
 namespace Class1
 {
@@ -53,6 +55,12 @@ namespace Class1
                 table.foodItems
             });
         }
+        public DbSet<FoodItem> foodItems { get; set; }
+
+        public DbSet<FoodLabel> foodLabel { get; set; }
+
+        public DbSet<Ingredient> ingredient { get; set; }
+
         public DbSet<Account> accounts { get; set; }
 
         public DbSet<History> history { get; set; }

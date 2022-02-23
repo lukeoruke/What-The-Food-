@@ -7,9 +7,13 @@ using System.Threading.Tasks;
 namespace Food_Class_Library
 {
     //TODO: Perhaps add abstraction to this class. What should we add to increase security of an Ingredient object
-    internal class Ingredient : IIngredient
+        public class Ingredient : IIngredient
     {
         //Constructor
+        public Ingredient()
+        {
+
+        }
         public Ingredient(string name, string description, string shorterName) {
             Name = name;
             Description = description;

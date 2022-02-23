@@ -233,5 +233,10 @@ namespace Console_Runner.DAL
             }
             return false;
         }
+
+        public bool addHistoryItem()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

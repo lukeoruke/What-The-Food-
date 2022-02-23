@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Console_Runner.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20220223212353_CreateCustomerDB")]
+    [Migration("20220223215503_CreateCustomerDB")]
     partial class CreateCustomerDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,14 @@ namespace Console_Runner.Migrations
                 {
                     b.Property<string>("barcode")
                         .HasColumnType("varchar(255)");
+
+                    b.Property<string>("companyName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("productName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.HasKey("barcode");
 

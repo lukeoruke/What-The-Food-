@@ -23,6 +23,14 @@ namespace Console_Runner.Migrations
                     b.Property<string>("barcode")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<string>("companyName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("productName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("barcode");
 
                     b.ToTable("foodItems");

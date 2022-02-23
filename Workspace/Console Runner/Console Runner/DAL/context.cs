@@ -12,6 +12,7 @@ using Console_Runner;
 using Console_Runner.Food;
 using Food_Class_Library;
 
+//TODO: ADD FK TO CLASSES! (MQ)
 namespace Class1
 {
     /*will run on startup, will configure the services to our database context
@@ -54,7 +55,7 @@ namespace Class1
                 table.email,
                 table.foodItems
             });
-            builder.Entity<FoodLabel>().HasKey(table => new
+            builder.Entity<Label_FoodItem>().HasKey(table => new
             {
                 table.labelID,
                 table.barcode
@@ -78,7 +79,7 @@ namespace Class1
 
         public DbSet<FoodItem> foodItems { get; set; }
 
-        public DbSet<FoodLabel> foodLabel { get; set; }
+        public DbSet<Label_FoodItem> label_foodItem { get; set; }
 
         public DbSet<Ingredient> ingredient { get; set; }
 

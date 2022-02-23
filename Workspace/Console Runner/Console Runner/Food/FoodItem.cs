@@ -11,8 +11,8 @@ namespace Console_Runner.Food
     {
         [Key]
         public string barcode { get; set; }
-        string productName { get; set; }
-        string companyName { get; set; }
+        public string productName { get; set; }
+        public string companyName { get; set; }
         public FoodItem()
         {
         }

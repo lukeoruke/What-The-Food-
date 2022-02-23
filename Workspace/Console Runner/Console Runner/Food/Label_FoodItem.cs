@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 namespace Console_Runner.Food
 {
 
-    public class FoodLabel
+    public class Label_FoodItem
     {
         //both of these together make a composit key 
         public string labelID { get; set; }
         public string barcode { get; set; }
-        public FoodLabel()
+        public Label_FoodItem()
         {
         }
-        FoodLabel(string labelID, string barcode)
+        Label_FoodItem(string labelID, string barcode)
         {
             this.labelID = labelID; 
             this.barcode = barcode;

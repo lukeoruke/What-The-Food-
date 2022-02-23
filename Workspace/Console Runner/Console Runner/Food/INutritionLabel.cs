@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ namespace Food_Class_Library
 {
     internal interface INutritionLabel
     {
+        [Key]
+        string labelID { get; }
         int Calories { get; set; }
         int Servings { get; set; }
         Double ServingSize { get; set; }

@@ -20,6 +20,7 @@ namespace Food_Class_Library
         }
 
         //Property Implementation
+        public string labelID;
         public string ingredientName { get; set; }
         public string description { get; set; }
         public string shorterName { get; set; }

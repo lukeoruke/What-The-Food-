@@ -9,9 +9,9 @@ namespace Console_Runner.Food
 {
    public class FoodItem
     {
-        public string labelID { get; set; }
-        string barcode { get; set; }
-        public string productName { get; set; }
+        [Key]
+        public string barcode { get; set; }
+        string productName { get; set; }
         string companyName { get; set; }
         public FoodItem()
         {
@@ -21,7 +21,6 @@ namespace Console_Runner.Food
             this.barcode = barcode;
             this.productName = productName;
             this.companyName = companyName;
-            this.labelID = labelID;
         }
        
 

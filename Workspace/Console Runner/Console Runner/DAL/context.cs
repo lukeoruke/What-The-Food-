@@ -54,12 +54,35 @@ namespace Class1
                 table.email,
                 table.foodItems
             });
+            builder.Entity<FoodLabel>().HasKey(table => new
+            {
+                table.labelID,
+                table.barcode
+            });
+            builder.Entity<Vitamins>().HasKey(table => new
+            {
+                table.labelID,
+                table.vitaminName
+            }) ;
+            builder.Entity<Ingredient>().HasKey(table => new
+            {
+                table.labelID,
+                table.ingredientName
+            });
+            builder.Entity<NutritionLabel>().HasKey(table => new
+            {
+                table.labelID
+            });
         }
+        public DbSet<Vitamins> vitamins { get; set;}
+
         public DbSet<FoodItem> foodItems { get; set; }
 
         public DbSet<FoodLabel> foodLabel { get; set; }
 
         public DbSet<Ingredient> ingredient { get; set; }
+
+        public DbSet<NutritionLabel> nutritionLabels { get; set; }
 
         public DbSet<Account> accounts { get; set; }
 

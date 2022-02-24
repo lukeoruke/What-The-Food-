@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using User;
+using Console_Runner.AMRModel;
 
 namespace Console_Runner.DAL
 {
@@ -22,5 +23,10 @@ namespace Console_Runner.DAL
         public int AdminCount();
         public bool addHistoryItem();
         public bool isAdmin(string email);
+        public bool AMRExists(string email);
+        public AMR? GetAMR(string email);
+        public bool AddAMR(AMR amrToAdd);
+        public bool RemoveAMR(AMR amrToRemove);
+        public bool UpdateAMR(AMR amrToUpdate);
     }
 }

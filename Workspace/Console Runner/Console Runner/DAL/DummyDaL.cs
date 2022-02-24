@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Console_Runner.AMRModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Console_Runner.DAL
 
         List<Account> accounts = new();
         List<user_permissions> permissions = new();
+        List<AMR> amrs = new();
 
         public bool accountExists(string email)
         {
@@ -28,6 +30,12 @@ namespace Console_Runner.DAL
         {
             accounts.Add(acc);
 
+            return true;
+        }
+
+        public bool AddAMR(AMR amrToAdd)
+        {
+            amrs.Add(amrToAdd);
             return true;
         }
 
@@ -56,6 +64,15 @@ namespace Console_Runner.DAL
             return count;
         }
 
+        public bool AMRExists(string email)
+        {
+            foreach(AMR amr in amrs.FindAll(amrIteration => (amrIteration.AccountEmail == email)))
+            {
+                return true;
+            }
+            return false;
+        }
+
         public Account getAccount(string email)
         {
             for(int i = 0;i < accounts.Count;i++)
@@ -79,6 +96,18 @@ namespace Console_Runner.DAL
                 }
             }
             return usersPerms;
+        }
+
+        public AMR? GetAMR(string email)
+        {
+            for(int i = 0; i < amrs.Count; i++)
+            {
+                if(amrs[i].AccountEmail == email)
+                {
+                    return amrs[i];
+                }
+            }
+            return null;
         }
 
         public bool hasPermission(string email, string permission)
@@ -131,6 +160,11 @@ namespace Console_Runner.DAL
             return false ;
         }
 
+        public bool RemoveAMR(AMR amrToRemove)
+        {
+            return amrs.Remove(amrToRemove);
+        }
+
         public bool removePermision(string email, string permission)
         {
             try
@@ -158,5 +192,17 @@ namespace Console_Runner.DAL
             return false;
         }
 
+        public bool UpdateAMR(AMR amrToUpdate)
+        {
+            for(int i = 0; i < amrs.Count ; i++)
+            {
+                if(amrs[i].AccountEmail == amrToUpdate.AccountEmail)
+                {
+                    amrs[i] = amrToUpdate;
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Class1;
+using Console_Runner.Food;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -238,5 +239,46 @@ namespace Console_Runner.DAL
         {
             throw new NotImplementedException();
         }
+        /////////////////////////////////////////////////////////////////////FOOD FLAGS////////////////////////////////////////////////////////////////////////////////////////////
+        public bool addFlagToAccount(string email, string flag)
+        {
+            if (context.ingredient.Find(flag) == null)
+            {
+                return false;
+            }
+            else
+            {
+                try
+                {
+                    FoodFlag foodFlag = new(email, flag);
+                    context.foodFlags.Add(foodFlag);
+                    context.SaveChanges();
+                    return true;
+                }catch (Exception ex)
+                {
+                    return false;
+                }
+                
+            }
+        }
+        public bool accountHasFlag(string email, string flag)
+        {
+            FoodFlag foodFlag = new(email, flag);
+            return context.foodFlags.Find(foodFlag) != null;
+        }
+        
+        public bool removeFoodFlag(string email, string flag)
+        {
+            if (accountHasFlag(email, flag))
+            {
+                FoodFlag foodFlag = new(email, flag);
+                context.foodFlags.Remove(foodFlag);
+                context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+        ///////////////////////////////////////////////////////////////////////////////////FOOD ITEMS//////////////////////////////////////////////////////////////////////////////////////////
+
     }
 }

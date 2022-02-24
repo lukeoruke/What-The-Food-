@@ -157,6 +157,12 @@ namespace Console_Runner.DAL
             }
             return false;
         }
+        
+        //#TODO make sure this becomes unit testing comaptible
+        public bool log(string toLog)
+        {
+            return true;
+        }
 
     }
 }

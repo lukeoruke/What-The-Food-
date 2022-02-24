@@ -22,5 +22,6 @@ namespace Console_Runner.DAL
         public int AdminCount();
         public bool addHistoryItem();
         public bool isAdmin(string email);
+        public bool log(string toLog);
     }
 }

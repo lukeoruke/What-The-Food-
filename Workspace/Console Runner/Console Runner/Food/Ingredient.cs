@@ -1,30 +1,24 @@
-﻿using System;
+﻿using Food_Class_Library;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-//TODO: this creates redundency. Why make the same food item over and over again(MQ)
-namespace Food_Class_Library
+namespace Console_Runner.Food
 {
-    //TODO: Perhaps add abstraction to this class. What should we add to increase security of an Ingredient object
-        public class Ingredient : IIngredient
+    public class Ingredient
     {
-        //Constructor
+        public string ingredientName { get; set; }
+        [Key]
+        public string ingredientID { get; set; }
+        public string ingredientDescription { get; set; }
+        public string ingredientShortName { get; set; }
         public Ingredient()
         {
-        }
-        public Ingredient(string name, string description, string shorterName) {
-            ingredientName = name;
-            this.description = description;
-            this.shorterName = shorterName;
+
         }
 
-        //Property Implementation
-        public string labelID;
-        public string ingredientName { get; set; }
-        public string description { get; set; }
-        public string shorterName { get; set; }
     }
 }

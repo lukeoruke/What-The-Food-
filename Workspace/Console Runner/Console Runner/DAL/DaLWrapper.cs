@@ -1,5 +1,6 @@
 ﻿using Class1;
 using Console_Runner.Food;
+using Food_Class_Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace Console_Runner.DAL
         /// <returns>true if account exists, false otherwise</returns>
         public bool accountExists(string email)
         {
-            
+
             if (context.accounts.Find(email) != null)
             {
                 return true;
@@ -51,11 +52,12 @@ namespace Console_Runner.DAL
                 {
                     throw new Exception("account not found exception");
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return null;
             }
-          
+
 
         }
         /// <summary>
@@ -70,12 +72,13 @@ namespace Console_Runner.DAL
                 context.accounts.Add(acc);
                 context.SaveChanges();
                 return true;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return false;
             }
-            
-            
+
+
         }
         /// <summary>
         /// Removes an account from the DB
@@ -86,17 +89,18 @@ namespace Console_Runner.DAL
         {
             try
             {
-                if(accountExists(acc.Email))
+                if (accountExists(acc.Email))
                 {
                     context.Remove(acc);
                     context.SaveChanges();
                 }
                 return true;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return false;
             }
-            
+
         }
 
         /// <summary>
@@ -111,14 +115,15 @@ namespace Console_Runner.DAL
                 context.accounts.Update(acc);
                 context.SaveChanges(true);
                 return true;
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return false;
             }
-            
+
         }
         /////////////////////////////////////////////////////////////Permissions////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
         /// <summary>
         /// Checks if the specified user has a specified permission
         /// </summary>
@@ -140,11 +145,12 @@ namespace Console_Runner.DAL
                     context.SaveChanges();
                 }
                 return true;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return false;
             }
-            
+
         }
 
         /// <summary>
@@ -158,13 +164,14 @@ namespace Console_Runner.DAL
             try
             {
                 user_permissions newPermission = new user_permissions(email, permission, this);
-                if(hasPermission(email, permission))
+                if (hasPermission(email, permission))
                 {
                     context.permissions.Remove(newPermission);
                     context.SaveChanges();
                     return true;
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return false;
             }
@@ -176,12 +183,12 @@ namespace Console_Runner.DAL
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        public List<user_permissions>  getAllUserPermissions(string email)
+        public List<user_permissions> getAllUserPermissions(string email)
         {
             List<user_permissions> alluserPermissions = new List<user_permissions>();
             foreach (var permissions in context.permissions)
             {
-                if(permissions.email == email)
+                if (permissions.email == email)
                 {
                     alluserPermissions.Add(permissions);
                 }
@@ -242,7 +249,7 @@ namespace Console_Runner.DAL
         /////////////////////////////////////////////////////////////////////FOOD FLAGS////////////////////////////////////////////////////////////////////////////////////////////
         public bool addFlagToAccount(string email, string flag)
         {
-            if (context.ingredient.Find(flag) == null)
+            if (context.ingredientIdentifyer.Find(flag) == null)
             {
                 return false;
             }
@@ -254,31 +261,83 @@ namespace Console_Runner.DAL
                     context.foodFlags.Add(foodFlag);
                     context.SaveChanges();
                     return true;
-                }catch (Exception ex)
+                }
+                catch (Exception ex)
                 {
                     return false;
                 }
-                
+
             }
         }
-        public bool accountHasFlag(string email, string flag)
+        public bool accountHasFlag(string email, string ingredientID)
         {
-            FoodFlag foodFlag = new(email, flag);
+            FoodFlag foodFlag = new(email, ingredientID);
             return context.foodFlags.Find(foodFlag) != null;
         }
-        
-        public bool removeFoodFlag(string email, string flag)
+
+        public bool removeFoodFlag(string email, string ingredientID)
         {
-            if (accountHasFlag(email, flag))
+            if (accountHasFlag(email, ingredientID))
             {
-                FoodFlag foodFlag = new(email, flag);
+                FoodFlag foodFlag = new(email, ingredientID);
                 context.foodFlags.Remove(foodFlag);
                 context.SaveChanges();
                 return true;
             }
             return false;
         }
+
+        public List<FoodFlag> getAllAccountFlags(string email)
+        {
+            List <FoodFlag> flagList = new List<FoodFlag>();
+            foreach (var flag in context.foodFlags)
+            {
+                if(flag.accountEmail == email)
+                {
+                    flagList.Add(flag);
+                }
+            }
+            return flagList;
+        }
+
+        public List<Ingredient> foodContainsFlaggedItem(string barcode, string email)
+        {
+            FoodItem food = retrieveScannedFoodItem(barcode);
+            List<Ingredient> flaggedIngredients = retrieveIngredientList(food.labelID);
+            for(int i = 0; i < flaggedIngredients.Count; i++)
+            {
+                if(accountHasFlag(email, flaggedIngredients[i].ingredientID))
+                {
+                    flaggedIngredients.Add(flaggedIngredients[i]);
+                }
+            }
+            //get food item associated with barcode
+            //get list of ingredient ID's associated with food item
+            //check if user email is associated with any of the ingredient ID's associated with the given food item.
+            //return the ingredient(s) Id(s) if any, otherwise return an empty list.
+            return flaggedIngredients;
+        }
         ///////////////////////////////////////////////////////////////////////////////////FOOD ITEMS//////////////////////////////////////////////////////////////////////////////////////////
 
+        public FoodItem retrieveScannedFoodItem(string barcode)
+        {
+            return context.foodItems.Find(barcode);
+        }
+        public NutritionLabel retrieveNutrtionLabel(FoodItem food)
+        {
+            return context.nutritionLabels.Find(food.labelID);
+        }
+        public List<Ingredient> retrieveIngredientList(string labelID)
+        {
+            List<Ingredient> ingredients = new List<Ingredient>();
+            foreach (var Ingredient in context.ingredientIdentifyer)
+            {
+                if(Ingredient.labelID == labelID)
+                {
+                    ingredients.Add(context.ingredients.Find(labelID));
+                }
+            }
+            return ingredients;
+        }
     }
 }

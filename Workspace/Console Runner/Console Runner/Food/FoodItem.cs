@@ -13,6 +13,7 @@ namespace Console_Runner.Food
         public string barcode { get; set; }
         public string productName { get; set; }
         public string companyName { get; set; }
+        public string labelID { get; set; }
         public FoodItem()
         {
         }

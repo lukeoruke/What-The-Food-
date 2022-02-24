@@ -31,4 +31,7 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Front-End\Front-End.csproj" />
+  </ItemGroup>
 </Project>

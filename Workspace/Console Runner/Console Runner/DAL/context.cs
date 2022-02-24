@@ -68,13 +68,21 @@ namespace Class1
             builder.Entity<Ingredient>().HasKey(table => new
             {
                 table.labelID,
-                table.ingredientName
+                table.ingredientID
             });
             builder.Entity<NutritionLabel>().HasKey(table => new
             {
                 table.labelID
             });
+            builder.Entity<FoodFlag>().HasKey(table => new
+            {
+                table.accountEmail,
+                table.ingredientName
+            });
         }
+        public DbSet<IngredientList> ingredientList { get; set; }
+        public DbSet<FoodFlag> foodFlags { get; set; }
+
         public DbSet<Vitamins> vitamins { get; set;}
 
         public DbSet<FoodItem> foodItems { get; set; }

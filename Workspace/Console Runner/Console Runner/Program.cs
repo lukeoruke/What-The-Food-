@@ -8,6 +8,7 @@ using Class1;
 using Console_Runner;
 using LogAndArchive;
 using Console_Runner.DAL;
+using Console_Runner.AMRModel;
 
 IDataAccess dal = new DummyDaL();
 ILogger log = new Logging();
@@ -30,5 +31,6 @@ archiver.archiveStartThread();
     user_permissions permissions = new user_permissions(dal);
     permissions.defaultAdminPermissions(admin.Email);
     um.UserSignUp(admin);
-
+    AMR adminAMR = new AMR(admin, true, 63, 175, 25, ActivityLevel.Daily);
+Console.WriteLine(adminAMR.CalculateAMR());
     Environment.Exit(0);

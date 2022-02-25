@@ -11,6 +11,7 @@ using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using Logger;
 using Class1;
+using Console_Runner.DAL;
 
 namespace LogAndArchive
 {
@@ -215,34 +216,18 @@ namespace LogAndArchive
 
     public class Logging : ILogger
     {
+        private IDataAccess dal;
         //logging objects
-        public Logging()
+        public Logging(IDataAccess dal)
         {
-
+            this.dal = dal;
         }
 
         //base logging function that will write to the log.txt file. Will append logging information to the end of current date and time.
         public bool log(string toLog)
         {
-            try
-            {
-                Logs record = new Logs();
-                record.Date = DateTime.Now.ToLongDateString();
-                record.Time = DateTime.Now.ToString("H:mm:ss");
-                record.toLog = toLog;
-
-                using (var context = new Context())
-                {
-                    context.logs.Add(record);
-                    context.SaveChanges();
-                }
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("LOGGIN ERROR! PLEASE LOOK INTO ASAP: " + e.ToString());
-                return false;
-            }
+            dal.log(toLog);
+            return true;
         }
 
         //formats string for user login to send to log()

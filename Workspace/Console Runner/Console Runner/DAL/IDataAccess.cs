@@ -28,5 +28,6 @@ namespace Console_Runner.DAL
         public bool AddAMR(AMR amrToAdd);
         public bool RemoveAMR(AMR amrToRemove);
         public bool UpdateAMR(AMR amrToUpdate);
+        public bool log(string toLog);
     }
 }

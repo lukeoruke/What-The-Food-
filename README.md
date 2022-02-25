@@ -4,7 +4,7 @@ Senior Project made by Team No Stress
 
 ## Team Members
 
-**Daniel Ramirez**, Hunter Lewis, Luke Sunaoka, Michelle Vo, Tyler Thorin, Alexander Dung
+Alexander Dung, **Daniel Ramirez**, Hunter Lewis, Luke Sunaoka, Matthew Quinn, Michelle Vo, Tyler Thorin
 
 ## Purpose
 

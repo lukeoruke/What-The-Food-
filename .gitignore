@@ -2,6 +2,4 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/.vs
-/Milestone 3/Workspace/Console Runner/.vs/Console Runner
-/Milestone 3/Workspace/Console Runner
+*/.vs

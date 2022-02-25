@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using User;
+using Console_Runner.AMRModel;
 
 namespace Console_Runner.DAL
 {
@@ -238,6 +239,70 @@ namespace Console_Runner.DAL
         public bool addHistoryItem()
         {
             throw new NotImplementedException();
+        }
+
+        public bool AMRExists(string email)
+        {
+            return context.amrs.Find(email) != null;
+        }
+
+        public AMR? GetAMR(string email)
+        {
+            try
+            {
+                AMR? foundAMR = context.amrs.Find(email);
+                if (foundAMR != null) return foundAMR;
+                else throw new Exception("AMR could not be found");
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public bool AddAMR(AMR amrToAdd)
+        {
+            try
+            {
+                context.amrs.Add(amrToAdd);
+                context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool RemoveAMR(AMR amrToRemove)
+        {
+            try
+            {
+                if (AMRExists(amrToRemove.AccountEmail))
+                {
+                    context.Remove(amrToRemove);
+                    context.SaveChanges();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool UpdateAMR(AMR amrToUpdate)
+        {
+            try
+            {
+                context.amrs.Update(amrToUpdate);
+                context.SaveChanges(true);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

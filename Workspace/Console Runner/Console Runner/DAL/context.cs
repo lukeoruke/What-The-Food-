@@ -9,6 +9,9 @@ using Pomelo.EntityFrameworkCore.MySql;
 using Microsoft.Extensions.DependencyInjection;
 using Logger;
 using Console_Runner;
+using Console_Runner.Food;
+using Console_Runner.AMRModel;
+using Food_Class_Library;
 
 namespace Class1
 {
@@ -41,19 +44,66 @@ namespace Class1
                 table.toLog
             });
 
+            builder.Entity<AMR>().HasKey(table => new
+            {
+                table.AccountEmail
+            });
+
             //Sets a composite key of email+permission for the permissions table.
             builder.Entity<user_permissions>().HasKey(table => new
             {
                 table.email,
                 table.permission
             });
+            
             builder.Entity<History>().HasKey(table => new
             {
                 table.email,
                 table.foodItems
             });
+            
+            builder.Entity<FoodLabel>().HasKey(table => new
+            {
+                table.labelID,
+                table.barcode
+            });
+            
+            builder.Entity<Vitamins>().HasKey(table => new
+            {
+                table.labelID,
+                table.vitaminName
+            }) ;
+            
+            builder.Entity<Ingredient>().HasKey(table => new
+            {
+                table.labelID,
+                table.ingredientName
+            });
+            
+            builder.Entity<NutritionLabel>().HasKey(table => new
+            {
+                table.labelID
+            });
+
+            // one-to-one relationship between account and amr, where an account can exist without an amr but not vice versa
+            builder.Entity<Account>()
+                .HasOne(ac => ac.AMR)
+                .WithOne(am => am.Account)
+                .HasForeignKey<AMR>(a => a.AccountEmail);
         }
+        public DbSet<Vitamins> vitamins { get; set;}
+
+        public DbSet<FoodItem> foodItems { get; set; }
+
+        public DbSet<FoodLabel> foodLabel { get; set; }
+
+        public DbSet<Ingredient> ingredient { get; set; }
+
+        public DbSet<NutritionLabel> nutritionLabels { get; set; }
+
         public DbSet<Account> accounts { get; set; }
+
+        public DbSet<AMR> amrs { get; set; }
 
         public DbSet<History> history { get; set; }
 

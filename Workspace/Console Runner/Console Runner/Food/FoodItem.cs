@@ -17,7 +17,7 @@ namespace Console_Runner.Food
         public FoodItem()
         {
         }
-        public FoodItem(string barcode, string productName, string companyName, string labelID)
+        public FoodItem(string barcode, string productName, string companyName)
         {
             this.barcode = barcode;
             this.productName = productName;

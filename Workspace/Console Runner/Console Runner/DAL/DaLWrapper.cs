@@ -247,28 +247,20 @@ namespace Console_Runner.DAL
             throw new NotImplementedException();
         }
         /////////////////////////////////////////////////////////////////////FOOD FLAGS////////////////////////////////////////////////////////////////////////////////////////////
-        public bool addFlagToAccount(string email, string flag)
+       public bool addFlag(FoodFlag flag)
         {
-            if (context.ingredientIdentifyer.Find(flag) == null)
+            try
+            {
+                context.foodFlags.Add(flag);
+                context.SaveChanges();
+                return true;
+            }catch (Exception ex)
             {
                 return false;
             }
-            else
-            {
-                try
-                {
-                    FoodFlag foodFlag = new(email, flag);
-                    context.foodFlags.Add(foodFlag);
-                    context.SaveChanges();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-
-            }
+            
         }
+
         public bool accountHasFlag(string email, string ingredientID)
         {
             FoodFlag foodFlag = new(email, ingredientID);
@@ -300,33 +292,19 @@ namespace Console_Runner.DAL
             return flagList;
         }
 
-        public List<Ingredient> foodContainsFlaggedItem(string barcode, string email)
-        {
-            FoodItem food = retrieveScannedFoodItem(barcode);
-            List<Ingredient> flaggedIngredients = retrieveIngredientList(food.labelID);
-            for(int i = 0; i < flaggedIngredients.Count; i++)
-            {
-                if(accountHasFlag(email, flaggedIngredients[i].ingredientID))
-                {
-                    flaggedIngredients.Add(flaggedIngredients[i]);
-                }
-            }
-            //get food item associated with barcode
-            //get list of ingredient ID's associated with food item
-            //check if user email is associated with any of the ingredient ID's associated with the given food item.
-            //return the ingredient(s) Id(s) if any, otherwise return an empty list.
-            return flaggedIngredients;
-        }
+ 
         ///////////////////////////////////////////////////////////////////////////////////FOOD ITEMS//////////////////////////////////////////////////////////////////////////////////////////
 
         public FoodItem retrieveScannedFoodItem(string barcode)
         {
             return context.foodItems.Find(barcode);
         }
+
         public NutritionLabel retrieveNutrtionLabel(FoodItem food)
         {
             return context.nutritionLabels.Find(food.labelID);
         }
+
         public List<Ingredient> retrieveIngredientList(string labelID)
         {
             List<Ingredient> ingredients = new List<Ingredient>();
@@ -338,6 +316,11 @@ namespace Console_Runner.DAL
                 }
             }
             return ingredients;
+        }
+        public bool addFoodItem(string barcode, string productName, string companyName, NutritionLabel label, List<Ingredient> ingredients, List<Vitamins> vitamins)
+        {
+            FoodItem foodItem = new FoodItem(barcode, productName, companyName);
+            return false;
         }
     }
 }

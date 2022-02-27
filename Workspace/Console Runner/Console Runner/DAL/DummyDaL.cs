@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Console_Runner.Food;
+using Food_Class_Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,25 +12,23 @@ namespace Console_Runner.DAL
     public class DummyDaL : IDataAccess
     {
 
-        List<Account> accounts = new();
-        List<user_permissions> permissions = new();
+        List<Account> accountsList = new();
+        List<user_permissions> permissionsList = new();
+        List<FoodItem> foodsList = new();
+        List<FoodFlag> flagsList = new();
+        List<Ingredient> ingredientsList = new();
+        List<NutritionLabel> nutritionLabelsList = new();
+        List<IngredientIdentifyers> ingredientIdentifyersList = new();
 
         public bool accountExists(string email)
         {
-            for(int i = 0; i < accounts.Count; i++)
+            for(int i = 0; i < accountsList.Count; i++)
             {
-                if (email == accounts[i].Email){
+                if (email == accountsList[i].Email){
                     return true;
                 }
             }
             return false;
-        }
-
-        public bool addAccount(Account acc)
-        {
-            accounts.Add(acc);
-
-            return true;
         }
 
         public bool addHistoryItem()
@@ -36,19 +36,28 @@ namespace Console_Runner.DAL
             throw new NotImplementedException();
         }
 
+        public bool addAccount(Account acc)
+        {
+            accountsList.Add(acc);
+
+            return true;
+        }
+
+   
+
         public bool addPermission(string email, string permission)
         {
             user_permissions newPermission = new user_permissions(email, permission,this);
-            permissions.Add(newPermission);
+            permissionsList.Add(newPermission);
             return true;
         }
 
         public int AdminCount()
         {
             int count = 0;
-            for(int i = 0; i < accounts.Count(); i++)
+            for(int i = 0; i < accountsList.Count(); i++)
             {
-                if (hasPermission(accounts[i].Email, "createAdmin") && accounts[i].isActive)
+                if (hasPermission(accountsList[i].Email, "createAdmin") && accountsList[i].isActive)
                 {
                     count++;
                 }
@@ -56,26 +65,30 @@ namespace Console_Runner.DAL
             return count;
         }
 
+  
+
         public Account getAccount(string email)
         {
-            for(int i = 0;i < accounts.Count;i++)
+            for(int i = 0;i < accountsList.Count;i++)
             {
-                if(accounts[i].Email == email)
+                if(accountsList[i].Email == email)
                 {
-                    return accounts[i];
+                    return accountsList[i];
                 }
             }
             return null;
         }
 
+     
+
         public List<user_permissions> getAllUserPermissions(string email)
         {
             List<user_permissions> usersPerms = new List<user_permissions>();
-            for(int i = 0; i < permissions.Count;i++)
+            for(int i = 0; i < permissionsList.Count;i++)
             {
-                if(permissions[i].email == email)
+                if(permissionsList[i].email == email)
                 {
-                    usersPerms.Add(permissions[i]);
+                    usersPerms.Add(permissionsList[i]);
                 }
             }
             return usersPerms;
@@ -83,9 +96,9 @@ namespace Console_Runner.DAL
 
         public bool hasPermission(string email, string permission)
         {
-            for(int i = 0; i < permissions.Count ; i++)
+            for(int i = 0; i < permissionsList.Count ; i++)
             {
-                if(permissions[i].email == email && permissions[i].permission == permission)
+                if(permissionsList[i].email == email && permissionsList[i].permission == permission)
                 {
                     return true;
                 }
@@ -95,9 +108,9 @@ namespace Console_Runner.DAL
 
         public bool isAdmin(string email)
         {
-            for (int i = 0; i < permissions.Count; i++)
+            for (int i = 0; i < permissionsList.Count; i++)
             {
-                if (permissions[i].email == email && permissions[i].permission == "createAdmin")
+                if (permissionsList[i].email == email && permissionsList[i].permission == "createAdmin")
                 {
                     return true;
                 }
@@ -107,11 +120,11 @@ namespace Console_Runner.DAL
 
         public bool removeAccount(Account acc)
         {
-            for(int i = 0; i < accounts.Count;i++)
+            for(int i = 0; i < accountsList.Count;i++)
             {
-                if(accounts[i].Email == acc.Email)
+                if(accountsList[i].Email == acc.Email)
                 {
-                    accounts.RemoveAt(i);
+                    accountsList.RemoveAt(i);
                     return true;
                 }
             }
@@ -120,23 +133,25 @@ namespace Console_Runner.DAL
 
         public bool removeAllUserPermissions(string email)
         {
-            for(int i = 0; i <permissions.Count ; i++)
+            for(int i = 0; i <permissionsList.Count ; i++)
             {
-                if (permissions[i].email == email)
+                if (permissionsList[i].email == email)
                 {
-                    permissions.RemoveAt(i);
+                    permissionsList.RemoveAt(i);
                     return true;
                 }
             }
             return false ;
         }
 
+    
+
         public bool removePermision(string email, string permission)
         {
             try
             {
                 user_permissions perm = new user_permissions(email, permission,this);
-                permissions.Remove(perm);
+                permissionsList.Remove(perm);
                 return true;
             }catch (Exception e)
             {
@@ -145,18 +160,115 @@ namespace Console_Runner.DAL
             
         }
 
+
+
+
+
         public bool updateAccount(Account acc)
         {
-            for(int i = 0; i < accounts.Count ; i++)
+            for(int i = 0; i < accountsList.Count ; i++)
             {
-                if(accounts[i].Email == acc.Email)
+                if(accountsList[i].Email == acc.Email)
                 {
-                    accounts[i] = acc;
+                    accountsList[i] = acc;
                     return true;
                 }
             }
             return false;
         }
+
+        /////////////////////////////////////////////////////////////////////FOOD FLAGS////////////////////////////////////////////////////////////////////////////////////////////
+        public bool addFlag(FoodFlag flag)
+        {
+            if(flag != null && !flagsList.Contains(flag))
+            {
+                flagsList.Add(flag);
+                return true;
+            }
+            return false;
+        }
+
+        public bool accountHasFlag(string email, string ingredientID)
+        {
+            FoodFlag flag = new FoodFlag(email, ingredientID);
+            return flagsList.Contains(flag);
+        }
+
+        public bool removeFoodFlag(string email, string ingredientID)
+        {
+            if (accountHasFlag(email, ingredientID))
+            {
+                FoodFlag foodFlag = new(email, ingredientID);
+                flagsList.Remove(foodFlag);
+                return true;
+            }
+            return false;
+        }
+
+        public List<FoodFlag> getAllAccountFlags(string email)
+        {
+            List<FoodFlag> flagList = new List<FoodFlag>();
+            foreach (var flag in flagsList)
+            {
+                if (flag.accountEmail == email)
+                {
+                    flagList.Add(flag);
+                }
+            }
+            return flagList;
+        }
+
+
+        ///////////////////////////////////////////////////////////////////////////////////FOOD ITEMS//////////////////////////////////////////////////////////////////////////////////////////
+
+        public FoodItem retrieveScannedFoodItem(string barcode)
+        {
+            for(int i = 0; i < foodsList.Count; i++)
+            {
+                if (foodsList[i].barcode == barcode)
+                {
+                    return foodsList[i];
+                }
+            }
+            return null;
+        }
+
+        public NutritionLabel retrieveNutrtionLabel(FoodItem food)
+        {
+            for (int i = 0; i < nutritionLabelsList.Count; i++)
+            {
+                if (nutritionLabelsList[i].labelID == food.labelID)
+                {
+                    return nutritionLabelsList[i];
+                }
+            }
+            return null;
+        }
+
+        public List<Ingredient> retrieveIngredientList(string labelID)
+        {
+            List<Ingredient> ingredients = new List<Ingredient>();
+            for(int i = 0; i < ingredientIdentifyersList.Count; i++)
+            {
+                if(ingredientIdentifyersList[i].labelID == labelID)
+                {
+                    for(int j = 0; j < ingredientsList.Count; j++)
+                    {
+                        if(ingredientsList[j].ingredientID == ingredientIdentifyersList[i].ingredientID)
+                        {
+                            ingredients.Add(ingredientsList[j]);
+                        }
+                    }
+                }
+            }
+            return ingredients;
+        }
+        public bool addFoodItem(string barcode, string productName, string companyName, NutritionLabel label, List<Ingredient> ingredients, List<Vitamins> vitamins)
+        {
+            FoodItem foodItem = new FoodItem(barcode, productName, companyName);
+            return false;
+        }
+
 
     }
 }

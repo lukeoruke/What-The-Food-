@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Console_Runner.Food;
+using Food_Class_Library;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,23 @@ namespace Console_Runner.DAL
         public bool addHistoryItem();
         public bool isAdmin(string email);
 
-        public bool addFlagToAccount(string email, string flag);
+
+        public bool accountHasFlag(string email, string flag);
+
+        public bool removeFoodFlag(string email, string flag);
+
+        public List<FoodFlag> getAllAccountFlags(string email);
+
+        public FoodItem retrieveScannedFoodItem(string barcode);
+
+        public List<Ingredient> retrieveIngredientList(string labelID);
+
+        public bool addFoodItem(string barcode, string productName, string companyName, NutritionLabel label, List<Ingredient> ingredients, List<Vitamins> vitamins);
+
+        public bool addFlag(FoodFlag flag);
+        public NutritionLabel retrieveNutrtionLabel(FoodItem food);
+
+     
+
     }
 }

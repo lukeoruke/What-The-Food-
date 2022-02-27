@@ -324,22 +324,30 @@ namespace Console_Runner.DAL
         }
         public bool createNewProduct(string barcode, string productName, string companyName, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList)
         {
-            nutritionLabel.barcode = barcode;
-            //Creates connection between barcode and list of food items connected to the corrosponding food item based on barcode
-            for (int i = 0; i < ingredientList.Count; i++)
+            try
             {
-                LabelIdentifyer label = new();
-                label.barcode = barcode;
-                label.ingredientID = ingredientList[i].ingredientID;
-                context.ingredientIdentifyer.Add(label);
-            }
-            for(int i = 0; i < vitaminsList.Count; i++)
+                nutritionLabel.barcode = barcode;
+                //Creates connection between barcode and list of food items connected to the corrosponding food item based on barcode
+                for (int i = 0; i < ingredientList.Count; i++)
+                {
+                    LabelIdentifyer label = new();
+                    label.barcode = barcode;
+                    label.ingredientID = ingredientList[i].ingredientID;
+                    context.ingredientIdentifyer.Add(label);
+                }
+                for (int i = 0; i < vitaminsList.Count; i++)
+                {
+                    Vitamins vit = vitaminsList[i];
+                    vit.barcode = barcode;
+                    context.vitamins.Add(vit);
+                }
+                context.SaveChanges();
+                return true;
+            }catch (Exception ex)
             {
-                Vitamins vit = vitaminsList[i];
-                vit.barcode = barcode;
-                context.vitamins.Add(vit);
+                return false;
             }
-            context.SaveChanges();
+            
         }
 
     }

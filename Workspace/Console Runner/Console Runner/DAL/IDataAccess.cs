@@ -42,9 +42,20 @@ namespace Console_Runner.DAL
 
         public NutritionLabel retrieveNutrtionLabel(FoodItem food);
 
-        public bool createNewProduct(FoodItem food, List<IngredientIdentifyers> ingredientIdentifyersList, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList);
 
-        public bool addIngredient()
+
+        //generate labelIdentification rows in table using barcode as labelID
+        public bool createNewProduct(FoodItem food, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredients);
+
+        public bool addIngredient(Ingredient ingredient);
+
+        public bool removeIngredient(Ingredient ingredient);
+
+        
+
+
+
+
 
     }
 }

@@ -17,7 +17,7 @@ namespace Food_Class_Library
         }
 
         //Property Implementation
-        public string barcode;
+        public string barcode { get; set; }
         public string ingredientID{ get; set; }
 
     }

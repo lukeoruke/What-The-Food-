@@ -61,7 +61,7 @@ namespace Class1
                 table.barcode,
                 table.vitaminName
             }) ;
-            builder.Entity<IngredientIdentifyers>().HasKey(table => new
+            builder.Entity<LabelIdentifyer>().HasKey(table => new
             {
                 table.barcode,
                 table.ingredientID
@@ -87,7 +87,7 @@ namespace Class1
 
         public DbSet<FoodItem> foodItems { get; set; }
 
-        public DbSet<IngredientIdentifyers> ingredientIdentifyer { get; set; }
+        public DbSet<LabelIdentifyer> ingredientIdentifyer { get; set; }
 
         public DbSet<NutritionLabel> nutritionLabels { get; set; }
 

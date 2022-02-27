@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "UfV85Ct+0NW34jPFm8ygFU1ch/NTHMnD1+nQkOK5/zs=",
+  "Source": "Microservices.AccountLogin",
+  "BasePath": "_content/Microservices.AccountLogin",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

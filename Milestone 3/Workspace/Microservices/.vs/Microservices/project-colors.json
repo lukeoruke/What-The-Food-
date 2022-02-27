@@ -1,0 +1,31 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "bd951469-cb33-45a2-ae83-ac17df39d955": {
+      "ProjectGuid": "bd951469-cb33-45a2-ae83-ac17df39d955",
+      "DisplayName": "Account-Login.Mircroservices",
+      "ColorIndex": 0
+    },
+    "8ba88439-fb79-49a1-abd0-0829cd4bb082": {
+      "ProjectGuid": "8ba88439-fb79-49a1-abd0-0829cd4bb082",
+      "DisplayName": "Gateway.WebApi",
+      "ColorIndex": 1
+    },
+    "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3": {
+      "ProjectGuid": "a2fe74e1-b743-11d0-ae1a-00a0c90fffc3",
+      "DisplayName": "Miscellaneous Files",
+      "ColorIndex": -1
+    },
+    "73f4e001-4851-4f98-8177-af378825e8dc": {
+      "ProjectGuid": "73f4e001-4851-4f98-8177-af378825e8dc",
+      "DisplayName": "Product.Microservice",
+      "ColorIndex": 2
+    },
+    "62752f75-54a4-4600-aa7e-0d0dab3f6298": {
+      "ProjectGuid": "62752f75-54a4-4600-aa7e-0d0dab3f6298",
+      "DisplayName": "Microservcies.Account_Login",
+      "ColorIndex": 3
+    }
+  },
+  "NextColorIndex": 4
+}

@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "Wyrf9//7F+141c/jNTgEt++0xTnX9/GYUpOcn29NZ5w=",
+  "Source": "Microservices.Scan_Search",
+  "BasePath": "_content/Microservices.Scan_Search",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

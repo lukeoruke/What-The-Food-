@@ -38,11 +38,31 @@ namespace Console_Runner.Food
         {
             return dal.getAllAccountFlags(email);
         }
+        
+        //gets and returns the union of all ingredients in both the item corosponding to the given barcode and items that exist within the users flags.
+        public List<Ingredient> productFlagCheck(string email, string barcode)
+        {
+            List<Ingredient> flaggedIngredientsInProduct = new();
+            List<FoodFlag> userFlags = dal.getAllAccountFlags(email);
+            List<Ingredient> ingredientList = dal.retrieveIngredientList(barcode);
+            for(int i = 0; i < ingredientList.Count; i++)
+            {
+                for(int j = 0; j < userFlags.Count; j++)
+                {
+                    if (ingredientList[i].ingredientID == userFlags[j].ingredientID)
+                    {
+                        flaggedIngredientsInProduct.Add(ingredientList[i]);
+                    }
+                }
+                
+            }
+            return flaggedIngredientsInProduct;
+        }
 
         public List<Ingredient> foodContainsFlaggedItem(string barcode, string email)
         {
             FoodItem food = retrieveScannedFoodItem(barcode);
-            List<Ingredient> flaggedIngredients = retrieveIngredientList(food.labelID);
+            List<Ingredient> flaggedIngredients = retrieveIngredientList(food.barcode);
             for (int i = 0; i < flaggedIngredients.Count; i++)
             {
                 if (dal.accountHasFlag(email, flaggedIngredients[i].ingredientID))

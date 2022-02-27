@@ -39,9 +39,12 @@ namespace Console_Runner.DAL
         public bool addFoodItem(string barcode, string productName, string companyName, NutritionLabel label, List<Ingredient> ingredients, List<Vitamins> vitamins);
 
         public bool addFlag(FoodFlag flag);
+
         public NutritionLabel retrieveNutrtionLabel(FoodItem food);
 
-     
+        public bool createNewProduct(FoodItem food, List<IngredientIdentifyers> ingredientIdentifyersList, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList);
+
+        public bool addIngredient()
 
     }
 }

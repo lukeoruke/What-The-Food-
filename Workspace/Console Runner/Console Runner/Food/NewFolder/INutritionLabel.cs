@@ -11,7 +11,7 @@ namespace Food_Class_Library
     internal interface INutritionLabel
     {
         [Key]
-        string labelID { get; }
+        string barcode { get; }
         int Calories { get; set; }
         int Servings { get; set; }
         Double ServingSize { get; set; }

@@ -11,7 +11,7 @@ namespace Food_Class_Library
     public class NutritionLabel : INutritionLabel
     {
         [Key]
-        public string labelID { get;}
+        public string barcode { get;}
         public NutritionLabel()
         {
         }
@@ -32,7 +32,7 @@ namespace Food_Class_Library
             this.TotalSugars = totalSugars;
             this.AddedSugar = addedSugar;
             this.Protein = protein;
-            this.labelID = labelID;
+            this.barcode = labelID;
         }
  
         public int Calories { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

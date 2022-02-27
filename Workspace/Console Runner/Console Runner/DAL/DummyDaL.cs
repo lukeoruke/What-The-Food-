@@ -18,7 +18,7 @@ namespace Console_Runner.DAL
         List<FoodFlag> flagsList = new();
         List<Ingredient> ingredientsList = new();
         List<NutritionLabel> nutritionLabelsList = new();
-        List<IngredientIdentifyers> ingredientIdentifyersList = new();
+        List<LabelIdentifyer> ingredientIdentifyersList = new();
 
         public bool accountExists(string email)
         {
@@ -237,7 +237,7 @@ namespace Console_Runner.DAL
         {
             for (int i = 0; i < nutritionLabelsList.Count; i++)
             {
-                if (nutritionLabelsList[i].labelID == food.labelID)
+                if (nutritionLabelsList[i].barcode == food.labelID)
                 {
                     return nutritionLabelsList[i];
                 }
@@ -250,7 +250,7 @@ namespace Console_Runner.DAL
             List<Ingredient> ingredients = new List<Ingredient>();
             for(int i = 0; i < ingredientIdentifyersList.Count; i++)
             {
-                if(ingredientIdentifyersList[i].labelID == labelID)
+                if(ingredientIdentifyersList[i].barcode == labelID)
                 {
                     for(int j = 0; j < ingredientsList.Count; j++)
                     {

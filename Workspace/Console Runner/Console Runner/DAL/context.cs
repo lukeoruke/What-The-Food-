@@ -55,28 +55,28 @@ namespace Class1
                 table.email,
                 table.foodItems
             });
-            builder.Entity<Label_FoodItem>().HasKey(table => new
-            {
-                table.labelID,
-                table.barcode
-            });
+ 
             builder.Entity<Vitamins>().HasKey(table => new
             {
-                table.labelID,
+                table.barcode,
                 table.vitaminName
             }) ;
             builder.Entity<IngredientIdentifyers>().HasKey(table => new
             {
-                table.labelID,
+                table.barcode,
                 table.ingredientID
             });
             builder.Entity<NutritionLabel>().HasKey(table => new
             {
-                table.labelID
+                table.barcode
             });
             builder.Entity<FoodFlag>().HasKey(table => new
             {
                 table.accountEmail,
+                table.ingredientID
+            });
+            builder.Entity<Ingredient>().HasKey(table => new
+            {
                 table.ingredientID
             });
         }
@@ -86,8 +86,6 @@ namespace Class1
         public DbSet<Vitamins> vitamins { get; set;}
 
         public DbSet<FoodItem> foodItems { get; set; }
-
-        public DbSet<Label_FoodItem> label_foodItem { get; set; }
 
         public DbSet<IngredientIdentifyers> ingredientIdentifyer { get; set; }
 

@@ -45,7 +45,7 @@ namespace Console_Runner.Food
             List<Ingredient> flaggedIngredients = retrieveIngredientList(food.labelID);
             for (int i = 0; i < flaggedIngredients.Count; i++)
             {
-                if (accountHasFlag(email, flaggedIngredients[i].ingredientID))
+                if (dal.accountHasFlag(email, flaggedIngredients[i].ingredientID))
                 {
                     flaggedIngredients.Add(flaggedIngredients[i]);
                 }
@@ -61,6 +61,11 @@ namespace Console_Runner.Food
         public NutritionLabel retrieveNutrtionLabel(FoodItem food)
         {
             return dal.retrieveNutrtionLabel(food);
+        }
+
+        public List<Ingredient> retrieveIngredientList(string labelID)
+        {
+            return dal.retrieveIngredientList(labelID);
         }
 
     }

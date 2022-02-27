@@ -302,17 +302,17 @@ namespace Console_Runner.DAL
 
         public NutritionLabel retrieveNutrtionLabel(FoodItem food)
         {
-            return context.nutritionLabels.Find(food.labelID);
+            return context.nutritionLabels.Find(food.barcode);
         }
 
-        public List<Ingredient> retrieveIngredientList(string labelID)
+        public List<Ingredient> retrieveIngredientList(string barcode)
         {
             List<Ingredient> ingredients = new List<Ingredient>();
             foreach (var Ingredient in context.ingredientIdentifyer)
             {
-                if(Ingredient.labelID == labelID)
+                if(Ingredient.barcode == barcode)
                 {
-                    ingredients.Add(context.ingredients.Find(labelID));
+                    ingredients.Add(context.ingredients.Find(barcode));
                 }
             }
             return ingredients;
@@ -322,5 +322,25 @@ namespace Console_Runner.DAL
             FoodItem foodItem = new FoodItem(barcode, productName, companyName);
             return false;
         }
+        public bool createNewProduct(string barcode, string productName, string companyName, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList)
+        {
+            nutritionLabel.barcode = barcode;
+            //Creates connection between barcode and list of food items connected to the corrosponding food item based on barcode
+            for (int i = 0; i < ingredientList.Count; i++)
+            {
+                LabelIdentifyer label = new();
+                label.barcode = barcode;
+                label.ingredientID = ingredientList[i].ingredientID;
+                context.ingredientIdentifyer.Add(label);
+            }
+            for(int i = 0; i < vitaminsList.Count; i++)
+            {
+                Vitamins vit = vitaminsList[i];
+                vit.barcode = barcode;
+                context.vitamins.Add(vit);
+            }
+            context.SaveChanges();
+        }
+
     }
 }

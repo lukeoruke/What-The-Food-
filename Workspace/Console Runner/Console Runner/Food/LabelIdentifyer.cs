@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 namespace Food_Class_Library
 {
     //TODO: Perhaps add abstraction to this class. What should we add to increase security of an Ingredient object
-        public class IngredientIdentifyers
+        public class LabelIdentifyer
     {
         //Constructor
-        public IngredientIdentifyers()
+        public LabelIdentifyer()
         {
         }
 
         //Property Implementation
-        public string labelID;
+        public string barcode;
         public string ingredientID{ get; set; }
 
     }

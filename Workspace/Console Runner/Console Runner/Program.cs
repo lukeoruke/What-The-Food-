@@ -11,7 +11,7 @@ using Console_Runner.DAL;
 using Console_Runner.AMRModel;
 
 IDataAccess dal = new DummyDaL();
-ILogger log = new Logging();
+ILogger log = new Logging(dal);
 UM um = new UM(dal, log);
 Archiving archiver = new Archiving();
 archiver.archiveStartThread();

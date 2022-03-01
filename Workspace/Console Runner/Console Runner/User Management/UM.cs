@@ -23,7 +23,7 @@ namespace Console_Runner
             Console.WriteLine("Creating UM object");
             this.dal = DAL;
             this.logger = logging;
-            logger = new Logging();
+            logger = new Logging(this.dal);
         }
 
 

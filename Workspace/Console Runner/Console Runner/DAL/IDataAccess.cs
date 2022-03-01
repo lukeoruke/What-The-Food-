@@ -24,27 +24,17 @@ namespace Console_Runner.DAL
         public int AdminCount();
         public bool addHistoryItem();
         public bool isAdmin(string email);
-
-
         public bool accountHasFlag(string email, string flag);
-
         public bool removeFoodFlag(string email, string flag);
-
         public List<FoodFlag> getAllAccountFlags(string email);
 
         public FoodItem retrieveScannedFoodItem(string barcode);
-
         public List<Ingredient> retrieveIngredientList(string labelID);
-
         public bool addFoodItem(string barcode, string productName, string companyName, 
             NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList);
-
         public bool addFlag(FoodFlag flag);
-
         public NutritionLabel retrieveNutrtionLabel(FoodItem food);
-
         public bool addIngredient(Ingredient ingredient);
-
         public bool removeIngredient(Ingredient ingredient);
     }
 }

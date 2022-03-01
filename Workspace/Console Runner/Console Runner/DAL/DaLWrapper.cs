@@ -292,6 +292,7 @@ namespace Console_Runner.DAL
             return flagList;
         }
 
+
  
         ///////////////////////////////////////////////////////////////////////////////////FOOD ITEMS//////////////////////////////////////////////////////////////////////////////////////////
 
@@ -322,7 +323,7 @@ namespace Console_Runner.DAL
             FoodItem foodItem = new FoodItem(barcode, productName, companyName);
             return false;
         }
-        public bool createNewProduct(string barcode, string productName, string companyName, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList)
+        public bool addFoodItem(string barcode, string productName, string companyName, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList)
         {
             try
             {
@@ -349,6 +350,36 @@ namespace Console_Runner.DAL
             }
             
         }
+
+        public bool addIngredient(Ingredient ingredient)
+        {
+            try
+            {
+                context.ingredients.Add(ingredient);
+                context.SaveChanges();
+                return true;
+            }catch(Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+        public bool removeIngredient(Ingredient ingredient)
+        {
+            try
+            {
+                context.ingredients.Remove(ingredient);
+                context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
 
     }
 }

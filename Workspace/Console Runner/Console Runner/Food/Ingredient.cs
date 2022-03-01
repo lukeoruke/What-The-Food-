@@ -21,5 +21,12 @@ namespace Console_Runner.Food
 
         }
 
+        public Ingredient(string ingredientName, string ingredientShortName, string ingredientDescription)
+        {
+            this.ingredientName = ingredientName;
+            this.ingredientDescription = ingredientDescription;
+            this.ingredientShortName = ingredientShortName;
+        }
+
     }
 }

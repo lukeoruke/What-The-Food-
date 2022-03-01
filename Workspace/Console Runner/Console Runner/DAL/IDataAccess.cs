@@ -36,26 +36,15 @@ namespace Console_Runner.DAL
 
         public List<Ingredient> retrieveIngredientList(string labelID);
 
-        public bool addFoodItem(string barcode, string productName, string companyName, NutritionLabel label, List<Ingredient> ingredients, List<Vitamins> vitamins);
+        public bool addFoodItem(string barcode, string productName, string companyName, 
+            NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList);
 
         public bool addFlag(FoodFlag flag);
 
         public NutritionLabel retrieveNutrtionLabel(FoodItem food);
 
-
-
-        //generate labelIdentification rows in table using barcode as labelID
-        public bool createNewProduct(FoodItem food, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredients);
-
         public bool addIngredient(Ingredient ingredient);
 
         public bool removeIngredient(Ingredient ingredient);
-
-        
-
-
-
-
-
     }
 }

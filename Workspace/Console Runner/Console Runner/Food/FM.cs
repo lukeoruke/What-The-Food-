@@ -61,8 +61,8 @@ namespace Console_Runner.Food
 
         public List<Ingredient> foodContainsFlaggedItem(string barcode, string email)
         {
-            FoodItem food = retrieveScannedFoodItem(barcode);
-            List<Ingredient> flaggedIngredients = retrieveIngredientList(food.barcode);
+            FoodItem food = getScannedFoodItem(barcode);
+            List<Ingredient> flaggedIngredients = getIngredientList(food.barcode);
             for (int i = 0; i < flaggedIngredients.Count; i++)
             {
                 if (dal.accountHasFlag(email, flaggedIngredients[i].ingredientID))
@@ -73,19 +73,32 @@ namespace Console_Runner.Food
             return flaggedIngredients;
         }
 
-        public FoodItem retrieveScannedFoodItem(string barcode)
+        public FoodItem getScannedFoodItem(string barcode)
         {
             return dal.retrieveScannedFoodItem(barcode);
         }
 
-        public NutritionLabel retrieveNutrtionLabel(FoodItem food)
+        public NutritionLabel getNutrtionLabel(FoodItem food)
         {
             return dal.retrieveNutrtionLabel(food);
         }
 
-        public List<Ingredient> retrieveIngredientList(string labelID)
+        public List<Ingredient> getIngredientList(string labelID)
         {
             return dal.retrieveIngredientList(labelID);
+        }
+
+        public bool addIngredient(Ingredient ingredient)
+        {
+            try
+            {
+                dal.addIngredient(ingredient);
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
+            }
+            
         }
 
     }

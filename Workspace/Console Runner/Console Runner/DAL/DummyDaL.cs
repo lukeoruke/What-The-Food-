@@ -237,7 +237,7 @@ namespace Console_Runner.DAL
         {
             for (int i = 0; i < nutritionLabelsList.Count; i++)
             {
-                if (nutritionLabelsList[i].barcode == food.labelID)
+                if (nutritionLabelsList[i].barcode == food.barcode)
                 {
                     return nutritionLabelsList[i];
                 }
@@ -263,11 +263,62 @@ namespace Console_Runner.DAL
             }
             return ingredients;
         }
-        public bool addFoodItem(string barcode, string productName, string companyName, NutritionLabel label, List<Ingredient> ingredients, List<Vitamins> vitamins)
+        public bool addFoodItem(string barcode, string productName, string companyName, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList)
         {
-            FoodItem foodItem = new FoodItem(barcode, productName, companyName);
-            return false;
+            try
+            {
+                nutritionLabel.barcode = barcode;
+                //Creates connection between barcode and list of food items connected to the corrosponding food item based on barcode
+                for (int i = 0; i < ingredientList.Count; i++)
+                {
+                    LabelIdentifyer label = new();
+                    label.barcode = barcode;
+                    label.ingredientID = ingredientList[i].ingredientID;
+                    ingredientIdentifyersList.Add(label);
+                }
+                for (int i = 0; i < vitaminsList.Count; i++)
+                {
+                    Vitamins vit = vitaminsList[i];
+                    vit.barcode = barcode;
+                    vitaminsList.Add(vit);
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
         }
+
+        public bool addIngredient(Ingredient ingredient)
+        {
+            try
+            {
+                ingredientsList.Add(ingredient);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
+        public bool removeIngredient(Ingredient ingredient)
+        {
+            try
+            {
+                ingredientsList.Remove(ingredient);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+        }
+
 
 
     }

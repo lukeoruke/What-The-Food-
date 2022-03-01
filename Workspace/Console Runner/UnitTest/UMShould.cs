@@ -7,7 +7,7 @@ using LogAndArchive;
 //---------------------------------NOTICE, THIS FILE NOT BEEN UPDATED WITH THE CHANGES TO AUTHORIZATION AND WILL NOT WORK AS EXPECTED-----------------------------------
 namespace UnitTest
 {
-    public class UnitTest1
+    public class UMShould
     {
 
 

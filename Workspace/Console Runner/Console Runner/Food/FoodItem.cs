@@ -9,7 +9,6 @@ namespace Console_Runner.Food
 {
    public class FoodItem
     {
-        [Key]
         public string barcode { get; set; }
         public string productName { get; set; }
         public string companyName { get; set; }

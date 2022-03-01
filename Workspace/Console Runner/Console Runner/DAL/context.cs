@@ -79,6 +79,10 @@ namespace Class1
             {
                 table.ingredientID
             });
+            builder.Entity<FoodItem>().HasKey(table => new
+            {
+                table.barcode
+            });
         }
         public DbSet<Ingredient> ingredients { get; set; }
         public DbSet<FoodFlag> foodFlags { get; set; }

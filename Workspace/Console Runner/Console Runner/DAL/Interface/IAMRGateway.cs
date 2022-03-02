@@ -10,7 +10,7 @@ namespace Console_Runner.DAL
     /// <summary>
     /// 
     /// </summary>
-    public interface IAMRRepo
+    public interface IAMRGateway
     {
         public bool AMRExists(string email);
         public AMR? GetAMR(string email);

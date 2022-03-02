@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Console_Runner.DAL
 {
-    public interface IPermissionRepo
+    public interface IPermissionGateway
     {
         /// <summary>
         /// Checks if the specified Account has a specified Permission associated with it.

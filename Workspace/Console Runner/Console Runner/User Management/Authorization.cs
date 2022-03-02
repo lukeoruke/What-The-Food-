@@ -17,20 +17,20 @@ namespace Console_Runner
         public string permission { get; set; }
 
         [NotMapped]
-        public IPermissionRepo dataAccess { get;}
+        public IPermissionGateway dataAccess { get;}
 
         public user_permissions()
         {
 
         }
-        public user_permissions(IPermissionRepo dal)
+        public user_permissions(IPermissionGateway dal)
         {
             this.dataAccess = dal;
             this.email = "";
             this.permission = "";
 
         }
-        public user_permissions(string email, string permission, IPermissionRepo dal)
+        public user_permissions(string email, string permission, IPermissionGateway dal)
         {
             this.dataAccess = dal;
             this.email = email;

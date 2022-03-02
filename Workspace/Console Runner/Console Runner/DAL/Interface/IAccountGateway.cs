@@ -7,7 +7,7 @@ using User;
 
 namespace Console_Runner.DAL
 {
-    public interface IAccountRepo
+    public interface IAccountGateway
     {
         /// <summary>
         /// Verify whether an Account object exists in the database with the provided email.

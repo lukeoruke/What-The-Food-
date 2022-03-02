@@ -8,9 +8,14 @@ using Console_Runner;
 
 namespace Console_Runner.DAL
 {
-    public class EFPermissionRepo : IPermissionRepo
+    public class EFPermissionGateway : IPermissionGateway
     {
         private Context EFContext = new();
+
+        public EFPermissionGateway(Context dbContext)
+        {
+            EFContext = dbContext;
+        }
 
         public bool HasPermission(string email, string permission)
         {

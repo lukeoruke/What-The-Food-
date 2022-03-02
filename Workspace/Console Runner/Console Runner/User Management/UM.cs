@@ -16,10 +16,10 @@ namespace Console_Runner
     public class UM
     {
         private const string UM_CATEGORY = "Data Store";
-        private readonly IAccountRepo _accountAccess;
-        private readonly IPermissionRepo _permissionAccess;
+        private readonly IAccountGateway _accountAccess;
+        private readonly IPermissionGateway _permissionAccess;
         private readonly ILogger _logger;
-        public UM(IAccountRepo accountAccess, IPermissionRepo permissionAccess, ILogger logging)
+        public UM(IAccountGateway accountAccess, IPermissionGateway permissionAccess, ILogger logging)
         {
             Console.WriteLine("Creating UM object");
             _accountAccess = accountAccess;

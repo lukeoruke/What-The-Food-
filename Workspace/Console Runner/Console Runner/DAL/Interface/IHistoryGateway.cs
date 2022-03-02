@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Console_Runner.DAL
 {
-    public interface IHistoryRepo
+    public interface IHistoryGateway
     {
         public bool AddHistoryItem();
     }

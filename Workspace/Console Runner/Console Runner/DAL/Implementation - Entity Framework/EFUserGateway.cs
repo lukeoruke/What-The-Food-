@@ -8,17 +8,18 @@ using User;
 
 namespace Console_Runner.DAL
 {
-    public class EFUserRepo : IAccountRepo
+    public class EFUserGateway : IAccountGateway
     {
-        private Context EFContext = new();
-        public EFUserRepo()
-        {
+        private Context _efContext;
 
+        public EFUserGateway(Context dbcontext)
+        {
+            _efContext = dbcontext;
         }
 
         public bool AccountExists(string email)
         {
-            if (EFContext.Accounts.Find(email) != null)
+            if (_efContext.Accounts.Find(email) != null)
             {
                 return true;
             }
@@ -29,8 +30,8 @@ namespace Console_Runner.DAL
         {
             try
             {
-                EFContext.Accounts.Add(acc);
-                EFContext.SaveChanges();
+                _efContext.Accounts.Add(acc);
+                _efContext.SaveChanges();
                 return true;
             }
             catch (Exception ex)
@@ -43,7 +44,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                Account acc = EFContext.Accounts.Find(email);
+                Account acc = _efContext.Accounts.Find(email);
                 if (acc != null)
                 {
                     return acc;
@@ -65,8 +66,8 @@ namespace Console_Runner.DAL
             {
                 if (AccountExists(acc.Email))
                 {
-                    EFContext.Remove(acc);
-                    EFContext.SaveChanges();
+                    _efContext.Remove(acc);
+                    _efContext.SaveChanges();
                 }
                 return true;
             }
@@ -80,8 +81,8 @@ namespace Console_Runner.DAL
         {
             try
             {
-                EFContext.Accounts.Update(acc);
-                EFContext.SaveChanges(true);
+                _efContext.Accounts.Update(acc);
+                _efContext.SaveChanges(true);
                 return true;
             }
             catch (Exception ex)

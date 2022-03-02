@@ -17,25 +17,24 @@ namespace Console_Runner
         public string permission { get; set; }
 
         [NotMapped]
-        public IDataAccess dataAccess { get;}
+        public IPermissionRepo dataAccess { get;}
 
         public user_permissions()
         {
 
         }
-        public user_permissions(IDataAccess dal)
+        public user_permissions(IPermissionRepo dal)
         {
             this.dataAccess = dal;
             this.email = "";
             this.permission = "";
 
         }
-        public user_permissions(string email, string permission, IDataAccess dal)
+        public user_permissions(string email, string permission, IPermissionRepo dal)
         {
             this.dataAccess = dal;
             this.email = email;
             this.permission = permission;
-
         }
         public void setUserPermissions(string email, string permission)
         {
@@ -45,30 +44,30 @@ namespace Console_Runner
         /* contains a package of the defualt permissions that will be assigned to all new user accounts.
         * Email: the PK of the account we are giving these permissions to
         */
-        public void defaultUserPermissions(string email)
+        public void AssignDefaultUserPermissions(string email)
         {
 
-            dataAccess.addPermission(email, "scanFood");
-            dataAccess.addPermission(email, "editOwnAccount");
-            dataAccess.addPermission(email, "leaveReview");
-            dataAccess.addPermission(email, "deleteOwnAccount");
-            dataAccess.addPermission(email, "historyAccess");
-            dataAccess.addPermission(email, "AMR");
-            dataAccess.addPermission(email, "foodFlag");
+            dataAccess.AddPermission(email, "scanFood");
+            dataAccess.AddPermission(email, "editOwnAccount");
+            dataAccess.AddPermission(email, "leaveReview");
+            dataAccess.AddPermission(email, "deleteOwnAccount");
+            dataAccess.AddPermission(email, "historyAccess");
+            dataAccess.AddPermission(email, "AMR");
+            dataAccess.AddPermission(email, "foodFlag");
 
         }
         /* contains a package of the defualt permissions that will be assigned to all new admin accounts.
          * Email: the PK of the account we are giving these permissions to
          */
-        public void defaultAdminPermissions(string email)
+        public void AssignDefaultAdminPermissions(string email)
         {
 
             //defualtUserPermissions(email);
-            dataAccess.addPermission(email, "enableAccount");
-            dataAccess.addPermission(email, "disableAccount");
-            dataAccess.addPermission(email, "deleteAccount");
-            dataAccess.addPermission(email, "createAdmin");
-            dataAccess.addPermission(email, "editOtherAccount");
+            dataAccess.AddPermission(email, "enableAccount");
+            dataAccess.AddPermission(email, "disableAccount");
+            dataAccess.AddPermission(email, "deleteAccount");
+            dataAccess.AddPermission(email, "createAdmin");
+            dataAccess.AddPermission(email, "editOtherAccount");
         }
     }
 

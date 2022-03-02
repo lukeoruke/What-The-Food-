@@ -172,7 +172,7 @@ namespace UnitTest
             um.UserSignUp(acc);
 
             //act
-            Account temp = um.getUserAcc(acc.Email);
+            Account temp = um.GetUserAccount(acc.Email);
             //Assert
             Assert.True(temp == acc);
         }
@@ -207,7 +207,7 @@ namespace UnitTest
             um.UserSignUp(acc);
             
             //act
-            um.signIn(acc.Email,acc.Password);
+            um.SignIn(acc.Email,acc.Password);
             //Assert
             Assert.True(acc.isActive);
         }
@@ -235,7 +235,7 @@ namespace UnitTest
             um.UserSignUp(acc);
 
             //act
-            um.promoteToAdmin(admin, acc.Email);
+            um.PromoteToAdmin(admin, acc.Email);
 
             //Assert
             Assert.True(dal.hasPermission(acc.Email, "createAdmin"));

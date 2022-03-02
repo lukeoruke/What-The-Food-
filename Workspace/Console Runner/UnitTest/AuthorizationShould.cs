@@ -61,7 +61,7 @@ namespace UnitTest
 
             // Act
             user_permissions perm1 = new user_permissions("", "", dal);
-            perm1.defaultUserPermissions(testEmail);
+            perm1.AssignDefaultUserPermissions(testEmail);
 
             // Assert
             Assert.True(dal.hasPermission(testEmail, "scanFood"));

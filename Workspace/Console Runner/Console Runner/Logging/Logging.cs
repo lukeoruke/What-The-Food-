@@ -131,7 +131,7 @@ namespace LogAndArchive
                         using (var context = new Context())
                         {
                             DateTime logDate;
-                            foreach (var oldLogs in context.logs)
+                            foreach (var oldLogs in context.Logs)
                             {
                                 logDate = Convert.ToDateTime(oldLogs.Date + " " + oldLogs.Time);             //get the string value of Date from Logs datastore and convert to DateTime
                                 Console.WriteLine(oldLogs.ToString());

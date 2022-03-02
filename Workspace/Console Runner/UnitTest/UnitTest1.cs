@@ -17,7 +17,7 @@ namespace UnitTest
 
             //Arange
             IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
+            ILogger log = new Logging(dal);
             UM um = new UM(dal, log);
 
             string tester = "unitTester";
@@ -39,7 +39,7 @@ namespace UnitTest
         {
             //Arange
             IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
+            ILogger log = new Logging(dal);
             UM um = new UM(dal, log);
 
             Account admin = new Account();
@@ -68,7 +68,7 @@ namespace UnitTest
         {
             //Arange
             IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
+            ILogger log = new Logging(dal);
             UM um = new UM(dal, log);
 
             Account admin = new Account();
@@ -103,7 +103,7 @@ namespace UnitTest
         {
             //arange 
             IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
+            ILogger log = new Logging(dal);
             UM um = new UM(dal, log);
 
             Account admin = new Account();
@@ -133,7 +133,7 @@ namespace UnitTest
         {
             //arange 
             IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
+            ILogger log = new Logging(dal);
             UM um = new UM(dal, log);
 
             Account admin = new Account();
@@ -162,7 +162,7 @@ namespace UnitTest
         {
             //arange 
             IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
+            ILogger log = new Logging(dal);
             UM um = new UM(dal, log);
 
             Account acc = new Account();
@@ -181,7 +181,7 @@ namespace UnitTest
         {
             //arange 
             IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
+            ILogger log = new Logging(dal);
             UM um = new UM(dal, log);
 
             Account acc = new Account();
@@ -198,7 +198,7 @@ namespace UnitTest
         {
             //arange 
             IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
+            ILogger log = new Logging(dal);
             UM um = new UM(dal, log);
 
             Account acc = new Account();
@@ -216,7 +216,7 @@ namespace UnitTest
         {
             //arange 
             IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
+            ILogger log = new Logging(dal);
             UM um = new UM(dal, log);
 
             Account admin = new Account();

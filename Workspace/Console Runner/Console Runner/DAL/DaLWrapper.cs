@@ -27,7 +27,7 @@ namespace Console_Runner.DAL
         public bool accountExists(string email)
         {
 
-            if (context.accounts.Find(email) != null)
+            if (context.Accounts.Find(email) != null)
             {
                 return true;
             }
@@ -43,7 +43,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                Account acc = context.accounts.Find(email);
+                Account acc = context.Accounts.Find(email);
                 if (acc != null)
                 {
                     return acc;
@@ -69,7 +69,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                context.accounts.Add(acc);
+                context.Accounts.Add(acc);
                 context.SaveChanges();
                 return true;
             }
@@ -112,7 +112,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                context.accounts.Update(acc);
+                context.Accounts.Update(acc);
                 context.SaveChanges(true);
                 return true;
             }
@@ -132,16 +132,16 @@ namespace Console_Runner.DAL
         /// <returns>true if the user has the specified permission false if they do not</returns>
         public bool hasPermission(string email, string permission)
         {
-            return context.permissions.Find(email, permission) != null;
+            return context.Permissions.Find(email, permission) != null;
         }
         public bool addPermission(string email, string permission)
         {
             try
             {
                 user_permissions newPermission = new user_permissions(email, permission, this);
-                if (context.permissions.Find(email, permission) == null)
+                if (context.Permissions.Find(email, permission) == null)
                 {
-                    context.permissions.Add(newPermission);
+                    context.Permissions.Add(newPermission);
                     context.SaveChanges();
                 }
                 return true;
@@ -166,7 +166,7 @@ namespace Console_Runner.DAL
                 user_permissions newPermission = new user_permissions(email, permission, this);
                 if (hasPermission(email, permission))
                 {
-                    context.permissions.Remove(newPermission);
+                    context.Permissions.Remove(newPermission);
                     context.SaveChanges();
                     return true;
                 }
@@ -186,7 +186,7 @@ namespace Console_Runner.DAL
         public List<user_permissions> getAllUserPermissions(string email)
         {
             List<user_permissions> alluserPermissions = new List<user_permissions>();
-            foreach (var permissions in context.permissions)
+            foreach (var permissions in context.Permissions)
             {
                 if (permissions.email == email)
                 {
@@ -203,11 +203,11 @@ namespace Console_Runner.DAL
         /// <returns></returns>
         public bool removeAllUserPermissions(string email)
         {
-            foreach (var permissions in context.permissions)
+            foreach (var permissions in context.Permissions)
             {
                 if (permissions.email == email)
                 {
-                    context.permissions.Remove(permissions);
+                    context.Permissions.Remove(permissions);
                 }
             }
             return true;
@@ -219,7 +219,7 @@ namespace Console_Runner.DAL
             int count = 0;
             using (var context = new Context())
             {
-                foreach (var account in context.accounts)
+                foreach (var account in context.Accounts)
                 {
                     if (hasPermission(account.Email, "createAdmin") && account.isActive) count++;
                 }
@@ -231,7 +231,7 @@ namespace Console_Runner.DAL
         {
             using (var context = new Context())
             {
-                foreach (var account in context.accounts)
+                foreach (var account in context.Accounts)
                 {
                     if (hasPermission(account.Email, "createAdmin") && account.isActive)
                     {
@@ -251,7 +251,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                context.foodFlags.Add(flag);
+                context.FoodFlags.Add(flag);
                 context.SaveChanges();
                 return true;
             }catch (Exception ex)
@@ -264,7 +264,7 @@ namespace Console_Runner.DAL
         public bool accountHasFlag(string email, string ingredientID)
         {
             FoodFlag foodFlag = new(email, ingredientID);
-            return context.foodFlags.Find(foodFlag) != null;
+            return context.FoodFlags.Find(foodFlag) != null;
         }
 
         public bool removeFoodFlag(string email, string ingredientID)
@@ -272,7 +272,7 @@ namespace Console_Runner.DAL
             if (accountHasFlag(email, ingredientID))
             {
                 FoodFlag foodFlag = new(email, ingredientID);
-                context.foodFlags.Remove(foodFlag);
+                context.FoodFlags.Remove(foodFlag);
                 context.SaveChanges();
                 return true;
             }
@@ -282,7 +282,7 @@ namespace Console_Runner.DAL
         public List<FoodFlag> getAllAccountFlags(string email)
         {
             List <FoodFlag> flagList = new List<FoodFlag>();
-            foreach (var flag in context.foodFlags)
+            foreach (var flag in context.FoodFlags)
             {
                 if(flag.accountEmail == email)
                 {
@@ -298,22 +298,22 @@ namespace Console_Runner.DAL
 
         public FoodItem retrieveScannedFoodItem(string barcode)
         {
-            return context.foodItems.Find(barcode);
+            return context.FoodItems.Find(barcode);
         }
 
         public NutritionLabel retrieveNutrtionLabel(FoodItem food)
         {
-            return context.nutritionLabels.Find(food.barcode);
+            return context.NutritionLabels.Find(food.barcode);
         }
 
         public List<Ingredient> retrieveIngredientList(string barcode)
         {
             List<Ingredient> ingredients = new List<Ingredient>();
-            foreach (var Ingredient in context.ingredientIdentifyer)
+            foreach (var Ingredient in context.IngredientIdentifier)
             {
                 if(Ingredient.barcode == barcode)
                 {
-                    ingredients.Add(context.ingredients.Find(barcode));
+                    ingredients.Add(context.Ingredients.Find(barcode));
                 }
             }
             return ingredients;
@@ -334,13 +334,13 @@ namespace Console_Runner.DAL
                     LabelIdentifyer label = new();
                     label.barcode = barcode;
                     label.ingredientID = ingredientList[i].ingredientID;
-                    context.ingredientIdentifyer.Add(label);
+                    context.IngredientIdentifier.Add(label);
                 }
                 for (int i = 0; i < vitaminsList.Count; i++)
                 {
                     Vitamins vit = vitaminsList[i];
                     vit.barcode = barcode;
-                    context.vitamins.Add(vit);
+                    context.Vitamins.Add(vit);
                 }
                 context.SaveChanges();
                 return true;
@@ -355,7 +355,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                context.ingredients.Add(ingredient);
+                context.Ingredients.Add(ingredient);
                 context.SaveChanges();
                 return true;
             }catch(Exception ex)
@@ -369,7 +369,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                context.ingredients.Remove(ingredient);
+                context.Ingredients.Remove(ingredient);
                 context.SaveChanges();
                 return true;
             }

@@ -84,24 +84,25 @@ namespace Class1
                 table.barcode
             });
         }
-        public DbSet<Ingredient> ingredients { get; set; }
-        public DbSet<FoodFlag> foodFlags { get; set; }
+        public DbSet<Ingredient> Ingredients { get; set; }
 
-        public DbSet<Vitamins> vitamins { get; set;}
+        public DbSet<FoodFlag> FoodFlags { get; set; }
 
-        public DbSet<FoodItem> foodItems { get; set; }
+        public DbSet<Vitamins> Vitamins { get; set;}
 
-        public DbSet<LabelIdentifyer> ingredientIdentifyer { get; set; }
+        public DbSet<FoodItem> FoodItems { get; set; }
 
-        public DbSet<NutritionLabel> nutritionLabels { get; set; }
+        public DbSet<LabelIdentifyer> IngredientIdentifier { get; set; }
 
-        public DbSet<Account> accounts { get; set; }
+        public DbSet<NutritionLabel> NutritionLabels { get; set; }
 
-        public DbSet<History> history { get; set; }
+        public DbSet<Account> Accounts { get; set; }
 
-        public DbSet<Logs> logs { get; set; }
+        public DbSet<History> History { get; set; }
 
-        public DbSet<user_permissions> permissions{get; set;}
+        public DbSet<Logs> Logs { get; set; }
+
+        public DbSet<user_permissions> Permissions {get; set;}
 
     }
 }

@@ -9,17 +9,17 @@ namespace Console_Runner.DAL
 {
     public interface IUserRepo
     {
-        public bool accountExists(string email);
-        public Account getAccount(string email);
-        public bool addAccount(Account acc);
-        public bool removeAccount(Account acc);
-        public bool updateAccount(Account acc);
-        public bool hasPermission(string email, string permission);
-        public bool addPermission(string email, string permission);
-        public bool removePermision(string email, string permission);
-        public List<user_permissions> getAllUserPermissions(string email);
+        public bool AccountExists(string email);
+        public Account GetAccount(string email);
+        public bool AddAccount(Account acc);
+        public bool RemoveAccount(Account acc);
+        public bool UpdateAccount(Account acc);
+        public bool HasPermission(string email, string permission);
+        public bool AddPermission(string email, string permission);
+        public bool RemovePermision(string email, string permission);
+        public List<user_permissions> GetAllUserPermissions(string email);
         public int AdminCount();
-        public bool addHistoryItem();
-        public bool isAdmin(string email);
+        public bool AddHistoryItem();
+        public bool IsAdmin(string email);
     }
 }

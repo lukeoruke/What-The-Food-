@@ -36,6 +36,7 @@ namespace LogAndArchive
         {
             ThreadStart archiver = new ThreadStart(_archiveActivate);
             _archiveThread = new Thread(archiver);
+            _archiveThread.IsBackground = true;
             _archiveThread.Start();
         }
 

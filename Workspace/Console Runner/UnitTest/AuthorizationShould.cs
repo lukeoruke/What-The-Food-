@@ -50,8 +50,8 @@ namespace UnitTest
             Assert.NotNull(perm1);
             Assert.NotNull(perm1.Email);
             Assert.NotNull(perm1.Resource);
-            Assert.Equal(modEmail, perm1.Email);
-            Assert.Equal(modResource, perm1.Resource);
+            Assert.NotEqual(modEmail, perm1.Email);
+            Assert.NotEqual(modResource, perm1.Resource);
         }
 
         [Fact]
@@ -85,7 +85,7 @@ namespace UnitTest
 
             // Act
             PermissionService permService = new PermissionService(EfPermission);
-            permService.AssignDefaultUserPermissions(testEmail);
+            permService.AssignDefaultAdminPermissions(testEmail);
 
             // Assert
             Assert.True(EfPermission.HasPermission(testEmail, "enableAccount"));

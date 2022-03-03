@@ -107,7 +107,7 @@ namespace Console_Runner.DAL
             {
                 foreach (var account in context.Accounts)
                 {
-                    if (HasPermission(account.Email, "createAdmin") && account.isActive) count++;
+                    if (HasPermission(account.Email, "createAdmin") && account.IsActive) count++;
                 }
             }
             return count;
@@ -119,7 +119,7 @@ namespace Console_Runner.DAL
             {
                 foreach (var account in context.Accounts)
                 {
-                    if (HasPermission(account.Email, "createAdmin") && account.isActive)
+                    if (HasPermission(account.Email, "createAdmin") && account.IsActive)
                     {
                         return true;
                     }

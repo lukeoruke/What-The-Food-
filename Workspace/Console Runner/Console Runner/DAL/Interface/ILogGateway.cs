@@ -7,8 +7,9 @@ using Console_Runner.Logging;
 
 namespace Console_Runner.DAL
 {
-    public interface ILogGateway
+    public interface IlogGateway
     {
         public bool WriteLog(Logs toLog);
+
     }
 }

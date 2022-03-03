@@ -7,7 +7,7 @@ using Console_Runner.Logging;
 
 namespace Console_Runner.DAL
 {
-    public class EFLogGateway : ILogGateway
+    public class EFLogGateway : IlogGateway
     {
         private readonly Context _efContext;
 

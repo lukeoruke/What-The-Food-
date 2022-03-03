@@ -32,7 +32,7 @@ namespace Console_Runner.User_Management
                     return false;
                 }
                 _permissionService.AssignDefaultUserPermissions(acc.Email);
-                acc.isActive = false;
+                acc.IsActive = false;
                 _accountAccess.AddAccount(acc);
                 _logger.LogAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
                 Console.WriteLine("UM operation was successful");
@@ -117,7 +117,7 @@ namespace Console_Runner.User_Management
             string fTemp = "", lTemp = "", pTemp = "";
             if (currentUser.Email != targetPK)
             {
-                if (!_permissionService.HasPermission(currentUser.Email,"editOtherAccount") || !currentUser.isActive)
+                if (!_permissionService.HasPermission(currentUser.Email,"editOtherAccount") || !currentUser.IsActive)
                 {
                     _logger.LogGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
                     return false;
@@ -160,7 +160,7 @@ namespace Console_Runner.User_Management
                 if (passwordChanged)
                     _logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, pTemp, npassword);
 
-                acc.isActive = false;
+                acc.IsActive = false;
                 Console.WriteLine("UM operation was successful");
                 return true;
             }
@@ -185,7 +185,7 @@ namespace Console_Runner.User_Management
             {
                 _logger.LogLogin(UM_CATEGORY, "test page", true, "", user);
                 Account acc = GetUserAccount(user);
-                acc.isActive = true;
+                acc.IsActive = true;
                 return acc;
             }
             else
@@ -201,17 +201,17 @@ namespace Console_Runner.User_Management
 		 */
         public bool DisableAccount(Account currentUser, string targetPK)
         {
-            if (!_permissionService.HasPermission(currentUser.Email,"disableAccount") || !currentUser.isActive)
+            if (!_permissionService.HasPermission(currentUser.Email,"disableAccount") || !currentUser.IsActive)
             {
                 _logger.LogAccountDeactivation(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
                 return false;
             }
+            if (!_accountAccess.AccountExists(targetPK))
+            {
+                return false;
+            }
             try
             {
-                if (!_accountAccess.AccountExists(targetPK))
-                {
-                    return false;
-                }
                 Account acc = _accountAccess.GetAccount(targetPK);
  
                 if (_permissionService.IsAdmin(targetPK) && (_permissionService.AdminCount() < 2))
@@ -219,8 +219,8 @@ namespace Console_Runner.User_Management
                     Console.WriteLine("Disabling this account would result in there being no admins.");
                     return false;
                 }
-                acc.enabled = false;
-                acc.isActive = false;
+                acc.Enabled = false;
+                acc.IsActive = false;
                 _accountAccess.UpdateAccount(acc);
                 _logger.LogAccountDeactivation(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
 
@@ -241,7 +241,7 @@ namespace Console_Runner.User_Management
 		 */
         public bool EnableAccount(Account currentUser, string targetPK)
         {
-            if (!_permissionService.HasPermission(currentUser.Email, "enableAccount") || !currentUser.isActive)
+            if (!_permissionService.HasPermission(currentUser.Email, "enableAccount") || !currentUser.IsActive)
             {
                 _logger.LogAccountEnabling(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
                 return false;
@@ -250,12 +250,11 @@ namespace Console_Runner.User_Management
             {
                 if (!_accountAccess.AccountExists(targetPK))
                 {
-
                     return false;
                 }
                 Account acc = _accountAccess.GetAccount(targetPK);
 
-                acc.enabled=true;
+                acc.Enabled=true;
                 _accountAccess.UpdateAccount(acc);
                 _logger.LogAccountEnabling(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
 
@@ -280,7 +279,7 @@ namespace Console_Runner.User_Management
         {
             try
             {
-                if (_permissionService.HasPermission(currentUser.Email,"createAdmin") && currentUser.isActive)
+                if (_permissionService.HasPermission(currentUser.Email,"createAdmin") && currentUser.IsActive)
                 {
                     Account? acc = _accountAccess.GetAccount(targetPK);
                     if (acc == null)

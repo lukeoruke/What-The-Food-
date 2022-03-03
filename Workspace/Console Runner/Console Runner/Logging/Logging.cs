@@ -214,12 +214,13 @@ namespace Console_Runner.Logging
 
     public class Logging : ILogger
     {
-        private ILogGateway _logAccess;
+        private IlogGateway _logAccess;
         //logging objects
-        public Logging(ILogGateway logAccessor)
+        public Logging(IlogGateway logAccessor)
         {
             _logAccess = logAccessor;
         }
+
 
         //base logging function that will write to the log.txt file. Will append logging information to the end of current date and time.
         public bool Log(string toLog)

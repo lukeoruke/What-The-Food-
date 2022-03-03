@@ -1,9 +1,7 @@
-using Class1;
-using Console_Runner;
-using User;
-using Xunit;
 using Console_Runner.DAL;
-using LogAndArchive;
+using Console_Runner.Logging;
+using Console_Runner.User_Management;
+using Xunit;
 //---------------------------------NOTICE, THIS FILE NOT BEEN UPDATED WITH THE CHANGES TO AUTHORIZATION AND WILL NOT WORK AS EXPECTED-----------------------------------
 namespace UnitTest
 {
@@ -16,9 +14,12 @@ namespace UnitTest
         {
 
             //Arange
-            IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
-            UM um = new UM(dal, log);
+            IAccountGateway accountGateway = new MemAccountGateway();
+            IPermissionGateway efPermissionGateway = new MemPermissionGateway();
+            PermissionService permService = new PermissionService(efPermissionGateway);
+            IlogGateway logAccess = new EFLogGateway();
+            Logging logger = new Logging(logAccess);
+            UM um = new(accountGateway, permService, logger);
 
             string tester = "unitTester";
             Account acc = new Account();
@@ -29,7 +30,7 @@ namespace UnitTest
             //Act
             um.UserSignUp(acc);
             //Assert
-            Assert.True(dal.accountExists(acc.Email));
+            Assert.True(accountGateway.AccountExists(acc.Email));
                 
         }
 
@@ -37,19 +38,22 @@ namespace UnitTest
         // trys to delete a user, while acting as if an admin executed the command
         public void deleteUserSuccess()
         {
-            //Arange
-            IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
-            UM um = new UM(dal, log);
+
+            IAccountGateway accountGateway = new MemAccountGateway();
+            IPermissionGateway efPermissionGateway = new MemPermissionGateway();
+            PermissionService permService = new PermissionService(efPermissionGateway);
+            IlogGateway logAccess = new EFLogGateway();
+            Logging logger = new Logging(logAccess);
+            UM um = new(accountGateway, permService, logger);
 
             Account admin = new Account();
             admin.Email = "deleteUserSuccessAdminEmail";
             admin.Password = "password1";
             admin.Fname = "fname";
             admin.Lname = "lname";
-            admin.isActive = true;
-            user_permissions permissions = new(dal);
-            permissions.defaultAdminPermissions(admin.Email);
+            admin.IsActive = true;
+
+            permService.AssignDefaultAdminPermissions(admin.Email);
             um.UserSignUp(admin);
 
             Account acc = new Account();
@@ -61,25 +65,29 @@ namespace UnitTest
             //Act
             um.UserDelete(admin, acc.Email);
             //Assert
-            Assert.True(dal.accountExists(acc.Email) == false);
+            Assert.True(!accountGateway.AccountExists(acc.Email));
         }
         [Fact]
         public void updateSuccess()
         {
-            //Arange
-            IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
-            UM um = new UM(dal, log);
+            //Arrange
+            IAccountGateway accountGateway = new MemAccountGateway();
+            IPermissionGateway efPermissionGateway = new MemPermissionGateway();
+            PermissionService permService = new PermissionService(efPermissionGateway);
+            IlogGateway logAccess = new EFLogGateway();
+            Logging logger = new Logging(logAccess);
+            UM um = new(accountGateway, permService, logger);
+
 
             Account admin = new Account();
             admin.Email = "updateUserSuccessAdminEmail";
             admin.Password = "password1";
             admin.Fname = "fname";
             admin.Lname = "lname";
-            user_permissions permissions = new(dal);
-            permissions.defaultAdminPermissions(admin.Email);
+
+            permService.AssignDefaultAdminPermissions(admin.Email);
             um.UserSignUp(admin);
-            admin.isActive = true;
+            admin.IsActive = true;
 
 
             Account acc = new Account();
@@ -93,82 +101,92 @@ namespace UnitTest
 
             //act
             um.UserUpdateData(admin, acc.Email, nName, nlName, nPassword);
-            acc = dal.getAccount(acc.Email);
+            acc = accountGateway.GetAccount(acc.Email);
             //Assert
             Assert.True(acc.Fname == nName && acc.Lname == nlName && acc.Password == nPassword);
-            Assert.True(acc.isActive == false);
+            Assert.True(acc.IsActive == false);
         }
         [Fact]
         public void disableSuccess()
         {
             //arange 
-            IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
-            UM um = new UM(dal, log);
+            IAccountGateway accountGateway = new MemAccountGateway();
+            IPermissionGateway efPermissionGateway = new MemPermissionGateway();
+            PermissionService permService = new PermissionService(efPermissionGateway);
+            IlogGateway logAccess = new EFLogGateway();
+            Logging logger = new Logging(logAccess);
+            UM um = new(accountGateway, permService, logger);
 
             Account admin = new Account();
             admin.Email = "disableSuccessAdminEmail";
             admin.Password = "password1";
             admin.Fname = "fname";
             admin.Lname = "lname";
-            user_permissions permissions = new(dal);
-            permissions.defaultAdminPermissions(admin.Email);
             um.UserSignUp(admin);
-            admin.isActive = true;
+            permService.AssignDefaultAdminPermissions(admin.Email);
+            
+            admin.IsActive = true;
 
             Account acc = new Account();
             acc.Email = "DisableSuccessUserEmail";
             acc.Password = "t";
-            acc.enabled = true;
+            acc.Enabled = true;
             um.UserSignUp(acc);
 
             //act
             um.DisableAccount(admin, acc.Email);
             //Assert
-            Assert.True(dal.getAccount(acc.Email).enabled == false);
-            Assert.True(acc.isActive == false);
+            Assert.True(!acc.Enabled);
+            Assert.True(acc.IsActive == false);
         }
+
         [Fact]
         public void enableSuccess()
         {
-            //arange 
-            IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
-            UM um = new UM(dal, log);
+            //Arange 
+            IAccountGateway accountGateway = new MemAccountGateway();
+            IPermissionGateway efPermissionGateway = new MemPermissionGateway();
+            PermissionService permService = new PermissionService(efPermissionGateway);
+            IlogGateway logAccess = new EFLogGateway();
+            Logging logger = new Logging(logAccess);
+            UM um = new(accountGateway, permService, logger);
 
             Account admin = new Account();
             admin.Email = "enableSuccessAdminEmail";
             admin.Password = "password1";
             admin.Fname = "fname";
             admin.Lname = "lname";
-            user_permissions permissions = new(dal);
-            permissions.defaultAdminPermissions(admin.Email);
+
+            permService.AssignDefaultAdminPermissions(admin.Email);
             um.UserSignUp(admin);
-            admin.isActive = true;
+            admin.IsActive = true;
 
             Account acc = new Account();
             acc.Email = "enableeSuccessUserEmail";
             acc.Password = "t";
-            acc.enabled = false;
+            acc.Enabled = false;
             um.UserSignUp(acc);
 
             //act
             um.EnableAccount(admin, acc.Email);
             //Assert
-            Assert.True(dal.getAccount(acc.Email).enabled);
+            Assert.True(acc.Enabled);
         }
         [Fact]
         public void getUserSuccess()
         {
             //arange 
-            IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
-            UM um = new UM(dal, log);
+            IAccountGateway accountGateway = new MemAccountGateway();
+            IPermissionGateway efPermissionGateway = new MemPermissionGateway();
+            PermissionService permService = new PermissionService(efPermissionGateway);
+            IlogGateway logAccess = new EFLogGateway();
+            Logging logger = new Logging(logAccess);
+            UM um = new(accountGateway, permService, logger);
 
             Account acc = new Account();
             acc.Email = "getUserSuccess";
             acc.Password = "t";
-            acc.enabled = false;
+            acc.Enabled = false;
             um.UserSignUp(acc);
 
             //act
@@ -179,10 +197,13 @@ namespace UnitTest
         [Fact]
         public void authenticatePasswordSuccess()
         {
-            //arange 
-            IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
-            UM um = new UM(dal, log);
+            //Arange 
+            IAccountGateway accountGateway = new MemAccountGateway();
+            IPermissionGateway efPermissionGateway = new MemPermissionGateway();
+            PermissionService permService = new PermissionService(efPermissionGateway);
+            IlogGateway logAccess = new EFLogGateway();
+            Logging logger = new Logging(logAccess);
+            UM um = new(accountGateway, permService, logger);
 
             Account acc = new Account();
             acc.Email = "authenticatePasswordSuccess";
@@ -197,9 +218,12 @@ namespace UnitTest
         public void signInSuccess()
         {
             //arange 
-            IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
-            UM um = new UM(dal, log);
+            IAccountGateway accountGateway = new MemAccountGateway();
+            IPermissionGateway efPermissionGateway = new MemPermissionGateway();
+            PermissionService permService = new PermissionService(efPermissionGateway);
+            IlogGateway logAccess = new EFLogGateway();
+            Logging logger = new Logging(logAccess);
+            UM um = new(accountGateway, permService, logger);
 
             Account acc = new Account();
             acc.Email = "signInSuccess";
@@ -209,25 +233,28 @@ namespace UnitTest
             //act
             um.SignIn(acc.Email,acc.Password);
             //Assert
-            Assert.True(acc.isActive);
+            Assert.True(acc.IsActive);
         }
         [Fact]
         public void promoteToAdminSuccess()
         {
             //arange 
-            IDataAccess dal = new DummyDaL();
-            ILogger log = new Logging();
-            UM um = new UM(dal, log);
+            IAccountGateway accountGateway = new MemAccountGateway();
+            IPermissionGateway efPermissionGateway = new MemPermissionGateway();
+            PermissionService permService = new PermissionService(efPermissionGateway);
+            IlogGateway logAccess = new EFLogGateway();
+            Logging logger = new Logging(logAccess);
+            UM um = new(accountGateway, permService, logger);
 
             Account admin = new Account();
             admin.Email = "PromoteToAdminSuccessAdmin";
             admin.Password = "password1";
             admin.Fname = "fname";
             admin.Lname = "lname";
-            user_permissions permissions = new(dal);
-            permissions.defaultAdminPermissions(admin.Email);
+
+            permService.AssignDefaultAdminPermissions(admin.Email) ;
             um.UserSignUp(admin);
-            admin.isActive = true;
+            admin.IsActive = true;
 
             Account acc = new Account();
             acc.Email = "PromoteToAdminSuccess";
@@ -238,7 +265,7 @@ namespace UnitTest
             um.PromoteToAdmin(admin, acc.Email);
 
             //Assert
-            Assert.True(dal.hasPermission(acc.Email, "createAdmin"));
+            Assert.True(efPermissionGateway.HasPermission(acc.Email, "createAdmin"));
         }
 
     }

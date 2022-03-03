@@ -13,9 +13,9 @@ namespace Console_Runner.Food
         private const string _UM_CATEGORY = "Data Store";
         private IFoodItemGateway _foodItemGateway;
         private IFlagGateway _flagGateway;
-        private ILogGateway _logGateway;
+        private IlogGateway _logGateway;
         
-        public FM(IFoodItemGateway _foodItemGateway, IFlagGateway _flagGateway,ILogGateway _logGateway)
+        public FM(IFoodItemGateway _foodItemGateway, IFlagGateway _flagGateway,IlogGateway _logGateway)
         {
            this._foodItemGateway = _foodItemGateway;
             this._flagGateway = _flagGateway;

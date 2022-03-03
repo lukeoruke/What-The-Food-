@@ -26,18 +26,18 @@ namespace Console_Runner.User_Management
         //Password getter and setter
 
 
-        public bool isActive { get; set; }
+        public bool IsActive { get; set; }
 
-        public bool enabled { get; set; }
+        public bool Enabled { get; set; }
 
         public string Password { get; set; }
 
         public AMR? AMR { get; set; }
         public Account()
         {
-            enabled = true;
+            Enabled = true;
         }
-        public override string  ToString()
+        public override string ToString()
         {
             int pass = this.Password.Length;
             string stars = "";

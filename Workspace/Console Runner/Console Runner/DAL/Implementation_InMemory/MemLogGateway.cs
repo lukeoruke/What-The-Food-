@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Console_Runner.DAL
 {
-    public class MemLogGateway : ILogGateway
+    public class MemLogGateway : IlogGateway
     {
         private List<Logs> _logsDB;
 

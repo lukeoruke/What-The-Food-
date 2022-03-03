@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Console_Runner.AMRModel;
 
-namespace User
+namespace Console_Runner.User_Management
 {
 
     /*

@@ -5,11 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using User;
 using LogAndArchive;
 
 
-namespace Console_Runner
+namespace Console_Runner.User_Management
 {
 
     //Current user management class
@@ -17,13 +16,13 @@ namespace Console_Runner
     {
         private const string UM_CATEGORY = "Data Store";
         private readonly IAccountGateway _accountAccess;
-        private readonly IPermissionGateway _permissionAccess;
+        private readonly PermissionService _permissionService;
         private readonly ILogger _logger;
-        public UM(IAccountGateway accountAccess, IPermissionGateway permissionAccess, ILogger logging)
+        public UM(IAccountGateway accountAccess, PermissionService permissionAccess, ILogger logging)
         {
             Console.WriteLine("Creating UM object");
             _accountAccess = accountAccess;
-            _permissionAccess = permissionAccess;
+            _permissionService = permissionAccess;
             _logger = logging;
         }
 
@@ -38,8 +37,7 @@ namespace Console_Runner
                     Console.WriteLine("email already in use");
                     return false;
                 }
-                user_permissions newRule = new user_permissions(_permissionAccess);
-                newRule.AssignDefaultUserPermissions(acc.Email);
+                _permissionService.AssignDefaultUserPermissions(acc.Email);
                 acc.isActive = false;
                 _accountAccess.AddAccount(acc);
                 _logger.LogAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
@@ -62,7 +60,7 @@ namespace Console_Runner
         public bool UserDelete(Account currentUser, string targetEmail)
         {
 
-            if (!_permissionAccess.HasPermission(currentUser.Email, "deleteAccount"))
+            if (!_permissionService.HasPermission(currentUser.Email, "deleteAccount"))
             {
                 _logger.LogAccountDeletion(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email);
                 return false;
@@ -76,13 +74,13 @@ namespace Console_Runner
 
                 Account acc = _accountAccess.GetAccount(targetEmail);
                 
-                if (_permissionAccess.HasPermission(targetEmail,"createAdmin") && (_permissionAccess.AdminCount() < 2))
+                if (_permissionService.HasPermission(targetEmail,"createAdmin") && (_permissionService.AdminCount() < 2))
                 {
                     Console.WriteLine("Deleting this account would result in there being no admins.");
                     return false;
                 }
 
-                _permissionAccess.RemoveAllUserPermissions(acc.Email);
+                _permissionService.RemoveAllUserPermissions(acc.Email);
                 _accountAccess.RemoveAccount(acc);
                 _logger.LogAccountDeletion(UM_CATEGORY, "test page", true, "", acc.Email);
                 
@@ -123,10 +121,9 @@ namespace Console_Runner
         {
             bool fNameChanged = false, lNameChanged = false, passwordChanged = false;
             string fTemp = "", lTemp = "", pTemp = "";
-            user_permissions permissions = new user_permissions(_permissionAccess);
             if (currentUser.Email != targetPK)
             {
-                if (!_permissionAccess.HasPermission(currentUser.Email,"editOtherAccount") || !currentUser.isActive)
+                if (!_permissionService.HasPermission(currentUser.Email,"editOtherAccount") || !currentUser.isActive)
                 {
                     _logger.LogGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
                     return false;
@@ -135,7 +132,7 @@ namespace Console_Runner
             try
             {
 
-                Account acc = _accountAccess.GetAccount(targetPK);
+                Account? acc = _accountAccess.GetAccount(targetPK);
                 if (acc == null)
                 {
                     Console.WriteLine("NULL ACCOUNT FOUND");
@@ -210,7 +207,7 @@ namespace Console_Runner
 		 */
         public bool DisableAccount(Account currentUser, string targetPK)
         {
-            if (!_permissionAccess.HasPermission(currentUser.Email,"disableAccount") || !currentUser.isActive)
+            if (!_permissionService.HasPermission(currentUser.Email,"disableAccount") || !currentUser.isActive)
             {
                 _logger.LogAccountDeactivation(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
                 return false;
@@ -223,7 +220,7 @@ namespace Console_Runner
                 }
                 Account acc = _accountAccess.GetAccount(targetPK);
  
-                if (_permissionAccess.IsAdmin(targetPK) && (_permissionAccess.AdminCount() < 2))
+                if (_permissionService.IsAdmin(targetPK) && (_permissionService.AdminCount() < 2))
                 {
                     Console.WriteLine("Disabling this account would result in there being no admins.");
                     return false;
@@ -250,8 +247,7 @@ namespace Console_Runner
 		 */
         public bool EnableAccount(Account currentUser, string targetPK)
         {
-            user_permissions permissions = new user_permissions(_permissionAccess);
-            if (!_permissionAccess.HasPermission(currentUser.Email, "enableAccount") || !currentUser.isActive)
+            if (!_permissionService.HasPermission(currentUser.Email, "enableAccount") || !currentUser.isActive)
             {
                 _logger.LogAccountEnabling(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
                 return false;
@@ -290,17 +286,15 @@ namespace Console_Runner
         {
             try
             {
-                if (_permissionAccess.HasPermission(currentUser.Email,"createAdmin") && currentUser.isActive)
+                if (_permissionService.HasPermission(currentUser.Email,"createAdmin") && currentUser.isActive)
                 {
-                    if (!_accountAccess.AccountExists(targetPK))
+                    Account? acc = _accountAccess.GetAccount(targetPK);
+                    if (acc == null)
                     {
                         Console.WriteLine("No such account exists");
                         return false;
                     }
-                    Account acc = _accountAccess.GetAccount(targetPK);
-                        
-                    user_permissions permissions = new(_permissionAccess);
-                    permissions.AssignDefaultAdminPermissions(targetPK);
+                    _permissionService.AssignDefaultAdminPermissions(targetPK);
                     _accountAccess.UpdateAccount(acc);
                     _logger.LogAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
                     

@@ -231,6 +231,7 @@ namespace Console_Runner.User_Management
             catch (Exception ex)
             {
                 _logger.LogAccountDeactivation(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, "No Target");
+                
                 return false;
             }
         }

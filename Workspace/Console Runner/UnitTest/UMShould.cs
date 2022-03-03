@@ -134,8 +134,9 @@ namespace UnitTest
             um.UserSignUp(acc);
 
             //act
-            um.DisableAccount(admin, acc.Email);
+            Assert.True(um.DisableAccount(admin, acc.Email));
             //Assert
+            acc = accountGateway.GetAccount(acc.Email);
             Assert.True(!acc.Enabled);
             Assert.True(acc.IsActive == false);
         }

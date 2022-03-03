@@ -48,7 +48,7 @@ namespace Console_Runner.DAL
 
         public bool IsAdmin(string email)
         {
-            return _permissionDB.FindIndex(perm => perm.Resource == "createAdmin") != -1;
+            return HasPermission(email, "createAdmin");
         }
 
         public bool RemoveAllUserPermissions(string email)

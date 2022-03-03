@@ -15,7 +15,7 @@ namespace UnitTest
         public void InstantiateProperly()
         {
             // Arrange
-            IDataAccess dal = new DummyDaL();
+            IPermissionGateway EfPermission = new EFPermissionGateway();
             string testEmail = "test@example.com";
             string testPerm = "scanFood";
 

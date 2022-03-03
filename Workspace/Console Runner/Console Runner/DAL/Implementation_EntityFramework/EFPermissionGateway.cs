@@ -12,9 +12,9 @@ namespace Console_Runner.DAL
     {
         private readonly Context _efContext;
 
-        public EFPermissionGateway(Context dbContext)
+        public EFPermissionGateway()
         {
-            _efContext = dbContext;
+            _efContext = new Context();
         }
 
         public bool HasPermission(string email, string resource)

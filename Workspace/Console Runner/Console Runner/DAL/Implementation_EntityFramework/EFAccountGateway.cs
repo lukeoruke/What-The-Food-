@@ -11,9 +11,9 @@ namespace Console_Runner.DAL
     {
         private readonly Context _efContext;
 
-        public EFAccountGateway(Context dbcontext)
+        public EFAccountGateway()
         {
-            _efContext = dbcontext;
+            _efContext = new Context();
         }
 
         public bool AccountExists(string email)

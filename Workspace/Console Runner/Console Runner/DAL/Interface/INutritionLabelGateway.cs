@@ -9,6 +9,6 @@ namespace Console_Runner.DAL
 {
     public interface INutritionLabelGateway
     {
-        public NutritionLabel RetrieveNutritionLabel(FoodItem food);
+        public NutritionLabel? RetrieveNutritionLabel(FoodItem food);
     }
 }

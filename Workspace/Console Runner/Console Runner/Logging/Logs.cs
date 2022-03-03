@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace Logger
+namespace Console_Runner.Logging
 {
     /*
      * Account class that will represent the contents of a user's account
@@ -16,11 +16,11 @@ namespace Logger
         public string Time { get; set; }
 
         //Log getter
-        public string toLog { get; set; }
+        public string Message { get; set; }
 
         public override string ToString()
         {
-            return Date + " " + Time + " " + toLog;
+            return Date + " " + Time + " " + Message;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LogAndArchive
+namespace Console_Runner.Logging
 {
     public interface ILogger
     {

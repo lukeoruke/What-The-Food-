@@ -9,12 +9,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
-using Logger;
-using Class1;
 using Console_Runner.DAL;
-using Console_Runner.DAL.Interface;
 
-namespace LogAndArchive
+namespace Console_Runner.Logging
 {
     public class Archiving
     {
@@ -227,7 +224,11 @@ namespace LogAndArchive
         //base logging function that will write to the log.txt file. Will append logging information to the end of current date and time.
         public bool Log(string toLog)
         {
-            _logAccess.WriteLog(toLog);
+            Logs record = new Logs();
+            record.Date = DateTime.Now.ToLongDateString();
+            record.Time = DateTime.Now.ToString("H:mm:ss");
+            record.Message = toLog;
+            _logAccess.WriteLog(record);
             return true;
         }
 

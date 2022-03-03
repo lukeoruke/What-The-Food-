@@ -19,7 +19,6 @@ namespace Console_Runner.Food
         {
            this.dal = DAL;
             this.logger = logging;
-            logger = new Logging();
         }
 
         public bool addFlagToAccount(string email, string flag)

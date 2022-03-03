@@ -42,14 +42,14 @@ namespace Console_Runner
                 newRule.AssignDefaultUserPermissions(acc.Email);
                 acc.isActive = false;
                 _accountAccess.AddAccount(acc);
-                _logger.logAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
+                _logger.LogAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
                 Console.WriteLine("UM operation was successful");
                 return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                _logger.logAccountCreation(UM_CATEGORY, "test page", false, ex.Message, acc.Email);
+                _logger.LogAccountCreation(UM_CATEGORY, "test page", false, ex.Message, acc.Email);
                 return false;
             }
 
@@ -64,7 +64,7 @@ namespace Console_Runner
 
             if (!_permissionAccess.HasPermission(currentUser.Email, "deleteAccount"))
             {
-                _logger.logAccountDeletion(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email);
+                _logger.LogAccountDeletion(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email);
                 return false;
             }
             try
@@ -84,14 +84,14 @@ namespace Console_Runner
 
                 _permissionAccess.RemoveAllUserPermissions(acc.Email);
                 _accountAccess.RemoveAccount(acc);
-                _logger.logAccountDeletion(UM_CATEGORY, "test page", true, "", acc.Email);
+                _logger.LogAccountDeletion(UM_CATEGORY, "test page", true, "", acc.Email);
                 
                 
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.logAccountDeletion(UM_CATEGORY, "test page", false, ex.Message, targetEmail);
+                _logger.LogAccountDeletion(UM_CATEGORY, "test page", false, ex.Message, targetEmail);
                 return false;
             }
         }
@@ -113,7 +113,7 @@ namespace Console_Runner
             }
             catch (Exception ex)
             {
-                _logger.logGeneric(UM_CATEGORY, "test page", false, ex.Message, targetPK, "Failed to read.");
+                _logger.LogGeneric(UM_CATEGORY, "test page", false, ex.Message, targetPK, "Failed to read.");
                 return null;
             }
         }
@@ -128,7 +128,7 @@ namespace Console_Runner
             {
                 if (!_permissionAccess.HasPermission(currentUser.Email,"editOtherAccount") || !currentUser.isActive)
                 {
-                    _logger.logGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
+                    _logger.LogGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
                     return false;
                 }
             }
@@ -163,11 +163,11 @@ namespace Console_Runner
                 _accountAccess.UpdateAccount(acc);
 
                 if (fNameChanged)
-                    _logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, fTemp, nFname);
+                    _logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, fTemp, nFname);
                 if (lNameChanged)
-                    _logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, lTemp, nLname);
+                    _logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, lTemp, nLname);
                 if (passwordChanged)
-                    _logger.logAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, pTemp, npassword);
+                    _logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, pTemp, npassword);
 
                 acc.isActive = false;
                 Console.WriteLine("UM operation was successful");
@@ -175,7 +175,7 @@ namespace Console_Runner
             }
             catch (Exception ex)
             {
-                _logger.logGeneric(UM_CATEGORY, "test page", false, ex.Message, targetPK, "Could not change user info");
+                _logger.LogGeneric(UM_CATEGORY, "test page", false, ex.Message, targetPK, "Could not change user info");
                 return false;
             }
         }
@@ -192,14 +192,14 @@ namespace Console_Runner
         {
             if (AuthenticateUserPass(user, userPass))
             {
-                _logger.logLogin(UM_CATEGORY, "test page", true, "", user);
+                _logger.LogLogin(UM_CATEGORY, "test page", true, "", user);
                 Account acc = GetUserAccount(user);
                 acc.isActive = true;
                 return acc;
             }
             else
             {
-                _logger.logLogin(UM_CATEGORY, "test page", false, "Invalid Password", user);
+                _logger.LogLogin(UM_CATEGORY, "test page", false, "Invalid Password", user);
                 return null;
             }
         }
@@ -212,7 +212,7 @@ namespace Console_Runner
         {
             if (!_permissionAccess.HasPermission(currentUser.Email,"disableAccount") || !currentUser.isActive)
             {
-                _logger.logAccountDeactivation(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
+                _logger.LogAccountDeactivation(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
                 return false;
             }
             try
@@ -231,7 +231,7 @@ namespace Console_Runner
                 acc.enabled = false;
                 acc.isActive = false;
                 _accountAccess.UpdateAccount(acc);
-                _logger.logAccountDeactivation(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
+                _logger.LogAccountDeactivation(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
 
                 
                 Console.WriteLine("UM operation was successful");
@@ -239,7 +239,7 @@ namespace Console_Runner
             }
             catch (Exception ex)
             {
-                _logger.logAccountDeactivation(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, "No Target");
+                _logger.LogAccountDeactivation(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, "No Target");
                 return false;
             }
         }
@@ -253,7 +253,7 @@ namespace Console_Runner
             user_permissions permissions = new user_permissions(_permissionAccess);
             if (!_permissionAccess.HasPermission(currentUser.Email, "enableAccount") || !currentUser.isActive)
             {
-                _logger.logAccountEnabling(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
+                _logger.LogAccountEnabling(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
                 return false;
             }
             try
@@ -267,7 +267,7 @@ namespace Console_Runner
 
                 acc.enabled=true;
                 _accountAccess.UpdateAccount(acc);
-                _logger.logAccountEnabling(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
+                _logger.LogAccountEnabling(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
 
 
                 Console.WriteLine("UM operation was successful");
@@ -275,7 +275,7 @@ namespace Console_Runner
             }
             catch (Exception ex)
             {
-                _logger.logAccountEnabling(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, "No Target");
+                _logger.LogAccountEnabling(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, "No Target");
                 return false;
             }
         }
@@ -302,17 +302,17 @@ namespace Console_Runner
                     user_permissions permissions = new(_permissionAccess);
                     permissions.AssignDefaultAdminPermissions(targetPK);
                     _accountAccess.UpdateAccount(acc);
-                    _logger.logAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
+                    _logger.LogAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
                     
                 Console.WriteLine("UM operation was successful");
                 return true;
                 }
-                _logger.logAccountPromote(UM_CATEGORY, "Console", false, "User is not admin and/or target account is not active", currentUser.Email, targetPK);
+                _logger.LogAccountPromote(UM_CATEGORY, "Console", false, "User is not admin and/or target account is not active", currentUser.Email, targetPK);
                 return false;
             }
             catch (Exception ex)
             {
-                _logger.logAccountPromote(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, targetPK);
+                _logger.LogAccountPromote(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, targetPK);
                 return false;
             }
         }

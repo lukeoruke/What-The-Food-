@@ -11,9 +11,9 @@ namespace Console_Runner.DAL
     {
         private Context _efContext;
 
-        public EFFlagGateway(Context dbContext)
+        public EFFlagGateway()
         {
-            _efContext = dbContext;
+            _efContext = new Context();
         }
         public bool AccountHasFlag(string email, string ingredientID)
         {

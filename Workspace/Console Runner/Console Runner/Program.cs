@@ -3,12 +3,15 @@
  * CURRENTLY ONLY A DEMO FILE
  */
 using Microsoft.Extensions.DependencyInjection;
-using User;
-using Class1;
 using Console_Runner;
-using LogAndArchive;
 using Console_Runner.DAL;
 using Console_Runner.AMRModel;
+
+[STAThread]
+static void Main()
+{
+    Console.Write("application starting...");
+}
 
 /**
 IDataAccess dal = new DummyDaL();

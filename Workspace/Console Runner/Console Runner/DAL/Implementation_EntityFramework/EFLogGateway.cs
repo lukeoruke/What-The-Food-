@@ -11,9 +11,9 @@ namespace Console_Runner.DAL
     {
         private readonly Context _efContext;
 
-        public EFLogGateway(Context dbContext)
+        public EFLogGateway()
         {
-            _efContext = dbContext;
+            _efContext = new Context();
         }
 
         public bool WriteLog(Logs toLog)

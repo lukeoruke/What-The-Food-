@@ -89,6 +89,7 @@ namespace Console_Runner.DAL
                 table.AccountEmail
             });
 
+
             // one-to-one relationship between account and amr, where an account can exist without an amr but not vice versa
             builder.Entity<Account>()
                 .HasOne(ac => ac.AMR)

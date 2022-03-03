@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Console_Runner;
 using Console_Runner.DAL;
+using Console_Runner.User_Management;
 
 namespace UnitTest
 {
@@ -14,82 +15,84 @@ namespace UnitTest
         [Fact]
         public void InstantiateProperly()
         {
+
             // Arrange
-            IPermissionGateway EfPermission = new EFPermissionGateway();
+            IPermissionGateway EfPermission = new MemPermissionGateway();
             string testEmail = "test@example.com";
             string testPerm = "scanFood";
 
             // Act
-            user_permissions perm1 = new user_permissions(testEmail, testPerm, dal);
+            Permission perm1 = new Permission(testEmail, testPerm);
 
             // Assert
             Assert.NotNull(perm1);
-            Assert.NotNull(perm1.email);
-            Assert.NotNull(perm1.permission);
-            Assert.Equal(testEmail, perm1.email);
-            Assert.Equal(testPerm, perm1.permission);
+            Assert.NotNull(perm1.Email);
+            Assert.NotNull(perm1.Resource);
+            Assert.Equal(testEmail, perm1.Email);
+            Assert.Equal(testPerm, perm1.Resource);
         }
 
         [Fact]
         public void SetPropertiesProperly()
         {
             // Arrange
-            IDataAccess dal = new DummyDaL();
+            IPermissionGateway EfPermission = new MemPermissionGateway();
             string testEmail = "test@example.com";
-            string testPerm = "scanFood";
+            string testResource = "scanFood";
             string modEmail = "test1@example.com";
-            string modPerm = "deleteAccount";
+            string modResource = "deleteAccount";
 
             // Act
-            user_permissions perm1 = new user_permissions(testEmail, testPerm, dal);
-            perm1.setUserPermissions(modEmail, modPerm);
+            Permission perm1 = new Permission(testEmail, testResource);
+            EfPermission.AddPermission(perm1);
 
             // Assert
             Assert.NotNull(perm1);
-            Assert.NotNull(perm1.email);
-            Assert.NotNull(perm1.permission);
-            Assert.Equal(modEmail, perm1.email);
-            Assert.Equal(modPerm, perm1.permission);
+            Assert.NotNull(perm1.Email);
+            Assert.NotNull(perm1.Resource);
+            Assert.Equal(modEmail, perm1.Email);
+            Assert.Equal(modResource, perm1.Resource);
         }
 
         [Fact]
         public void SetDefaultPermissionsProperly()
         {
             // Arrange
-            IDataAccess dal = new DummyDaL();
+            IPermissionGateway EfPermission = new MemPermissionGateway();
             string testEmail = "test@example.com";
 
             // Act
-            user_permissions perm1 = new user_permissions("", "", dal);
-            perm1.AssignDefaultUserPermissions(testEmail);
+            PermissionService permService = new PermissionService(EfPermission);
+            permService.AssignDefaultUserPermissions(testEmail);
+;
 
             // Assert
-            Assert.True(dal.hasPermission(testEmail, "scanFood"));
-            Assert.True(dal.hasPermission(testEmail, "editOwnAccount"));
-            Assert.True(dal.hasPermission(testEmail, "leaveReview"));
-            Assert.True(dal.hasPermission(testEmail, "deleteOwnAccount"));
-            Assert.True(dal.hasPermission(testEmail, "historyAccess"));
-            Assert.True(dal.hasPermission(testEmail, "AMR"));
-            Assert.True(dal.hasPermission(testEmail, "foodFlag"));
+            Assert.True(EfPermission.HasPermission(testEmail, "scanFood"));
+            Assert.True(EfPermission.HasPermission(testEmail, "editOwnAccount"));
+            Assert.True(EfPermission.HasPermission(testEmail, "leaveReview"));
+            Assert.True(EfPermission.HasPermission(testEmail, "deleteOwnAccount"));
+            Assert.True(EfPermission.HasPermission(testEmail, "historyAccess"));
+            Assert.True(EfPermission.HasPermission(testEmail, "AMR"));
+            Assert.True(EfPermission.HasPermission(testEmail, "foodFlag"));
         }
 
         [Fact]
         public void SetAdminPermissionsProperly()
         {
             // Arrange
-            IDataAccess dal = new DummyDaL();
+            IPermissionGateway EfPermission = new MemPermissionGateway();
             string testEmail = "test@example.com";
 
             // Act
-            user_permissions perm1 = new user_permissions("", "", dal);
-            perm1.defaultAdminPermissions(testEmail);
+            PermissionService permService = new PermissionService(EfPermission);
+            permService.AssignDefaultUserPermissions(testEmail);
 
             // Assert
-            Assert.True(dal.hasPermission(testEmail, "enableAccount"));
-            Assert.True(dal.hasPermission(testEmail, "disableAccount"));
-            Assert.True(dal.hasPermission(testEmail, "deleteAccount"));
-            Assert.True(dal.hasPermission(testEmail, "createAdmin"));
-            Assert.True(dal.hasPermission(testEmail, "editOtherAccount"));
+            Assert.True(EfPermission.HasPermission(testEmail, "enableAccount"));
+            Assert.True(EfPermission.HasPermission(testEmail, "disableAccount"));
+            Assert.True(EfPermission.HasPermission(testEmail, "deleteAccount"));
+            Assert.True(EfPermission.HasPermission(testEmail, "createAdmin"));
+            Assert.True(EfPermission.HasPermission(testEmail, "editOtherAccount"));
         }
 
 

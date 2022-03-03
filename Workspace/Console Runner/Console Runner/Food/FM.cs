@@ -1,6 +1,5 @@
 ﻿using Console_Runner.DAL;
 using Food_Class_Library;
-using LogAndArchive;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,39 +10,41 @@ namespace Console_Runner.Food
 {
     public class FM
     {
-        private const string UM_CATEGORY = "Data Store";
-        private ILogger logger;
-        private IDataAccess dal;
+        private const string _UM_CATEGORY = "Data Store";
+        private IFoodItemGateway _foodItemGateway;
+        private IFlagGateway _flagGateway;
+        private ILogGateway _logGateway;
         
-        public FM(IDataAccess DAL, ILogger logging)
+        public FM(IFoodItemGateway _foodItemGateway, IFlagGateway _flagGateway,ILogGateway _logGateway)
         {
-           this.dal = DAL;
-            this.logger = logging;
+           this._foodItemGateway = _foodItemGateway;
+            this._flagGateway = _flagGateway;
+            this._logGateway = _logGateway;
         }
 
         public bool addFlagToAccount(string email, string flag)
         {
             FoodFlag foodFlag = new(email, flag);
-            return dal.addFlag(foodFlag);
+            return _flagGateway.AddFlag(foodFlag);
       
         }
 
         public bool removeFoodFlag(string email, string IngredientID)
         {
-            return dal.removeFoodFlag(email, IngredientID);
+            return _flagGateway.RemoveFoodFlag(email, IngredientID);
         }
 
         public List<FoodFlag> getAllAccountFlags(string email)
         {
-            return dal.getAllAccountFlags(email);
+            return _flagGateway.GetAllAccountFlags(email);
         }
         
         //gets and returns the union of all ingredients in both the item corosponding to the given barcode and items that exist within the users flags.
         public List<Ingredient> productFlagCheck(string email, string barcode)
         {
             List<Ingredient> flaggedIngredientsInProduct = new();
-            List<FoodFlag> userFlags = dal.getAllAccountFlags(email);
-            List<Ingredient> ingredientList = dal.retrieveIngredientList(barcode);
+            List<FoodFlag> userFlags = _flagGateway.GetAllAccountFlags(email);
+            List<Ingredient> ingredientList = _foodItemGateway.RetrieveIngredientList(barcode);
             for(int i = 0; i < ingredientList.Count; i++)
             {
                 for(int j = 0; j < userFlags.Count; j++)
@@ -58,13 +59,13 @@ namespace Console_Runner.Food
             return flaggedIngredientsInProduct;
         }
 
-        public List<Ingredient> foodContainsFlaggedItem(string barcode, string email)
+        public List<Ingredient> FoodContainsFlaggedItem(string barcode, string email)
         {
-            FoodItem food = getScannedFoodItem(barcode);
-            List<Ingredient> flaggedIngredients = getIngredientList(food.barcode);
+            FoodItem food = GetScannedFoodItem(barcode);
+            List<Ingredient> flaggedIngredients = GetIngredientList(food.barcode);
             for (int i = 0; i < flaggedIngredients.Count; i++)
             {
-                if (dal.accountHasFlag(email, flaggedIngredients[i].ingredientID))
+                if (_flagGateway.AccountHasFlag(email, flaggedIngredients[i].ingredientID))
                 {
                     flaggedIngredients.Add(flaggedIngredients[i]);
                 }
@@ -72,26 +73,26 @@ namespace Console_Runner.Food
             return flaggedIngredients;
         }
 
-        public FoodItem getScannedFoodItem(string barcode)
+        public FoodItem? GetScannedFoodItem(string barcode)
         {
-            return dal.retrieveScannedFoodItem(barcode);
+            return _foodItemGateway.RetrieveScannedFoodItem(barcode);
         }
 
-        public NutritionLabel getNutrtionLabel(FoodItem food)
+        public NutritionLabel? GetNutrtionLabel(FoodItem food)
         {
-            return dal.retrieveNutrtionLabel(food);
+            return _foodItemGateway.RetrieveNutritionLabel(food);
         }
 
-        public List<Ingredient> getIngredientList(string labelID)
+        public List<Ingredient> GetIngredientList(string labelID)
         {
-            return dal.retrieveIngredientList(labelID);
+            return _foodItemGateway.RetrieveIngredientList(labelID);
         }
 
-        public bool addIngredient(Ingredient ingredient)
+        public bool AddIngredient(Ingredient ingredient)
         {
             try
             {
-                dal.addIngredient(ingredient);
+                _foodItemGateway.AddIngredient(ingredient);
                 return true;
             }catch (Exception ex)
             {

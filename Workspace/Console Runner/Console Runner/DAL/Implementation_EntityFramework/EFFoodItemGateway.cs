@@ -12,9 +12,9 @@ namespace Console_Runner.DAL
     {
         private readonly Context _efContext;
 
-        public EFFoodItemGateway(Context dbContext)
+        public EFFoodItemGateway()
         {
-            _efContext = dbContext;
+            _efContext = new Context();
         }
         public bool AddFoodItem(string barcode, string productName, string companyName, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList)
         {

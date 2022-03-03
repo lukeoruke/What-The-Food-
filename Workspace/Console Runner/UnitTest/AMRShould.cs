@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Console_Runner;
 using Console_Runner.AMRModel;
-using User;
+using Console_Runner.User_Management;
 
 namespace UnitTest
 {

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using User;
 using Pomelo.EntityFrameworkCore.MySql;
 using Microsoft.Extensions.DependencyInjection;
-using Logger;
 using Console_Runner;
+using Console_Runner.User_Management;
+using Console_Runner.Logging;
 using Console_Runner.Food;
 using Food_Class_Library;
 using Console_Runner.AMRModel;
@@ -42,14 +42,14 @@ namespace Console_Runner.DAL
             {
                 table.Date,
                 table.Time,
-                table.toLog
+                table.Message
             });
 
             //Sets a composite key of email+permission for the permissions table.
-            builder.Entity<user_permissions>().HasKey(table => new
+            builder.Entity<Permission>().HasKey(table => new
             {
-                table.email,
-                table.permission
+                table.Email,
+                table.Resource
             });
             builder.Entity<History>().HasKey(table => new
             {
@@ -117,7 +117,7 @@ namespace Console_Runner.DAL
 
         public DbSet<Logs> Logs { get; set; } = null!;
 
-        public DbSet<user_permissions> Permissions {get; set; } = null!;
+        public DbSet<Permission> Permissions {get; set; } = null!;
 
         public DbSet<AMR> AMRs { get; set; } = null!;
     }

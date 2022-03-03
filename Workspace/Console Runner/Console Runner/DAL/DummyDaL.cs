@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using User;
+using Console_Runner.User_Management;
 
 namespace Console_Runner.DAL
 {
@@ -13,7 +13,7 @@ namespace Console_Runner.DAL
     {
 
         List<Account> accountsList = new();
-        List<user_permissions> permissionsList = new();
+        List<Permission> permissionsList = new();
         List<FoodItem> foodsList = new();
         List<FoodFlag> flagsList = new();
         List<Ingredient> ingredientsList = new();
@@ -47,7 +47,7 @@ namespace Console_Runner.DAL
 
         public bool addPermission(string email, string permission)
         {
-            user_permissions newPermission = new user_permissions(email, permission,this);
+            Permission newPermission = new user_permissions(email, permission,this);
             permissionsList.Add(newPermission);
             return true;
         }
@@ -81,9 +81,9 @@ namespace Console_Runner.DAL
 
      
 
-        public List<user_permissions> getAllUserPermissions(string email)
+        public List<Permission> getAllUserPermissions(string email)
         {
-            List<user_permissions> usersPerms = new List<user_permissions>();
+            List<Permission> usersPerms = new List<Permission>();
             for(int i = 0; i < permissionsList.Count;i++)
             {
                 if(permissionsList[i].email == email)
@@ -150,7 +150,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                user_permissions perm = new user_permissions(email, permission,this);
+                Permission perm = new user_permissions(email, permission,this);
                 permissionsList.Remove(perm);
                 return true;
             }catch (Exception e)

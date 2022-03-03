@@ -7,38 +7,34 @@ using Console_Runner.Food;
 
 namespace Console_Runner.DAL
 {
-    public class EFFlagGateway : IFlagGateway
+    public class MemFlagGateway : IFlagGateway
     {
-        private Context _efContext;
+        private List<FoodFlag> flagsList;
 
-        public EFFlagGateway(Context dbContext)
+        public MemFlagGateway()
         {
-            _efContext = dbContext;
+            flagsList = new List<FoodFlag>();
         }
         public bool AccountHasFlag(string email, string ingredientID)
         {
-            FoodFlag foodFlag = new(email, ingredientID);
-            return _efContext.FoodFlags.Find(foodFlag) != null;
+            FoodFlag flag = new FoodFlag(email, ingredientID);
+            return flagsList.Contains(flag);
         }
 
         public bool AddFlag(FoodFlag flag)
         {
-            try
+            if (flag != null && !flagsList.Contains(flag))
             {
-                _efContext.FoodFlags.Add(flag);
-                _efContext.SaveChanges();
+                flagsList.Add(flag);
                 return true;
             }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            return false;
         }
 
         public List<FoodFlag> GetAllAccountFlags(string email)
         {
             List<FoodFlag> flagList = new List<FoodFlag>();
-            foreach (var flag in _efContext.FoodFlags)
+            foreach (var flag in flagsList)
             {
                 if (flag.accountEmail == email)
                 {
@@ -53,8 +49,7 @@ namespace Console_Runner.DAL
             if (AccountHasFlag(email, ingredientID))
             {
                 FoodFlag foodFlag = new(email, ingredientID);
-                _efContext.FoodFlags.Remove(foodFlag);
-                _efContext.SaveChanges();
+                flagsList.Remove(foodFlag);
                 return true;
             }
             return false;

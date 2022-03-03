@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Console_Runner;
+using Console_Runner.User_Management;
 
 namespace Console_Runner.DAL
 {
@@ -16,18 +17,18 @@ namespace Console_Runner.DAL
             _efContext = dbContext;
         }
 
-        public bool HasPermission(string email, string permission)
+        public bool HasPermission(string email, string resource)
         {
-            return _efContext.Permissions.Find(email, permission) != null;
+            return _efContext.Permissions.Find(email, resource) != null;
         }
-        public bool AddPermission(string email, string permission)
+
+        public bool AddPermission(Permission permissionToAdd)
         {
             try
             {
-                user_permissions newPermission = new user_permissions(email, permission, this);
-                if (_efContext.Permissions.Find(email, permission) == null)
+                if (_efContext.Permissions.Find(permissionToAdd.Email, permissionToAdd.Resource) == null)
                 {
-                    _efContext.Permissions.Add(newPermission);
+                    _efContext.Permissions.Add(permissionToAdd);
                     _efContext.SaveChanges();
                 }
                 return true;
@@ -36,15 +37,31 @@ namespace Console_Runner.DAL
             {
                 return false;
             }
-
         }
 
-        public bool RemovePermission(string email, string permission)
+        public bool AddPermissions(List<Permission> permissionsToAdd)
         {
             try
             {
-                user_permissions newPermission = new user_permissions(email, permission, this);
-                if (HasPermission(email, permission))
+                foreach (var permission in permissionsToAdd)
+                {
+                    _efContext.Permissions.Add(permission);
+                }
+                _efContext.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool RemovePermission(string email, string resource)
+        {
+            try
+            {
+                Permission newPermission = new Permission(email, resource);
+                if (HasPermission(email, resource))
                 {
                     _efContext.Permissions.Remove(newPermission);
                     _efContext.SaveChanges();
@@ -57,12 +74,13 @@ namespace Console_Runner.DAL
             }
             return false;
         }
-        public List<user_permissions> GetAllUserPermissions(string email)
+
+        public List<Permission> GetAllUserPermissions(string email)
         {
-            List<user_permissions> alluserPermissions = new List<user_permissions>();
+            List<Permission> alluserPermissions = new List<Permission>();
             foreach (var permissions in _efContext.Permissions)
             {
-                if (permissions.email == email)
+                if (permissions.Email == email)
                 {
                     alluserPermissions.Add(permissions);
                 }
@@ -74,7 +92,7 @@ namespace Console_Runner.DAL
         {
             foreach (var permissions in _efContext.Permissions)
             {
-                if (permissions.email == email)
+                if (permissions.Email == email)
                 {
                     _efContext.Permissions.Remove(permissions);
                 }

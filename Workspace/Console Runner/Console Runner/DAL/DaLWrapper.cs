@@ -1,12 +1,11 @@
-﻿using Class1;
-using Console_Runner.Food;
+﻿using Console_Runner.Food;
 using Food_Class_Library;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using User;
+using Console_Runner.User_Management;
 
 namespace Console_Runner.DAL
 {
@@ -138,7 +137,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                user_permissions newPermission = new user_permissions(email, permission, this);
+                Permission newPermission = new user_permissions(email, permission, this);
                 if (context.Permissions.Find(email, permission) == null)
                 {
                     context.Permissions.Add(newPermission);
@@ -163,7 +162,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                user_permissions newPermission = new user_permissions(email, permission, this);
+                Permission newPermission = new user_permissions(email, permission, this);
                 if (hasPermission(email, permission))
                 {
                     context.Permissions.Remove(newPermission);
@@ -183,9 +182,9 @@ namespace Console_Runner.DAL
         /// </summary>
         /// <param name="email"></param>
         /// <returns></returns>
-        public List<user_permissions> getAllUserPermissions(string email)
+        public List<Permission> getAllUserPermissions(string email)
         {
-            List<user_permissions> alluserPermissions = new List<user_permissions>();
+            List<Permission> alluserPermissions = new List<Permission>();
             foreach (var permissions in context.Permissions)
             {
                 if (permissions.email == email)

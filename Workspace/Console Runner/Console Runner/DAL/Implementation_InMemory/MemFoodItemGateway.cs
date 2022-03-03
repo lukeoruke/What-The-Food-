@@ -8,14 +8,12 @@ using Food_Class_Library;
 
 namespace Console_Runner.DAL
 {
-    public class EFFoodItemGateway : IFoodItemGateway
+    public class MemFoodItemGateway : IFoodItemGateway
     {
-        private readonly Context _efContext;
-
-        public EFFoodItemGateway(Context dbContext)
-        {
-            _efContext = dbContext;
-        }
+        List<FoodItem> _foodsList = new();
+        List<NutritionLabel> _nutritionLabelsList = new();
+        List<LabelIdentifyer> _ingredientIdentifiersList = new();
+        List<Ingredient> _ingredientsList = new();
         public bool AddFoodItem(string barcode, string productName, string companyName, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList)
         {
             try
@@ -27,18 +25,17 @@ namespace Console_Runner.DAL
                     LabelIdentifyer label = new();
                     label.barcode = barcode;
                     label.ingredientID = ingredientList[i].ingredientID;
-                    _efContext.IngredientIdentifier.Add(label);
+                    _ingredientIdentifiersList.Add(label);
                 }
                 for (int i = 0; i < vitaminsList.Count; i++)
                 {
                     Vitamins vit = vitaminsList[i];
                     vit.barcode = barcode;
-                    _efContext.Vitamins.Add(vit);
+                    vitaminsList.Add(vit);
                 }
-                _efContext.SaveChanges();
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }
@@ -48,11 +45,10 @@ namespace Console_Runner.DAL
         {
             try
             {
-                _efContext.Ingredients.Add(ingredient);
-                _efContext.SaveChanges();
+                _ingredientsList.Add(ingredient);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }
@@ -62,11 +58,10 @@ namespace Console_Runner.DAL
         {
             try
             {
-                _efContext.Ingredients.Remove(ingredient);
-                _efContext.SaveChanges();
+                _ingredientsList.Remove(ingredient);
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }
@@ -75,11 +70,17 @@ namespace Console_Runner.DAL
         public List<Ingredient> RetrieveIngredientList(string barcode)
         {
             List<Ingredient> ingredients = new List<Ingredient>();
-            foreach (var Ingredient in _efContext.IngredientIdentifier)
+            for (int i = 0; i < _ingredientIdentifiersList.Count; i++)
             {
-                if (Ingredient.barcode == barcode)
+                if (_ingredientIdentifiersList[i].barcode == barcode)
                 {
-                    ingredients.Add(_efContext.Ingredients.Find(barcode));
+                    for (int j = 0; j < _ingredientsList.Count; j++)
+                    {
+                        if (_ingredientsList[j].ingredientID == _ingredientIdentifiersList[i].ingredientID)
+                        {
+                            ingredients.Add(_ingredientsList[j]);
+                        }
+                    }
                 }
             }
             return ingredients;
@@ -87,12 +88,26 @@ namespace Console_Runner.DAL
 
         public NutritionLabel? RetrieveNutritionLabel(FoodItem food)
         {
-            return _efContext.NutritionLabels.Find(food.barcode);
+            for (int i = 0; i < _nutritionLabelsList.Count; i++)
+            {
+                if (_nutritionLabelsList[i].barcode == food.barcode)
+                {
+                    return _nutritionLabelsList[i];
+                }
+            }
+            return null;
         }
 
-        public FoodItem? RetrieveScannedFoodItem(string barcode)
+        public FoodItem RetrieveScannedFoodItem(string barcode)
         {
-            return _efContext.FoodItems.Find(barcode);
+            for (int i = 0; i < _foodsList.Count; i++)
+            {
+                if (_foodsList[i].barcode == barcode)
+                {
+                    return _foodsList[i];
+                }
+            }
+            return null;
         }
     }
 }

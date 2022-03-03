@@ -8,6 +8,6 @@ namespace Console_Runner.DAL
 {
     public interface IHistoryGateway
     {
-        public bool AddHistoryItem();
+        public bool AddHistoryItem(History historyItem);
     }
 }

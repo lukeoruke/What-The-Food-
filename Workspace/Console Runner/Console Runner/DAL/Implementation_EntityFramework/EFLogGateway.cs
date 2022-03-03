@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Console_Runner.Logging;
 
 namespace Console_Runner.DAL
 {
@@ -14,9 +15,11 @@ namespace Console_Runner.DAL
         {
             _efContext = dbContext;
         }
-        public bool WriteLog(string toLog)
+
+        public bool WriteLog(Logs toLog)
         {
-            _efContext.Logs.Add()
+            _efContext.Logs.Add(toLog);
+            return true;
         }
     }
 }

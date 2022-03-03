@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using User;
+using Console_Runner.User_Management;
 
 namespace Console_Runner.DAL
 {
@@ -19,7 +19,7 @@ namespace Console_Runner.DAL
         public bool hasPermission(string email, string permission);
         public bool addPermission(string email, string permission);
         public bool removePermision(string email, string permission);
-        public List<user_permissions> getAllUserPermissions(string email);
+        public List<Permission> getAllUserPermissions(string email);
         public bool removeAllUserPermissions(string email);
         public int AdminCount();
         public bool addHistoryItem();

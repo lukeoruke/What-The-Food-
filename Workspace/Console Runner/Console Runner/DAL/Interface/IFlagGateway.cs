@@ -9,8 +9,8 @@ namespace Console_Runner.DAL
 {
     public interface IFlagGateway
     {
-        public bool AccountHasFlag(string email, string flag);
-        public bool RemoveFoodFlag(string email, string flag);
+        public bool AccountHasFlag(string email, string ingredientID);
+        public bool RemoveFoodFlag(string email, string ingredientID);
         public List<FoodFlag> GetAllAccountFlags(string email);
         public bool AddFlag(FoodFlag flag);
     }

@@ -36,7 +36,7 @@ namespace UnitTest
 
         [Fact]
         // trys to delete a user, while acting as if an admin executed the command
-        public void deleteUserSuccess()
+        public void DeleteUserSuccess()
         {
 
             IAccountGateway accountGateway = new MemAccountGateway();
@@ -68,7 +68,7 @@ namespace UnitTest
             Assert.True(!accountGateway.AccountExists(acc.Email));
         }
         [Fact]
-        public void updateSuccess()
+        public void UpdateSuccess()
         {
             //Arrange
             IAccountGateway accountGateway = new MemAccountGateway();
@@ -107,7 +107,7 @@ namespace UnitTest
             Assert.True(acc.IsActive == false);
         }
         [Fact]
-        public void disableSuccess()
+        public void DisableSuccess()
         {
             //arange 
             IAccountGateway accountGateway = new MemAccountGateway();
@@ -141,7 +141,7 @@ namespace UnitTest
         }
 
         [Fact]
-        public void enableSuccess()
+        public void EnableSuccess()
         {
             //Arange 
             IAccountGateway accountGateway = new MemAccountGateway();
@@ -173,7 +173,7 @@ namespace UnitTest
             Assert.True(acc.Enabled);
         }
         [Fact]
-        public void getUserSuccess()
+        public void GetUserSuccess()
         {
             //arange 
             IAccountGateway accountGateway = new MemAccountGateway();
@@ -195,7 +195,7 @@ namespace UnitTest
             Assert.True(temp == acc);
         }
         [Fact]
-        public void authenticatePasswordSuccess()
+        public void AuthenticatePasswordSuccess()
         {
             //Arange 
             IAccountGateway accountGateway = new MemAccountGateway();
@@ -215,7 +215,7 @@ namespace UnitTest
             Assert.False(um.AuthenticateUserPass(acc.Email, "t"));
         }
         [Fact]
-        public void signInSuccess()
+        public void SignInSuccess()
         {
             //arange 
             IAccountGateway accountGateway = new MemAccountGateway();
@@ -236,7 +236,7 @@ namespace UnitTest
             Assert.True(acc.IsActive);
         }
         [Fact]
-        public void promoteToAdminSuccess()
+        public void PromoteToAdminSuccess()
         {
             //arange 
             IAccountGateway accountGateway = new MemAccountGateway();

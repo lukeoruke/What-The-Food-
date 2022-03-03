@@ -8,9 +8,15 @@ namespace Console_Runner.DAL
 {
     public class EFLogGateway : ILogGateway
     {
+        private readonly Context _efContext;
+
+        public EFLogGateway(Context dbContext)
+        {
+            _efContext = dbContext;
+        }
         public bool WriteLog(string toLog)
         {
-            throw new NotImplementedException();
+            _efContext.Logs.Add()
         }
     }
 }

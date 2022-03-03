@@ -7,11 +7,17 @@ using System.Threading.Tasks;
 
 namespace Console_Runner.DAL
 {
-    internal class EFNutritionLabelGateway : INutritionLabelGateway
+    public class EFNutritionLabelGateway : INutritionLabelGateway
     {
-        public NutritionLabel RetrieveNutritionLabel(FoodItem food)
+        private Context _efContext;
+
+        public EFNutritionLabelGateway(Context dbContext)
         {
-            throw new NotImplementedException();
+            _efContext = dbContext;
+        }
+        public NutritionLabel? RetrieveNutritionLabel(FoodItem food)
+        {
+            return _efContext.NutritionLabels.Find(food.barcode);
         }
     }
 }

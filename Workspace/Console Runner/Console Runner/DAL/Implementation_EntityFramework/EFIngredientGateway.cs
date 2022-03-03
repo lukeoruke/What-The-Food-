@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Console_Runner.DAL.Implementation_EntityFramework
+namespace Console_Runner.DAL
 {
     public class EFIngredientGateway : IIngredientGateway
     {

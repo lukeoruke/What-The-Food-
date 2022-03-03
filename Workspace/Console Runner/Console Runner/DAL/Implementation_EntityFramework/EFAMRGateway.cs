@@ -1,10 +1,9 @@
-﻿using Console_Runner.AMRModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Class1;
+using Console_Runner.AMRModel;
 
 namespace Console_Runner.DAL
 {

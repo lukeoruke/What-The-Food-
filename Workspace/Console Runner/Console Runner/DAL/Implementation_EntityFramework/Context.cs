@@ -14,7 +14,7 @@ using Food_Class_Library;
 using Console_Runner.AMRModel;
 
 //TODO: ADD FK TO CLASSES! (MQ)
-namespace Class1
+namespace Console_Runner.DAL
 {
     /*will run on startup, will configure the services to our database context
      */

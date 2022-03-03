@@ -1,10 +1,9 @@
-﻿using Console_Runner.Food;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Class1;
+using Console_Runner.Food;
 
 namespace Console_Runner.DAL
 {

@@ -10,26 +10,26 @@ namespace Console_Runner.DAL
 {
     public class EFPermissionGateway : IPermissionGateway
     {
-        private Context EFContext = new();
+        private readonly Context _efContext;
 
         public EFPermissionGateway(Context dbContext)
         {
-            EFContext = dbContext;
+            _efContext = dbContext;
         }
 
         public bool HasPermission(string email, string permission)
         {
-            return EFContext.Permissions.Find(email, permission) != null;
+            return _efContext.Permissions.Find(email, permission) != null;
         }
         public bool AddPermission(string email, string permission)
         {
             try
             {
                 user_permissions newPermission = new user_permissions(email, permission, this);
-                if (EFContext.Permissions.Find(email, permission) == null)
+                if (_efContext.Permissions.Find(email, permission) == null)
                 {
-                    EFContext.Permissions.Add(newPermission);
-                    EFContext.SaveChanges();
+                    _efContext.Permissions.Add(newPermission);
+                    _efContext.SaveChanges();
                 }
                 return true;
             }
@@ -47,8 +47,8 @@ namespace Console_Runner.DAL
                 user_permissions newPermission = new user_permissions(email, permission, this);
                 if (HasPermission(email, permission))
                 {
-                    EFContext.Permissions.Remove(newPermission);
-                    EFContext.SaveChanges();
+                    _efContext.Permissions.Remove(newPermission);
+                    _efContext.SaveChanges();
                     return true;
                 }
             }
@@ -61,7 +61,7 @@ namespace Console_Runner.DAL
         public List<user_permissions> GetAllUserPermissions(string email)
         {
             List<user_permissions> alluserPermissions = new List<user_permissions>();
-            foreach (var permissions in EFContext.Permissions)
+            foreach (var permissions in _efContext.Permissions)
             {
                 if (permissions.email == email)
                 {
@@ -73,11 +73,11 @@ namespace Console_Runner.DAL
 
         public bool RemoveAllUserPermissions(string email)
         {
-            foreach (var permissions in EFContext.Permissions)
+            foreach (var permissions in _efContext.Permissions)
             {
                 if (permissions.email == email)
                 {
-                    EFContext.Permissions.Remove(permissions);
+                    _efContext.Permissions.Remove(permissions);
                 }
             }
             return true;

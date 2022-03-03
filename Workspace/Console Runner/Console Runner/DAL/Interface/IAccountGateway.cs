@@ -21,7 +21,7 @@ namespace Console_Runner.DAL
         /// </summary>
         /// <param name="email">Account email to retrieve</param>
         /// <returns>Account object with the provided email assuming it exists, otherwise null if the account does not exist.</returns>
-        public Account GetAccount(string email);
+        public Account? GetAccount(string email);
 
         /// <summary>
         /// Add an Account object to the database.

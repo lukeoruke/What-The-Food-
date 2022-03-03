@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Class1;
 
-namespace Console_Runner.DAL.Implementation___Entity_Framework
+namespace Console_Runner.DAL
 {
     public class EFFlagGateway : IFlagGateway
     {

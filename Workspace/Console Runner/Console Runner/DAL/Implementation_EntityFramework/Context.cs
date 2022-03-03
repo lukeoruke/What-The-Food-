@@ -11,6 +11,7 @@ using Logger;
 using Console_Runner;
 using Console_Runner.Food;
 using Food_Class_Library;
+using Console_Runner.AMRModel;
 
 //TODO: ADD FK TO CLASSES! (MQ)
 namespace Class1
@@ -83,26 +84,41 @@ namespace Class1
             {
                 table.barcode
             });
+            builder.Entity<AMR>().HasKey(table => new
+            {
+                table.AccountEmail
+            });
+
+            // one-to-one relationship between account and amr, where an account can exist without an amr but not vice versa
+            builder.Entity<Account>()
+                .HasOne(ac => ac.AMR)
+                .WithOne(am => am.Account)
+                .HasForeignKey<AMR>(a => a.AccountEmail);
         }
-        public DbSet<Ingredient> Ingredients { get; set; }
+        // '= null!' - the null-forgiving operator is used to declare that the variable is NOT null, to silence the compiler warning.
+        //     Since the DbContext base constructor "ensures that all DbSet properties will get initialized"
+        //     (https://docs.microsoft.com/en-us/ef/core/miscellaneous/nullable-reference-types),
+        //     this should be safe.
+        public DbSet<Ingredient> Ingredients { get; set; } = null!;
 
-        public DbSet<FoodFlag> FoodFlags { get; set; }
+        public DbSet<FoodFlag> FoodFlags { get; set; } = null!;
 
-        public DbSet<Vitamins> Vitamins { get; set;}
+        public DbSet<Vitamins> Vitamins { get; set; } = null!;
 
-        public DbSet<FoodItem> FoodItems { get; set; }
+        public DbSet<FoodItem> FoodItems { get; set; } = null!;
 
-        public DbSet<LabelIdentifyer> IngredientIdentifier { get; set; }
+        public DbSet<LabelIdentifyer> IngredientIdentifier { get; set; } = null!;
 
-        public DbSet<NutritionLabel> NutritionLabels { get; set; }
+        public DbSet<NutritionLabel> NutritionLabels { get; set; } = null!;
 
-        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Account> Accounts { get; set; } = null!;
 
-        public DbSet<History> History { get; set; }
+        public DbSet<History> History { get; set; } = null!;
 
-        public DbSet<Logs> Logs { get; set; }
+        public DbSet<Logs> Logs { get; set; } = null!;
 
-        public DbSet<user_permissions> Permissions {get; set;}
+        public DbSet<user_permissions> Permissions {get; set; } = null!;
 
+        public DbSet<AMR> AMRs { get; set; } = null!;
     }
 }

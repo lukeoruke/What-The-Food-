@@ -1,5 +1,4 @@
-﻿using Console_Runner.Food;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,11 +7,16 @@ using Class1;
 using Console_Runner.Food;
 using Food_Class_Library;
 
-namespace Console_Runner.DAL.Implementation___Entity_Framework
+namespace Console_Runner.DAL
 {
     public class EFFoodItemGateway : IFoodItemGateway
     {
         private readonly Context _efContext;
+
+        public EFFoodItemGateway(Context dbContext)
+        {
+            _efContext = dbContext;
+        }
         public bool addFoodItem(string barcode, string productName, string companyName, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList)
         {
             try

@@ -8,11 +8,11 @@ using User;
 
 namespace Console_Runner.DAL
 {
-    public class EFUserGateway : IAccountGateway
+    public class EFAccountGateway : IAccountGateway
     {
-        private Context _efContext;
+        private readonly Context _efContext;
 
-        public EFUserGateway(Context dbcontext)
+        public EFAccountGateway(Context dbcontext)
         {
             _efContext = dbcontext;
         }
@@ -34,17 +34,17 @@ namespace Console_Runner.DAL
                 _efContext.SaveChanges();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
         }
 
-        public Account GetAccount(string email)
+        public Account? GetAccount(string email)
         {
             try
             {
-                Account acc = _efContext.Accounts.Find(email);
+                Account? acc = _efContext.Accounts.Find(email);
                 if (acc != null)
                 {
                     return acc;
@@ -54,7 +54,7 @@ namespace Console_Runner.DAL
                     throw new Exception("account not found exception");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
@@ -71,7 +71,7 @@ namespace Console_Runner.DAL
                 }
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -85,7 +85,7 @@ namespace Console_Runner.DAL
                 _efContext.SaveChanges(true);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

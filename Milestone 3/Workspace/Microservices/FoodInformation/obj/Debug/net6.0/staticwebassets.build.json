@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "rZ7/aLDD6yK2SExUEZMs01m7OkEx+NnBJQ0n6owG1ts=",
+  "Source": "Microservices.FoodInformation",
+  "BasePath": "_content/Microservices.FoodInformation",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

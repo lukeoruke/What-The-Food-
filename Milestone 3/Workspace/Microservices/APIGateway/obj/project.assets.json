@@ -609,19 +609,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Luke\\.nuget\\packages\\": {}
+    "C:\\Users\\Daniel\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Luke\\source\\repos\\Microservices\\APIGateway\\APIGateway.csproj",
+      "projectUniqueName": "C:\\Users\\Daniel\\Documents\\GitHub\\What-The-Food-\\Milestone 3\\Workspace\\Microservices\\APIGateway\\APIGateway.csproj",
       "projectName": "APIGateway",
-      "projectPath": "C:\\Users\\Luke\\source\\repos\\Microservices\\APIGateway\\APIGateway.csproj",
-      "packagesPath": "C:\\Users\\Luke\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Luke\\source\\repos\\Microservices\\APIGateway\\obj\\",
+      "projectPath": "C:\\Users\\Daniel\\Documents\\GitHub\\What-The-Food-\\Milestone 3\\Workspace\\Microservices\\APIGateway\\APIGateway.csproj",
+      "packagesPath": "C:\\Users\\Daniel\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Daniel\\Documents\\GitHub\\What-The-Food-\\Milestone 3\\Workspace\\Microservices\\APIGateway\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Luke\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Daniel\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

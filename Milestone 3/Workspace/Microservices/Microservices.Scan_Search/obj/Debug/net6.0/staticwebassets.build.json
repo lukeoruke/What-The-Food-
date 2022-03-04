@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "Wyrf9//7F+141c/jNTgEt++0xTnX9/GYUpOcn29NZ5w=",
-  "Source": "Microservices.Scan_Search",
-  "BasePath": "_content/Microservices.Scan_Search",
+  "Hash": "exEFU1GQFrO1gCE1q4pZdt67sgL8jqkrPlbM1v+mnbE=",
+  "Source": "Microservice.ScanSearch",
+  "BasePath": "_content/Microservice.ScanSearch",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],

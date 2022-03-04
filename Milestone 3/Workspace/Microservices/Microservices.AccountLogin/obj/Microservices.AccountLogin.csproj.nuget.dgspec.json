@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Luke\\source\\repos\\Microservices\\Microservices.AccountLogin\\Microservices.AccountLogin.csproj": {}
+    "C:\\Users\\Daniel\\Documents\\GitHub\\What-The-Food-\\Milestone 3\\Workspace\\Microservices\\Microservices.AccountLogin\\Microservices.AccountLogin.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Luke\\source\\repos\\Microservices\\Microservices.AccountLogin\\Microservices.AccountLogin.csproj": {
+    "C:\\Users\\Daniel\\Documents\\GitHub\\What-The-Food-\\Milestone 3\\Workspace\\Microservices\\Microservices.AccountLogin\\Microservices.AccountLogin.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Luke\\source\\repos\\Microservices\\Microservices.AccountLogin\\Microservices.AccountLogin.csproj",
+        "projectUniqueName": "C:\\Users\\Daniel\\Documents\\GitHub\\What-The-Food-\\Milestone 3\\Workspace\\Microservices\\Microservices.AccountLogin\\Microservices.AccountLogin.csproj",
         "projectName": "Microservices.AccountLogin",
-        "projectPath": "C:\\Users\\Luke\\source\\repos\\Microservices\\Microservices.AccountLogin\\Microservices.AccountLogin.csproj",
-        "packagesPath": "C:\\Users\\Luke\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Luke\\source\\repos\\Microservices\\Microservices.AccountLogin\\obj\\",
+        "projectPath": "C:\\Users\\Daniel\\Documents\\GitHub\\What-The-Food-\\Milestone 3\\Workspace\\Microservices\\Microservices.AccountLogin\\Microservices.AccountLogin.csproj",
+        "packagesPath": "C:\\Users\\Daniel\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Daniel\\Documents\\GitHub\\What-The-Food-\\Milestone 3\\Workspace\\Microservices\\Microservices.AccountLogin\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Luke\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Daniel\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

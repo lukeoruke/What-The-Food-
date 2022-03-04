@@ -208,19 +208,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Luke\\.nuget\\packages\\": {}
+    "C:\\Users\\Daniel\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Luke\\source\\repos\\Microservices\\Microservices.News\\Microservices.News.csproj",
-      "projectName": "Microservices.News",
-      "projectPath": "C:\\Users\\Luke\\source\\repos\\Microservices\\Microservices.News\\Microservices.News.csproj",
-      "packagesPath": "C:\\Users\\Luke\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Luke\\source\\repos\\Microservices\\Microservices.News\\obj\\",
+      "projectUniqueName": "C:\\Users\\Daniel\\Documents\\GitHub\\What-The-Food-\\Milestone 3\\Workspace\\Microservices\\Microservices.News\\Microservice.News.csproj",
+      "projectName": "Microservice.News",
+      "projectPath": "C:\\Users\\Daniel\\Documents\\GitHub\\What-The-Food-\\Milestone 3\\Workspace\\Microservices\\Microservices.News\\Microservice.News.csproj",
+      "packagesPath": "C:\\Users\\Daniel\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Daniel\\Documents\\GitHub\\What-The-Food-\\Milestone 3\\Workspace\\Microservices\\Microservices.News\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Luke\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Daniel\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

@@ -1,8 +1,8 @@
 {
   "Version": 1,
-  "Hash": "IV6FNiuL4saV7ctg3yLcifgM+bUcEDSB+JhQiPMEtuA=",
-  "Source": "Microservices.News",
-  "BasePath": "_content/Microservices.News",
+  "Hash": "aYbjDq/rDWQF0BXaDK8vZilK30cC9GQOgO6uRENeRiI=",
+  "Source": "Microservice.News",
+  "BasePath": "_content/Microservice.News",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],

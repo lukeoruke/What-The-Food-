@@ -208,19 +208,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Luke\\.nuget\\packages\\": {}
+    "C:\\Users\\Daniel\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Luke\\source\\repos\\Microservices\\UserUploads\\Microservices.UserUploads.csproj",
-      "projectName": "Microservices.UserUploads",
-      "projectPath": "C:\\Users\\Luke\\source\\repos\\Microservices\\UserUploads\\Microservices.UserUploads.csproj",
-      "packagesPath": "C:\\Users\\Luke\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Luke\\source\\repos\\Microservices\\UserUploads\\obj\\",
+      "projectUniqueName": "C:\\Users\\Daniel\\Documents\\GitHub\\What-The-Food-\\Milestone 3\\Workspace\\Microservices\\UserUploads\\Microservice.UserUploads.csproj",
+      "projectName": "Microservice.UserUploads",
+      "projectPath": "C:\\Users\\Daniel\\Documents\\GitHub\\What-The-Food-\\Milestone 3\\Workspace\\Microservices\\UserUploads\\Microservice.UserUploads.csproj",
+      "packagesPath": "C:\\Users\\Daniel\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Daniel\\Documents\\GitHub\\What-The-Food-\\Milestone 3\\Workspace\\Microservices\\UserUploads\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Luke\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Daniel\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

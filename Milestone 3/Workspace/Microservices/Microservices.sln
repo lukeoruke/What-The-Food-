@@ -1,23 +1,23 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Blend for Visual Studio Version 17
+# Visual Studio Version 17
 VisualStudioVersion = 17.0.31912.275
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{65FC4CBB-288F-4242-B619-5DB1AE176380}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.AccountLogin", "Microservices.AccountLogin\Microservice.AccountLogin.csproj", "{1C60CB10-B735-4D3B-B66A-48AAB5B5B34C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.AccountLogin", "Microservice.AccountLogin\Microservice.AccountLogin.csproj", "{1C60CB10-B735-4D3B-B66A-48AAB5B5B34C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIGateway", "APIGateway\APIGateway.csproj", "{3242E76F-317F-4DFB-BFBC-27C310B041BD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.UserUploads", "UserUploads\Microservice.UserUploads.csproj", "{6B5BBB3E-275D-450E-9989-84D062A0376D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.UserUploads", "Microservice.UserUploads\Microservice.UserUploads.csproj", "{6B5BBB3E-275D-450E-9989-84D062A0376D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.FoodInformation", "FoodInformation\Microservice.FoodInformation.csproj", "{CA86B26F-197B-40DB-9C87-1AFB9FB03597}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.FoodInformation", "Microservice.FoodInformation\Microservice.FoodInformation.csproj", "{CA86B26F-197B-40DB-9C87-1AFB9FB03597}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.History", "Microservices.History\Microservice.History.csproj", "{D7B1EF43-32AE-4740-A3B8-E4F7A7EECF01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.History", "Microservice.History\Microservice.History.csproj", "{D7B1EF43-32AE-4740-A3B8-E4F7A7EECF01}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.ScanSearch", "Microservices.Scan_Search\Microservice.ScanSearch.csproj", "{8798EC60-56C6-4DB7-BDF8-701D0A0DC441}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.ScanSearch", "Microservice.ScanSearch\Microservice.ScanSearch.csproj", "{8798EC60-56C6-4DB7-BDF8-701D0A0DC441}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.News", "Microservices.News\Microservice.News.csproj", "{E1EA3C13-8504-4123-A3EC-6327562C7BDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microservice.News", "Microservice.News\Microservice.News.csproj", "{E1EA3C13-8504-4123-A3EC-6327562C7BDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

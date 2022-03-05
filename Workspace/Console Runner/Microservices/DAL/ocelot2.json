@@ -9,7 +9,7 @@
           "Port": 49201
         }
       ],
-      "UpstreamPathTemplate": "/gateway/AccountLogin",
+      "UpstreamPathTemplate": "/DALgateway/AccountLogin",
       "UpstreamHttpMethod": [ "POST", "PUT", "GET" ]
     },
     {

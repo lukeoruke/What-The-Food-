@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Console_Runner;
+using User;
 
 namespace Front_End.Controllers;
 
@@ -22,5 +24,16 @@ public class LoginController : ControllerBase
 
         Console.WriteLine(formData["email"]);
         Console.WriteLine(formData["password"]);
+        try
+        {
+            Account account = new Account();
+            account.Email = formData["email"].ToString();
+            account.Password = formData["password"].ToString();
+            Console.WriteLine(account.ToString());
+        }
+        catch (FileNotFoundException e)
+        {
+            Console.WriteLine(e.ToString());
+        }
     }
 }

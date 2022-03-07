@@ -29,12 +29,12 @@ class Signup extends React.Component {
         console.log(this.state.password);
 
         // HTTP Get Request
-        await fetch('https://localhost:49200/gateway/AccountLogin')
+        await fetch('https://localhost:49200/gateway/AccountSignUp')
             .then(response => console.log(response.text()))
             .then(data => console.log(data));
 
         // HTTP Post Request
-        await fetch('https://localhost:49200/gateway/AccountLogin', {
+        await fetch('https://localhost:49200/gateway/AccountSignUp', {
             method: 'POST',
             body: formData,
         }).then(function (response) {

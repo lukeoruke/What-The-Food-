@@ -15,8 +15,10 @@ class Login extends React.Component {
         this.setState({[event.target.name]: event.target.value});
     }
 
-    async sendLogin() {
-        console.log('Attempting to login...')
+    async sendLogin(e) {
+        e.preventDefault();
+
+        console.log('Attempting to login...');
         console.log(this.state);
         const formData = new FormData();
         formData.append('username', 'password');
@@ -26,9 +28,32 @@ class Login extends React.Component {
         console.log(this.state.email);
         console.log(this.state.password);
 
-        await fetch('login', {
+        /*fetch('https://localhost:49201/api/AccountLogin')
+            .then(response => response.json())
+            .then(data => console.log(data));
+        console.log('hi there danielle')*/
+
+
+        /*fetch('https://localhost:49200/gateway/AccountLogin',
+            {mode: 'no-cors'})
+            .then(response => response.json())
+            .then(data => console.log(data));*/
+
+        await fetch('Access-Control-Allow-Origin", https://localhost:49200/gateway/AccountLogin', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        }).then(function (response) {
+            console.log(response.status); // returns 200;
+        }).then(data => console.log(data));
+
+        await fetch('https://localhost:49201/api/AccountLogin', {
             method: 'POST',
+            mode: 'no-cors',
             body: formData,
+        }).then(function (response) {
+            console.log(response.status); // returns 200;
         });
     }
 

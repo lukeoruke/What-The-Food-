@@ -20,6 +20,17 @@ builder.Services.AddRazorPages();
 //    {
 //        services.AddOcelot();
 //    });
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      builder =>
+                      {
+                          builder.AllowAnyOrigin();
+
+                      });
+});
+
 
 builder.Configuration.AddJsonFile("ocelot.json");
 builder.Services.AddOcelot();
@@ -38,6 +49,16 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+
+app.UseCors(options =>
+{
+    options.
+    AllowAnyOrigin().
+    AllowAnyMethod().
+    AllowAnyHeader();
+});
+app.UseCors(MyAllowSpecificOrigins);
 
 app.MapControllers();
 await app.UseOcelot();

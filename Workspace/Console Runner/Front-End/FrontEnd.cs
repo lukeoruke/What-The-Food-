@@ -1,10 +1,20 @@
 public class FrontEnd
 {
     static void Main(string[] args)
-    {
+        {
         var builder = WebApplication.CreateBuilder(args);
-
+        var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         // Add services to the container.
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy(name: MyAllowSpecificOrigins,
+                              builder =>
+                              {
+                                  builder.WithOrigins("http://example.com",
+                                                      "http://www.contoso.com");
+                              });
+        });
 
         builder.Services.AddControllersWithViews();
 
@@ -20,7 +30,7 @@ public class FrontEnd
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
-
+        app.UseCors(MyAllowSpecificOrigins);
 
         app.MapControllerRoute(
             name: "default",

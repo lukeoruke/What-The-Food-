@@ -29,7 +29,9 @@ namespace Console_Runner.Logging
             _archiveFolder = Path.Combine(_archiveDirectory, _archiveName);
         }
 
-        //will start the thread
+        /// <summary>
+        /// Creates the thread that will check if we need to update archive
+        /// </summary>
         public void archiveStartThread()
         {
             ThreadStart archiver = new ThreadStart(_archiveActivate);
@@ -38,7 +40,9 @@ namespace Console_Runner.Logging
             _archiveThread.Start();
         }
 
-        //activates the threads function
+        /// <summary>
+        /// Activates the thread and begins checking if archives needs to update
+        /// </summary>
         private void _archiveActivate()
         {
             //get working on the minute
@@ -64,7 +68,10 @@ namespace Console_Runner.Logging
             this.archiveStopThread();
         }
 
-        //will stop the thread
+        /// <summary>
+        /// stops the thread checking for archiving updates
+        /// </summary>
+        /// <returns>A bool indicating whether the action was successful</returns>
         public bool archiveStopThread()
         {
             try
@@ -79,7 +86,11 @@ namespace Console_Runner.Logging
             }
         }
 
-        //code that handles checking if we need to archive the current logs
+        /// <summary>
+        /// Function that handles the logic of checking if archives needs to be updated 
+        /// as well as executing archiving if needed
+        /// </summary>
+        /// <returns>A bool indicating whether the action was successful</returns>
         private bool _checkToArchive()
         {
             /**Intended to only be ran if a "Log Archive" directory does not exist. If so, create a directory that will hold archived files.
@@ -181,6 +192,11 @@ namespace Console_Runner.Logging
             }
         }
 
+        /// <summary>
+        /// A helper function that determines if a given directory is writable or not
+        /// </summary>
+        /// <param name="path">A path, given as a string, of the directory to be tested</param>
+        /// <returns>A bool values indicating whether the directory is writable or not</returns>
         private bool dirIsWritable(string path)
         {
             try
@@ -201,7 +217,10 @@ namespace Console_Runner.Logging
             }
         }
 
-        //checks to see if the current month has changed
+        /// <summary>
+        /// Checks whether it is a new month or not
+        /// </summary>
+        /// <returns>A bool indicating whether the month has changed or not</returns>
         private bool _newMonth()
         {
             if (_currentMonth != DateTime.Now.ToString("MMMM"))
@@ -222,8 +241,11 @@ namespace Console_Runner.Logging
             _logAccess = logAccessor;
         }
 
-
-        //base logging function that will write to the log.txt file. Will append logging information to the end of current date and time.
+        /// <summary>
+        /// Function that will take a formatted string as input and send it to our log storage
+        /// </summary>
+        /// <param name="toLog">The string that will be logged in the data store</param>
+        /// <returns>A bool value indicating whether the action was successful</returns>
         public bool Log(string toLog)
         {
             Logs record = new Logs();
@@ -234,7 +256,15 @@ namespace Console_Runner.Logging
             return true;
         }
 
-        //formats string for user login to send to log()
+        /// <summary>
+        /// Logging funciton to format user log in
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <returns>A string formated as an account login log</returns>
         public bool LogLogin(string category, string pageName, bool isSuccess, string failCase, string user)
         {
             try
@@ -248,7 +278,17 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for account deactivation to send to log()
+        /// <summary>
+        /// Logging funciton to format account deactivation
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <returns></returns>
+        /// <param name="target">The account that is being targeted for deactivation</param>
+        /// <returns>A string formated as an account deactivation log</returns>
         public bool LogAccountDeactivation(string category, string pageName, bool isSuccess, string failCase, string user, string target)
         {
             try
@@ -263,7 +303,17 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for account enabling to send to log()
+        /// <summary>
+        /// Logging funciton to format account enabling 
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <returns></returns>
+        /// <param name="target">The account that is being targeted for enabling</param>
+        /// <returns>Returns a string formated as an account enabling log</returns>
         public bool LogAccountEnabling(string category, string pageName, bool isSuccess, string failCase, string user, string target)
         {
             try
@@ -278,7 +328,17 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for account promoting to send to log()
+        /// <summary>
+        /// Logging funciton to format account promotion
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <returns></returns>
+        /// <param name="promoted">User whom is being promoted</param>
+        /// <returns>A string formated as an account promotion log</returns>
         public bool LogAccountPromote(string category, string pageName, bool isSuccess, string failCase, string user, string promoted)
         {
             try
@@ -293,7 +353,15 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for account creation to send to log()
+        /// <summary>
+        /// Logging funciton to format account creation
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action, in this case, the account being created</param>
+        /// <returns>A string formatted as an account creation log</returns>
         public bool LogAccountCreation(string category, string pageName, bool isSuccess, string failCase, string user)
         {
             try
@@ -307,7 +375,15 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for account deletion to send to log()
+        /// <summary>
+        /// Logging funciton to format account deletion
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <returns>A string formatted as an account deletion log</returns>
         public bool LogAccountDeletion(string category, string pageName, bool isSuccess, string failCase, string user)
         {
             try
@@ -321,7 +397,17 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for account name change to send to log()
+        /// <summary>
+        /// Logging funciton to format account name change
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <param name="prevName">User's previous name</param>
+        /// <param name="newName">User's name to be changed to</param>
+        /// <returns>A string formatted as an account name change log</returns>
         public bool LogAccountNameChange(string category, string pageName, bool isSuccess, string failCase, string user, string prevName, string newName)
         {
             try
@@ -336,7 +422,17 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for account email change to send to log()
+        /// <summary>
+        /// Logging funciton to format account email change
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <param name="prevEmail">User's previous email</param>
+        /// <param name="newEmail">User's email to be changed to</param>
+        /// <returns>A string formatted as an account email change log</returns>
         public bool LogAccountEmailChange(string category, string pageName, bool isSuccess, string failCase, string user, string prevEmail, string newEmail)
         {
             try
@@ -351,7 +447,15 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for account password change to send to log()
+        /// <summary>
+        /// Logging funciton to format account password change
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <returns>A string formatted as an account password change log</returns>
         public bool LogAccountPasswordChange(string category, string pageName, bool isSuccess, string failCase, string user)
         {
             try
@@ -365,7 +469,17 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for account food flag changes to send to log()
+        /// <summary>
+        /// Logging funciton to format account food flag change
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <param name="added">Any food flags that have been added by the user</param>
+        /// <param name="removed">Any food flags that have been removed by the user</param>
+        /// <returns>A string formatted as an account food flag change</returns>
         public bool LogAccountFlagChange(string category, string pageName, bool isSuccess, string failCase, string user, string[] added, string[] removed)
         {
             try
@@ -380,7 +494,16 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for account data request to send to log()
+        /// <summary>
+        /// Logging funciton to format account data request log
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <param name="sendTo">The email that the data is to be sent</param>
+        /// <returns>A string formatted as an account data request log</returns>
         public bool LogAccountDataRequest(string category, string pageName, bool isSuccess, string failCase, string user, string sendTo)
         {
             try
@@ -395,7 +518,17 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for account AMR changes to send to log()
+        /// <summary>
+        /// Logging funciton to format account AMR change
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <param name="from">User's previous AMR values</param>
+        /// <param name="to">User's new AMR values</param>
+        /// <returns>A string formatted as an account amr change</returns>
         public bool LogAccountAmrChange(string category, string pageName, bool isSuccess, string failCase, string user, string[] from, string[] to)
         {
             try
@@ -410,7 +543,18 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for reviews to send to log()
+        /// <summary>
+        /// Logging funciton to format an account creating a review
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <param name="product">The product the review is for</param>
+        /// <param name="rating">The rating the user gave the product</param>
+        /// <param name="text">The written review of the product</param>
+        /// <returns>A string formatted to be a review log</returns>
         public bool LogReview(string category, string pageName, bool isSuccess, string failCase, string user, string product, int rating, string text)
         {
             try
@@ -425,7 +569,17 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for histroy changes to send to log()
+        /// <summary>
+        /// Logging funciton to format account history additions
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <param name="product">The product that is being added to the user's history</param>
+        /// <param name="index">The index that this product is being inserted to of the user's history</param>
+        /// <returns>A string formatted as an account history log</returns>
         public bool LogHistory(string category, string pageName, bool isSuccess, string failCase, string user, string product, int index)
         {
             try
@@ -440,7 +594,16 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for scan additions to send to log()
+        /// <summary>
+        /// Logging funciton to format account scan upload
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <param name="product">The product that has been scanned and uploaded</param>
+        /// <returns>A string formatted as a user scan upload</returns>
         public bool LogScanUpload(string category, string pageName, bool isSuccess, string failCase, string user, string product)
         {
             try
@@ -455,7 +618,16 @@ namespace Console_Runner.Logging
             }
         }
 
-        //formats string for a generic logging event to send to log()
+        /// <summary>
+        /// Logging funciton to create a generic log
+        /// </summary>
+        /// <param name="category">The category of which the action is defined</param>
+        /// <param name="pageName">The page that the action is called from</param>
+        /// <param name="isSuccess">Whether the action being attempted succeeded or not</param>
+        /// <param name="failCase">The fail case/error/exception if the action failed</param>
+        /// <param name="user">User whom called for the action</param>
+        /// <param name="info">Any info that is relavent to the generic log</param>
+        /// <returns>Returns a string formatted as a generic log</returns>
         public bool LogGeneric(string category, string pageName, bool isSuccess, string failCase, string user, string info)
         {
             try

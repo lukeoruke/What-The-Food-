@@ -39,7 +39,7 @@ class Login extends React.Component {
             .then(response => response.json())
             .then(data => console.log(data));*/
 
-        await fetch('https://localhost:49200/gateway/AccountLogin', {
+        await fetch('Access-Control-Allow-Origin", https://localhost:49200/gateway/AccountLogin', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'

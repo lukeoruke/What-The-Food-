@@ -7,12 +7,12 @@ using Console_Runner;
 using Console_Runner.DAL;
 using Console_Runner.AMRModel;
 
-/*
+
 [STAThread]
 static void Main()
 {
     Console.Write("application starting...");
-}*/
+}
 
 /**
 IDataAccess dal = new DummyDaL();

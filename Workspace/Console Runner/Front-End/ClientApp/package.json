@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "bootstrap": "^5.1.0",
+    "cors": "^2.8.5",
     "http-proxy-middleware": "^0.19.1",
     "jquery": "^3.5.1",
     "merge": "^2.1.1",

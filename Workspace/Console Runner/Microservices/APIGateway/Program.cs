@@ -27,7 +27,8 @@ builder.Services.AddCors(options =>
                       builder =>
                       {
                           builder.AllowAnyOrigin();
-
+                          builder.AllowAnyMethod();
+                          builder.AllowAnyHeader();
                       });
 });
 
@@ -51,16 +52,10 @@ app.UseStaticFiles();
 app.UseRouting();
 
 
-app.UseCors(options =>
-{
-    options.
-    AllowAnyOrigin().
-    AllowAnyMethod().
-    AllowAnyHeader();
-});
 app.UseCors(MyAllowSpecificOrigins);
 
 app.MapControllers();
+
 await app.UseOcelot();
 
 app.UseAuthorization();

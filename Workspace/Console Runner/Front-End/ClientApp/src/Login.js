@@ -28,45 +28,18 @@ class Login extends React.Component {
         console.log(this.state.email);
         console.log(this.state.password);
 
-        /*fetch('https://localhost:49201/api/AccountLogin')
-            .then(response => response.json())
+        // HTTP Get Request
+        await fetch('https://localhost:49200/gateway/AccountLogin')
+            .then(response => console.log(response.text()))
             .then(data => console.log(data));
-        console.log('hi there danielle')*/
 
-
-        /*fetch('https://localhost:49200/gateway/AccountLogin',
-            {mode: 'no-cors'})
-            .then(response => response.json())
-            .then(data => console.log(data));*/
-
-
-        //TODO: FIX DATA SO THAT IT CAN READ IN THE JSON FILE SENT FROM 49200
-        //ACCOUNT LOGIN MICRO
+        // HTTP Post Request
         await fetch('https://localhost:49200/gateway/AccountLogin', {
-            method: 'GET',
-            headers: {
-                'accept': 'application/json',
-                'content-type': 'application/json'
-            },
-        }).then(response => console.log(response.text())) // returns 200;
-        .then(data => {
-            let test = data;
-            console.log("%j", test)
+            method: 'POST',
+            body: formData,
+        }).then(function (response) {
+            console.log(response.status); // returns 200;
         });
-
-        fetch('https://api.chucknorris.io/jokes/random')
-            .then(response => response.text())
-            .then(data => console.log(data));
-
-
-
-        //await fetch('https://localhost:49201/api/AccountLogin', {
-        //    method: 'POST',
-        //    mode: 'no-cors',
-        //    body: formData,
-        //}).then(function (response) {
-        //    console.log(response.status); // returns 200;
-        //});
     }
 
     render() {

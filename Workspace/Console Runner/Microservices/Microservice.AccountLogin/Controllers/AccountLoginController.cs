@@ -24,13 +24,13 @@ namespace Microservice.AccountLogin.Controllers
         public void Post()
         {
             Console.WriteLine("SUCCESSS!!!");
-            //Console.WriteLine("Received Post from LoginController");
-            ////Console.WriteLine(Request.Form("username"));
+            Console.WriteLine("Received Post from LoginController");
+            //Console.WriteLine(Request.Form("username"));
 
-            //IFormCollection formData = Request.Form;
+            IFormCollection formData = Request.Form;
 
-            //Console.WriteLine(formData["email"]);
-            //Console.WriteLine(formData["password"]);
+            Console.WriteLine(formData["email"]);
+            Console.WriteLine(formData["password"]);
             //try
             //{
             //    Account account = new Account();

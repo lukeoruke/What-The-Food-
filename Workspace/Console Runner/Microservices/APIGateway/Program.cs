@@ -2,43 +2,37 @@ using Ocelot.DependencyInjection;
 using Ocelot.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
+/// <summary>
+/// Add services to the container.
+/// </summary>
 builder.Services.AddRazorPages();
-//builder.Host.ConfigureAppConfiguration((hostingContext, configuration) =>
-//{
-//    configuration.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
-//});
 
-//Host.CreateDefaultBuilder(args)
-//.ConfigureHostConfiguration(hostConfig =>
-//{
-//    hostConfig.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true);
-//});
-//Host.CreateDefaultBuilder(args)
-//    .ConfigureServices((hostContext, services) =>
-//    {
-//        services.AddOcelot();
-//    });
+/// <summary>
+/// Allows for front end to API Gateway connection and bypass CORS policy
+/// </summary>
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       builder =>
                       {
-                          builder.AllowAnyOrigin();
+                          //allows for all origins, methods, and headers
+                          builder.AllowAnyOrigin(); 
                           builder.AllowAnyMethod();
                           builder.AllowAnyHeader();
                       });
 });
-
-
+/// <summary>
+/// ocelot implementation, accessed through ocelot.json
+/// </summary>
 builder.Configuration.AddJsonFile("ocelot.json");
 builder.Services.AddOcelot();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+/// <summary>
+/// Configure the HTTP request pipeline.
+/// </summary>
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
@@ -51,11 +45,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-
+//allows bypass of CORS
 app.UseCors(MyAllowSpecificOrigins);
 
 app.MapControllers();
-
+//allows for use of ocelot
 await app.UseOcelot();
 
 app.UseAuthorization();

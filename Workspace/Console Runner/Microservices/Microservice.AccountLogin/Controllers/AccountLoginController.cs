@@ -6,16 +6,16 @@ namespace Microservice.AccountLogin.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("MyAllowSpecificOrigins")]
+    //[EnableCors("MyAllowSpecificOrigins")] fts
     public class AccountLoginController : ControllerBase
     {
 
         [HttpGet]
-
         //place methods here
         public async Task<ActionResult<AccountLogin>> Get()
         {
             var user = new AccountLogin();
+            Console.WriteLine("asdkfhjaweklfhjasdfhlafhlakfha2");
             user.email = "something@testEmail.com";
             return Ok(user);
         }

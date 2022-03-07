@@ -39,22 +39,24 @@ class Login extends React.Component {
             .then(response => response.json())
             .then(data => console.log(data));*/
 
-        await fetch('Access-Control-Allow-Origin", https://localhost:49200/gateway/AccountLogin', {
+        await fetch('Access-Control-Allow-Origin, https://localhost:49200/gateway/AccountLogin', {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'content-type': 'application/json'
             },
         }).then(function (response) {
             console.log(response.status); // returns 200;
-        }).then(data => console.log(data));
+        }).then(data => console.log("%j", data));
 
-        await fetch('https://localhost:49201/api/AccountLogin', {
-            method: 'POST',
-            mode: 'no-cors',
-            body: formData,
-        }).then(function (response) {
-            console.log(response.status); // returns 200;
-        });
+
+
+        //await fetch('https://localhost:49201/api/AccountLogin', {
+        //    method: 'POST',
+        //    mode: 'no-cors',
+        //    body: formData,
+        //}).then(function (response) {
+        //    console.log(response.status); // returns 200;
+        //});
     }
 
     render() {

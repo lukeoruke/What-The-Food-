@@ -17,5 +17,29 @@ namespace Microservice.AccountLogin.Controllers
             user.email = "something@testEmail.com";
             return Ok(user);
         }
+
+        [HttpPost]
+        public void Post()
+        {
+            Console.WriteLine("SUCCESSS!!!");
+            //Console.WriteLine("Received Post from LoginController");
+            ////Console.WriteLine(Request.Form("username"));
+
+            //IFormCollection formData = Request.Form;
+
+            //Console.WriteLine(formData["email"]);
+            //Console.WriteLine(formData["password"]);
+            //try
+            //{
+            //    Account account = new Account();
+            //    account.Email = formData["email"].ToString();
+            //    account.Password = formData["password"].ToString();
+            //    Console.WriteLine(account.ToString());
+            //}
+            //catch (FileNotFoundException e)
+            //{
+            //    Console.WriteLine(e.ToString());
+            //}
+        }
     }
 }

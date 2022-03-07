@@ -96,6 +96,7 @@ namespace Console_Runner.Food
                 return true;
             }catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return false;
             }
             

@@ -35,6 +35,7 @@ namespace Console_Runner.DAL
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return false;
             }
         }
@@ -70,6 +71,7 @@ namespace Console_Runner.DAL
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return false;
             }
             return false;

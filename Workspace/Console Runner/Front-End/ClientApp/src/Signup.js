@@ -42,6 +42,15 @@ class Signup extends React.Component {
         });
     }
 
+    async verifyConfirmPassword(e){
+        e.preventDefault();
+        if(this.state.confirmPassword === '' || this.state.confirmPassword === undefined)
+            return;
+        if(this.state.password !== this.state.confirmPassword){
+            return 'Passwords must match.';
+        }
+    }
+
     render() {
         return (
             <div className="Signup">
@@ -70,6 +79,7 @@ class Signup extends React.Component {
                                 <input className="Signup-input" onChange={this.handleChange} value={this.state.confirmPassword}
                                        type="confirm password" name="confirm password" placeholder="confirm password"/>
                             </section>
+                                <Text>{this.verifyConfirmPassword()}</Text>
                             <input type="submit" value="Submit"/>
                         </form>
                     </div>

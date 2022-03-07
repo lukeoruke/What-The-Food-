@@ -9,7 +9,7 @@ namespace Console_Runner.DAL
 {
     public class EFAccountGateway : IAccountGateway
     {
-        private readonly Context _efContext;
+        private Context _efContext;
 
         public EFAccountGateway()
         {

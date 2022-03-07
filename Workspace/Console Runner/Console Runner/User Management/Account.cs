@@ -36,6 +36,8 @@ namespace Console_Runner.User_Management
         public Account()
         {
             Enabled = true;
+            Fname = "";
+            Lname = "";
         }
         public override string ToString()
         {

@@ -88,6 +88,9 @@ namespace Console_Runner.DAL
             {
                 table.AccountEmail
             });
+            builder.Entity<Ingredient>()
+           .Property(f => f.ingredientID)
+           .ValueGeneratedOnAdd();
 
 
             // one-to-one relationship between account and amr, where an account can exist without an amr but not vice versa

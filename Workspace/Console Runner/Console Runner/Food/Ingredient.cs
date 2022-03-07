@@ -12,7 +12,7 @@ namespace Console_Runner.Food
     public class Ingredient
     {
         public string ingredientName { get; set; }
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        
         public string ingredientID { get; set; }
         public string ingredientDescription { get; set; }
         public string ingredientShortName { get; set; }

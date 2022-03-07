@@ -24,6 +24,6 @@ namespace Console_Runner.Logging
         }
     }
 }
-//自殺する
+
 //add-migration CreateCustomerDB
 //update-database -verbose

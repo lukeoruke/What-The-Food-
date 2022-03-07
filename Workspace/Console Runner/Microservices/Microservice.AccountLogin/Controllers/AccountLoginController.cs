@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Console_Runner.DAL;
+using Console_Runner.Logging;
+using Console_Runner.User_Management;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,17 +34,29 @@ namespace Microservice.AccountLogin.Controllers
 
             Console.WriteLine(formData["email"]);
             Console.WriteLine(formData["password"]);
-            //try
-            //{
-            //    Account account = new Account();
-            //    account.Email = formData["email"].ToString();
-            //    account.Password = formData["password"].ToString();
-            //    Console.WriteLine(account.ToString());
-            //}
-            //catch (FileNotFoundException e)
-            //{
-            //    Console.WriteLine(e.ToString());
-            //}
+
+
+
+            try
+            {
+                Account account = new Account();
+                account.Email = formData["email"].ToString();
+                account.Password = formData["password"].ToString();
+
+                IAccountGateway accountGateway = new EFAccountGateway();
+                IPermissionGateway efPermissionGateway = new EFPermissionGateway();
+                PermissionService permService = new PermissionService(efPermissionGateway);
+                IlogGateway logAccess = new EFLogGateway();
+                Logging logger = new Logging(logAccess);
+                UM um = new(accountGateway, permService, logger);
+                um.UserSignUp(account);
+                
+                Console.WriteLine(account.ToString());
+            }
+            catch (FileNotFoundException e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
     }
 }

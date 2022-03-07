@@ -34,7 +34,7 @@ namespace Console_Runner.User_Management
                 _permissionService.AssignDefaultUserPermissions(acc.Email);
                 acc.IsActive = false;
                 _accountAccess.AddAccount(acc);
-                _logger.LogAccountCreation(UM_CATEGORY, "test page", true, "", acc.Email);
+                _logger.LogAccountCreation(UM_CATEGORY, "Signup page", true, "", acc.Email);
                 Console.WriteLine("UM operation was successful");
                 return true;
             }

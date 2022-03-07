@@ -12,6 +12,12 @@ namespace Microservice.AccountLogin.Controllers
     //[EnableCors("MyAllowSpecificOrigins")] fts
     public class AccountLoginController : ControllerBase
     {
+        static IAccountGateway accountGateway = new EFAccountGateway();
+        static IPermissionGateway efPermissionGateway = new EFPermissionGateway();
+        static PermissionService permService = new PermissionService(efPermissionGateway);
+        static IlogGateway logAccess = new EFLogGateway();
+        static Logging logger = new Logging(logAccess);
+        static UM um = new(accountGateway, permService, logger);
 
         [HttpGet]
         //place methods here
@@ -43,12 +49,6 @@ namespace Microservice.AccountLogin.Controllers
                 account.Email = formData["email"].ToString();
                 account.Password = formData["password"].ToString();
 
-                IAccountGateway accountGateway = new EFAccountGateway();
-                IPermissionGateway efPermissionGateway = new EFPermissionGateway();
-                PermissionService permService = new PermissionService(efPermissionGateway);
-                IlogGateway logAccess = new EFLogGateway();
-                Logging logger = new Logging(logAccess);
-                UM um = new(accountGateway, permService, logger);
                 um.UserSignUp(account);
                 
                 Console.WriteLine(account.ToString());

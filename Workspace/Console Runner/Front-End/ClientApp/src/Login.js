@@ -39,6 +39,9 @@ class Login extends React.Component {
             .then(response => response.json())
             .then(data => console.log(data));*/
 
+
+        //TODO: FIX DATA SO THAT IT CAN READ IN THE JSON FILE SENT FROM 49200
+        //ACCOUNT LOGIN MICRO
         await fetch('Access-Control-Allow-Origin, https://localhost:49200/gateway/AccountLogin', {
             method: 'GET',
             headers: {
@@ -46,7 +49,10 @@ class Login extends React.Component {
             },
         }).then(function (response) {
             console.log(response.status); // returns 200;
-        }).then(data => console.log("%j", data));
+        }).then(data => {
+            let test = data;
+            console.log("%j", test)
+        });
 
 
 

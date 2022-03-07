@@ -14,7 +14,6 @@ class Login extends React.Component {
     handleChange(event) {
         this.setState({[event.target.name]: event.target.value});
     }
-
     async sendLogin(e) {
         e.preventDefault();
 

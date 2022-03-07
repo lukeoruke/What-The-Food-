@@ -42,17 +42,21 @@ class Login extends React.Component {
 
         //TODO: FIX DATA SO THAT IT CAN READ IN THE JSON FILE SENT FROM 49200
         //ACCOUNT LOGIN MICRO
-        await fetch('Access-Control-Allow-Origin, https://localhost:49200/gateway/AccountLogin', {
+        await fetch('https://localhost:49200/gateway/AccountLogin', {
             method: 'GET',
             headers: {
+                'accept': 'application/json',
                 'content-type': 'application/json'
             },
-        }).then(function (response) {
-            console.log(response.status); // returns 200;
-        }).then(data => {
+        }).then(response => console.log(response.text())) // returns 200;
+        .then(data => {
             let test = data;
             console.log("%j", test)
         });
+
+        fetch('https://api.chucknorris.io/jokes/random')
+            .then(response => response.text())
+            .then(data => console.log(data));
 
 
 

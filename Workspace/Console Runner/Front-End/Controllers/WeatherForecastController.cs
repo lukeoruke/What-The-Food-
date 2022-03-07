@@ -29,4 +29,17 @@ public class WeatherForecastController : ControllerBase
         })
         .ToArray();
     }
+
+    [HttpPost]
+    public void Post()
+    {
+        Console.WriteLine("Post with var");
+        //Console.WriteLine(Request.Form("username"));
+
+        IFormCollection formData = Request.Form;
+
+        Console.WriteLine(formData["username"]);
+        Console.WriteLine(formData["email"]);
+        Console.WriteLine(formData["password"]);
+    }
 }

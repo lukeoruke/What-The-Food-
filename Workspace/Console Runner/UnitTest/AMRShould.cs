@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Xunit;
 using Console_Runner;
 using Console_Runner.AMRModel;
-using User;
+using Console_Runner.User_Management;
 
 namespace UnitTest
 {
@@ -16,8 +16,8 @@ namespace UnitTest
         public void InstantiateProperly()
         {
             // Arrange
-            Account testUser = new Account() { Email = "testaccount@example.com", Fname = "test", Lname = "account", isActive = true, Password = "password" };
-            Account anotherTestUser = new Account() { Email = "othertestaccount@example.com", Fname = "othertest", Lname = "account", isActive = true, Password = "password" };
+            Account testUser = new Account() { Email = "testaccount@example.com", Fname = "test", Lname = "account", IsActive = true, Password = "password" };
+            Account anotherTestUser = new Account() { Email = "othertestaccount@example.com", Fname = "othertest", Lname = "account", IsActive = true, Password = "password" };
 
             // Act
             AMR validNonCustomCase = new AMR(testUser, true, 100, 630.2001f, 20, ActivityLevel.None);
@@ -46,7 +46,7 @@ namespace UnitTest
         public void RejectNegativeMetrics()
         {
             // Arrange
-            Account testUser = new Account() { Email = "testaccount@example.com", Fname = "test", Lname = "account", isActive = true, Password = "password" };
+            Account testUser = new Account() { Email = "testaccount@example.com", Fname = "test", Lname = "account", IsActive = true, Password = "password" };
             int validWeight = 100;
             int invalidWeight = -10;
             float validHeight = 250f;
@@ -70,7 +70,7 @@ namespace UnitTest
         public void CalculateProperAMR()
         {
             // Arrange
-            Account testUser = new Account() { Email = "testaccount@example.com", Fname = "test", Lname = "account", isActive = true, Password = "password" };
+            Account testUser = new Account() { Email = "testaccount@example.com", Fname = "test", Lname = "account", IsActive = true, Password = "password" };
             int validWeight = 100;
             float validHeight = 630.2001f;
             int validAge = 20;
@@ -89,7 +89,7 @@ namespace UnitTest
         public void ReturnCustomAMRWhenAppropriate()
         {
             // Arrange
-            Account testUser = new Account() { Email = "testaccount@example.com", Fname = "test", Lname = "account", isActive = true, Password = "password" };
+            Account testUser = new Account() { Email = "testaccount@example.com", Fname = "test", Lname = "account", IsActive = true, Password = "password" };
             AMR customCase = new AMR(testUser, true, 40, 230.2001f, 1000, ActivityLevel.Moderate, 200f);
             float nonCustomAMR = (66.47f + (13.75f * 40) + (5.003f * 230.2001f) - (6.755f * 1000)) * 1.55f;
             float customAMR = 200f;

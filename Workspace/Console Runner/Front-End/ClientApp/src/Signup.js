@@ -29,6 +29,16 @@ class Signup extends React.Component {
 
         console.log(this.state.email);
         console.log(this.state.password);
+        console.log(this.state.confirmPassword);
+
+        if (this.state.password === this.state.confirmPassword) {
+            console.log('Matched');
+            return;
+        }
+        if (this.state.password !== this.state.confirmPassword || this.state.confirmPassword === undefined) {
+            console.log('Doesnt Match');
+            return 'Passwords must match.';
+        }
 
         // HTTP Get Request
         await fetch('https://localhost:49200/gateway/AccountSignup')
@@ -43,15 +53,18 @@ class Signup extends React.Component {
             console.log(response.status); // returns 200;
         });
     }
-    
-/*    async verifyConfirmPassword(e){
-        e.preventDefault();
-        if(this.state.confirmPassword === '' || this.state.confirmPassword === undefined)
+
+    verifyConfirmPassword() {
+        console.log('Called')
+        if (this.state.password === this.state.confirmPassword) {
+            console.log('Matched');
             return;
-        if(this.state.password !== this.state.confirmPassword){
+        }
+        if (this.state.password !== this.state.confirmPassword || this.state.confirmPassword === undefined) {
+            console.log('Doesnt Match');
             return 'Passwords must match.';
         }
-    }*/
+    }
 
     render() {
         return (
@@ -62,8 +75,8 @@ class Signup extends React.Component {
                         <form className="Signup-form" onSubmit={this.sendSignup}>
                             <section className= "Signup-section">
                                 <label>Name:</label>
-                                <input className="Signup-input" onChange={this.handleChange.name} 
-                                    value={this.state.name} type="text" name="name" 
+                                <input className="Signup-input" onChange={this.handleChange}
+                                    value={this.state.name} type="text" name="name"
                                     placeholder='First and Last Name'/>
                             </section>
                             <section className="Signup-section">
@@ -79,10 +92,10 @@ class Signup extends React.Component {
                             <section className="Signup-section">
                                 <label>Confirm Password:</label>
                                 <input className="Signup-input" onChange={this.handleChange} value={this.state.confirmPassword}
-                                       type="confirm password" name="confirm password" placeholder="confirm password"/>
+                                       type="password" name="confirmPassword" placeholder="confirm password"/>
                             </section>
-                             {/*<text>{this.verifyConfirmPassword()}</text>*/}
-                            <input type="submit" value="Submit" />
+                            <label>{this.verifyConfirmPassword()}</label>
+                            <input type="submit" value="Submit"/>
                             <Link to="./Login">Already have an account?</Link>
                         </form>
                     </div>

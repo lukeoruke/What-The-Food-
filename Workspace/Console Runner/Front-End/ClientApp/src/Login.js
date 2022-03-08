@@ -46,7 +46,7 @@ class Login extends React.Component {
             <div className="Login">
                 <header className="Login-header">
                     <div className="Login-box">
-                        <label className="label-1">Login</label>
+                        <label className="label-1">Sign Up</label>
                         <form className="Login-form" onSubmit={this.sendLogin}>
                             <section className="Login-section">
                                 <label>Email:</label>

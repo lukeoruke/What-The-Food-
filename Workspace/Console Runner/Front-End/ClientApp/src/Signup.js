@@ -1,12 +1,13 @@
 import './Signup.css';
 import React from 'react';
+import { Link } from "react-router-dom";
 
 class Signup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {name: '', email: '', password: '', confirmPassword: ''};
         this.handleChange = this.handleChange.bind(this);
-        this.sendLogin = this.sendLogin.bind(this);
+        this.sendSignup = this.sendSignup.bind(this);
         //this.email = React.createRef();
         //this.password = React.createRef();
     }
@@ -18,38 +19,39 @@ class Signup extends React.Component {
     async sendSignup(e) {
         e.preventDefault();
 
-        console.log('Attempting to login...');
+        console.log('Attempting to ...');
         console.log(this.state);
         const formData = new FormData();
         formData.append('username', 'password');
         formData.append('email', this.state.email);
         formData.append('password', this.state.password);
+        formData.append('confirmPassword', this.state.confirmPassword);
 
         console.log(this.state.email);
         console.log(this.state.password);
 
         // HTTP Get Request
-        await fetch('https://localhost:49200/gateway/AccountSignUp')
+        await fetch('https://localhost:49200/gateway/AccountSignup')
             .then(response => console.log(response.text()))
             .then(data => console.log(data));
 
         // HTTP Post Request
-        await fetch('https://localhost:49200/gateway/AccountSignUp', {
+        await fetch('https://localhost:49200/gateway/AccountSignup', {
             method: 'POST',
             body: formData,
         }).then(function (response) {
             console.log(response.status); // returns 200;
         });
     }
-
-    async verifyConfirmPassword(e){
+    
+/*    async verifyConfirmPassword(e){
         e.preventDefault();
         if(this.state.confirmPassword === '' || this.state.confirmPassword === undefined)
             return;
         if(this.state.password !== this.state.confirmPassword){
             return 'Passwords must match.';
         }
-    }
+    }*/
 
     render() {
         return (
@@ -79,8 +81,9 @@ class Signup extends React.Component {
                                 <input className="Signup-input" onChange={this.handleChange} value={this.state.confirmPassword}
                                        type="confirm password" name="confirm password" placeholder="confirm password"/>
                             </section>
-                                <Text>{this.verifyConfirmPassword()}</Text>
-                            <input type="submit" value="Submit"/>
+                             {/*<text>{this.verifyConfirmPassword()}</text>*/}
+                            <input type="submit" value="Submit" />
+                            <Link to="./Login">Already have an account?</Link>
                         </form>
                     </div>
                 </header>

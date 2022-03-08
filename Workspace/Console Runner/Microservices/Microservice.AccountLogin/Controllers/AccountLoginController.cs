@@ -45,11 +45,13 @@ namespace Microservice.AccountLogin.Controllers
 
             try
             {
-                Account account = new Account();
-                account.Email = formData["email"].ToString();
-                account.Password = formData["password"].ToString();
+               
 
-                um.UserSignUp(account);
+                Account account = um.SignIn(formData["email"].ToString(), formData["password"].ToString());
+                if (account != null)
+                {
+
+                }
                 
                 Console.WriteLine(account.ToString());
             }

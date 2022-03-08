@@ -21,11 +21,10 @@ namespace Microservice.AccountLogin.Controllers
 
         [HttpGet]
         //place methods here
-        public async Task<ActionResult<AccountLogin>> Get()
+        public async Task<ActionResult<AccountSignup>> Get()
         {
-            var user = new AccountLogin();
-            Console.WriteLine("asdkfhjaweklfhjasdfhlafhlakfha2");
-            user.email = "something@testEmail.com";
+            var user = new AccountSignup();
+
             return Ok(user);
         }
 

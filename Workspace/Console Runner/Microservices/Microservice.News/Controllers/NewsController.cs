@@ -7,13 +7,15 @@ namespace Microservice.News.Controllers
     [ApiController]
     public class NewsController : ControllerBase
     {
+        /// <summary>
+        /// Get News for News Microservice
+        /// </summary>
+        //TODO: Finish writing both the get and put
         [HttpGet]
-
-        //place methods here
         public async Task<ActionResult<News>> Get()
         {
             var article = new News();
-            article.title= "Valorant Gone Mobile";
+            article.title= "All Foods are now 100% fat free";
             return Ok(article);
         }
     }

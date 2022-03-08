@@ -7,9 +7,11 @@ namespace Microservice.FoodInformation.Controllers
     [ApiController]
     public class FoodInformationController : ControllerBase
     {
+        /// <summary>
+        /// Get Function for FoodInformation Microservice
+        /// </summary>
+        //TODO: Finish writing both the get and put
         [HttpGet]
-
-        //place methods here
         public async Task<ActionResult<FoodInformation>> Get()
         {
             var foods = new FoodInformation();

@@ -7,9 +7,11 @@ namespace Microservice.History.Controllers
     [ApiController]
     public class HistoryController : ControllerBase
     {
+        /// <summary>
+        /// Get History for HistoryController Microservice
+        /// </summary>
+        //TODO: Finish writing both the get and put
         [HttpGet]
-
-        //place methods here
         public async Task<ActionResult<History>> Get()
         {
             var name = new History();

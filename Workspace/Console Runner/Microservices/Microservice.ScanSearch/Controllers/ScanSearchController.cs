@@ -7,9 +7,11 @@ namespace Microservice.ScanSearch.Controllers
     [ApiController]
     public class ScanSearchController : ControllerBase
     {
+        /// <summary>
+        /// Get Scans for ScanSearch Microservice
+        /// </summary>
+        //TODO: Finish writing both the get and put
         [HttpGet]
-
-        //place methods here
         public async Task<ActionResult<ScanSearch>> Get()
         {
             var product = new ScanSearch();

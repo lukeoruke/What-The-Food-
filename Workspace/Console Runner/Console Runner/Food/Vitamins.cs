@@ -9,9 +9,9 @@ namespace Console_Runner.Food
 {
     public class Vitamins
     {
-        public string Barcode;
-        public string VitaminName;
-        public int Percentage;
+        public string Barcode { get; set; }
+        public string VitaminName { get; set; }
+        public int Percentage { get; set; }
         public Vitamins()
         {
         }

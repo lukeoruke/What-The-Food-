@@ -10,37 +10,36 @@ namespace Console_Runner.Food
 {
     public class FM
     {
-        private const string _UM_CATEGORY = "Data Store";
-        private IFoodItemGateway _foodItemGateway;
-        private IFlagGateway _flagGateway;
-        private IlogGateway _logGateway;
+        private const string UM_CATEGORY = "Data Store";
+        private readonly IFoodItemGateway _foodItemGateway;
+        private readonly IFlagGateway _flagGateway;
+        private readonly IlogGateway _logGateway;
         
         public FM(IFoodItemGateway _foodItemGateway, IFlagGateway _flagGateway,IlogGateway _logGateway)
         {
-           this._foodItemGateway = _foodItemGateway;
+            this._foodItemGateway = _foodItemGateway;
             this._flagGateway = _flagGateway;
             this._logGateway = _logGateway;
         }
 
-        public bool addFlagToAccount(string email, string flag)
+        public bool AddFlagToAccount(string email, string flag)
         {
             FoodFlag foodFlag = new(email, flag);
             return _flagGateway.AddFlag(foodFlag);
-      
         }
 
-        public bool removeFoodFlag(string email, string IngredientID)
+        public bool RemoveFoodFlag(string email, string IngredientID)
         {
             return _flagGateway.RemoveFoodFlag(email, IngredientID);
         }
 
-        public List<FoodFlag> getAllAccountFlags(string email)
+        public List<FoodFlag> GetAllAccountFlags(string email)
         {
             return _flagGateway.GetAllAccountFlags(email);
         }
         
         //gets and returns the union of all ingredients in both the item corosponding to the given barcode and items that exist within the users flags.
-        public List<Ingredient> productFlagCheck(string email, string barcode)
+        public List<Ingredient> CheckProductForFlags(string email, string barcode)
         {
             List<Ingredient> flaggedIngredientsInProduct = new();
             List<FoodFlag> userFlags = _flagGateway.GetAllAccountFlags(email);
@@ -54,14 +53,14 @@ namespace Console_Runner.Food
                         flaggedIngredientsInProduct.Add(ingredientList[i]);
                     }
                 }
-                
             }
             return flaggedIngredientsInProduct;
         }
 
         public List<Ingredient> FoodContainsFlaggedItem(string barcode, string email)
         {
-            FoodItem food = GetScannedFoodItem(barcode);
+            FoodItem? food = GetScannedFoodItem(barcode);
+            if (food == null) return new List<Ingredient>();
             List<Ingredient> flaggedIngredients = GetIngredientList(food.barcode);
             for (int i = 0; i < flaggedIngredients.Count; i++)
             {
@@ -94,7 +93,7 @@ namespace Console_Runner.Food
             {
                 _foodItemGateway.AddIngredient(ingredient);
                 return true;
-            }catch (Exception ex)
+            }catch (Exception)
             {
                 return false;
             }

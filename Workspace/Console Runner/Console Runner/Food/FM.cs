@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Console_Runner.Logging;
 
 namespace Console_Runner.Food
 {
@@ -13,13 +14,13 @@ namespace Console_Runner.Food
         private const string UM_CATEGORY = "Data Store";
         private readonly IFoodItemGateway _foodItemGateway;
         private readonly IFlagGateway _flagGateway;
-        private readonly IlogGateway _logGateway;
+        private readonly ILogger _logGateway;
         
-        public FM(IFoodItemGateway _foodItemGateway, IFlagGateway _flagGateway,IlogGateway _logGateway)
+        public FM(IFoodItemGateway foodItemGateway, IFlagGateway flagGateway, ILogger logGateway)
         {
-            this._foodItemGateway = _foodItemGateway;
-            this._flagGateway = _flagGateway;
-            this._logGateway = _logGateway;
+            _foodItemGateway = foodItemGateway;
+            _flagGateway = flagGateway;
+            _logGateway = logGateway;
         }
 
         public bool AddFlagToAccount(string email, string flag)

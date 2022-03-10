@@ -62,7 +62,7 @@ namespace Console_Runner.DAL
                 table.barcode,
                 table.vitaminName
             }) ;
-            builder.Entity<LabelIdentifyer>().HasKey(table => new
+            builder.Entity<LabelIdentifier>().HasKey(table => new
             {
                 table.barcode,
                 table.ingredientID
@@ -111,7 +111,7 @@ namespace Console_Runner.DAL
 
         public DbSet<FoodItem> FoodItems { get; set; } = null!;
 
-        public DbSet<LabelIdentifyer> IngredientIdentifier { get; set; } = null!;
+        public DbSet<LabelIdentifier> IngredientIdentifier { get; set; } = null!;
 
         public DbSet<NutritionLabel> NutritionLabels { get; set; } = null!;
 

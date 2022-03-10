@@ -24,7 +24,7 @@ namespace Console_Runner.DAL
                 //Creates connection between barcode and list of food items connected to the corrosponding food item based on barcode
                 for (int i = 0; i < ingredientList.Count; i++)
                 {
-                    LabelIdentifyer label = new();
+                    LabelIdentifier label = new();
                     label.barcode = barcode;
                     label.ingredientID = ingredientList[i].ingredientID;
                     _efContext.IngredientIdentifier.Add(label);

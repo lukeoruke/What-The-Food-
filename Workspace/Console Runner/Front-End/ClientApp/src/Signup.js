@@ -1,12 +1,13 @@
 import './Signup.css';
 import React from 'react';
+import { Link } from "react-router-dom";
 
 class Signup extends React.Component {
     constructor(props) {
         super(props);
         this.state = {name: '', email: '', password: '', confirmPassword: ''};
         this.handleChange = this.handleChange.bind(this);
-        this.sendLogin = this.sendLogin.bind(this);
+        this.sendSignup = this.sendSignup.bind(this);
         //this.email = React.createRef();
         //this.password = React.createRef();
     }
@@ -18,23 +19,34 @@ class Signup extends React.Component {
     async sendSignup(e) {
         e.preventDefault();
 
-        console.log('Attempting to login...');
+        console.log('Attempting to ...');
         console.log(this.state);
         const formData = new FormData();
         formData.append('username', 'password');
         formData.append('email', this.state.email);
         formData.append('password', this.state.password);
+        formData.append('confirmPassword', this.state.confirmPassword);
 
         console.log(this.state.email);
         console.log(this.state.password);
+        console.log(this.state.confirmPassword);
+
+        if (this.state.password === this.state.confirmPassword) {
+            console.log('Matched');
+            return;
+        }
+        if (this.state.password !== this.state.confirmPassword || this.state.confirmPassword === undefined) {
+            console.log('Doesnt Match');
+            return 'Passwords must match.';
+        }
 
         // HTTP Get Request
-        await fetch('https://localhost:49200/gateway/AccountSignUp')
+        await fetch('https://localhost:49200/gateway/AccountSignup')
             .then(response => console.log(response.text()))
             .then(data => console.log(data));
 
         // HTTP Post Request
-        await fetch('https://localhost:49200/gateway/AccountSignUp', {
+        await fetch('https://localhost:49200/gateway/AccountSignup', {
             method: 'POST',
             body: formData,
         }).then(function (response) {
@@ -42,11 +54,14 @@ class Signup extends React.Component {
         });
     }
 
-    async verifyConfirmPassword(e){
-        e.preventDefault();
-        if(this.state.confirmPassword === '' || this.state.confirmPassword === undefined)
+    verifyConfirmPassword() {
+        console.log('Called')
+        if (this.state.password === this.state.confirmPassword) {
+            console.log('Matched');
             return;
-        if(this.state.password !== this.state.confirmPassword){
+        }
+        if (this.state.password !== this.state.confirmPassword || this.state.confirmPassword === undefined) {
+            console.log('Doesnt Match');
             return 'Passwords must match.';
         }
     }
@@ -60,8 +75,8 @@ class Signup extends React.Component {
                         <form className="Signup-form" onSubmit={this.sendSignup}>
                             <section className= "Signup-section">
                                 <label>Name:</label>
-                                <input className="Signup-input" onChange={this.handleChange.name} 
-                                    value={this.state.name} type="text" name="name" 
+                                <input className="Signup-input" onChange={this.handleChange}
+                                    value={this.state.name} type="text" name="name"
                                     placeholder='First and Last Name'/>
                             </section>
                             <section className="Signup-section">
@@ -77,10 +92,11 @@ class Signup extends React.Component {
                             <section className="Signup-section">
                                 <label>Confirm Password:</label>
                                 <input className="Signup-input" onChange={this.handleChange} value={this.state.confirmPassword}
-                                       type="confirm password" name="confirm password" placeholder="confirm password"/>
+                                       type="password" name="confirmPassword" placeholder="confirm password"/>
                             </section>
-                                <Text>{this.verifyConfirmPassword()}</Text>
+                            <label>{this.verifyConfirmPassword()}</label>
                             <input type="submit" value="Submit"/>
+                            <Link to="./Login">Already have an account?</Link>
                         </form>
                     </div>
                 </header>

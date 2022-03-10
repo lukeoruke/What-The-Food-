@@ -9,22 +9,22 @@ namespace Console_Runner.Food
 {
     public class Vitamins
     {
-        public string barcode;
-        public string vitaminName;
-        int percentage;
+        public string Barcode;
+        public string VitaminName;
+        public int Percentage;
         public Vitamins()
         {
         }
         public Vitamins(string barcode, string vitaminName)
         {
-            this.barcode = barcode;
-            this.vitaminName = vitaminName;
+            Barcode = barcode;
+            VitaminName = vitaminName;
         }
         public Vitamins(string barcode, string vitaminName, int percentage)
         {
-            this.barcode = barcode;
-            this.vitaminName = vitaminName;
-            this.percentage = percentage;
+            Barcode = barcode;
+            VitaminName = vitaminName;
+            Percentage = percentage;
         }
     }
 }

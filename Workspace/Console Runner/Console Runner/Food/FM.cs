@@ -49,7 +49,7 @@ namespace Console_Runner.Food
             {
                 for(int j = 0; j < userFlags.Count; j++)
                 {
-                    if (ingredientList[i].ingredientID == userFlags[j].ingredientID)
+                    if (ingredientList[i].IngredientID == userFlags[j].IngredientID)
                     {
                         flaggedIngredientsInProduct.Add(ingredientList[i]);
                     }
@@ -62,10 +62,10 @@ namespace Console_Runner.Food
         {
             FoodItem? food = GetScannedFoodItem(barcode);
             if (food == null) return new List<Ingredient>();
-            List<Ingredient> flaggedIngredients = GetIngredientList(food.barcode);
+            List<Ingredient> flaggedIngredients = GetIngredientList(food.Barcode);
             for (int i = 0; i < flaggedIngredients.Count; i++)
             {
-                if (_flagGateway.AccountHasFlag(email, flaggedIngredients[i].ingredientID))
+                if (_flagGateway.AccountHasFlag(email, flaggedIngredients[i].IngredientID))
                 {
                     flaggedIngredients.Add(flaggedIngredients[i]);
                 }

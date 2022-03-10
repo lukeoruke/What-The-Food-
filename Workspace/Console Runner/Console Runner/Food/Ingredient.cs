@@ -11,11 +11,11 @@ namespace Console_Runner.Food
 {
     public class Ingredient
     {
-        public string ingredientName { get; set; }
+        public string IngredientName { get; set; }
         
-        public string ingredientID { get; set; }
-        public string ingredientDescription { get; set; }
-        public string ingredientShortName { get; set; }
+        public string IngredientID { get; set; }
+        public string IngredientDescription { get; set; }
+        public string IngredientShortName { get; set; }
         public Ingredient()
         {
 
@@ -23,9 +23,9 @@ namespace Console_Runner.Food
 
         public Ingredient(string ingredientName, string ingredientShortName, string ingredientDescription)
         {
-            this.ingredientName = ingredientName;
-            this.ingredientDescription = ingredientDescription;
-            this.ingredientShortName = ingredientShortName;
+            IngredientName = ingredientName;
+            IngredientDescription = ingredientDescription;
+            IngredientShortName = ingredientShortName;
         }
 
     }

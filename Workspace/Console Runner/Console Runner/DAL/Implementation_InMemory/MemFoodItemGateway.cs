@@ -23,14 +23,14 @@ namespace Console_Runner.DAL
                 for (int i = 0; i < ingredientList.Count; i++)
                 {
                     LabelIdentifier label = new();
-                    label.barcode = barcode;
-                    label.ingredientID = ingredientList[i].ingredientID;
+                    label.Barcode = barcode;
+                    label.IngredientID = ingredientList[i].IngredientID;
                     _ingredientIdentifiersList.Add(label);
                 }
                 for (int i = 0; i < vitaminsList.Count; i++)
                 {
                     Vitamins vit = vitaminsList[i];
-                    vit.barcode = barcode;
+                    vit.Barcode = barcode;
                     vitaminsList.Add(vit);
                 }
                 return true;
@@ -72,11 +72,11 @@ namespace Console_Runner.DAL
             List<Ingredient> ingredients = new List<Ingredient>();
             for (int i = 0; i < _ingredientIdentifiersList.Count; i++)
             {
-                if (_ingredientIdentifiersList[i].barcode == barcode)
+                if (_ingredientIdentifiersList[i].Barcode == barcode)
                 {
                     for (int j = 0; j < _ingredientsList.Count; j++)
                     {
-                        if (_ingredientsList[j].ingredientID == _ingredientIdentifiersList[i].ingredientID)
+                        if (_ingredientsList[j].IngredientID == _ingredientIdentifiersList[i].IngredientID)
                         {
                             ingredients.Add(_ingredientsList[j]);
                         }
@@ -90,7 +90,7 @@ namespace Console_Runner.DAL
         {
             for (int i = 0; i < _nutritionLabelsList.Count; i++)
             {
-                if (_nutritionLabelsList[i].barcode == food.barcode)
+                if (_nutritionLabelsList[i].barcode == food.Barcode)
                 {
                     return _nutritionLabelsList[i];
                 }
@@ -102,7 +102,7 @@ namespace Console_Runner.DAL
         {
             for (int i = 0; i < _foodsList.Count; i++)
             {
-                if (_foodsList[i].barcode == barcode)
+                if (_foodsList[i].Barcode == barcode)
                 {
                     return _foodsList[i];
                 }

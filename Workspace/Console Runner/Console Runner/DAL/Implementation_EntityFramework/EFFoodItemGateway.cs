@@ -25,14 +25,14 @@ namespace Console_Runner.DAL
                 for (int i = 0; i < ingredientList.Count; i++)
                 {
                     LabelIdentifier label = new();
-                    label.barcode = barcode;
-                    label.ingredientID = ingredientList[i].ingredientID;
+                    label.Barcode = barcode;
+                    label.IngredientID = ingredientList[i].IngredientID;
                     _efContext.IngredientIdentifier.Add(label);
                 }
                 for (int i = 0; i < vitaminsList.Count; i++)
                 {
                     Vitamins vit = vitaminsList[i];
-                    vit.barcode = barcode;
+                    vit.Barcode = barcode;
                     _efContext.Vitamins.Add(vit);
                 }
                 _efContext.SaveChanges();
@@ -77,7 +77,7 @@ namespace Console_Runner.DAL
             List<Ingredient> ingredients = new List<Ingredient>();
             foreach (var Ingredient in _efContext.IngredientIdentifier)
             {
-                if (Ingredient.barcode == barcode)
+                if (Ingredient.Barcode == barcode)
                 {
                     ingredients.Add(_efContext.Ingredients.Find(barcode));
                 }
@@ -87,7 +87,7 @@ namespace Console_Runner.DAL
 
         public NutritionLabel? RetrieveNutritionLabel(FoodItem food)
         {
-            return _efContext.NutritionLabels.Find(food.barcode);
+            return _efContext.NutritionLabels.Find(food.Barcode);
         }
 
         public FoodItem? RetrieveScannedFoodItem(string barcode)

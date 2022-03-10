@@ -8,15 +8,15 @@ namespace Console_Runner.Food
 {
     public class FoodFlag
     {
-        public string accountEmail;
-        public string ingredientID;
+        public string AccountEmail { get; set; }
+        public string IngredientID { get; set; }
         public FoodFlag()
         {
         }
         public FoodFlag (string accountEmail, string ingredientID)
         {
-            this.accountEmail = accountEmail;
-            this.ingredientID = ingredientID;
+            this.AccountEmail = accountEmail;
+            this.IngredientID = ingredientID;
         }
     }
 }

@@ -59,13 +59,13 @@ namespace Console_Runner.DAL
  
             builder.Entity<Vitamins>().HasKey(table => new
             {
-                table.barcode,
-                table.vitaminName
+                table.Barcode,
+                table.VitaminName
             }) ;
             builder.Entity<LabelIdentifier>().HasKey(table => new
             {
-                table.barcode,
-                table.ingredientID
+                table.Barcode,
+                table.IngredientID
             });
             builder.Entity<NutritionLabel>().HasKey(table => new
             {
@@ -73,23 +73,23 @@ namespace Console_Runner.DAL
             });
             builder.Entity<FoodFlag>().HasKey(table => new
             {
-                table.accountEmail,
-                table.ingredientID
+                table.AccountEmail,
+                table.IngredientID
             });
             builder.Entity<Ingredient>().HasKey(table => new
             {
-                table.ingredientID
+                table.IngredientID
             });
             builder.Entity<FoodItem>().HasKey(table => new
             {
-                table.barcode
+                table.Barcode
             });
             builder.Entity<AMR>().HasKey(table => new
             {
                 table.AccountEmail
             });
             builder.Entity<Ingredient>()
-           .Property(f => f.ingredientID)
+           .Property(f => f.IngredientID)
            .ValueGeneratedOnAdd();
 
 

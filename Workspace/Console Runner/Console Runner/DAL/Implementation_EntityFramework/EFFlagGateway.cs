@@ -40,7 +40,7 @@ namespace Console_Runner.DAL
             List<FoodFlag> flagList = new List<FoodFlag>();
             foreach (var flag in _efContext.FoodFlags)
             {
-                if (flag.accountEmail == email)
+                if (flag.AccountEmail == email)
                 {
                     flagList.Add(flag);
                 }

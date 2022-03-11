@@ -22,7 +22,7 @@ namespace Console_Runner.Food
             _flagGateway = flagGateway;
             _logGateway = logGateway;
         }
-        public bool AddFoodItem(FoodItem foodItem, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList)
+        public bool AddFoodItem(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
         {
             return _foodItemGateway.AddFoodItem(foodItem, nutritionLabel, vitaminsList, ingredientList);
             return false;

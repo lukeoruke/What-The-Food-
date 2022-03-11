@@ -11,7 +11,7 @@ namespace Console_Runner.Food;
 internal interface INutritionLabel
 {
     [Key]
-    string barcode { get; }
+    string Barcode { get; }
     int Calories { get; set; }
     int Servings { get; set; }
     Double ServingSize { get; set; }
@@ -25,33 +25,8 @@ internal interface INutritionLabel
     int TotalSugars { get; set; }
     int AddedSugar { get; set; }
     int Protein { get; set; }
-    Double Biotin { get; set; }
-    Double Choline { get; set; }
-    Double Folate { get; set; }
-    Double Niacin { get; set; }
-    Double PantothenicAcid { get; set; }
-    Double Riboflavin { get; set; }
-    Double Thiamin { get; set; }
-    Double A { get; set; }
-    Double B6 { get; set; }
-    Double B12 { get; set; }
-    Double C { get; set; }
-    Double D { get; set; }
-    Double E { get; set; }
-    Double K { get; set; }
-    Double Calcium { get; set; }
-    Double Chloride { get; set; }
-    Double Chromium { get; set; }
-    Double Copper { get; set; }
-    Double Iodine { get; set; }
-    Double Iron { get; set; }
-    Double Magnesium { get; set; }
-    Double Manganese { get; set; }
-    Double Molybdenum { get; set; }
-    Double Phosphorus { get; set; }
-    Double Potassium { get; set; }
-    Double Selenium { get; set; }
-    Double Zinc { get; set; }
+    List<Nutrient> Nutrients { get; }
+    Boolean AddNutrient (Nutrient nutrient);
     ArrayList IngredientsList<String>();
 
 

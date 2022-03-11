@@ -30,7 +30,7 @@ namespace UnitTest
             List<Ingredient> ingredientList = new List<Ingredient>();
             ingredientList.Add(ingredient);
 
-            fm.AddFoodItem(food, nutrition, new List<Vitamins>(), ingredientList);
+            fm.AddFoodItem(food, nutrition, new List<Nutrient>(), ingredientList);
 
             Assert.True(fm.AddFlagToAccount("Matt@gmail.com", "1"));
             List<Ingredient> flaggedItems = fm.CheckProductForFlags("Matt@gmail.com", "70847-81116");

@@ -57,10 +57,10 @@ namespace Console_Runner.DAL
                 table.foodItems
             });
  
-            builder.Entity<Vitamins>().HasKey(table => new
+            builder.Entity<Nutrient>().HasKey(table => new
             {
                 table.Barcode,
-                table.VitaminName
+                table.Name
             }) ;
             builder.Entity<LabelIdentifier>().HasKey(table => new
             {
@@ -69,7 +69,7 @@ namespace Console_Runner.DAL
             });
             builder.Entity<NutritionLabel>().HasKey(table => new
             {
-                table.barcode
+                table.Barcode
             });
             builder.Entity<FoodFlag>().HasKey(table => new
             {
@@ -107,7 +107,7 @@ namespace Console_Runner.DAL
 
         public DbSet<FoodFlag> FoodFlags { get; set; } = null!;
 
-        public DbSet<Vitamins> Vitamins { get; set; } = null!;
+        public DbSet<Nutrient> Vitamins { get; set; } = null!;
 
         public DbSet<FoodItem> FoodItems { get; set; } = null!;
 

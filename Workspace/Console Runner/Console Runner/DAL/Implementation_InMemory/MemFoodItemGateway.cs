@@ -14,12 +14,12 @@ namespace Console_Runner.DAL
         List<NutritionLabel> _nutritionLabelsList = new();
         List<LabelIdentifier> _ingredientIdentifiersList = new();
         List<Ingredient> _ingredientsList = new();
-        public bool AddFoodItem(FoodItem fooditem, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList)
+        public bool AddFoodItem(FoodItem fooditem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
         {
             try
             {
                 string barcode = fooditem.Barcode;
-                nutritionLabel.barcode = barcode;
+                nutritionLabel.Barcode = barcode;
                 //Creates connection between barcode and list of food items connected to the corrosponding food item based on barcode
                 for (int i = 0; i < ingredientList.Count; i++)
                 {
@@ -30,7 +30,7 @@ namespace Console_Runner.DAL
                 }
                 for (int i = 0; i < vitaminsList.Count; i++)
                 {
-                    Vitamins vit = vitaminsList[i];
+                    Nutrient vit = vitaminsList[i];
                     vit.Barcode = barcode;
                     vitaminsList.Add(vit);
                 }
@@ -91,7 +91,7 @@ namespace Console_Runner.DAL
         {
             for (int i = 0; i < _nutritionLabelsList.Count; i++)
             {
-                if (_nutritionLabelsList[i].barcode == food.Barcode)
+                if (_nutritionLabelsList[i].Barcode == food.Barcode)
                 {
                     return _nutritionLabelsList[i];
                 }

@@ -35,46 +35,359 @@ public class NutritionLabel : INutritionLabel
         this.barcode = barcode;
     }
 
-    public int Calories { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int Servings { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double ServingSize { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int TotalFat { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int SaturatedFat { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int TransFat { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int Cholesterol { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int Sodium { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int TotalCarbohydrate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int DietaryFiber { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int TotalSugars { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int AddedSugar { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public int Protein { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Biotin { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Choline { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Folate { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Niacin { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double PantothenicAcid { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Riboflavin { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Thiamin { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double A { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double B6 { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double B12 { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double C { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double D { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double E { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double K { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Calcium { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Chloride { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Chromium { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Copper { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Iodine { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Iron { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Magnesium { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Manganese { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Molybdenum { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Phosphorus { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Potassium { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Selenium { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-    public double Zinc { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    public int Calories           
+    { 
+        get; 
+        set {
+            if(value >= 0) Calories = value;
+            else throw new ArgumentOutOfRangeException("Calories must be nonnegative!");
+        }
+    }
+    public int Servings           
+    { 
+        get; 
+        set {
+            if(value > 0) Servings = value;
+            else throw new ArgumentOutOfRangeException("Servings must be positive nonzero!");
+        }
+    }
+    public double ServingSize     
+    {
+        get; 
+        set {
+            if(value > 0) ServingSize = value;
+            else throw new ArgumentOutOfRangeException("ServingSize must be positive nonzero!");
+        }
+    }
+    public int TotalFat           
+    { 
+        get; 
+        set {
+            if(value >= 0) TotalFat = value;
+            else throw new ArgumentOutOfRangeException("TotalFat must be nonnegative!");
+        }
+    }
+    public int SaturatedFat
+    { 
+        get;
+        set {
+            if(value >= 0) SaturatedFat = value;
+            else throw new ArgumentOutOfRangeException("SaturatedFat must be nonnegative!");
+        }
+    }
+    public int TransFat           
+    { 
+        get; 
+        set {
+            if(value >= 0) TransFat = value;
+            else throw new ArgumentOutOfRangeException("TransFat must be nonnegative!");
+        }
+    }
+    public int Cholesterol        
+    { 
+        get; 
+        set {
+            if(value >= 0) Cholesterol = value;
+            else throw new ArgumentOutOfRangeException("Cholesterol must be nonnegative!");
+        }
+    }
+
+    public int Sodium             
+    { 
+        get; 
+        set {
+            if(value >= 0) Sodium = value;
+            else throw new ArgumentOutOfRangeException("Sodium must be nonnegative!");
+        }
+    }
+
+    public int TotalCarbohydrate  
+    { 
+        get; 
+        set {
+            if(value >= 0) TotalCarbohydrate = value;
+            else throw new ArgumentOutOfRangeException("TotalCarbohydrate must be nonnegative!");
+        } 
+    }
+
+    public int DietaryFiber       
+    { 
+        get; 
+        set {
+            if(value >= 0) DietaryFiber = value;
+            else throw new ArgumentOutOfRangeException("DietaryFiber must be nonnegative!");
+        } 
+    }
+
+    public int TotalSugars        
+    { 
+        get; 
+        set {
+            if(value >= 0) TotalSugars = value;
+            else throw new ArgumentOutOfRangeException("TotalSugars must be nonnegative!");
+        } 
+    }
+
+    public int AddedSugar         
+    { 
+        get; 
+        set {
+            if(value >= 0) AddedSugar = value;
+            else throw new ArgumentOutOfRangeException("AddedSugar must be nonnegative!");
+        } 
+    }
+
+    public int Protein            
+    { 
+        get; 
+        set {
+            if(value >= 0) Protein = value;
+            else throw new ArgumentOutOfRangeException("Protein must be nonnegative!");
+        } 
+    }
+
+    public double Biotin          
+    { 
+        get; 
+        set {
+            if(value >= 0) Biotin = value;
+            else throw new ArgumentOutOfRangeException("Biotin must be nonnegative!");
+        }  
+    }
+
+    public double Choline         
+    { 
+        get; 
+        set {
+            if(value >= 0) Choline = value;
+            else throw new ArgumentOutOfRangeException("Choline must be nonnegative!");
+        } 
+    }
+
+    public double Folate          
+    { 
+        get; 
+        set {
+            if(value >= 0) Folate = value;
+            else throw new ArgumentOutOfRangeException("Folate must be nonnegative!");
+        } 
+    }
+
+    public double Niacin          
+    { 
+        get; 
+        set {
+            if(value >= 0) Niacin = value;
+            else throw new ArgumentOutOfRangeException("Niacin must be nonnegative!");
+        } 
+    }
+
+    public double PantothenicAcid 
+    { 
+        get; 
+        set {
+            if(value >= 0) PantothenicAcid = value;
+            else throw new ArgumentOutOfRangeException("PantothenicAcid must be nonnegative!");
+        } 
+    }
+
+    public double Riboflavin      
+    { 
+        get; 
+        set {
+            if(value >= 0) Riboflavin = value;
+            else throw new ArgumentOutOfRangeException("Riboflavin must be nonnegative!");
+        } 
+    }
+
+    public double Thiamin         
+    { 
+        get; 
+        set {
+            if(value >= 0) Thiamin = value;
+            else throw new ArgumentOutOfRangeException("Thiamin must be nonnegative!");
+        } 
+    }
+
+    public double VitaminA               
+    { 
+        get; 
+        set {
+            if(value >= 0) VitaminA = value;
+            else throw new ArgumentOutOfRangeException("VitaminA must be nonnegative!");
+        } 
+    }
+
+    public double VitaminB6              
+    { 
+        get; 
+        set {
+            if(value >= 0) VitaminB6 = value;
+            else throw new ArgumentOutOfRangeException("VitaminB6 must be nonnegative!");
+        } 
+    }
+
+    public double VitaminB12             
+    { 
+        get; 
+        set {
+            if(value >= 0) VitaminB12 = value;
+            else throw new ArgumentOutOfRangeException("VitaminB12 must be nonnegative!");
+        } 
+    }
+
+    public double VitaminC               
+    { 
+        get; 
+        set {
+            if(value >= 0) VitaminC = value;
+            else throw new ArgumentOutOfRangeException("VitaminC must be nonnegative!");
+        } 
+    }
+
+    public double VitaminD               
+    { 
+        get; 
+        set {
+            if(value >= 0) VitaminD = value;
+            else throw new ArgumentOutOfRangeException("VitaminD must be nonnegative!");
+        } 
+    }
+
+    public double VitaminE               
+    { 
+        get; 
+        set {
+            if(value >= 0) VitaminE = value;
+            else throw new ArgumentOutOfRangeException("VitaminE must be nonnegative!");
+        } 
+    }
+
+    public double VitaminK               
+    { 
+        get; 
+        set {
+            if(value >= 0) VitaminK = value;
+            else throw new ArgumentOutOfRangeException("VitaminK must be nonnegative!");
+        } 
+    }
+
+    public double Calcium         
+    { 
+        get; 
+        set {
+            if(value >= 0) Calcium = value;
+            else throw new ArgumentOutOfRangeException("Calcium must be nonnegative!");
+        } 
+    }
+
+    public double Chloride        
+    { 
+        get; 
+        set {
+            if(value >= 0) Chloride = value;
+            else throw new ArgumentOutOfRangeException("Chloride must be nonnegative!");
+        } 
+    }
+
+    public double Chromium        
+    { 
+        get; 
+        set {
+            if(value >= 0) Chromium = value;
+            else throw new ArgumentOutOfRangeException("Chromium must be nonnegative!");
+        } 
+    }
+
+    public double Copper          
+    { 
+        get; 
+        set {
+            if(value >= 0) Copper = value;
+            else throw new ArgumentOutOfRangeException("Copper must be nonnegative!");
+        } 
+    }
+
+    public double Iodine          
+    { 
+        get; 
+        set {
+            if(value >= 0) Iodine = value;
+            else throw new ArgumentOutOfRangeException("Iodine must be nonnegative!");
+        } 
+    }
+
+    public double Iron            
+    { 
+        get; 
+        set {
+            if(value >= 0) Iron = value;
+            else throw new ArgumentOutOfRangeException("Iron must be nonnegative!");
+        } 
+    }
+
+    public double Magnesium       
+    { 
+        get; 
+        set {
+            if(value >= 0) Magnesium = value;
+            else throw new ArgumentOutOfRangeException("Magnesium must be nonnegative!");
+        } 
+    }
+
+    public double Manganese       
+    { 
+        get; 
+        set {
+            if(value >= 0) Manganese = value;
+            else throw new ArgumentOutOfRangeException("Manganese must be nonnegative!");
+        } 
+    }
+
+    public double Molybdenum      
+    { 
+        get; 
+        set {
+            if(value >= 0) Molybdenum = value;
+            else throw new ArgumentOutOfRangeException("Molybdenum must be nonnegative!");
+        } 
+    }
+
+    public double Phosphorus      
+    { 
+        get; 
+        set {
+            if(value >= 0) Phosphorus = value;
+            else throw new ArgumentOutOfRangeException("Phosphorus must be nonnegative!");
+        } 
+    }
+
+    public double Potassium       
+    { 
+        get; 
+        set {
+            if(value >= 0) Potassium = value;
+            else throw new ArgumentOutOfRangeException("Potassium must be nonnegative!");
+        } 
+    }
+
+    public double Selenium        
+    { 
+        get; 
+        set {
+            if(value >= 0) Selenium = value;
+            else throw new ArgumentOutOfRangeException("Selenium must be nonnegative!");
+        } 
+    }
+
+    public double Zinc            
+    { 
+        get; 
+        set {
+            if(value >= 0) Zinc = value;
+            else throw new ArgumentOutOfRangeException("Zinc must be nonnegative!");
+        } 
+    }
 
     public ArrayList IngredientsList<String>()
     {

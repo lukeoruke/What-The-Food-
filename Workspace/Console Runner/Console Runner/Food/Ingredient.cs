@@ -26,6 +26,7 @@ namespace Console_Runner.Food
             IngredientName = ingredientName;
             IngredientDescription = ingredientDescription;
             IngredientShortName = ingredientShortName;
+
         }
 
     }

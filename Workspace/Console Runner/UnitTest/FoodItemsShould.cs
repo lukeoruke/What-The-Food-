@@ -19,18 +19,26 @@ namespace UnitTest
             IFlagGateway flagGateway = new MemFlagGateway();
             IlogGateway logGateway = new MemLogGateway();
             FM fm = new FM(foodItemGateway, flagGateway, logGateway);
+
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
-            ingredient.IngredientID = "1";
 
-            FoodItem foodItem = new FoodItem("70847-81116", "Monster Energy Drink", "CokaCola Co");
-            LabelIdentifier labelIdentifier = new LabelIdentifier("70847-81116", "1");
-            NutritionLabel nutritionLabel = new NutritionLabel(270, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new List<Nutrient>(), "70847-81116");
+            ingredient.IngredientID = "8";
+
+            FoodItem foodItem = new("70847-81116", "Monster Energy Drink", "CokaCola Co");
+            LabelIdentifier labelIdentifier = new LabelIdentifier("70847-81119", "8");
+            Nutrient nutrient = new Nutrient(foodItem.Barcode, "SomethingHealthy");
+            List<Nutrient> nutritionList = new();
+            nutritionList.Add(nutrient);
+
+            NutritionLabel nutritionLabel = new NutritionLabel(270, 1, 1.0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, nutritionList, foodItem.Barcode);
+
             List<Ingredient> ingredientList = new List<Ingredient>();
             ingredientList.Add(ingredient);
             Assert.True(fm.AddFoodItem(foodItem, nutritionLabel, new List<Nutrient>(), ingredientList));
+            Assert.True(false);
        
         }
     }

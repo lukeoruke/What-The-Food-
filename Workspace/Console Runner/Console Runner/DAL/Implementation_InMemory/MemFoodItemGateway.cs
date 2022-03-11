@@ -21,6 +21,8 @@ namespace Console_Runner.DAL
                 string barcode = fooditem.Barcode;
                 nutritionLabel.Barcode = barcode;
                 _nutritionLabelsList.Add(nutritionLabel);
+                _foodsList.Add(fooditem);
+
                 //Creates connection between barcode and list of food items connected to the corrosponding food item based on barcode
                 for (int i = 0; i < ingredientList.Count; i++)
                 {
@@ -28,6 +30,7 @@ namespace Console_Runner.DAL
                     label.Barcode = barcode;
                     label.IngredientID = ingredientList[i].IngredientID;
                     _ingredientIdentifiersList.Add(label);
+                    _ingredientsList.Add(ingredientList[i]);
                 }
                 for (int i = 0; i < vitaminsList.Count; i++)
                 {

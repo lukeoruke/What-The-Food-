@@ -96,6 +96,38 @@ namespace UnitTest
             Assert.True(fm.GetAllAccountFlags("MrHas1Flag@gmail.com").Count == 1);
         }
 
+        [Fact]
+        public void checkProductForFlags()
+        {
+
+            IFoodItemGateway foodItemGateway = new MemFoodItemGateway();
+            IFlagGateway flagGateway = new MemFlagGateway();
+            IlogGateway logGateway = new MemLogGateway();
+            FM fm = new FM(foodItemGateway, flagGateway, logGateway);
+
+            Ingredient ingredient =
+               new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
+               "containing dissolved carbon dioxide gas, either artificially injected under " +
+               "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
+
+            ingredient.IngredientID = "8";
+
+            FoodItem foodItem = new("701231847-841411116", "Monster Energy Drink", "CokaCola Co");
+            LabelIdentifier labelIdentifier = new LabelIdentifier(foodItem.Barcode, "128");
+            Nutrient nutrient = new Nutrient(foodItem.Barcode, "SomethingHealthy");
+            List<Nutrient> nutritionList = new();
+            nutritionList.Add(nutrient);
+
+            NutritionLabel nutritionLabel = new NutritionLabel(270, 1, 1.0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, nutritionList, foodItem.Barcode);
+
+            List<Ingredient> ingredientList = new List<Ingredient>();
+            ingredientList.Add(ingredient);
+            fm.AddFoodItem(foodItem, nutritionLabel, new List<Nutrient>(), ingredientList);
+            fm.AddFlagToAccount("dudewithaflag@gmail.com", "128");
+            List<Ingredient> flaggedItemsInGivenFood = fm.CheckProductForFlags(foodItem.Barcode, "dudewithaflag@gmail.com");
+            Assert.True(flaggedItemsInGivenFood.Count > 0);
+            Assert.True(flaggedItemsInGivenFood[0].Equals(ingredient));
+        }
 
 
     }

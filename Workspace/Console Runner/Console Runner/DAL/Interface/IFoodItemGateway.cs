@@ -11,6 +11,11 @@ namespace Console_Runner.DAL
     {
         public FoodItem? RetrieveScannedFoodItem(string barcode);
         public bool AddFoodItem(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList);
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="barcode"></param>
+        /// <returns>List containing all ingredeints in the food with the corosponding barcode</returns>
         public List<Ingredient> RetrieveIngredientList(string barcode);
         public bool AddIngredient(Ingredient ingredient);
         public bool RemoveIngredient(Ingredient ingredient);

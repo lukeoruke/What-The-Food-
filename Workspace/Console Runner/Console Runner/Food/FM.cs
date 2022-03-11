@@ -54,27 +54,14 @@ namespace Console_Runner.Food
         {
             return _flagGateway.GetAllAccountFlags(email);
         }
-        
-        //gets and returns the union of all ingredients in both the item corosponding to the given barcode and items that exist within the users flags.
-        public List<Ingredient> CheckProductForFlags(string email, string barcode)
-        {
-            List<Ingredient> flaggedIngredientsInProduct = new();
-            List<FoodFlag> userFlags = _flagGateway.GetAllAccountFlags(email);
-            List<Ingredient> ingredientList = _foodItemGateway.RetrieveIngredientList(barcode);
-            for(int i = 0; i < ingredientList.Count; i++)
-            {
-                for(int j = 0; j < userFlags.Count; j++)
-                {
-                    if (ingredientList[i].IngredientID == userFlags[j].IngredientID)
-                    {
-                        flaggedIngredientsInProduct.Add(ingredientList[i]);
-                    }
-                }
-            }
-            return flaggedIngredientsInProduct;
-        }
 
-        public List<Ingredient> FoodContainsFlaggedItem(string barcode, string email)
+        /// <summary>
+        /// gets and returns the union of all ingredients in both the item corosponding to the given barcode and items that exist within the users flags.
+        /// </summary>
+        /// <param name="email">User whos flags are being used</param>
+        /// <param name="barcode">Barcode associated with the food being checked</param>
+        /// <returns>returns the union of all ingredients in both the item corosponding to the given barcode and items that exist within the users flags.</returns>
+        public List<Ingredient> CheckProductForFlags(string barcode, string email)
         {
             FoodItem? food = GetScannedFoodItem(barcode);
             if (food == null) return new List<Ingredient>();
@@ -89,6 +76,11 @@ namespace Console_Runner.Food
             return flaggedIngredients;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="barcode"></param>
+        /// <returns>Returns an object of the corosponding food item if it exists. Null otherwise</returns>
         public FoodItem? GetScannedFoodItem(string barcode)
         {
             return _foodItemGateway.RetrieveScannedFoodItem(barcode);

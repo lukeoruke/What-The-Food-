@@ -22,10 +22,17 @@ namespace Console_Runner.Food
             _flagGateway = flagGateway;
             _logGateway = logGateway;
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="foodItem"></param>
+        /// <param name="nutritionLabel"></param>
+        /// <param name="vitaminsList"></param>
+        /// <param name="ingredientList"></param>
+        /// <returns>true if item added correctly, false otherwise</returns>
         public bool AddFoodItem(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
         {
             return _foodItemGateway.AddFoodItem(foodItem, nutritionLabel, vitaminsList, ingredientList);
-            return false;
         }
         public bool AddFlagToAccount(string email, string flag)
         {

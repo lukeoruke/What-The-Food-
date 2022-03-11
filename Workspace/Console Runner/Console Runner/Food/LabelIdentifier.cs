@@ -22,10 +22,10 @@ namespace Food_Class_Library
 
         }
 
-        public LabelIdentifier(string barcode, string ID)
+        public LabelIdentifier(string barcode, string ingredientID)
         {
             Barcode = barcode;
-            IngredientID = ID;
+            IngredientID = ingredientID;
         }
 
     }

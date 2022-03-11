@@ -2,7 +2,7 @@ using Console_Runner.DAL;
 using Console_Runner.Logging;
 using Console_Runner.User_Management;
 using Xunit;
-//---------------------------------NOTICE, THIS FILE NOT BEEN UPDATED WITH THE CHANGES TO AUTHORIZATION AND WILL NOT WORK AS EXPECTED-----------------------------------
+
 namespace UnitTest
 {
     public class UMShould

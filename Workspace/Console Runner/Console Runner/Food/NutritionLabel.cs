@@ -18,7 +18,7 @@ public class NutritionLabel : INutritionLabel
     public NutritionLabel(int calories, int servings, Double servingSize,
         int totalFat, int saturatedFat, int transFat, int cholestrol, int sodium,
         int totalCarbohydrate, int dietaryFiber, int totalSugars, int addedSugar,
-        int protein, string labelID) {
+        int protein, string barcode) {
         this.Calories = calories;
         this.Servings = servings;
         this.ServingSize = servingSize;
@@ -32,6 +32,7 @@ public class NutritionLabel : INutritionLabel
         this.TotalSugars = totalSugars;
         this.AddedSugar = addedSugar;
         this.Protein = protein;
+        this.barcode = barcode;
     }
 
     public int Calories { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }

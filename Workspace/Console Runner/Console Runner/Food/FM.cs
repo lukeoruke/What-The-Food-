@@ -38,6 +38,11 @@ namespace Console_Runner.Food
             return _flagGateway.RemoveFoodFlag(email, IngredientID);
         }
 
+        public bool accountHasFlag(string email, string IngredientID)
+        {
+            return _flagGateway.AccountHasFlag(email, IngredientID);
+        }
+
         public List<FoodFlag> GetAllAccountFlags(string email)
         {
             return _flagGateway.GetAllAccountFlags(email);

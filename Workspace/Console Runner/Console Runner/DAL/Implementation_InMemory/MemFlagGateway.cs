@@ -9,23 +9,29 @@ namespace Console_Runner.DAL
 {
     public class MemFlagGateway : IFlagGateway
     {
-        private List<FoodFlag> flagsList;
-
+        private List<FoodFlag> _flagsListDB;
+        
         public MemFlagGateway()
         {
-            flagsList = new List<FoodFlag>();
+            _flagsListDB = new List<FoodFlag>();
         }
         public bool AccountHasFlag(string email, string ingredientID)
         {
-            FoodFlag flag = new FoodFlag(email, ingredientID);
-            return flagsList.Contains(flag);
+            for(int i = 0; i < _flagsListDB.Count; i++)
+            {
+                if(_flagsListDB[i].AccountEmail == email && _flagsListDB[i].IngredientID == ingredientID)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool AddFlag(FoodFlag flag)
         {
-            if (flag != null && !flagsList.Contains(flag))
+            if (flag != null && !_flagsListDB.Contains(flag))
             {
-                flagsList.Add(flag);
+                _flagsListDB.Add(flag);
                 return true;
             }
             return false;
@@ -33,24 +39,26 @@ namespace Console_Runner.DAL
 
         public List<FoodFlag> GetAllAccountFlags(string email)
         {
-            List<FoodFlag> flagList = new List<FoodFlag>();
-            foreach (var flag in flagsList)
+            List<FoodFlag> accountFlags = new List<FoodFlag>();
+            foreach (var flag in _flagsListDB)
             {
                 if (flag.AccountEmail == email)
                 {
-                    flagList.Add(flag);
+                    accountFlags.Add(flag);
                 }
             }
-            return flagList;
+            return accountFlags;
         }
 
         public bool RemoveFoodFlag(string email, string ingredientID)
         {
-            if (AccountHasFlag(email, ingredientID))
+            for (int i = 0; i < _flagsListDB.Count; i++)
             {
-                FoodFlag foodFlag = new(email, ingredientID);
-                flagsList.Remove(foodFlag);
-                return true;
+                if (_flagsListDB[i].AccountEmail == email && _flagsListDB[i].IngredientID == ingredientID)
+                {
+                   _flagsListDB.RemoveAt(i);
+                    return true;
+                }
             }
             return false;
         }

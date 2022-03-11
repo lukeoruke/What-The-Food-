@@ -16,10 +16,11 @@ namespace Console_Runner.DAL
         {
             _efContext = new Context();
         }
-        public bool AddFoodItem(string barcode, string productName, string companyName, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList)
+        public bool AddFoodItem(FoodItem foodItem, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList)
         {
             try
             {
+                string barcode = foodItem.Barcode;
                 nutritionLabel.barcode = barcode;
                 //Creates connection between barcode and list of food items connected to the corrosponding food item based on barcode
                 for (int i = 0; i < ingredientList.Count; i++)

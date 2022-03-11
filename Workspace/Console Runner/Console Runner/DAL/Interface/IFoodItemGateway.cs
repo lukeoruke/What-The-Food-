@@ -10,8 +10,7 @@ namespace Console_Runner.DAL
     public interface IFoodItemGateway
     {
         public FoodItem? RetrieveScannedFoodItem(string barcode);
-        public bool AddFoodItem(string barcode, string productName, string companyName,
-            NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList);
+        public bool AddFoodItem(FoodItem foodItem, NutritionLabel nutritionLabel, List<Vitamins> vitaminsList, List<Ingredient> ingredientList);
         public List<Ingredient> RetrieveIngredientList(string barcode);
         public bool AddIngredient(Ingredient ingredient);
         public bool RemoveIngredient(Ingredient ingredient);

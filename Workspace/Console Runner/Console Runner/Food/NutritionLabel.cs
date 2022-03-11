@@ -15,7 +15,7 @@ public class NutritionLabel : INutritionLabel
 
     private int _calories;
     private int _servings;
-    private int _servingSize;
+    private double _servingSize;
     private int _totalFat;
     private int _saturatedFat;
     private int _transFat;
@@ -61,7 +61,7 @@ public class NutritionLabel : INutritionLabel
         }
         set 
         {
-            if(value >= 0) Calories = value;
+            if(value >= 0) _calories = value;
             else throw new ArgumentOutOfRangeException("Calories must be nonnegative!");
         }
     }
@@ -73,7 +73,7 @@ public class NutritionLabel : INutritionLabel
         }
         set
         {
-            if(value > 0) Servings = value;
+            if(value > 0) _servings = value;
             else throw new ArgumentOutOfRangeException("Servings must be positive nonzero!");
         }
     }
@@ -85,7 +85,7 @@ public class NutritionLabel : INutritionLabel
         }
         set 
         {
-            if(value > 0) ServingSize = value;
+            if(value > 0) _servingSize = value;
             else throw new ArgumentOutOfRangeException("ServingSize must be positive nonzero!");
         }
     }
@@ -97,7 +97,7 @@ public class NutritionLabel : INutritionLabel
         } 
         set 
         {
-            if(value >= 0) TotalFat = value;
+            if(value >= 0) _totalFat = value;
             else throw new ArgumentOutOfRangeException("TotalFat must be nonnegative!");
         }
     }
@@ -109,7 +109,7 @@ public class NutritionLabel : INutritionLabel
         }
         set 
         {
-            if(value >= 0) SaturatedFat = value;
+            if(value >= 0) _saturatedFat = value;
             else throw new ArgumentOutOfRangeException("SaturatedFat must be nonnegative!");
         }
     }
@@ -121,7 +121,7 @@ public class NutritionLabel : INutritionLabel
         } 
         set
         {
-            if(value >= 0) TransFat = value;
+            if(value >= 0) _transFat = value;
             else throw new ArgumentOutOfRangeException("TransFat must be nonnegative!");
         }
     }
@@ -133,7 +133,7 @@ public class NutritionLabel : INutritionLabel
         } 
         set
         {
-            if(value >= 0) Cholesterol = value;
+            if(value >= 0) _cholesterol = value;
             else throw new ArgumentOutOfRangeException("Cholesterol must be nonnegative!");
         }
     }
@@ -146,7 +146,7 @@ public class NutritionLabel : INutritionLabel
         } 
         set
         {
-            if(value >= 0) Sodium = value;
+            if(value >= 0) _sodium = value;
             else throw new ArgumentOutOfRangeException("Sodium must be nonnegative!");
         }
     }
@@ -159,7 +159,7 @@ public class NutritionLabel : INutritionLabel
         } 
         set
         {
-            if(value >= 0) TotalCarbohydrate = value;
+            if(value >= 0) _totalCarbohydrate = value;
             else throw new ArgumentOutOfRangeException("TotalCarbohydrate must be nonnegative!");
         } 
     }
@@ -172,7 +172,7 @@ public class NutritionLabel : INutritionLabel
         }
         set
         {
-            if(value >= 0) DietaryFiber = value;
+            if(value >= 0) _dietaryFiber = value;
             else throw new ArgumentOutOfRangeException("DietaryFiber must be nonnegative!");
         } 
     }
@@ -185,7 +185,7 @@ public class NutritionLabel : INutritionLabel
         }
         set
         {
-            if(value >= 0) TotalSugars = value;
+            if(value >= 0) _totalSugars = value;
             else throw new ArgumentOutOfRangeException("TotalSugars must be nonnegative!");
         } 
     }
@@ -198,7 +198,7 @@ public class NutritionLabel : INutritionLabel
         }
         set 
         {
-            if(value >= 0) AddedSugar = value;
+            if(value >= 0) _addedSugar = value;
             else throw new ArgumentOutOfRangeException("AddedSugar must be nonnegative!");
         } 
     }
@@ -211,7 +211,7 @@ public class NutritionLabel : INutritionLabel
         }
         set 
         {
-            if(value >= 0) Protein = value;
+            if(value >= 0) _protein = value;
             else throw new ArgumentOutOfRangeException("Protein must be nonnegative!");
         } 
     }

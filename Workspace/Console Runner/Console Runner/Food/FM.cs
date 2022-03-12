@@ -92,9 +92,9 @@ namespace Console_Runner.Food
             return _foodItemGateway.RetrieveNutritionLabel(food);
         }
 
-        public List<Ingredient> GetIngredientList(string labelID)
+        public List<Ingredient> GetIngredientList(string barcode)
         {
-            return _foodItemGateway.RetrieveIngredientList(labelID);
+            return _foodItemGateway.RetrieveIngredientList(barcode);
         }
 
         public bool AddIngredient(Ingredient ingredient)

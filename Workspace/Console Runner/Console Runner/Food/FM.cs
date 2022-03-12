@@ -65,15 +65,16 @@ namespace Console_Runner.Food
         {
             FoodItem? food = GetScannedFoodItem(barcode);
             if (food == null) return new List<Ingredient>();
-            List<Ingredient> flaggedIngredients = GetIngredientList(food.Barcode);
-            for (int i = 0; i < flaggedIngredients.Count; i++)
+            List<Ingredient> ingredientList = GetIngredientList(food.Barcode);
+            List<Ingredient> flaggedItems = new List<Ingredient>();
+            for (int i = 0; i < ingredientList.Count; i++)
             {
-                if (_flagGateway.AccountHasFlag(email, flaggedIngredients[i].IngredientID))
+                if (_flagGateway.AccountHasFlag(email, ingredientList[i].IngredientID))
                 {
-                    flaggedIngredients.Add(flaggedIngredients[i]);
+                    flaggedItems.Add(ingredientList[i]);
                 }
             }
-            return flaggedIngredients;
+            return flaggedItems;
         }
 
         /// <summary>

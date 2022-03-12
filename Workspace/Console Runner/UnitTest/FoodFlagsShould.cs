@@ -110,7 +110,7 @@ namespace UnitTest
                "containing dissolved carbon dioxide gas, either artificially injected under " +
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
 
-            ingredient.IngredientID = "8";
+            ingredient.IngredientID = "128";
 
             FoodItem foodItem = new("701231847-841411116", "Monster Energy Drink", "CokaCola Co");
             LabelIdentifier labelIdentifier = new LabelIdentifier(foodItem.Barcode, "128");

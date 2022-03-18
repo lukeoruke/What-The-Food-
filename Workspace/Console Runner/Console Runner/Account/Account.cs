@@ -12,8 +12,9 @@ namespace Console_Runner.Account
      */
     public class Account { 
         //User ID getter and setter
-        [System.ComponentModel.DataAnnotations.Key] //Sets User ID as PK
-        public string UserID{ get; set; }
+        //Using Auto Incrementer, research on that
+        //[System.ComponentModel.DataAnnotations.Key]
+        //public string UserID{ get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         //User's first name
@@ -24,6 +25,8 @@ namespace Console_Runner.Account
         //TODO: Constructor values?
         public Account()
         {
+            //UserID = "";
+            //UserID = "";
             FName = "";
             LName = "";
         }

@@ -9,6 +9,16 @@ namespace Console_Runner.Account
 {
     public class FoodFlag
     {
+        //Utilizing User ID from Account as a Foreign Key
+        public string UserID { get; set; }
+        public string IngredientID { get; set; }
+        
 
+        //Constructor
+        public FoodFlag(string userID, string ingredientID) {
+            this.UserID = userID;
+            this.IngredientID = ingredientID;
+        }
+       
     }
 }

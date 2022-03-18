@@ -3,23 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Console_Runner.User_Management;
 
-namespace Console_Runner.DAL
+
+namespace Console_Runner.AccountDB
 {
-    public class MemAccountFunctions : IAccountGateway
+    public class MemAccountFunctions : IAccountFunctions
     {
         private List<Account> accountsList;
         
         public MemAccountFunctions()
         {
-            accountsList = new List<AccountDB>();
+            accountsList = new List<Account>();
         }
-        public bool AccountExists(string email)
+        public bool AccountExists(int AccountID)
         {
             for (int i = 0; i < accountsList.Count; i++)
             {
-                if (email == accountsList[i].Email)
+                if (AccountID == accountsList[i].AccountID)
                 {
                     return true;
                 }
@@ -34,11 +34,11 @@ namespace Console_Runner.DAL
             return true;
         }
 
-        public Account? GetAccount(string email)
+        public Account? GetAccount(int AccountID)
         {
             for (int i = 0; i < accountsList.Count; i++)
             {
-                if (accountsList[i].Email == email)
+                if (accountsList[i].AccountID == AccountID)
                 {
                     return accountsList[i];
                 }
@@ -50,7 +50,7 @@ namespace Console_Runner.DAL
         {
             for (int i = 0; i < accountsList.Count; i++)
             {
-                if (accountsList[i].Email == acc.Email)
+                if (accountsList[i].AccountID == acc.AccountID)
                 {
                     accountsList.RemoveAt(i);
                     return true;
@@ -63,7 +63,7 @@ namespace Console_Runner.DAL
         {
             for (int i = 0; i < accountsList.Count; i++)
             {
-                if (accountsList[i].Email == acc.Email)
+                if (accountsList[i].AccountID == acc.AccountID)
                 {
                     accountsList[i] = acc;
                     return true;

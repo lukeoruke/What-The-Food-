@@ -103,6 +103,7 @@ namespace Console_Runner.DAL
         //     Since the DbContext base constructor "ensures that all DbSet properties will get initialized"
         //     (https://docs.microsoft.com/en-us/ef/core/miscellaneous/nullable-reference-types),
         //     this should be safe.
+
         public DbSet<Ingredient> Ingredients { get; set; } = null!;
 
         public DbSet<FoodFlag> FoodFlags { get; set; } = null!;

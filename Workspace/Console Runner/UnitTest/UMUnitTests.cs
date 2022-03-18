@@ -1,9 +1,7 @@
-using Console_Runner.DAL;
-using Console_Runner.Logging;
-using Console_Runner.User_Management;
+using Console_Runner.AccountDB;
 using Xunit;
 
-namespace UnitTestOld
+namespace UnitTest
 {
     public class UMUnitTests
     {
@@ -14,7 +12,7 @@ namespace UnitTestOld
         {
 
             //Arange
-            IAccountGateway accountGateway = new MemAccountGateway();
+            IAccountGateway accountGateway = new MemAccountFunctions();
             IPermissionGateway efPermissionGateway = new MemPermissionGateway();
             PermissionService permService = new PermissionService(efPermissionGateway);
             IlogGateway logAccess = new EFLogGateway();
@@ -39,7 +37,7 @@ namespace UnitTestOld
         public void DeleteUserSuccess()
         {
 
-            IAccountGateway accountGateway = new MemAccountGateway();
+            IAccountGateway accountGateway = new MemAccountFunctions();
             IPermissionGateway efPermissionGateway = new MemPermissionGateway();
             PermissionService permService = new PermissionService(efPermissionGateway);
             IlogGateway logAccess = new EFLogGateway();
@@ -71,7 +69,7 @@ namespace UnitTestOld
         public void UpdateSuccess()
         {
             //Arrange
-            IAccountGateway accountGateway = new MemAccountGateway();
+            IAccountGateway accountGateway = new MemAccountFunctions();
             IPermissionGateway efPermissionGateway = new MemPermissionGateway();
             PermissionService permService = new PermissionService(efPermissionGateway);
             IlogGateway logAccess = new EFLogGateway();
@@ -110,7 +108,7 @@ namespace UnitTestOld
         public void DisableSuccess()
         {
             //arange 
-            IAccountGateway accountGateway = new MemAccountGateway();
+            IAccountGateway accountGateway = new MemAccountFunctions();
             IPermissionGateway efPermissionGateway = new MemPermissionGateway();
             PermissionService permService = new PermissionService(efPermissionGateway);
             IlogGateway logAccess = new EFLogGateway();
@@ -145,7 +143,7 @@ namespace UnitTestOld
         public void EnableSuccess()
         {
             //Arange 
-            IAccountGateway accountGateway = new MemAccountGateway();
+            IAccountGateway accountGateway = new MemAccountFunctions();
             IPermissionGateway efPermissionGateway = new MemPermissionGateway();
             PermissionService permService = new PermissionService(efPermissionGateway);
             IlogGateway logAccess = new EFLogGateway();
@@ -177,7 +175,7 @@ namespace UnitTestOld
         public void GetUserSuccess()
         {
             //arange 
-            IAccountGateway accountGateway = new MemAccountGateway();
+            IAccountGateway accountGateway = new MemAccountFunctions();
             IPermissionGateway efPermissionGateway = new MemPermissionGateway();
             PermissionService permService = new PermissionService(efPermissionGateway);
             IlogGateway logAccess = new EFLogGateway();
@@ -199,7 +197,7 @@ namespace UnitTestOld
         public void AuthenticatePasswordSuccess()
         {
             //Arange 
-            IAccountGateway accountGateway = new MemAccountGateway();
+            IAccountGateway accountGateway = new MemAccountFunctions();
             IPermissionGateway efPermissionGateway = new MemPermissionGateway();
             PermissionService permService = new PermissionService(efPermissionGateway);
             IlogGateway logAccess = new EFLogGateway();
@@ -219,7 +217,7 @@ namespace UnitTestOld
         public void SignInSuccess()
         {
             //arange 
-            IAccountGateway accountGateway = new MemAccountGateway();
+            IAccountGateway accountGateway = new MemAccountFunctions();
             IPermissionGateway efPermissionGateway = new MemPermissionGateway();
             PermissionService permService = new PermissionService(efPermissionGateway);
             IlogGateway logAccess = new EFLogGateway();
@@ -240,7 +238,7 @@ namespace UnitTestOld
         public void PromoteToAdminSuccess()
         {
             //arange 
-            IAccountGateway accountGateway = new MemAccountGateway();
+            IAccountGateway accountGateway = new MemAccountFunctions();
             IPermissionGateway efPermissionGateway = new MemPermissionGateway();
             PermissionService permService = new PermissionService(efPermissionGateway);
             IlogGateway logAccess = new EFLogGateway();

@@ -8,7 +8,7 @@ using Console_Runner;
 using Console_Runner.DAL;
 using Console_Runner.User_Management;
 
-namespace UnitTest
+namespace UnitTestOld
 {
     public class AuthorizationShould
     {

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Console_Runner.User_Management;
 
-namespace Console_Runner.DAL
+
+namespace Console_Runner.AccountDB
 {
-    public class EFAccountFunctions : IAccountGateway
+    public class EFAccountFunctions : IAccountFunctions
     {
+
         private Context _efContext;
 
         public EFAccountFunctions()
@@ -16,12 +17,19 @@ namespace Console_Runner.DAL
             _efContext = new Context();
         }
 
-        public bool AccountExists(string email)
+
+        /// <summary>
+        /// Checks if an account exists
+        /// </summary>
+        /// <param name="AccountID">The ID of the account being checked</param>
+        /// <returns>true if account exists false otherwise</returns>
+        public bool AccountExists(int AccountID)
         {
-            if (_efContext.Accounts.Find(email) != null)
+            if (_efContext.Accounts.Find(AccountID) != null)
             {
                 return true;
             }
+
             return false;
         }
 
@@ -39,11 +47,11 @@ namespace Console_Runner.DAL
             }
         }
 
-        public Account? GetAccount(string email)
+        public Account? GetAccount(int AccountID)
         {
             try
             {
-                AccountDB? acc = _efContext.Accounts.Find(email);
+                Account? acc = _efContext.Accounts.Find(AccountID);
                 if (acc != null)
                 {
                     return acc;
@@ -63,7 +71,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                if (AccountExists(acc.Email))
+                if (AccountExists(acc.AccountID))
                 {
                     _efContext.Remove(acc);
                     _efContext.SaveChanges();
@@ -89,5 +97,6 @@ namespace Console_Runner.DAL
                 return false;
             }
         }
+
     }
 }

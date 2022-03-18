@@ -4,7 +4,7 @@ using Food_Class_Library;
 using System.Collections.Generic;
 using Xunit;
 
-namespace UnitTest
+namespace UnitTestOld
 {
     public class FoodFlagsShould
     {

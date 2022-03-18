@@ -5,16 +5,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Console_Runner.AMRModel;
 
-namespace Console_Runner.Account
+namespace Console_Runner.AccountDB
 {
     /*
      * Account class that will represent the contents of a user's account
      */
-    public class Account { 
+    public class Account {
         //User ID getter and setter
         //Using Auto Incrementer, research on that
         //[System.ComponentModel.DataAnnotations.Key]
         //public string UserID{ get; set; }
+        public int AccountID { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
         //User's first name

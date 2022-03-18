@@ -15,7 +15,6 @@ namespace Console_Runner.DAL
             _amrDB.Add(amrToAdd);
             return true;
         }
-
         public bool AMRExists(string email)
         {
             for(int i = 0; i < _amrDB.Count; i++)

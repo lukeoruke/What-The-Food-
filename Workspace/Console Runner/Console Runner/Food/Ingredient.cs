@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Food_Class_Library
+namespace Console_Runner.Food
 {
     public class Ingredient
     {

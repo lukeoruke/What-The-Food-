@@ -13,12 +13,21 @@ namespace Console_Runner.Food
 
     public class ContextFoodDB : DbContext
     {
-
+        /// <summary>
+        /// Creates database to store all information regarding Food
+        /// </summary>
+        /// <param name="optionsBuilder"></param>
+        /// Specfic configuration made for the FoodData base
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySql("server = localhost; user = root; password = myPassword; Database = FoodDB",
                 new MySqlServerVersion(new Version(8, 0, 27)));
         }
+        /// <summary>
+        /// Assigns primary key within each table of Food Database
+        /// </summary>
+        /// <param name="builder"></param>
+        /// 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<FoodItem>().HasKey(table => new
@@ -30,7 +39,27 @@ namespace Console_Runner.Food
                 table.Barcode,
                 table.IngredientID
             });
+            builder.Entity<Ingredient>().HasKey(table => new
+            {
+                table.IngredientID,
+            });
+            builder.Entity<NutritionLabel>().HasKey(table => new
+            {
+                table.Barcode
+            });
+            builder.Entity<LabelNutrient>().HasKey(table => new
+            {
+                table.Barcode,
+                table.NutrientID
+            });
+            builder.Entity<Nutrient>().HasKey(table => new
+            {
+                //table.NID
+            });
+
         }
+
+
 
 
     }

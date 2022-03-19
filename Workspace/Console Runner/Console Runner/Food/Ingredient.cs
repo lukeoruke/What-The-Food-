@@ -12,8 +12,9 @@ namespace Console_Runner.Food
     public class Ingredient
     {
         public string IngredientName { get; set; }
-        
-        public string IngredientID { get; set; }
+        [ForeignKey("IngredientID")]
+        public LabelIngredient IngredientID { get; set; } = new LabelIngredient();
+        //public string IngredientID { get; set; }
         public string IngredientDescription { get; set; }
         public string IngredientShortName { get; set; }
         public Ingredient()

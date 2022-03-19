@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,10 @@ namespace Console_Runner.Food
 
         //Property Implementation
         public string Barcode { get; set; }
+
         public string IngredientID { get; set; }
+
+        public string IngredientsPercentage { get; set; }
 
         //Constructor
         public LabelIngredient()
@@ -22,10 +26,11 @@ namespace Console_Runner.Food
 
         }
 
-        public LabelIngredient(string barcode, string ingredientID)
+        public LabelIngredient(string barcode, string ingredientID, string percent)
         {
             Barcode = barcode;
             IngredientID = ingredientID;
+            IngredientsPercentage = percent;
         }
 
     }

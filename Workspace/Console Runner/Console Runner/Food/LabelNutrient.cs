@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Console_Runner.Food
+namespace Console_Runner.FoodService
 {
     public class LabelNutrient
     {

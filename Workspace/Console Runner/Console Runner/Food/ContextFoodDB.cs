@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-namespace Console_Runner.Food
+namespace Console_Runner.FoodService
 {
     /*will run on startup, will configure the services to our database context
  */

@@ -13,7 +13,7 @@ public class Ingredient
 {
     public string IngredientName { get; set; }
     [ForeignKey("IngredientID")]
-    public LabelIngredient IngredientID { get; set; } = new LabelIngredient();
+    public string IngredientID { get; set; }
     //public string IngredientID { get; set; }
     public string IngredientDescription { get; set; }
     public string IngredientShortName { get; set; }

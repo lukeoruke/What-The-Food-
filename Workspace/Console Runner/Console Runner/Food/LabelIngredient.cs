@@ -15,13 +15,12 @@ public class LabelIngredient
 
     //Property Implementation
     [ForeignKey("Barcode")]
-    public FoodItem Barcode { get; set; } = new FoodItem();
+    public string Barcode { get; set; }
     //public string Barcode { get; set; }
 
     public string IngredientID { get; set; }
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 
-    public string IngredientsPercentage { get; set; }
 
     //Constructor
     public LabelIngredient()

@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Console_Runner.FoodService;
-{
     public interface IIngredient
     {
         // Property Signatures:
@@ -14,4 +13,3 @@ namespace Console_Runner.FoodService;
         string shorterName { get; set; }
 
     }
-}

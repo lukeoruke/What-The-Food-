@@ -18,9 +18,9 @@ public class LabelIngredient
     public string Barcode { get; set; }
     //public string Barcode { get; set; }
 
-    public string IngredientID { get; set; }
+   
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-
+    public string IngredientID { get; set; }
 
     //Constructor
     public LabelIngredient()
@@ -28,11 +28,10 @@ public class LabelIngredient
 
     }
 
-    public LabelIngredient(string barcode, string ingredientID, string percent)
+    public LabelIngredient(string barcode, string ingredientID)
     {
         Barcode = barcode;
         IngredientID = ingredientID;
-        IngredientsPercentage = percent;
     }
 
 }

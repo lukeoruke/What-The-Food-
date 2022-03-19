@@ -4,27 +4,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Console_Runner.Food
+namespace Console_Runner.FoodService;
+
+public class LabelNutrient
 {
-    public class LabelNutrient
+    public string Barcode { get; set; }
+
+    public string NutrientID { get; set; }
+
+    public string NutrientPercentage { get; set; }
+
+    //Constructor
+    public LabelNutrient()
     {
-        public string Barcode { get; set; }
 
-        public string NutrientID { get; set; }
+    }
 
-        public string NutrientPercentage { get; set; }
-
-        //Constructor
-        public LabelNutrient()
-        {
-
-        }
-
-        public LabelNutrient(string barcode, string NID, string percent)
-        {
-            Barcode = barcode;
-            NutrientID = NID;
-            NutrientPercentage = percent;
-        }
+    public LabelNutrient(string barcode, string NID, string percent)
+    {
+        Barcode = barcode;
+        NutrientID = NID;
+        NutrientPercentage = percent;
     }
 }

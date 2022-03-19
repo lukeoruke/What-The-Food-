@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Console_Runner.FoodService;
+namespace Console_Runner.Food;
 
 internal interface INutritionLabel
 {

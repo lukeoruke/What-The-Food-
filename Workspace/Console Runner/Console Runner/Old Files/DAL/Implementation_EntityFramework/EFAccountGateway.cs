@@ -43,7 +43,7 @@ namespace Console_Runner.DAL
         {
             try
             {
-                AccountDB? acc = _efContext.Accounts.Find(email);
+                Account? acc = _efContext.Accounts.Find(email);
                 if (acc != null)
                 {
                     return acc;

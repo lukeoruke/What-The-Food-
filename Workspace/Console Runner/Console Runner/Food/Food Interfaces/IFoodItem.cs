@@ -8,7 +8,12 @@ namespace Console_Runner.FoodService
 {
     public interface IFoodItem
     {
-
+        /// <summary>
+        /// Adds an object of type FoodItem to the DB
+        /// </summary>
+        /// <param name="foodItem"></param>
+        /// <returns>True if successful, otherwise false</returns>
+        public Task<bool> AddFoodItem(FoodItem foodItem);
         /// <summary>
         /// 
         /// </summary>
@@ -39,12 +44,26 @@ namespace Console_Runner.FoodService
         /// <param name="barcode">The barcode being searched</param>
         /// <returns>The nutrition label associated with a provided barcode</returns>
         public Task<NutritionLabel?> RetrieveNutritionLabelAsync(string barcode);
-
-
-
-
+        /// <summary>
+        /// Takes in various components that make up a product and adds them all to the DB
+        /// </summary>
+        /// <param name="foodItem"></param>
+        /// <param name="nutritionLabel"></param>
+        /// <param name="vitaminsList"></param>
+        /// <param name="ingredientList"></param>
+        /// <returns>True if successful, otherwise false</returns>
         public Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList);
+        /// <summary>
+        /// Adds a Nutrition Label to the DB
+        /// </summary>
+        /// <param name="nutritionLabel"></param>
+        /// <returns>True if successful, otherwise false</returns>
         public Task<bool> AddNutritionLabelAsync(NutritionLabel nutritionLabel);
+        /// <summary>
+        /// Adds a Nutrient to the DB
+        /// </summary>
+        /// <param name="nutrient"></param>
+        /// <returns><returns>True if successful, otherwise false</returns></returns>
         public Task<bool> AddNutrientAsync(Nutrient nutrient);
     }
 }

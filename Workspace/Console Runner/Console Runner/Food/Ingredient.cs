@@ -16,17 +16,16 @@ public class Ingredient
     public string IngredientID { get; set; }
     //public string IngredientID { get; set; }
     public string IngredientDescription { get; set; }
-    public string IngredientShortName { get; set; }
     public Ingredient()
     {
 
     }
 
-    public Ingredient(string ingredientName, string ingredientShortName, string ingredientDescription)
+    public Ingredient(string IID, string ingredientName, string ingredientDescription)
     {
+        IngredientID = IID;
         IngredientName = ingredientName;
         IngredientDescription = ingredientDescription;
-        IngredientShortName = ingredientShortName;
 
     }
 

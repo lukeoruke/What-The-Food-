@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,35 +10,17 @@ namespace Console_Runner.FoodService;
 
 public class Nutrient
 {
-    public string Barcode { get; set; }
+    [ForeignKey("NutrientID")]
+    public string NutrientID { get; set; }
     public string Name { get; set; }
-    private int _amount;
-    public int Amount 
-    {
-        get
-        {
-            return _amount;
-        }
-        set
-        {
-            if(value > 0) _amount = value;
-            else throw new ArgumentOutOfRangeException(nameof(value));
-        }
-    }
     public Nutrient()
     {
 
     }
-    public Nutrient(string barcode, string name)
+    public Nutrient(string NID, string vitaminName)
     {
-        Barcode = barcode;
-        Name = name;
-    }
-    public Nutrient(string barcode, string vitaminName, int amount)
-    {
-        Barcode = barcode;
+        NutrientID = NID;
         Name = vitaminName;
-        Amount = amount;
     }
 }
 

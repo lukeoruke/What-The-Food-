@@ -54,7 +54,12 @@ public class ContextFoodDB : DbContext
         });
         builder.Entity<Nutrient>().HasKey(table => new
         {
-            //table.NID
+            table.NutrientID
+        });
+        builder.Entity<Review>().HasKey(table => new
+        {
+            table.Barcode,
+            table.UserID
         });
 
     }

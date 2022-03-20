@@ -16,9 +16,9 @@ namespace Console_Runner.FoodService
             this._foodItemAccess = foodItemAccess;
         }
 
-        public async Task<bool> AddFoodItemAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
+        public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
         {
-            throw new NotImplementedException();
+            return await _foodItemAccess.AddNewProductAsync(foodItem, nutritionLabel, vitaminsList, ingredientList);
         }
 
         public async Task<NutritionLabel> GetNutritionLabelAsync(string barcode)

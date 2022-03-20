@@ -11,39 +11,21 @@
 
 
         //TODO REWORK FUNCTION ENTIRELY. CURRENT SETUP DOESNT ALLOW FOR UPDATED DB SETUP
-        public bool AddFoodItem(FoodItem fooditem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
+        public async Task<bool> AddFoodItem(FoodItem foodItem)
         {
             try
             {
-                string barcode = fooditem.Barcode;
-                nutritionLabel.Barcode = barcode;
-                _nutritionLabelsList.Add(nutritionLabel);
-                _foodsList.Add(fooditem);
-
-                //Creates connection between barcode and list of food items connected to the corrosponding food item based on barcode
-                for (int i = 0; i < ingredientList.Count; i++)
-                {
-                    LabelIngredient label = new();
-                    label.Barcode = barcode;
-                    label.IngredientID = ingredientList[i].IngredientID;
-                    _ingredientIdentifiersList.Add(label);
-                    _ingredientsList.Add(ingredientList[i]);
-                }
-                for (int i = 0; i < vitaminsList.Count; i++)
-                {
-                    Nutrient vit = vitaminsList[i];
-                    vit.Barcode = barcode;
-                    vitaminsList.Add(vit);
-                }
-                return true;
-            }
-            catch (Exception ex)
+                _foodsList.Add(foodItem);
+                return await true;
+            }catch (Exception ex)
             {
                 return false;
             }
+            
+            
         }
 
-        public bool AddIngredient(Ingredient ingredient)
+        public async bool AddIngredientAsync(Ingredient ingredient)
         {
             try
             {
@@ -56,7 +38,7 @@
             }
         }
 
-        public bool RemoveIngredient(Ingredient ingredient)
+        public async bool RemoveIngredientAsync(Ingredient ingredient)
         {
             try
             {
@@ -69,7 +51,7 @@
             }
         }
 
-        public List<Ingredient> RetrieveIngredientList(string barcode)
+        public async List<Ingredient> RetrieveIngredientListAsync(string barcode)
         {
             List<Ingredient> ingredients = new List<Ingredient>();
             for (int i = 0; i < _ingredientIdentifiersList.Count; i++)
@@ -88,7 +70,7 @@
             return ingredients;
         }
 
-        public NutritionLabel? RetrieveNutritionLabel(FoodItem food)
+        public async NutritionLabel? RetrieveNutritionLabelAsync(FoodItem food)
         {
             for (int i = 0; i < _nutritionLabelsList.Count; i++)
             {
@@ -100,7 +82,7 @@
             return null;
         }
 
-        public FoodItem RetrieveScannedFoodItemAsync(string barcode)
+        public async FoodItem RetrieveScannedFoodItemAsync(string barcode)
         {
             for (int i = 0; i < _foodsList.Count; i++)
             {

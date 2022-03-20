@@ -8,7 +8,7 @@ namespace Console_Runner.FoodService
 {
     public interface IFoodItem
     {
-        public bool AddFoodItem(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList);
+
         /// <summary>
         /// 
         /// </summary>
@@ -39,5 +39,12 @@ namespace Console_Runner.FoodService
         /// <param name="barcode">The barcode being searched</param>
         /// <returns>The nutrition label associated with a provided barcode</returns>
         public Task<NutritionLabel?> RetrieveNutritionLabelAsync(string barcode);
+
+
+
+
+        public Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList);
+        public Task<bool> AddNutritionLabelAsync(NutritionLabel nutritionLabel);
+        public Task<bool> AddNutrientAsync(Nutrient nutrient);
     }
 }

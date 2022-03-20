@@ -10,9 +10,70 @@ namespace Console_Runner.FoodService
         {
             _efContext = new ContextFoodDB();
         }
-        public bool AddFoodItem(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
+        //TODO The add ingredient and nutrients dont account for the middle layer of label nutrient and label ingredient.
+        public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                foreach(Ingredient ing in ingredientList)
+                {
+                    await AddIngredientAsync(ing);
+                }
+                foreach(Nutrient nutrient in vitaminsList)
+                {
+                    await AddNutrientAsync(nutrient);
+                }
+                await AddNutritionLabelAsync(nutritionLabel);
+                await AddFoodItem(foodItem);
+            }catch (Exception)
+            {
+                throw new Exception("METHOD AddNewProductAsync encountered an un handled error");
+            }
+            return false;
+
+        }
+
+        public async Task<bool> AddFoodItem(FoodItem foodItem)
+        {
+            try
+            {
+                await _efContext.FoodItem.AddAsync(foodItem);
+                await _efContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> AddNutritionLabelAsync(NutritionLabel nutritionLabel)
+        {
+            try
+            {
+                await _efContext.NutritionLabel.AddAsync(nutritionLabel);
+                await _efContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> AddNutrientAsync(Nutrient nutrient)
+        {
+            try
+            {
+                await _efContext.Nutrient.AddAsync(nutrient);
+                await _efContext.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public async Task<bool> AddIngredientAsync(Ingredient ingredient)

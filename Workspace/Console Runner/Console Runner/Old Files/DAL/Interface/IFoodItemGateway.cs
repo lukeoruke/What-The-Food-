@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Console_Runner.Food;
+using Food_Class_Library;
 
 namespace Console_Runner.DAL
 {

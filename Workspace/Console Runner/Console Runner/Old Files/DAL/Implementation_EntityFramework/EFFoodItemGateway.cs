@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Console_Runner.DAL;
 using Console_Runner.Food;
 using Food_Class_Library;
 
 namespace Console_Runner.Food
 {
-    public class EFFoodItem : IFoodItem
+    public class EFFoodItem : IFoodItemGateway
     {
-        private readonly ContextFoodDB _efContext;
+        private Context _efContext;
 
         public EFFoodItem()
         {
-            _efContext = new ContextFoodDB();
+            _efContext = new Context();
         }
         public bool AddFoodItem(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
         {

@@ -12,15 +12,15 @@ namespace Console_Runner.FoodService
         }
         public bool AddFoodItem(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
         {
-            return false;
+            throw new NotImplementedException();
         }
 
-        public bool AddIngredient(Ingredient ingredient)
+        public async Task<bool> AddIngredientAsync(Ingredient ingredient)
         {
             try
             {
-                _efContext.Ingredients.Add(ingredient);
-                _efContext.SaveChanges();
+                await _efContext.Ingredients.AddAsync(ingredient);
+                await _efContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -43,22 +43,20 @@ namespace Console_Runner.FoodService
             }
         }
 
-        public List<Ingredient> RetrieveIngredientList(string barcode)
+        public async Task<List<Ingredient>> RetrieveIngredientListAsync(string barcode)
         {
             List<Ingredient> ingredients = new List<Ingredient>();
-            foreach (var Ingredient in _efContext.LabelIngredients)
+            var ListOfIngredients = _efContext.LabelIngredients.Where(r => r.Barcode == barcode);
+            foreach(LabelIngredient ings in ListOfIngredients)
             {
-                if (Ingredient.Barcode == barcode)
-                {
-                    ingredients.Add(_efContext.Ingredients.Find(barcode));
-                }
+                ingredients.Add(await _efContext.Ingredients.FindAsync(ings.IngredientID));
             }
             return ingredients;
         }
 
-        public NutritionLabel? RetrieveNutritionLabel(FoodItem food)
+        public async Task<NutritionLabel?> RetrieveNutritionLabelAsync(string barcode)
         {
-            return _efContext.NutritionLabel.Find(food.Barcode);
+            return await _efContext.NutritionLabel.FindAsync(barcode);
         }
 
         public async Task<FoodItem?> RetrieveScannedFoodItemAsync(string barcode)

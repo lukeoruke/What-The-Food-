@@ -16,19 +16,36 @@ namespace Console_Runner.FoodService
             this._foodItemAccess = foodItemAccess;
         }
 
-        public bool AddFoodItem(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
-        {
-            return _foodItemAccess.AddFoodItem(foodItem, nutritionLabel, vitaminsList, ingredientList);
-        }
-
         public async Task<bool> AddFoodItemAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
         {
-            return await Task.FromResult(_foodItemAccess.AddFoodItem(foodItem, nutritionLabel, vitaminsList, ingredientList));
+            throw new NotImplementedException();
         }
 
-        public FoodItem getScannedItem(string barcode)
+        public async Task<NutritionLabel> GetNutritionLabelAsync(string barcode)
         {
-            FoodItem? foodItem = _foodItemAccess.RetrieveScannedFoodItemAsync(barcode);
+            var label = await _foodItemAccess.RetrieveNutritionLabelAsync(barcode);
+            if (label == null)
+            {
+                throw new Exception("No label exists for the provided barcode");
+            }
+            return label;
+        }
+
+        public async Task<bool> AddIngredientAsync(Ingredient ingredient)
+        {
+            return await _foodItemAccess.AddIngredientAsync(ingredient);
+        }
+
+        public async Task<List<Ingredient>> GetIngredientsListAsync(string barcode)
+        {
+            List<Ingredient> ingList = new List<Ingredient>();
+            ingList = await _foodItemAccess.RetrieveIngredientListAsync(barcode);
+            return ingList;
+        }
+
+        public async Task<FoodItem> getScannedItemAsync(string barcode)
+        {
+            FoodItem?foodItem = await _foodItemAccess.RetrieveScannedFoodItemAsync(barcode);
             if(foodItem == null)
             {
                 throw (new Exception("No such product exists in the DB"));

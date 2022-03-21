@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Console_Runner.AccountDB
+namespace Console_Runner.Account
 {
 	/// <summary>
 	/// Enum that reflects the five levels of activity used in calculating AMR according to https://www.verywellfit.com/how-many-calories-do-i-need-each-day-2506873.
@@ -42,7 +42,7 @@ namespace Console_Runner.AccountDB
 		private int _age;
 		private float _customAMR;
 
-		public string AccountEmail { get; set; }
+		public string UserID { get; set; }
 		public Account Account { get; set; }
 		public bool IsMale { get; set; }
 		// weight, height, and age must be non-negative values.
@@ -104,7 +104,7 @@ namespace Console_Runner.AccountDB
 		public AMR(Account acct, bool isMale, int weight, float height, int age, ActivityLevel activity)
 		{
 			Account = acct;
-			//UserID = acct.UserID;
+			UserID = acct.UserID;
 			IsMale = isMale;
 			Weight = weight;
 			Height = height;
@@ -127,7 +127,7 @@ namespace Console_Runner.AccountDB
 		public AMR(Account acct, bool isMale, int weight, float height, int age, ActivityLevel activity, float customAMR)
 		{
 			Account = acct;
-			//UserID = acct.UserID;
+			UserID = acct.UserID;
 			IsMale = isMale;
 			Weight = weight;
 			Height = height;

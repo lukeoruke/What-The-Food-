@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Console_Runner.AccountDB
+namespace Console_Runner.Account
 {
     public class History
     {

@@ -1,11 +1,4 @@
-﻿using Console_Runner;
-using Console_Runner.DAL;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using System.ComponentModel.DataAnnotations.Schema;
-using Console_Runner.AMRModel;
-
+﻿
 
 namespace Console_Runner.AccountService
 {

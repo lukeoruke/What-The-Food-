@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Console_Runner.AMRModel;
 
-namespace Console_Runner.DAL
+namespace Console_Runner.AccountService
 {
     public class EFAMRGateway : IAMRGateway
     {
-        private readonly Context _efContext;
+        private readonly ContextAccountDB _efContext;
 
         public EFAMRGateway()
         {
-            _efContext = new Context();
+            _efContext = new ContextAccountDB();
         }
-        public bool AddAMR(AMR amrToAdd)
+        public async Task<bool> AddAMRAsync(AMR amrToAdd)
         {
             try
             {
-                _efContext.AMRs.Add(amrToAdd);
-                _efContext.SaveChanges();
+                await _efContext.AMRs.AddAsync(amrToAdd);
+                await _efContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -29,16 +28,16 @@ namespace Console_Runner.DAL
             }
         }
 
-        public bool AMRExists(string email)
+        public async Task<bool> AMRExistsAsync(int userID)
         {
-            return _efContext.AMRs.Find(email) != null;
+            return await _efContext.AMRs.FindAsync(userID) != null;
         }
 
-        public AMR? GetAMR(string email)
+        public async Task<AMR?> GetAMRAsync(int userID)
         {
             try
             {
-                AMR? foundAMR = _efContext.AMRs.Find(email);
+                AMR? foundAMR = await _efContext.AMRs.FindAsync(userID);
                 if (foundAMR != null) return foundAMR;
                 else throw new Exception("AMR could not be found");
             }
@@ -48,14 +47,14 @@ namespace Console_Runner.DAL
             }
         }
 
-        public bool RemoveAMR(AMR amrToRemove)
+        public async Task<bool> RemoveAMRAsync(AMR amrToRemove)
         {
             try
             {
-                if (AMRExists(amrToRemove.AccountEmail))
+                if (await AMRExistsAsync(amrToRemove.UserID))
                 {
                     _efContext.Remove(amrToRemove);
-                    _efContext.SaveChanges();
+                    await _efContext.SaveChangesAsync();
                 }
                 return true;
             }
@@ -65,12 +64,12 @@ namespace Console_Runner.DAL
             }
         }
 
-        public bool UpdateAMR(AMR amrToUpdate)
+        public async Task<bool> UpdateAMRAsync(AMR amrToUpdate)
         {
             try
             {
                 _efContext.AMRs.Update(amrToUpdate);
-                _efContext.SaveChanges(true);
+                await _efContext.SaveChangesAsync(true);
                 return true;
             }
             catch (Exception)

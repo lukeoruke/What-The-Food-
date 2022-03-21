@@ -15,11 +15,11 @@ namespace Console_Runner.AccountService
         {
             accountsList = new List<Account>();
         }
-        public bool AccountExists(int AccountID)
+        public bool AccountExistsAsync(int userID)
         {
             for (int i = 0; i < accountsList.Count; i++)
             {
-                if (AccountID == accountsList[i].AccountID)
+                if (userID == accountsList[i].UserID)
                 {
                     return true;
                 }
@@ -27,7 +27,7 @@ namespace Console_Runner.AccountService
             return false;
         }
 
-        public bool AddAccount(Account acc)
+        public bool AddAccountAsync(Account acc)
         {
             accountsList.Add(acc);
 

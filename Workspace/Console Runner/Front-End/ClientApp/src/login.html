@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="styles/login.css">
+    <script type="text/javascript" src="scripts/login.js"></script>
+</head>
+<body>
+<div class="Login">
+    <header class="Login-header">
+        <div class="Login-box">
+            <label class="Login-label">Login</label>
+            <form class="Login-form" onsubmit="sendLogin(event)">
+                <section class="Login-section">
+                    <label>Email:</label>
+                    <label>
+                        <input class="Login-input" id="email" type="email" name="email" placeholder="email"/>
+                    </label>
+                </section>
+                <section class="Login-section">
+                    <label>Password:</label>
+                    <label>
+                        <input class="Login-input" id="password" type="password" name="password"
+                               placeholder="password"/>
+                    </label>
+                </section>
+                <input class="Login-input" type="submit" value="Submit"/>
+            </form>
+            <a class="Login-link link-1" href="https://reactjs.org">
+                Forgot your password?
+            </a>
+        </div>
+        <a class="Login-link" href="https://reactjs.org">
+            Continue as Guest
+        </a>
+    </header>
+</div>
+</body>
+</html>

@@ -1,3 +1,7 @@
+body {
+    margin: 0;
+}
+
 .Login {
     text-align: center;
 }
@@ -8,9 +12,9 @@
     align-items: center;
     justify-content: center;
     background-color: #282c34;
+    min-height: 100vh;
     color: white;
     font-size: 1em;
-    min-height: 100vh;
 }
 
 .Login-link {
@@ -18,7 +22,7 @@
     color: #302f90;
 }
 
-.label-1 {
+.Login-label {
     font-size: 2em;
 }
 
@@ -26,7 +30,6 @@
     display: flex;
     flex-direction: column;
     align-content: center;
-    align-items: center;
     justify-content: space-evenly;
 
     border: thick solid #302f90;
@@ -44,9 +47,7 @@
     justify-content: space-evenly;
     margin-top: 2.5vh;
     padding: 2.5vh;
-    width: 100%;
     text-align: left;
-
 
     /*background-color: '#a81d20';
       background-color: '#ffffff';*/
@@ -58,12 +59,10 @@
 }
 
 .Login-input {
-
-}
-
-input {
     margin: 1vh 0 1vh 0;
     border: 0;
     border-radius: 5px;
-    padding: 2vh;
+    padding: 2vh 0 2vh 0;
+    width: 100%;
+    text-indent: 10px;
 }

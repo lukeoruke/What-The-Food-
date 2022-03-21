@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="styles/signup.css">
+    <script type="text/javascript" src="scripts/signup.js"></script>
+</head>
+<body>
+<div class="Signup">
+    <header class="Signup-header">
+        <div class="Signup-box">
+            <label class="Signup-label">Signup</label>
+            <form class="Signup-form" onsubmit="sendSignup(event)">
+                <section class="Signup-section">
+                    <label>Name:</label>
+                    <label>
+                        <input class="Signup-input" id="name" type="text" name="name"
+                               placeholder='First and Last Name'/>
+                    </label>
+                </section>
+                <section class="Signup-section">
+                    <label>Email:</label>
+                    <label>
+                        <input class="Signup-input" id="email"
+                               type="email" name="email" placeholder="email"/>
+                    </label>
+                </section>
+                <section class="Signup-section">
+                    <label>Password:</label>
+                    <label>
+                        <input class="Signup-input" id="password"
+                               type="password" name="password" placeholder="password"/>
+                    </label>
+                </section>
+                <section class="Signup-section">
+                    <label>Confirm Password:</label>
+                    <label>
+                        <input class="Signup-input" id="confirmPassword"
+                               type="password" name="confirmPassword" placeholder="confirm password"/>
+                    </label>
+                </section>
+                <label id="confirmPasswordLabel"></label>
+                <input class="Signup-input" type="submit" value="Submit"/>
+                <a href="login.html">
+                Already have an account?</a>
+            </form>
+        </div>
+    </header>
+</div>
+</body>
+</html>

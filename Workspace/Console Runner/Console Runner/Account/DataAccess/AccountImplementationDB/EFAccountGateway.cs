@@ -7,38 +7,33 @@ using System.Threading.Tasks;
 
 namespace Console_Runner.AccountService
 {
-    public class EFAccountFunctions : IAccountFunctions
+    public class EFAccountGateway : IAccountGateway
     {
 
-        private AccountDBOperations _efContext;
+        private readonly ContextAccountDB _efContext;
 
-        public EFAccountFunctions()
+        public EFAccountGateway()
         {
-            _efContext = new ContextAccountDB;
+            _efContext = new ContextAccountDB();
         }
 
 
         /// <summary>
         /// Checks if an account exists
         /// </summary>
-        /// <param name="AccountID">The ID of the account being checked</param>
+        /// <param name="UserID">The ID of the account being checked</param>
         /// <returns>true if account exists false otherwise</returns>
-        public bool AccountExists(int AccountID)
+        public async Task<bool>AccountExistsAsync(int UserID)
         {
-            if (_efContext.Accounts.Find(AccountID) != null)
-            {
-                return true;
-            }
-
-            return false;
+            return await _efContext.Accounts.FindAsync(UserID) == null;
         }
 
-        public bool AddAccount(Account acc)
+        public async Task<bool> AddAccountAsync(Account acc)
         {
             try
             {
-                _efContext.Accounts.Add(acc);
-                _efContext.SaveChanges();
+               await _efContext.Accounts.AddAsync(acc);
+               await _efContext.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -47,11 +42,11 @@ namespace Console_Runner.AccountService
             }
         }
 
-        public Account? GetAccount(int AccountID)
+        public async Task<Account?> GetAccountAsync(int UserID)
         {
             try
             {
-                Account? acc = _efContext.Accounts.Find(AccountID);
+                Account? acc = await _efContext.Accounts.FindAsync(UserID);
                 if (acc != null)
                 {
                     return acc;
@@ -67,11 +62,11 @@ namespace Console_Runner.AccountService
             }
         }
 
-        public bool RemoveAccount(Account acc)
+        public async Task<bool> RemoveAccountAsync(Account acc)
         {
             try
             {
-                if (AccountExists(acc.AccountID))
+                if (await AccountExistsAsync(acc.UserID))
                 {
                     _efContext.Remove(acc);
                     _efContext.SaveChanges();
@@ -84,18 +79,25 @@ namespace Console_Runner.AccountService
             }
         }
 
-        public bool UpdateAccount(Account acc)
+        public async Task<bool> UpdateAccountAsync(Account acc)
         {
             try
             {
+                //TODO NEED TO VERIFY THIS WONT SKIP OVER UPDATE BEFORE GOING TO SAVE CHANGES. 
                 _efContext.Accounts.Update(acc);
-                _efContext.SaveChanges(true);
+                await _efContext.SaveChangesAsync(true);
                 return true;
             }
             catch (Exception)
             {
                 return false;
             }
+        }
+
+        public int GetIDFromEmail(string email)
+        {
+            var userEmail = _efContext.Accounts.Where(r => r.Email == email);
+            return userEmail.ElementAt(0).UserID;
         }
 
     }

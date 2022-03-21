@@ -2,11 +2,11 @@
 
 namespace Console_Runner.FoodService
 {
-    public class EFFoodItem : IFoodFunctions
+    public class EFFoodGateway : IFoodGateway
     {
         private readonly ContextFoodDB _efContext;
 
-        public EFFoodItem()
+        public EFFoodGateway()
         {
             _efContext = new ContextFoodDB();
         }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Console_Runner.AccountService
 {
-    public class MemAccountFunctions : IAccountFunctions
+    public class MemAccountFunctions : IAccountGateway
     {
         private List<Account> accountsList;
         

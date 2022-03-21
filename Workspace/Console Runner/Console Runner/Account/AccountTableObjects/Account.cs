@@ -25,6 +25,10 @@ namespace Console_Runner.AccountService
         //User's last name
         public string LName { get; set; }
 
+        public bool IsActive { get; set; }
+
+        public bool Enabled { get; set; }
+
         //TODO: Constructor values?
         public Account()
         {

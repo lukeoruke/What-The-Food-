@@ -1,6 +1,6 @@
 ﻿namespace Console_Runner.FoodService
 {
-    public class MemFoodItem : IFoodFunctions
+    public class MemFoodItem : IFoodGateway
     {
         List<FoodItem> _foodsList = new();
         List<NutritionLabel> _nutritionLabelsList = new();

@@ -1,41 +1,38 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Console_Runner.AccountService;
+﻿
 
 namespace Console_Runner.AccountService
 {
     public class AccountDBOperations
     {
         private const string UM_CATEGORY = "Data Store";
-        private readonly IAccountFunctions _accountFunctions;
-        public AccountDBOperations(IAccountFunctions accountFunctions)
+        private readonly IAccountGateway _accountAccess;
+        private readonly IAuthorizationGateway _permissionService;
+        public AccountDBOperations(IAccountGateway accountFunctions, IAuthorizationGateway permissionService)
         {
-            this._accountFunctions = accountFunctions;
+            this._accountAccess = accountFunctions;
+            this._permissionService = permissionService;
         }
 
-        public bool UserSignUp(Account acc)
+        public async Task<bool> UserSignUpAsync(Account acc)
         {
             try
             {
-                if (_accountAccess.AccountExists(acc.Email))
+                if (await _accountAccess.AccountExistsAsync(acc.UserID))
                 {
                     Console.WriteLine("email already in use");
                     return false;
                 }
-                _permissionService.AssignDefaultUserPermissions(acc.Email);
+                await _permissionService.AssignDefaultUserPermissions(acc.UserID);
                 acc.IsActive = false;
-                _accountAccess.AddAccount(acc);
-                _logger.LogAccountCreation(UM_CATEGORY, "Signup page", true, "", acc.Email);
+                await _accountAccess.AddAccountAsync(acc);
+                //_logger.LogAccountCreation(UM_CATEGORY, "Signup page", true, "", acc.Email);
                 Console.WriteLine("UM operation was successful");
                 return true;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                _logger.LogAccountCreation(UM_CATEGORY, "test page", false, ex.Message, acc.Email);
+                //_logger.LogAccountCreation(UM_CATEGORY, "test page", false, ex.Message, acc.Email);
                 return false;
             }
 
@@ -45,52 +42,52 @@ namespace Console_Runner.AccountService
 		 * Delets a user corosponding to the email provided as arg
 		 * Takes in currentUser to validate user calling method has permission to do so
 		 */
-        public bool UserDelete(Account currentUser, string targetEmail)
+        public async Task<bool> UserDeleteAsync(Account currentUser, int userID)
         {
 
-            if (!_permissionService.HasPermission(currentUser.Email, "deleteAccount"))
+         /*   if (!_permissionService.HasPermission(currentUser.Email, "deleteAccount"))
             {
                 _logger.LogAccountDeletion(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email);
                 return false;
-            }
+            }*/
             try
             {
-                if (!_accountAccess.AccountExists(targetEmail))
+                if (! await _accountAccess.AccountExistsAsync(userID))
                 {
                     return false;
                 }
 
-                Account acc = _accountAccess.GetAccount(targetEmail);
+                Account? acc = await _accountAccess.GetAccountAsync(userID);
 
-                if (_permissionService.HasPermission(targetEmail, "createAdmin") && (_permissionService.AdminCount() < 2))
+                /*if (_permissionService.HasPermission(targetEmail, "createAdmin") && (_permissionService.AdminCount() < 2))
                 {
                     Console.WriteLine("Deleting this account would result in there being no admins.");
                     return false;
-                }
+                }*/
 
-                _permissionService.RemoveAllUserPermissions(acc.Email);
-                _accountAccess.RemoveAccount(acc);
-                _logger.LogAccountDeletion(UM_CATEGORY, "test page", true, "", acc.Email);
+               // _permissionService.RemoveAllUserPermissions(acc.Email);
+                await _accountAccess.RemoveAccountAsync(acc);
+               // _logger.LogAccountDeletion(UM_CATEGORY, "test page", true, "", acc.Email);
 
 
                 return true;
             }
             catch (Exception ex)
             {
-                _logger.LogAccountDeletion(UM_CATEGORY, "test page", false, ex.Message, targetEmail);
+                //_logger.LogAccountDeletion(UM_CATEGORY, "test page", false, ex.Message, targetEmail);
                 return false;
             }
         }
 
         //will return an account object from the DB given a PK from the argument field
-        public Account GetUserAccount(string targetPK)
+        public async Task<Account> GetUserAccountAsync(int userID)
         {
             try
             {
 
-                if (_accountAccess.AccountExists(targetPK))
+                if (await _accountAccess.AccountExistsAsync(userID))
                 {
-                    return _accountAccess.GetAccount(targetPK);
+                    return await _accountAccess.GetAccountAsync(userID);
                 }
                 else
                 {
@@ -99,28 +96,27 @@ namespace Console_Runner.AccountService
             }
             catch (Exception ex)
             {
-                _logger.LogGeneric(UM_CATEGORY, "test page", false, ex.Message, targetPK, "Failed to read.");
+                //_logger.LogGeneric(UM_CATEGORY, "test page", false, ex.Message, targetPK, "Failed to read.");
                 return null;
             }
         }
 
         //will update a user's data from a given PK in the argument, fields being changed are given in the argument line as well, null input means no change
-        public bool UserUpdateData(Account currentUser, string targetPK, string nFname, string nLname, string npassword)
+        public async Task<bool> UserUpdateDataAsync(Account currentUser, int userID, string nFname, string nLname, string npassword)
         {
             bool fNameChanged = false, lNameChanged = false, passwordChanged = false;
             string fTemp = "", lTemp = "", pTemp = "";
-            if (currentUser.Email != targetPK)
+            if (currentUser.UserID != userID)
             {
-                if (!_permissionService.HasPermission(currentUser.Email, "editOtherAccount") || !currentUser.IsActive)
+                if (! await _permissionService.HasPermissionAsync(currentUser.UserID, "editOtherAccount") || !currentUser.IsActive)
                 {
-                    _logger.LogGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
+                    //_logger.LogGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
                     return false;
                 }
             }
             try
             {
-
-                Account? acc = _accountAccess.GetAccount(targetPK);
+                Account? acc = await _accountAccess.GetAccountAsync(userID);
                 if (acc == null)
                 {
                     Console.WriteLine("NULL ACCOUNT FOUND");
@@ -128,14 +124,14 @@ namespace Console_Runner.AccountService
                 }
                 if (nFname != "")
                 {
-                    fTemp = acc.Fname;
-                    acc.Fname = nFname;
+                    fTemp = acc.FName;
+                    acc.FName = nFname;
                     fNameChanged = true;
                 }
                 if (nLname != "")
                 {
-                    lTemp = acc.Lname;
-                    acc.Lname = nLname;
+                    lTemp = acc.LName;
+                    acc.LName = nLname;
                     lNameChanged = true;
                 }
                 if (npassword != "")
@@ -145,14 +141,14 @@ namespace Console_Runner.AccountService
                     passwordChanged = true;
                 }
 
-                _accountAccess.UpdateAccount(acc);
+                await _accountAccess.UpdateAccountAsync(acc);
 
                 if (fNameChanged)
-                    _logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, fTemp, nFname);
+                    //_logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, fTemp, nFname);
                 if (lNameChanged)
-                    _logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, lTemp, nLname);
+                   // _logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, lTemp, nLname);
                 if (passwordChanged)
-                    _logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, pTemp, npassword);
+                   // _logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, pTemp, npassword);
 
                 acc.IsActive = false;
                 Console.WriteLine("UM operation was successful");
@@ -160,31 +156,32 @@ namespace Console_Runner.AccountService
             }
             catch (Exception ex)
             {
-                _logger.LogGeneric(UM_CATEGORY, "test page", false, ex.Message, targetPK, "Could not change user info");
+               // _logger.LogGeneric(UM_CATEGORY, "test page", false, ex.Message, targetPK, "Could not change user info");
                 return false;
             }
         }
 
 
         //authenticates a users input password for login. True if pass matches, false otherwise
-        public bool AuthenticateUserPass(string user, string userPass)
+        public async Task<bool> AuthenticateUserPassAsync(int userID, string userPass)
         {
-            Account acc = GetUserAccount(user);
+            Account acc = await GetUserAccountAsync(userID);
             return (acc != null && acc.Password == userPass);
         }
         //takes in username and password. If valid returns an account object for the user with specified data.
-        public Account SignIn(string user, string userPass)
+        public async Task<Account> SignIn(string email, string userPass)
         {
-            if (AuthenticateUserPass(user, userPass))
+            int ID = _accountAccess.GetIDFromEmail(email);
+            if (await AuthenticateUserPassAsync(ID, userPass))
             {
-                _logger.LogLogin(UM_CATEGORY, "test page", true, "", user);
-                Account acc = GetUserAccount(user);
+              //  _logger.LogLogin(UM_CATEGORY, "test page", true, "", user);
+                Account acc = await GetUserAccountAsync(ID);
                 acc.IsActive = true;
                 return acc;
             }
             else
             {
-                _logger.LogLogin(UM_CATEGORY, "test page", false, "Invalid Password", user);
+                //_logger.LogLogin(UM_CATEGORY, "test page", false, "Invalid Password", user);
                 return null;
             }
         }
@@ -193,30 +190,30 @@ namespace Console_Runner.AccountService
 		 * Disables the account with email of targetPK if exists
 		 * currentUser is taken in to validate the user calling this has permission to do so
 		 */
-        public bool DisableAccount(Account currentUser, string targetPK)
+        public async Task<bool> DisableAccountAsync(Account currentUser, int userID)
         {
-            if (!_permissionService.HasPermission(currentUser.Email, "disableAccount") || !currentUser.IsActive)
+            if (! await _permissionService.HasPermissionAsync(currentUser.UserID, "disableAccount") || !currentUser.IsActive)
             {
-                _logger.LogAccountDeactivation(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
+                //_logger.LogAccountDeactivation(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
                 return false;
             }
-            if (!_accountAccess.AccountExists(targetPK))
+            if (! await _accountAccess.AccountExistsAsync(userID))
             {
                 return false;
             }
             try
             {
-                Account acc = _accountAccess.GetAccount(targetPK);
+                Account? acc = await _accountAccess.GetAccountAsync(userID);
 
-                if (_permissionService.IsAdmin(targetPK) && (_permissionService.AdminCount() < 2))
+                if (_permissionService.IsAdmin(userID) && (_permissionService.AdminCount() < 2))
                 {
-                    Console.WriteLine("Disabling this account would result in there being no admins.");
+                    //Console.WriteLine("Disabling this account would result in there being no admins.");
                     return false;
                 }
                 acc.Enabled = false;
                 acc.IsActive = false;
-                _accountAccess.UpdateAccount(acc);
-                _logger.LogAccountDeactivation(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
+                await _accountAccess.UpdateAccountAsync(acc);
+                //_logger.LogAccountDeactivation(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
 
 
                 Console.WriteLine("UM operation was successful");
@@ -224,7 +221,7 @@ namespace Console_Runner.AccountService
             }
             catch (Exception ex)
             {
-                _logger.LogAccountDeactivation(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, "No Target");
+               // _logger.LogAccountDeactivation(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, "No Target");
 
                 return false;
             }
@@ -234,24 +231,24 @@ namespace Console_Runner.AccountService
 		 * currentUser is used to validate that the person calling this method has permission to do so.
 		 * targetPK is the email of the user whos account is being activated
 		 */
-        public bool EnableAccount(Account currentUser, string targetPK)
+        public async Task<bool> EnableAccountAsync(Account currentUser, int userID)
         {
-            if (!_permissionService.HasPermission(currentUser.Email, "enableAccount") || !currentUser.IsActive)
+            if (! await _permissionService.HasPermissionAsync(currentUser.UserID, "enableAccount") || !currentUser.IsActive)
             {
-                _logger.LogAccountEnabling(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
+                //_logger.LogAccountEnabling(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
                 return false;
             }
             try
             {
-                if (!_accountAccess.AccountExists(targetPK))
+                if (! await _accountAccess.AccountExistsAsync(userID))
                 {
                     return false;
                 }
-                Account acc = _accountAccess.GetAccount(targetPK);
+                Account? acc = await _accountAccess.GetAccountAsync(userID);
 
                 acc.Enabled = true;
-                _accountAccess.UpdateAccount(acc);
-                _logger.LogAccountEnabling(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
+                await _accountAccess.UpdateAccountAsync(acc);
+                //_logger.LogAccountEnabling(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
 
 
                 Console.WriteLine("UM operation was successful");
@@ -259,7 +256,7 @@ namespace Console_Runner.AccountService
             }
             catch (Exception ex)
             {
-                _logger.LogAccountEnabling(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, "No Target");
+                //_logger.LogAccountEnabling(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, "No Target");
                 return false;
             }
         }
@@ -270,31 +267,31 @@ namespace Console_Runner.AccountService
 		 * targetPK is the email(primary key) of the user being targeted
 		 */
 
-        public bool PromoteToAdmin(Account currentUser, string targetPK)
+        public async Task<bool> PromoteToAdmin(Account currentUser, int userID)
         {
             try
             {
-                if (_permissionService.HasPermission(currentUser.Email, "createAdmin") && currentUser.IsActive)
+                if (await _permissionService.HasPermissionAsync(currentUser.UserID, "createAdmin") && currentUser.IsActive)
                 {
-                    Account? acc = _accountAccess.GetAccount(targetPK);
+                    Account? acc = await _accountAccess.GetAccountAsync(userID);
                     if (acc == null)
                     {
                         Console.WriteLine("No such account exists");
                         return false;
                     }
-                    _permissionService.AssignDefaultAdminPermissions(targetPK);
-                    _accountAccess.UpdateAccount(acc);
-                    _logger.LogAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
+                    await _permissionService.AssignDefaultAdminPermissions(userID);
+                    await _accountAccess.UpdateAccountAsync(acc);
+                    //_logger.LogAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
 
                     Console.WriteLine("UM operation was successful");
                     return true;
                 }
-                _logger.LogAccountPromote(UM_CATEGORY, "Console", false, "User is not admin and/or target account is not active", currentUser.Email, targetPK);
+                //_logger.LogAccountPromote(UM_CATEGORY, "Console", false, "User is not admin and/or target account is not active", currentUser.Email, targetPK);
                 return false;
             }
             catch (Exception ex)
             {
-                _logger.LogAccountPromote(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, targetPK);
+               // _logger.LogAccountPromote(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, targetPK);
                 return false;
             }
         }

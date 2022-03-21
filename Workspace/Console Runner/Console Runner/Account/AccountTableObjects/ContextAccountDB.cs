@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 
 
-namespace Console_Runner.Account
+namespace Console_Runner.AccountService
 {
     /*will run on startup, will configure the services to our database context*/
 
@@ -37,26 +37,36 @@ namespace Console_Runner.Account
 
             //TODO: Apply authorization
 
-            /*builder.Entity<Authorization>().HasKey(table => new
+            builder.Entity<Authorization>().HasKey(table => new
             {
-
-            });*/
+                table.UserID,
+                table.Permission
+            });
 
             builder.Entity<FoodFlag>().HasKey(table => new
             {
-                table.UserID
+                table.UserID,
+                table.IngredientID
             });
 
             builder.Entity<History>().HasKey(table => new
             {
-                table.UserID
-            });
+                table.UserID,
+                table.Barcode
+            });;
 
             builder.Entity<AMR>().HasKey(table => new
             {
                 table.UserID
             });
         }
+        public DbSet<Account> Accounts { get; set; } = null!;
+
+        public DbSet<FoodFlag> FoodFlags { get; set; } = null!;
+        public DbSet<History> Historys { get; set; } = null!;
+        public DbSet<AMR> AMRs { get; set; } = null!;
+
+        public DbSet<Authorization> Authorizations { get; set; } = null!;
 
     }
 }

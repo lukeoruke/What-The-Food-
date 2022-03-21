@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Console_Runner.AccountDB
+namespace Console_Runner.AccountService
 {
 	/// <summary>
 	/// Enum that reflects the five levels of activity used in calculating AMR according to https://www.verywellfit.com/how-many-calories-do-i-need-each-day-2506873.

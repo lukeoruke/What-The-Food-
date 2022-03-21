@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Console_Runner;
+using Console_Runner.FoodService;
 using Console_Runner.User_Management;
 
 namespace Console_Runner.DAL
@@ -14,7 +15,7 @@ namespace Console_Runner.DAL
 
         public EFPermissionGateway()
         {
-            _efContext = new Context();
+            _efContext = new ContextFoodDB();
         }
 
         public bool HasPermission(string email, string resource)

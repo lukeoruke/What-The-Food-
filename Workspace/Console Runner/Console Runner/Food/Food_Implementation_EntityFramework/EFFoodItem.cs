@@ -2,7 +2,7 @@
 
 namespace Console_Runner.FoodService
 {
-    public class EFFoodItem : IFoodItem
+    public class EFFoodItem : IFoodFunctions
     {
         private readonly ContextFoodDB _efContext;
 

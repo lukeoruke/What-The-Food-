@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Console_Runner.FoodService
 {
-    public interface IFoodItem
+    public interface IFoodFunctions
     {
         /// <summary>
         /// Adds an object of type FoodItem to the DB

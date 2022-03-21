@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Console_Runner.AMRModel;
 
-namespace Console_Runner.AccountDB
+namespace Console_Runner.AccountService
 {
     /*
      * Account class that will represent the contents of a user's account

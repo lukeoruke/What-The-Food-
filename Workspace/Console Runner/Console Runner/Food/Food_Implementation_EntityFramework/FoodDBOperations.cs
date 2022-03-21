@@ -10,8 +10,8 @@ namespace Console_Runner.FoodService
     public class FoodDBOperations
     {
         private const string UM_CATEGORY = "Data Store";
-        private readonly IFoodItem _foodItemAccess;
-        public FoodDBOperations(IFoodItem foodItemAccess)
+        private readonly IFoodFunctions _foodItemAccess;
+        public FoodDBOperations(IFoodFunctions foodItemAccess)
         {
             this._foodItemAccess = foodItemAccess;
         }

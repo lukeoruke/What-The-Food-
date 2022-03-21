@@ -7,10 +7,12 @@ namespace Console_Runner.AccountService
         private const string UM_CATEGORY = "Data Store";
         private readonly IAccountGateway _accountAccess;
         private readonly IAuthorizationGateway _permissionService;
-        public AccountDBOperations(IAccountGateway accountFunctions, IAuthorizationGateway permissionService)
+        private readonly IFlagGateway _flagService;
+        public AccountDBOperations(IAccountGateway accountAccess, IAuthorizationGateway permissionService, IFlagGateway flagGateway)
         {
-            this._accountAccess = accountFunctions;
+            this._accountAccess = accountAccess;
             this._permissionService = permissionService;
+            this._flagService = flagGateway;
         }
 
         public async Task<bool> UserSignUpAsync(Account acc)
@@ -295,5 +297,50 @@ namespace Console_Runner.AccountService
                 return false;
             }
         }
+
+        public async Task<bool> AddFlagToAccountAsync(int userID, int IngredientID)
+        {
+            FoodFlag foodFlag = new(userID, IngredientID);
+            return await _flagService.AddFlagAsync(foodFlag);
+        }
+
+        public async Task<bool> RemoveFoodFlag(int userID, int IngredientID)
+        {
+            return await _flagService.RemoveFoodFlagAsync(userID, IngredientID);
+        }
+
+        public async Task<bool> accountHasFlag(int userID, int IngredientID)
+        {
+            return await _flagService.AccountHasFlagAsync(userID, IngredientID);
+        }
+
+        public List<FoodFlag> GetAllAccountFlags(int userID)
+        {
+            return _flagService.GetAllAccountFlags(userID);
+        }
+
+    
+
+        /////////////////////////////////////////////////////////////////TODO THIS IS ON HOLD UNTIL SERVICE MANAGER IS COMPLETED.////////////////////////////////////////////////////////////////
+       
+        
+        
+        /*        public List<Ingredient> CheckProductForFlags(string barcode, string email)
+                {
+                    FoodItem? food = GetScannedFoodItem(barcode);
+                    if (food == null) return new List<Ingredient>();
+                    List<Ingredient> ingredientList = GetIngredientList(food.Barcode);
+                    List<Ingredient> flaggedItems = new List<Ingredient>();
+                    for (int i = 0; i < ingredientList.Count; i++)
+                    {
+                        if (_flagGateway.AccountHasFlag(email, ingredientList[i].IngredientID))
+                        {
+                            flaggedItems.Add(ingredientList[i]);
+                        }
+                    }
+                    return flaggedItems;
+                }*/
+
+
     }
 }

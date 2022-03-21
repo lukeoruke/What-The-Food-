@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Console_Runner.FoodService;
 
-public class NutritionLabel : INutritionLabel
+public class NutritionLabel
 {
     [ForeignKey("Barcode")]
     public string Barcode { get; set; }
@@ -216,8 +216,6 @@ public class NutritionLabel : INutritionLabel
             else throw new ArgumentOutOfRangeException("Protein must be nonnegative!");
         } 
     }
-
-    List<Nutrient> INutritionLabel.Nutrients => _nutrients;
 
     public ArrayList IngredientsList<String>()
     {

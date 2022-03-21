@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Console_Runner.AccountDB
+namespace Console_Runner.Account
 {
     public interface IAccountFunctions
     {

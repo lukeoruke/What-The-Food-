@@ -5,16 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Console_Runner.AccountDB
+namespace Console_Runner.Account
 {
     public class EFAccountFunctions : IAccountFunctions
     {
 
-        private Context _efContext;
+        private readonly ContextAccountDB _efContext;
 
         public EFAccountFunctions()
         {
-            _efContext = new Context();
+            _efContext = new ContextAccountDB();
         }
 
 

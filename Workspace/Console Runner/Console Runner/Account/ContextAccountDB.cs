@@ -57,5 +57,12 @@ namespace Console_Runner.Account
                 table.UserID
             });
         }
+        public DbSet<Account> Accounts { get; set; } = null!;
+
+        public DbSet<Authorization> Permissions { get; set; } = null!;
+        public DbSet<FoodFlag> FoodFlags { get; set; } = null!;
+        public DbSet<History> Histories { get; set; } = null!;
+        public DbSet<AMR> AMRs { get; set; } = null!;
+
     }
 }

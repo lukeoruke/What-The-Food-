@@ -3,7 +3,9 @@ using Console_Runner.DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.ComponentModel.DataAnnotations.Schema;
 using Console_Runner.AMRModel;
+
 
 namespace Console_Runner.AccountService
 {
@@ -14,8 +16,8 @@ namespace Console_Runner.AccountService
         //User ID getter and setter
         //Using Auto Incrementer, research on that
         //[System.ComponentModel.DataAnnotations.Key]
-        //public string UserID{ get; set; }
-        public int AccountID { get; set; }
+        public int UserID{ get; set; }
+        
         public string Email { get; set; }
         public string Password { get; set; }
         //User's first name
@@ -26,8 +28,7 @@ namespace Console_Runner.AccountService
         //TODO: Constructor values?
         public Account()
         {
-            //UserID = "";
-            //UserID = "";
+           
             FName = "";
             LName = "";
         }

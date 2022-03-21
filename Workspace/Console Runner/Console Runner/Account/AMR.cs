@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Console_Runner.AccountService
 {
@@ -44,6 +45,8 @@ namespace Console_Runner.AccountService
 
 		public string AccountEmail { get; set; }
 		public Account Account { get; set; }
+		[ForeignKey("UserID")]
+		public int UserID { get; set; }
 		public bool IsMale { get; set; }
 		// weight, height, and age must be non-negative values.
 		// assume properties are measured in metric units - kg, cm, etc.
@@ -86,7 +89,7 @@ namespace Console_Runner.AccountService
 			}
 		}
 
-		// constructors
+		// Constructors
 		public AMR()
 		{
 
@@ -104,7 +107,7 @@ namespace Console_Runner.AccountService
 		public AMR(Account acct, bool isMale, int weight, float height, int age, ActivityLevel activity)
 		{
 			Account = acct;
-			//UserID = acct.UserID;
+			UserID = acct.UserID;
 			IsMale = isMale;
 			Weight = weight;
 			Height = height;
@@ -127,7 +130,7 @@ namespace Console_Runner.AccountService
 		public AMR(Account acct, bool isMale, int weight, float height, int age, ActivityLevel activity, float customAMR)
 		{
 			Account = acct;
-			//UserID = acct.UserID;
+			UserID = acct.UserID;
 			IsMale = isMale;
 			Weight = weight;
 			Height = height;

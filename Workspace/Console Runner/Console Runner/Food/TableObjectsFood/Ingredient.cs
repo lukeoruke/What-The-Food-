@@ -13,6 +13,8 @@ public class Ingredient
 {
     public string IngredientName { get; set; }
     public int IngredientID { get; set; }
+
+    public string AlternateName { get; set; }
     //public string IngredientID { get; set; }
     public string IngredientDescription { get; set; }
     public Ingredient()
@@ -20,11 +22,11 @@ public class Ingredient
 
     }
 
-    public Ingredient(int IID, string ingredientName, string ingredientDescription)
+    public Ingredient(string ingredientName, string alternateName,string ingredientDescription)
     {
-        IngredientID = IID;
         IngredientName = ingredientName;
         IngredientDescription = ingredientDescription;
+        AlternateName = alternateName;
 
     }
 

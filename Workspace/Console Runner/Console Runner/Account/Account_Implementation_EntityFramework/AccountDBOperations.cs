@@ -347,12 +347,12 @@ namespace Console_Runner.AccountService
             return await _flagService.AddFlagAsync(foodFlag);
         }
 
-        public async Task<bool> RemoveFoodFlag(int userID, int IngredientID)
+        public async Task<bool> RemoveFoodFlagAsync(int userID, int IngredientID)
         {
             return await _flagService.RemoveFoodFlagAsync(userID, IngredientID);
         }
 
-        public async Task<bool> accountHasFlag(int userID, int IngredientID)
+        public async Task<bool> accountHasFlagAsync(int userID, int IngredientID)
         {
             return await _flagService.AccountHasFlagAsync(userID, IngredientID);
         }

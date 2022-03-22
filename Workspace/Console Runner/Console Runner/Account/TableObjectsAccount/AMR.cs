@@ -42,6 +42,7 @@ namespace Console_Runner.AccountService
 		private float _height;
 		private int _age;
 		private float _customAMR;
+		
 
 		[ForeignKey("UserID")]
 		public int UserID { get; set; }
@@ -102,9 +103,8 @@ namespace Console_Runner.AccountService
 		/// <param name="height"></param>
 		/// <param name="age"></param>
 		/// <param name="activity"></param>
-		public AMR(int id, bool isMale, int weight, float height, int age, ActivityLevel activity)
+		public AMR(bool isMale, int weight, float height, int age, ActivityLevel activity)
 		{
-			UserID = id;
 			IsMale = isMale;
 			Weight = weight;
 			Height = height;
@@ -117,16 +117,15 @@ namespace Console_Runner.AccountService
 		/// <summary>
 		/// Constructor for custom AMRs.
 		/// </summary>
-		/// <param name="acct"></param>
 		/// <param name="isMale"></param>
 		/// <param name="weight"></param>
 		/// <param name="height"></param>
 		/// <param name="age"></param>
 		/// <param name="activity"></param>
 		/// <param name="customAMR"></param>
-		public AMR(int id, bool isMale, int weight, float height, int age, ActivityLevel activity, float customAMR)
+		public AMR(bool isMale, int weight, float height, int age, ActivityLevel activity, float customAMR)
 		{
-			UserID = id;
+
 			IsMale = isMale;
 			Weight = weight;
 			Height = height;

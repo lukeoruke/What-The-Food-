@@ -1,31 +1,25 @@
-﻿ using Console_Runner.DAL;
-using Console_Runner.Food;
-using Food_Class_Library;
+﻿using Console_Runner.FoodService;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
-namespace UnitTestOld
+namespace Test.FM
 {
     public class FoodItemsShould
     {
+        private Random _random = new Random();
+        private readonly IFoodGateway _foodGateway = new MemFoodGateway();
         [Fact]
         public void AddFoodSuccess()
         {
-            IFoodItemGateway foodItemGateway = new MemFoodItemGateway();
-            IFlagGateway flagGateway = new MemFlagGateway();
-            IlogGateway logGateway = new MemLogGateway();
-            FM fm = new FM(foodItemGateway, flagGateway, logGateway);
+
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
 
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
 
-            ingredient.IngredientID = "8";
+            ingredient.IngredientID = _random.Next();
 
             FoodItem foodItem = new("70847-81116", "Monster Energy Drink", "CokaCola Co");
             LabelIdentifier labelIdentifier = new LabelIdentifier("70847-81119", "8");

@@ -2,38 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Login</title>
     <link rel="stylesheet" href="styles/login.css">
     <script type="text/javascript" src="scripts/login.js"></script>
 </head>
 <body>
-<div class="Login">
-    <header class="Login-header">
-        <div class="Login-box">
-            <label class="Login-label">Login</label>
-            <form class="Login-form" onsubmit="sendLogin(event)">
-                <section class="Login-section">
+<div class="main">
+    <img class="logo" src="images/apple.png" alt="What The Food?!">
+    <header class="header">
+        <div class="box">
+            <label class="label">Login</label>
+            <form class="form" onsubmit="sendLogin(event)">
+                <section class="section">
                     <label>Email:</label>
                     <label>
-                        <input class="Login-input" id="email" type="email" name="email" placeholder="email"/>
+                        <input class="input" id="email" type="email" name="email" placeholder="email"/>
                     </label>
                 </section>
-                <section class="Login-section">
+                <section class="section">
                     <label>Password:</label>
                     <label>
-                        <input class="Login-input" id="password" type="password" name="password"
+                        <input class="input" id="password" type="password" name="password"
                                placeholder="password"/>
                     </label>
                 </section>
-                <input class="Login-input" type="submit" value="Submit"/>
+                <input class="input" type="submit" value="Submit"/>
             </form>
-            <a class="Login-link link-1" href="https://reactjs.org">
-                Forgot your password?
-            </a>
+            <a class="link" href="forgotPassword.html">Forgot your password?</a>
+            <a class="link" href="signup.html">Don't have an account?</a>
+            <a class="link" href="index.html">Continue as Guest</a>
         </div>
-        <a class="Login-link" href="https://reactjs.org">
-            Continue as Guest
-        </a>
     </header>
 </div>
 </body>

@@ -3,9 +3,24 @@ async function sendSignup(e) {
 
     console.log('Attempting to sign up...');
 
+    let name = document.getElementById('name').value;
     let email = document.getElementById('email').value;
     let password = document.getElementById('password').value;
     let confirmPassword = document.getElementById('confirmPassword').value;
+
+    if (name === '' || email === '' || password === '' || confirmPassword === '') {
+        alert('Please fill out all fields!');
+        return;
+    }
+
+    if (password === confirmPassword) {
+        console.log('Matched');
+    } else {
+        console.log('Doesn\'t Match');
+        document.getElementById('confirmLabel').innerText = 'Passwords must match.';
+        alert('Passwords must match!');
+        return;
+    }
 
     const formData = new FormData();
     formData.append('email', email);
@@ -14,16 +29,6 @@ async function sendSignup(e) {
     console.log(email);
     console.log(password);
     console.log(confirmPassword);
-
-    if (password === confirmPassword) {
-        console.log('Matched');
-    }
-    if (password !== confirmPassword || confirmPassword === undefined) {
-        console.log('Doesn\'t Match');
-        document.getElementById('confirmPasswordLabel').innerText = 'Passwords must match.';
-        alert('Passwords must match!');
-        return;
-    }
 
     // HTTP Get Request
     await fetch('https://localhost:49201/api/AccountSignUp')

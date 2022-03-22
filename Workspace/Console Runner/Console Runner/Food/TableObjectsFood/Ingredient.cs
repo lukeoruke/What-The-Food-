@@ -12,8 +12,7 @@ namespace Console_Runner.FoodService;
 public class Ingredient
 {
     public string IngredientName { get; set; }
-    [ForeignKey("IngredientID")]
-    public string IngredientID { get; set; }
+    public int IngredientID { get; set; }
     //public string IngredientID { get; set; }
     public string IngredientDescription { get; set; }
     public Ingredient()
@@ -21,7 +20,7 @@ public class Ingredient
 
     }
 
-    public Ingredient(string IID, string ingredientName, string ingredientDescription)
+    public Ingredient(int IID, string ingredientName, string ingredientDescription)
     {
         IngredientID = IID;
         IngredientName = ingredientName;

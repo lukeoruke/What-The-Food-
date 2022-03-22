@@ -18,8 +18,7 @@ public class LabelIngredient
     public string Barcode { get; set; }
     //public string Barcode { get; set; }
 
-   
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [ForeignKey("IngredientID")]
     public string IngredientID { get; set; }
 
     //Constructor

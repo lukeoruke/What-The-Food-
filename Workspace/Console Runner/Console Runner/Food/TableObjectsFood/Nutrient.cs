@@ -10,7 +10,6 @@ namespace Console_Runner.FoodService;
 
 public class Nutrient
 {
-    [ForeignKey("NutrientID")]
     public string NutrientID { get; set; }
     public string Name { get; set; }
     public Nutrient()

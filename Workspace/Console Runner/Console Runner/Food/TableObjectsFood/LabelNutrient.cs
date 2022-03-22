@@ -12,7 +12,7 @@ public class LabelNutrient
     [ForeignKey("Barcode")]
     public string Barcode { get; set; }
 
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [ForeignKey("Barcode")]
     public string NutrientID { get; set; }
 
     public string NutrientPercentage { get; set; }

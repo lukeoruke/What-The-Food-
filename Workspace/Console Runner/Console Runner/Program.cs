@@ -5,7 +5,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Console_Runner;
 using Console_Runner.DAL;
-using Console_Runner.AMRModel;
 
 
 [STAThread]

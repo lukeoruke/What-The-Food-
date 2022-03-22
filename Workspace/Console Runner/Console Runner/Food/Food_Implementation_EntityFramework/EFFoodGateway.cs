@@ -15,7 +15,6 @@ namespace Console_Runner.FoodService
         {
             try
             {
-
                 foreach(Ingredient ing in ingredientList)
                 {
                     await AddIngredientAsync(ing);

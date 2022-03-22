@@ -1,13 +1,15 @@
-﻿using Console_Runner.DAL;
-using Console_Runner.Food;
-using Food_Class_Library;
+﻿using Console_Runner.AccountService;
 using System.Collections.Generic;
 using Xunit;
 
-namespace UnitTestOld
+namespace Test.UM
 {
     public class FoodFlagsShould
     {
+        private const string UM_CATEGORY = "Data Store";
+        private readonly IAccountGateway _accountAccess = new MemAccountGateway();
+        private readonly IAuthorizationGateway _permissionService = new MemAuthorizationGateway();
+        private readonly IFlagGateway _flagGateway = new MemFlagGateway();
         [Fact]
         public void AddFoodFlagSuccess()
         {

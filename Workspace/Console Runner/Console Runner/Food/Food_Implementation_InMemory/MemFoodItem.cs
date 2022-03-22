@@ -25,7 +25,21 @@ namespace Console_Runner.FoodService
         }
         public async Task<List<Ingredient>> RetrieveIngredientListAsync(string barcode)
         {
-
+            List<Ingredient> listOfIngredientsInProduct = new List<Ingredient>();
+            foreach(LabelIngredient label in _ingredientIdentifiersList)
+            {
+                if(label.Barcode == barcode)
+                {
+                    foreach(Ingredient ingredient in _ingredientsList)
+                    {
+                        if(label.IngredientID == ingredient.IngredientID)
+                        {
+                            listOfIngredientsInProduct.Add(ingredient);
+                        }
+                    }
+                }
+            }
+            return listOfIngredientsInProduct;
         }
 
         public async Task<bool> AddIngredientAsync(Ingredient ingredient)
@@ -37,7 +51,7 @@ namespace Console_Runner.FoodService
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Failed to add ingredients in-memory: " + e);
+                Console.WriteLine("Failed to add ingredients in-memory: " + ex);
                 return false;
             }
 
@@ -51,20 +65,32 @@ namespace Console_Runner.FoodService
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Failed to remove ingredients in-memory: " + e);
+                Console.WriteLine("Failed to remove ingredients in-memory: " + ex);
                 return false;
             }
 
         }
-        public Task<FoodItem?> RetrieveScannedFoodItemAsync(string barcode)
-        {
-        }
         public async Task<FoodItem?> RetrieveScannedFoodItemAsync(string barcode)
         {
+            foreach(FoodItem fooditem in _foodsList)
+            {
+                if(fooditem.Barcode == barcode)
+                {
+                    return fooditem;
+                }
+            }
+            return null;
         }
-        public Task<NutritionLabel?> RetrieveNutritionLabelAsync(string barcode)
+        public async Task<NutritionLabel?> RetrieveNutritionLabelAsync(string barcode)
         {
-                        
+            foreach(NutritionLabel label in _nutritionLabelsList)
+            {
+                if(label.Barcode == barcode)
+                {
+                    return label;
+                }
+            }
+            return null;
         }
         public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
         {

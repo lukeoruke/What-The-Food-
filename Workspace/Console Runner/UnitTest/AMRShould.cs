@@ -1,15 +1,21 @@
-﻿
+﻿using Console_Runner.AccountService;
+using Xunit;
 
 namespace Test.UM
 {
     public class AMRShould
     {
+        private const string UM_CATEGORY = "Data Store";
+        private readonly IAccountGateway _accountAccess = new MemAccountGateway();
+        private readonly IAuthorizationGateway _permissionService = new MemAuthorizationGateway();
+        private readonly IFlagGateway _flagGateway = new MemFlagGateway();
         [Fact]
         public void InstantiateProperly()
         {
             // Arrange
-            Account testUser = new Account() { Email = "testaccount@example.com", Fname = "test", Lname = "account", IsActive = true, Password = "password" };
-            Account anotherTestUser = new Account() { Email = "othertestaccount@example.com", Fname = "othertest", Lname = "account", IsActive = true, Password = "password" };
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            Account testUser = new Account() { Email = "testaccount@example.com", FName = "test", LName = "account", IsActive = true, Password = "password" , UserID = 12305921};
+            Account anotherTestUser = new Account() { Email = "othertestaccount@example.com", FName = "othertest", LName = "account", IsActive = true, Password = "password" , UserID = 128402};
 
             // Act
             AMR validNonCustomCase = new AMR(testUser, true, 100, 630.2001f, 20, ActivityLevel.None);
@@ -38,7 +44,7 @@ namespace Test.UM
         public void RejectNegativeMetrics()
         {
             // Arrange
-            Account testUser = new Account() { Email = "testaccount@example.com", Fname = "test", Lname = "account", IsActive = true, Password = "password" };
+            Account testUser = new Account() { Email = "testaccount@example.com", FName = "test", LName = "account", IsActive = true, Password = "password" };
             int validWeight = 100;
             int invalidWeight = -10;
             float validHeight = 250f;
@@ -62,7 +68,7 @@ namespace Test.UM
         public void CalculateProperAMR()
         {
             // Arrange
-            Account testUser = new Account() { Email = "testaccount@example.com", Fname = "test", Lname = "account", IsActive = true, Password = "password" };
+            Account testUser = new Account() { Email = "testaccount@example.com", FName = "test", LName = "account", IsActive = true, Password = "password" };
             int validWeight = 100;
             float validHeight = 630.2001f;
             int validAge = 20;
@@ -81,7 +87,7 @@ namespace Test.UM
         public void ReturnCustomAMRWhenAppropriate()
         {
             // Arrange
-            Account testUser = new Account() { Email = "testaccount@example.com", Fname = "test", Lname = "account", IsActive = true, Password = "password" };
+            Account testUser = new Account() { Email = "testaccount@example.com", FName = "test", LName = "account", IsActive = true, Password = "password" };
             AMR customCase = new AMR(testUser, true, 40, 230.2001f, 1000, ActivityLevel.Moderate, 200f);
             float nonCustomAMR = (66.47f + (13.75f * 40) + (5.003f * 230.2001f) - (6.755f * 1000)) * 1.55f;
             float customAMR = 200f;

@@ -1,4 +1,5 @@
 ﻿using Console_Runner.AccountService;
+using Console_Runner.FoodService;
 using System.Collections.Generic;
 using Xunit;
 
@@ -10,48 +11,45 @@ namespace Test.UM
         private readonly IAccountGateway _accountAccess = new MemAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new MemAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new MemFlagGateway();
+        private readonly IFoodGateway _foodGateway = new MemFoodGateway();
         [Fact]
-        public void AddFoodFlagSuccess()
+        public async void AddFoodFlagSuccess()
         {
-            IFoodItemGateway foodItemGateway = new MemFoodItemGateway();
-            IFlagGateway flagGateway = new MemFlagGateway();
-            IlogGateway logGateway = new MemLogGateway();
-            FM fm = new FM(foodItemGateway, flagGateway, logGateway);
+
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
             ingredient.IngredientID = "1";
-            Assert.True(fm.AddFlagToAccount("Matt@gmail.com", "1"));
-            Assert.True(fm.GetAllAccountFlags("Matt@gmail.com").Count == 1);
+            Assert.True(await um.AddFlagToAccountAsync(1532, 1));
+
+            //Assert.True(fm.GetAllAccountFlagsAsync("Matt@gmail.com").Count == 1);
         }
 
 
         [Fact]
-        public void RemoveFoodFlagSuccess()
+        public async void RemoveFoodFlagSuccess()
         {
-            IFoodItemGateway foodItemGateway = new MemFoodItemGateway();
-            IFlagGateway flagGateway = new MemFlagGateway();
-            IlogGateway logGateway = new MemLogGateway();
-            FM fm = new FM(foodItemGateway, flagGateway, logGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
             ingredient.IngredientID = "1";
-            Assert.True(fm.AddFlagToAccount("Tyler@gmail.com", "1"));
-            Assert.True(fm.GetAllAccountFlags("Tyler@gmail.com").Count == 1);
-            Assert.True(fm.accountHasFlag("Tyler@gmail.com", "1"));
-            Assert.True(fm.RemoveFoodFlag("Tyler@gmail.com", "1"));
-            Assert.True(fm.GetAllAccountFlags("Tyler@gmail.com").Count == 0);
+            Assert.True(await um.AddFlagToAccountAsync(55, 56));
+            Assert.True(um.GetAllAccountFlagsAsync("Tyler@gmail.com").Count == 1);
+            Assert.True(um.accountHasFlagAsync("Tyler@gmail.com", "1"));
+            Assert.True(um.RemoveFoodFlagAsync("Tyler@gmail.com", "1"));
+            Assert.True(um.GetAllAccountFlagsAsync("Tyler@gmail.com").Count == 0);
         }
         [Fact]
         public void accountHasFlagSuccess()
         {
-            IFoodItemGateway foodItemGateway = new MemFoodItemGateway();
-            IFlagGateway flagGateway = new MemFlagGateway();
-            IlogGateway logGateway = new MemLogGateway();
-            FM fm = new FM(foodItemGateway, flagGateway, logGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
@@ -64,10 +62,8 @@ namespace Test.UM
         [Fact]
         public void getAllAccountFlagsSuccess()
         {
-            IFoodItemGateway foodItemGateway = new MemFoodItemGateway();
-            IFlagGateway flagGateway = new MemFlagGateway();
-            IlogGateway logGateway = new MemLogGateway();
-            FM fm = new FM(foodItemGateway, flagGateway, logGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
@@ -102,10 +98,8 @@ namespace Test.UM
         public void checkProductForFlags()
         {
 
-            IFoodItemGateway foodItemGateway = new MemFoodItemGateway();
-            IFlagGateway flagGateway = new MemFlagGateway();
-            IlogGateway logGateway = new MemLogGateway();
-            FM fm = new FM(foodItemGateway, flagGateway, logGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
 
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +

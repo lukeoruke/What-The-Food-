@@ -141,15 +141,16 @@ namespace Console_Runner.AccountService
             
         }
 
-        public Task<bool> RemovePermissionsAsync(int userID, string permissions)
+        public async Task<bool> RemovePermissionsAsync(int userID, string permissions)
         {
             try
             {
                 _memAuthContext.Remove(new Authorization(userID, permissions));
+                return true;
             }
             catch(Exception ex)
             {
-
+                return false;
             }
         }
     }

@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-using Console_Runner;
-using Console_Runner.AMRModel;
-using Console_Runner.User_Management;
+﻿
 
-namespace UnitTestOld
+namespace Test.UM
 {
     public class AMRShould
     {

@@ -16,9 +16,10 @@ namespace Console_Runner.FoodService
             this._foodItemAccess = foodItemAccess;
         }
 
-        public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
+        public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList,
+            LabelNutrient labelNutrient, List<Ingredient> ingredientList, LabelIngredient labelIngredient)
         {
-            return await _foodItemAccess.AddNewProductAsync(foodItem, nutritionLabel, vitaminsList, ingredientList);
+            return await _foodItemAccess.AddNewProductAsync(foodItem, nutritionLabel, vitaminsList, labelNutrient, ingredientList, labelIngredient);
         }
 
         public async Task<NutritionLabel> GetNutritionLabelAsync(string barcode)

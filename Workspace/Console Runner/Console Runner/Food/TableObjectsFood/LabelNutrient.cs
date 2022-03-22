@@ -13,9 +13,9 @@ public class LabelNutrient
     public string Barcode { get; set; }
 
     [ForeignKey("Barcode")]
-    public string NutrientID { get; set; }
+    public int NutrientID { get; set; }
 
-    public string NutrientPercentage { get; set; }
+    public float NutrientPercentage { get; set; }
 
     //Constructor
     public LabelNutrient()
@@ -23,7 +23,7 @@ public class LabelNutrient
 
     }
 
-    public LabelNutrient(string barcode, string NID, string percent)
+    public LabelNutrient(string barcode, int NID, float percent)
     {
         Barcode = barcode;
         NutrientID = NID;

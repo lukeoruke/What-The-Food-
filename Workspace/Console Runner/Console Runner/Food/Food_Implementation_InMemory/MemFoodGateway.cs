@@ -92,7 +92,7 @@ namespace Console_Runner.FoodService
             }
             return null;
         }
-        public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
+        public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, LabelNutrient labelNutrient,List<Ingredient> ingredientList, LabelIngredient labelIngredient)
         {
             try
             {

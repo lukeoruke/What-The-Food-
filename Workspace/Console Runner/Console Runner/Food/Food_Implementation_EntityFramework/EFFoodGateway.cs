@@ -11,13 +11,21 @@ namespace Console_Runner.FoodService
             _efContext = new ContextFoodDB();
         }
         //TODO The add ingredient and nutrients dont account for the middle layer of label nutrient and label ingredient.
+        //TODO add List of tuple, (nutrient, %)
+        //(Nutrient, float) test = (vitaminsList.ElementAt(0), 0.01f);
         public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
         {
             try
             {
+                
                 foreach(Ingredient ing in ingredientList)
                 {
                     await AddIngredientAsync(ing);
+                    
+                }
+                foreach(Nutrient vitamin in vitaminsList)
+                {
+                    _efContext.LabelNutrients.Add(new LabelNutrient(foodItem.Barcode, vitamin.NutrientID, );
                 }
                 foreach(Nutrient nutrient in vitaminsList)
                 {
@@ -25,7 +33,9 @@ namespace Console_Runner.FoodService
                 }
                 await AddNutritionLabelAsync(nutritionLabel);
                 await AddFoodItem(foodItem);
-            }catch (Exception)
+                await _efContext.SaveChangesAsync();
+            }
+            catch (Exception)
             {
                 throw new Exception("METHOD AddNewProductAsync encountered an un handled error");
             }

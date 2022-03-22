@@ -52,7 +52,8 @@ namespace Console_Runner.FoodService
         /// <param name="vitaminsList"></param>
         /// <param name="ingredientList"></param>
         /// <returns>True if successful, otherwise false</returns>
-        public Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList);
+        public Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList,
+            LabelNutrient labelNutrient, List<Ingredient> ingredientList, LabelIngredient labelIngredient);
         /// <summary>
         /// Adds a Nutrition Label to the DB
         /// </summary>

@@ -19,7 +19,7 @@ public class LabelIngredient
     //public string Barcode { get; set; }
 
     [ForeignKey("IngredientID")]
-    public string IngredientID { get; set; }
+    public int IngredientID { get; set; }
 
     //Constructor
     public LabelIngredient()
@@ -27,7 +27,7 @@ public class LabelIngredient
 
     }
 
-    public LabelIngredient(string barcode, string ingredientID)
+    public LabelIngredient(string barcode, int ingredientID)
     {
         Barcode = barcode;
         IngredientID = ingredientID;

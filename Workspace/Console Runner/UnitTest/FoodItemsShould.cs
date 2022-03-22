@@ -1,5 +1,6 @@
 ﻿using Console_Runner.FoodService;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Test.FM
@@ -9,7 +10,7 @@ namespace Test.FM
         private Random _random = new Random();
         private readonly IFoodGateway _foodGateway = new MemFoodGateway();
         [Fact]
-        public void AddFoodSuccess()
+        public async void AddNewProductSuccess()
         {
 
             FoodDBOperations fm = new FoodDBOperations(_foodGateway);
@@ -22,8 +23,11 @@ namespace Test.FM
             ingredient.IngredientID = _random.Next();
             string barcode = _random.Next().ToString();
             FoodItem foodItem = new(barcode, "Monster Energy Drink", "CokaCola Co", "r/");
-            LabelIngredient labelIdentifier = new LabelIngredient(barcode, ingredient.IngredientID);
-            Nutrient nutrient = new Nutrient(foodItem.Barcode, "SomethingHealthy");
+            Nutrient nutrient = new Nutrient("SomethingHealthy");
+            nutrient.NutrientID = _random.Next();
+            LabelIngredient ingredientIdentifier = new LabelIngredient(barcode, ingredient.IngredientID);
+            LabelNutrient nutrientIdentifier = new LabelNutrient(barcode, nutrient.NutrientID, 0.14f);
+            
             List<Nutrient> nutritionList = new();
             nutritionList.Add(nutrient);
 
@@ -31,7 +35,7 @@ namespace Test.FM
 
             List<Ingredient> ingredientList = new List<Ingredient>();
             ingredientList.Add(ingredient);
-            Assert.True(fm.AddFoodItem(foodItem, nutritionLabel, new List<Nutrient>(), ingredientList));
+            Assert.True(await fm.AddNewProductAsync(foodItem, nutritionLabel, new List<Nutrient>(), ingredientList));
         }
         [Fact]
         public void GetScannedFoodItemSuccess()

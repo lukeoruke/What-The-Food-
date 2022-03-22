@@ -10,15 +10,14 @@ namespace Console_Runner.FoodService;
 
 public class Nutrient
 {
-    public string NutrientID { get; set; }
+    public int NutrientID { get; set; }
     public string Name { get; set; }
     public Nutrient()
     {
 
     }
-    public Nutrient(string NID, string vitaminName)
+    public Nutrient(string vitaminName)
     {
-        NutrientID = NID;
         Name = vitaminName;
     }
 }

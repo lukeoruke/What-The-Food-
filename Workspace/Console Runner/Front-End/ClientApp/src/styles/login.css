@@ -1,32 +1,35 @@
-.Login {
+body {
+    margin: 0;
+}
+
+.main {
     text-align: center;
 }
 
-.Login-header {
+.header {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #282c34;
+    /*background-color: #282c34;*/
+    /*min-height: 100vh;*/
     color: white;
     font-size: 1em;
-    min-height: 100vh;
 }
 
-.Login-link {
-    /*color: #61dafb;*/
-    color: #302f90;
+.logo {
+    width: 150px;
+    height: 150px;
 }
 
-.label-1 {
+.label {
     font-size: 2em;
 }
 
-.Login-box {
+.box {
     display: flex;
     flex-direction: column;
     align-content: center;
-    align-items: center;
     justify-content: space-evenly;
 
     border: thick solid #302f90;
@@ -38,32 +41,32 @@
     color: black;
 }
 
-.Login-form {
+.form {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     margin-top: 2.5vh;
     padding: 2.5vh;
-    width: 100%;
     text-align: left;
-
 
     /*background-color: '#a81d20';
       background-color: '#ffffff';*/
 }
 
-.Login-section {
+.section {
     display: flex;
     flex-direction: column;
 }
 
-.Login-input {
-
-}
-
-input {
+.input {
     margin: 1vh 0 1vh 0;
     border: 0;
     border-radius: 5px;
-    padding: 2vh;
+    padding: 2vh 0 2vh 0;
+    width: 100%;
+    text-indent: 10px;
+}
+
+.link {
+    padding: 5px 0 5px 0;
 }

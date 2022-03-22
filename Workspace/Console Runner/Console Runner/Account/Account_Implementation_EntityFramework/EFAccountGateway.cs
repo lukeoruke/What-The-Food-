@@ -100,5 +100,14 @@ namespace Console_Runner.AccountService
             return userEmail.ElementAt(0).UserID;
         }
 
+        public int NumberOfAccounts()
+        {
+            int counter = 0;
+            foreach(var account in _efContext.Accounts)
+            {
+                counter++;
+            }
+            return counter;
+        }
     }
 }

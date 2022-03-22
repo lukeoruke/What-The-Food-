@@ -8,11 +8,11 @@ using Console_Runner.User_Management;
 
 namespace Console_Runner.DAL
 {
-    public class MemPermissionGateway : IPermissionGateway
+    public class MemAuthorizationGateway : IPermissionGateway
     {
         private List<Permission> _permissionDB;
         
-        public MemPermissionGateway()
+        public MemAuthorizationGateway()
         {
             _permissionDB = new List<Permission>();
         }

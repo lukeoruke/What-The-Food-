@@ -12,10 +12,11 @@ namespace Console_Runner.AccountService
     public class EFAuthorizationGateway : IAuthorizationGateway
     {
         private readonly ContextAccountDB _efContext;
-        private readonly ImmutableList<string> DEFAULT_USER_PERMISSIONS;
-        private readonly ImmutableList<string> DEFAULT_ADMIN_PERMISSIONS;
+        readonly ImmutableList<string> DEFAULT_USER_PERMISSIONS;
+        readonly ImmutableList<string> DEFAULT_ADMIN_PERMISSIONS;
         public EFAuthorizationGateway()
         {
+            //TODO MAKE THIS NOT HARD CODED.
             DEFAULT_USER_PERMISSIONS = ImmutableList.Create<string>(new string[]
             {"scanFood", "editOwnAccount", "leaveReview", "deleteOwnAccount", "historyAccess", "AMR", "foodFlag" });
             DEFAULT_ADMIN_PERMISSIONS = ImmutableList.Create<string>(new string[]
@@ -94,14 +95,21 @@ namespace Console_Runner.AccountService
 
         public bool RemoveAllUserPermissions(int userID)
         {
-            foreach (var permissions in _efContext.Authorizations.Where(r => r.UserID == userID))
+            try
             {
-                if (permissions.UserID == userID)
+                foreach (var permissions in _efContext.Authorizations.Where(r => r.UserID == userID))
                 {
-                    _efContext.Authorizations.Remove(permissions);
+                    if (permissions.UserID == userID)
+                    {
+                        _efContext.Authorizations.Remove(permissions);
+                    }
                 }
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
             }
-            return true;
+            
         }
 
         public int AdminCount()

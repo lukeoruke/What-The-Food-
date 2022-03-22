@@ -40,5 +40,7 @@ namespace Console_Runner.AccountService
         public Task<bool> UpdateAccountAsync(Account acc);
 
         public int GetIDFromEmail(string email);
+
+        public int NumberOfAccounts();
     }
 }

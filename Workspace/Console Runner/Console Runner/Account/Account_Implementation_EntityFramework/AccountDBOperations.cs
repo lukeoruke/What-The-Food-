@@ -15,11 +15,13 @@ namespace Console_Runner.AccountService
             this._flagService = flagGateway;
         }
 
+        
         public async Task<bool> UserSignUpAsync(Account acc)
         {
             try
             {
-                if (await _accountAccess.AccountExistsAsync(acc.UserID))
+                if(_accountAccess.GetIDFromEmail(acc.Email) == -1); //TODO Validate an ID of 0 will be returned if the user does not exist.
+               
                 {
                     Console.WriteLine("email already in use");
                     return false;
@@ -61,13 +63,13 @@ namespace Console_Runner.AccountService
 
                 Account? acc = await _accountAccess.GetAccountAsync(userID);
 
-                /*if (_permissionService.HasPermission(targetEmail, "createAdmin") && (_permissionService.AdminCount() < 2))
+                if (await _permissionService.HasPermissionAsync(userID, "createAdmin") && (_permissionService.AdminCount() < 2))
                 {
                     Console.WriteLine("Deleting this account would result in there being no admins.");
                     return false;
-                }*/
+                }
 
-               // _permissionService.RemoveAllUserPermissions(acc.Email);
+                // _permissionService.RemoveAllUserPermissions(acc.Email);
                 await _accountAccess.RemoveAccountAsync(acc);
                // _logger.LogAccountDeletion(UM_CATEGORY, "test page", true, "", acc.Email);
 
@@ -263,6 +265,11 @@ namespace Console_Runner.AccountService
             }
         }
 
+        public async Task<bool> AccountExistsAsync(int userID)
+        {
+            return await _accountAccess.AccountExistsAsync(userID);
+        }
+
 
         /*promotes the target user to admin
 		 * takes in currentUser to verify the current session is being handled by an admin
@@ -281,6 +288,7 @@ namespace Console_Runner.AccountService
                         Console.WriteLine("No such account exists");
                         return false;
                     }
+
                     await _permissionService.AssignDefaultAdminPermissions(userID);
                     await _accountAccess.UpdateAccountAsync(acc);
                     //_logger.LogAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);

@@ -3,6 +3,24 @@
 
 namespace Console_Runner.AccountService
 {
+/*    public enum ENUM_DEFAULT_USER_PERMISSIONS
+    {
+        scanFood,
+        editOwnAccount,
+        leaveReview,
+        deleteOwnAccount,
+        historyAccess,
+        AMR,
+        foodFlag
+    }
+    public enum ENUM_DEFAULT_ADMIN_PERMISSIONS
+    {
+        enableAccount,
+        disableAccount,
+        deleteAccount,
+        createAdmin,
+        editOtherAccount
+    }*/
     public interface IAuthorizationGateway
     {
         /// <summary>

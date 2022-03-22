@@ -99,7 +99,7 @@ namespace Test.UM
             Assert.False(um.GetAllAccountFlags(has3Flags).Count == 4);
             Assert.False(um.GetAllAccountFlags(has3Flags).Count == 2);
             Assert.True(um.GetAllAccountFlags(has1Flag).Count == 1);
-        }
+        }//TODO IMPLEMENT THIS
 
 /*        [Fact]
         public void checkProductForFlags()

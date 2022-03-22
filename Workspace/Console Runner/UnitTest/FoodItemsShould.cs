@@ -20,9 +20,9 @@ namespace Test.FM
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
 
             ingredient.IngredientID = _random.Next();
-
-            FoodItem foodItem = new("70847-81116", "Monster Energy Drink", "CokaCola Co");
-            LabelIdentifier labelIdentifier = new LabelIdentifier("70847-81119", "8");
+            string barcode = _random.Next().ToString();
+            FoodItem foodItem = new(barcode, "Monster Energy Drink", "CokaCola Co", "r/");
+            LabelIngredient labelIdentifier = new LabelIngredient(barcode, ingredient.IngredientID);
             Nutrient nutrient = new Nutrient(foodItem.Barcode, "SomethingHealthy");
             List<Nutrient> nutritionList = new();
             nutritionList.Add(nutrient);

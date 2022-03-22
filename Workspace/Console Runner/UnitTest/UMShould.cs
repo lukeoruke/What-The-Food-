@@ -26,9 +26,16 @@ namespace Test.UM
             acc.LName = "lname";
             acc.UserID = -1;
             Assert.True(await um.UserSignUpAsync(acc));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "scanFood"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "editOwnAccount"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "leaveReview"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "deleteOwnAccount"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "historyAccess"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "AMR"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "foodFlag"));
             Assert.True(await um.AccountExistsAsync(acc.UserID));
             Assert.True(!await _accountAccess.AccountExistsAsync(acc.UserID));
-            Assert.True(_accountAccess.NumberOfAccounts());
+            Assert.True(_accountAccess.NumberOfAccounts() == 1);
 
         }
 
@@ -44,9 +51,9 @@ namespace Test.UM
             admin.Password = "password1";
             admin.FName = "fname";
             admin.LName = "lname";
-            admin.IsActive = true;
             admin.UserID = -1;
             await um.UserSignUpAsync(admin);
+            admin.IsActive = true;
             await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
             
 
@@ -64,7 +71,7 @@ namespace Test.UM
             Assert.True(! await _accountAccess.AccountExistsAsync(acc.UserID));
         }
         [Fact]
-        public void UpdateSuccess()
+        public async void UpdateSuccess()
         {
             //Arrange
             AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
@@ -75,30 +82,30 @@ namespace Test.UM
             admin.Password = "password1";
             admin.FName = "fname";
             admin.LName = "lname";
-            acc.UserID = -1;
-            permService.AssignDefaultAdminPermissions(admin.Email);
-            um.UserSignUp(admin);
+            admin.UserID = -1;
+            await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
+            await um.UserSignUpAsync(admin);
             admin.IsActive = true;
 
 
             Account acc = new Account();
             acc.Email = "updateUserSuccessEmail";
             acc.Password = "t";
-            um.UserSignUp(acc);
+            await um.UserSignUpAsync(acc);
 
             string nName = "new name";
             string nlName = "new last name";
             string nPassword = "NewPassword";
 
             //act
-            um.UserUpdateData(admin, acc.Email, nName, nlName, nPassword);
-            acc = accountGateway.GetAccount(acc.Email);
+            await um.UserUpdateDataAsync(admin, acc.UserID, nName, nlName, nPassword);
+            acc = await _accountAccess.GetAccountAsync(acc.UserID);
             //Assert
-            Assert.True(acc.Fname == nName && acc.Lname == nlName && acc.Password == nPassword);
+            Assert.True(acc.FName == nName && acc.LName == nlName && acc.Password == nPassword);
             Assert.True(acc.IsActive == false);
         }
         [Fact]
-        public void DisableSuccess()
+        public async void DisableSuccess()
         {
             //arange 
             AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
@@ -108,8 +115,8 @@ namespace Test.UM
             admin.Password = "password1";
             admin.FName = "fname";
             admin.LName = "lname";
-            um.UserSignUp(admin);
-            permService.AssignDefaultAdminPermissions(admin.Email);
+            await um.UserSignUpAsync(admin);
+            await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
             
             admin.IsActive = true;
 
@@ -117,18 +124,18 @@ namespace Test.UM
             acc.Email = "DisableSuccessUserEmail";
             acc.Password = "t";
             acc.Enabled = true;
-            um.UserSignUp(acc);
+            await um.UserSignUpAsync(acc);
 
             //act
-            Assert.True(um.DisableAccount(admin, acc.Email));
+            Assert.True(await um.DisableAccountAsync(admin, acc.UserID));
             //Assert
-            acc = accountGateway.GetAccount(acc.Email);
+            acc = await _accountAccess.GetAccountAsync(acc.UserID);
             Assert.True(!acc.Enabled);
             Assert.True(acc.IsActive == false);
         }
 
         [Fact]
-        public void EnableSuccess()
+        public async void EnableSuccess()
         {
             //Arange 
             AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
@@ -139,23 +146,23 @@ namespace Test.UM
             admin.FName = "fname";
             admin.LName = "lname";
 
-            permService.AssignDefaultAdminPermissions(admin.Email);
-            um.UserSignUp(admin);
+            await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
+            await um.UserSignUpAsync(admin);
             admin.IsActive = true;
 
             Account acc = new Account();
             acc.Email = "enableeSuccessUserEmail";
             acc.Password = "t";
             acc.Enabled = false;
-            um.UserSignUp(acc);
+            await um.UserSignUpAsync(acc);
 
             //act
-            um.EnableAccount(admin, acc.Email);
+            await um.EnableAccountAsync(admin, acc.UserID);
             //Assert
             Assert.True(acc.Enabled);
         }
         [Fact]
-        public void GetUserSuccess()
+        public async void GetUserSuccess()
         {
             //arange 
             AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
@@ -164,29 +171,29 @@ namespace Test.UM
             acc.Email = "getUserSuccess";
             acc.Password = "t";
             acc.Enabled = false;
-            um.UserSignUp(acc);
+            await um.UserSignUpAsync(acc);
 
             //act
-            Account temp = um.GetUserAccount(acc.Email);
+            Account temp = await um.GetUserAccountAsync(acc.UserID);
             //Assert
             Assert.True(temp == acc);
         }
         [Fact]
-        public void AuthenticatePasswordSuccess()
+        public async void AuthenticatePasswordSuccess()
         {
             AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
 
             Account acc = new Account();
             acc.Email = "authenticatePasswordSuccess";
             acc.Password = "password!";
-            um.UserSignUp(acc);
+            await um.UserSignUpAsync(acc);
 
             //Assert
-            Assert.True(um.AuthenticateUserPass(acc.Email, acc.Password));
-            Assert.False(um.AuthenticateUserPass(acc.Email, "t"));
+            Assert.True(await um.AuthenticateUserPassAsync(acc.Email, acc.Password));
+            Assert.False(await um.AuthenticateUserPassAsync(acc.Email, "t"));
         }
         [Fact]
-        public void SignInSuccess()
+        public async void SignInSuccess()
         {
             //arange 
             AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
@@ -194,15 +201,15 @@ namespace Test.UM
             Account acc = new Account();
             acc.Email = "signInSuccess";
             acc.Password = "pass";
-            um.UserSignUp(acc);
+            await um.UserSignUpAsync(acc);
             
             //act
-            um.SignIn(acc.Email,acc.Password);
+            await um.SignIn(acc.Email,acc.Password);
             //Assert
             Assert.True(acc.IsActive);
         }
         [Fact]
-        public void PromoteToAdminSuccess()
+        public async void PromoteToAdminSuccess()
         {
             //arange 
             AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
@@ -213,20 +220,21 @@ namespace Test.UM
             admin.FName = "fname";
             admin.LName = "lname";
 
-            permService.AssignDefaultAdminPermissions(admin.Email) ;
-            um.UserSignUp(admin);
+            await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
+            await um.UserSignUpAsync(admin);
             admin.IsActive = true;
 
             Account acc = new Account();
             acc.Email = "PromoteToAdminSuccess";
             acc.Password = "pass";
-            um.UserSignUp(acc);
+            await um.UserSignUpAsync(acc);
 
             //act
-            um.PromoteToAdmin(admin, acc.Email);
+            await um.PromoteToAdmin(admin, acc.UserID);
 
             //Assert
-            Assert.True(efPermissionGateway.HasPermission(acc.Email, "createAdmin"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "createAdmin"));
+            Assert.True(um.IsAdmin(acc.UserID));
         }
 
     }

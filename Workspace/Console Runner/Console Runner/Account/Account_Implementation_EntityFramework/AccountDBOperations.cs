@@ -167,18 +167,20 @@ namespace Console_Runner.AccountService
 
 
         //authenticates a users input password for login. True if pass matches, false otherwise
-        public async Task<bool> AuthenticateUserPassAsync(int userID, string userPass)
+        public async Task<bool> AuthenticateUserPassAsync(string email, string userPass)
         {
+            int userID = _accountAccess.GetIDFromEmail(email);
             Account acc = await GetUserAccountAsync(userID);
             return (acc != null && acc.Password == userPass);
         }
         //takes in username and password. If valid returns an account object for the user with specified data.
         public async Task<Account> SignIn(string email, string userPass)
         {
-            int ID = _accountAccess.GetIDFromEmail(email);
-            if (await AuthenticateUserPassAsync(ID, userPass))
+            
+            if (await AuthenticateUserPassAsync(email, userPass))
             {
-              //  _logger.LogLogin(UM_CATEGORY, "test page", true, "", user);
+                //  _logger.LogLogin(UM_CATEGORY, "test page", true, "", user);
+                int ID = _accountAccess.GetIDFromEmail(email);
                 Account acc = await GetUserAccountAsync(ID);
                 acc.IsActive = true;
                 return acc;
@@ -304,6 +306,39 @@ namespace Console_Runner.AccountService
                // _logger.LogAccountPromote(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, targetPK);
                 return false;
             }
+        }
+        public async Task<bool> addPermissionAsync(Account currentUser, int userID, string PermissionToBeAdded)
+        {
+            if(IsAdmin(currentUser.UserID))
+            {
+                if(await HasPermissionAsync(currentUser.UserID, PermissionToBeAdded))
+                {
+                    Authorization newPerm = new(userID, PermissionToBeAdded);
+                    await _permissionService.AddPermissionAsync(newPerm);
+                    return true;
+
+                }
+                else
+                {
+                    Console.WriteLine("Can not add a permission that the admin account does not have");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Requries Admin Access");
+            }
+
+            return false;
+        }
+        
+        public async Task<bool> HasPermissionAsync(int userID, string permission)
+        {
+            return await _permissionService.HasPermissionAsync(userID, permission);
+        }
+
+        public bool IsAdmin(int userID)
+        {
+            return _permissionService.IsAdmin(userID);
         }
 
         public async Task<bool> AddFlagToAccountAsync(int userID, int IngredientID)

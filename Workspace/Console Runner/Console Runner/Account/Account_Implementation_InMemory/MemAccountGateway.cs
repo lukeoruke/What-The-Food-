@@ -95,6 +95,8 @@ namespace Console_Runner.AccountService
                     {
                         await RemoveAccountAsync(account);
                         await AddAccountAsync(acc);
+                        account.IsActive = false;
+
                         return true;
                     }
                 }

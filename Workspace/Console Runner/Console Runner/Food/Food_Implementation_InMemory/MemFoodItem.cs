@@ -1,4 +1,6 @@
-﻿namespace Console_Runner.FoodService
+﻿
+
+namespace Console_Runner.FoodService
 {
     public class MemFoodItem : IFoodGateway
     {
@@ -6,26 +8,27 @@
         List<NutritionLabel> _nutritionLabelsList = new();
         List<LabelIngredient> _ingredientIdentifiersList = new();
         List<Ingredient> _ingredientsList = new();
+        List<Nutrient> _vitaminList = new();
 
-
-
-
-        //TODO REWORK FUNCTION ENTIRELY. CURRENT SETUP DOESNT ALLOW FOR UPDATED DB SETUP
         public async Task<bool> AddFoodItem(FoodItem foodItem)
         {
             try
             {
                 _foodsList.Add(foodItem);
-                return await true;
-            }catch (Exception ex)
+                return true;
+            }
+            catch (Exception e)
             {
+                Console.WriteLine("Failed to add food item in-memory: "+ e);
                 return false;
             }
-            
-            
+        }
+        public async Task<List<Ingredient>> RetrieveIngredientListAsync(string barcode)
+        {
+
         }
 
-        public async bool AddIngredientAsync(Ingredient ingredient)
+        public async Task<bool> AddIngredientAsync(Ingredient ingredient)
         {
             try
             {
@@ -34,11 +37,12 @@
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Failed to add ingredients in-memory: " + e);
                 return false;
             }
-        }
 
-        public async bool RemoveIngredientAsync(Ingredient ingredient)
+        }
+        public bool RemoveIngredient(Ingredient ingredient)
         {
             try
             {
@@ -47,51 +51,71 @@
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Failed to remove ingredients in-memory: " + e);
+                return false;
+            }
+
+        }
+        public Task<FoodItem?> RetrieveScannedFoodItemAsync(string barcode)
+        {
+        }
+        public async Task<FoodItem?> RetrieveScannedFoodItemAsync(string barcode)
+        {
+        }
+        public Task<NutritionLabel?> RetrieveNutritionLabelAsync(string barcode)
+        {
+                        
+        }
+        public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
+        {
+            try
+            {
+                foreach(Ingredient ing in ingredientList)
+                {
+                    _ingredientsList.Add(ing);
+                }
+                foreach(Nutrient nutrient in vitaminsList)
+                {
+                    _vitaminList.Add(nutrient);
+                }
+                _nutritionLabelsList.Add(nutritionLabel);
+                _foodsList.Add(foodItem);
+
+                return true;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Failed to add new product in-memory: " + e);
                 return false;
             }
         }
-
-        public async List<Ingredient> RetrieveIngredientListAsync(string barcode)
+        public async Task<bool> AddNutritionLabelAsync(NutritionLabel nutritionLabel)
         {
-            List<Ingredient> ingredients = new List<Ingredient>();
-            for (int i = 0; i < _ingredientIdentifiersList.Count; i++)
+            try
             {
-                if (_ingredientIdentifiersList[i].Barcode == barcode)
-                {
-                    for (int j = 0; j < _ingredientsList.Count; j++)
-                    {
-                        if (_ingredientsList[j].IngredientID == _ingredientIdentifiersList[i].IngredientID)
-                        {
-                            ingredients.Add(_ingredientsList[j]);
-                        }
-                    }
-                }
+                _nutritionLabelsList.Add(nutritionLabel);
+                return true;
             }
-            return ingredients;
+            catch (Exception e)
+            {
+                Console.WriteLine("Failed to add nutrition label in-memory: " + e);
+                return false;
+            }
+        }
+        public async Task<bool> AddNutrientAsync(Nutrient nutrient)
+        {
+            try
+            {
+                _vitaminList.Add(nutrient);
+                return true;
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine("Failed to add nutrient in-memory: " + e);
+                return false;
+            }
+
         }
 
-        public async NutritionLabel? RetrieveNutritionLabelAsync(FoodItem food)
-        {
-            for (int i = 0; i < _nutritionLabelsList.Count; i++)
-            {
-                if (_nutritionLabelsList[i].Barcode == food.Barcode)
-                {
-                    return _nutritionLabelsList[i];
-                }
-            }
-            return null;
-        }
-
-        public async FoodItem RetrieveScannedFoodItemAsync(string barcode)
-        {
-            for (int i = 0; i < _foodsList.Count; i++)
-            {
-                if (_foodsList[i].Barcode == barcode)
-                {
-                    return _foodsList[i];
-                }
-            }
-            return null;
-        }
     }
 }

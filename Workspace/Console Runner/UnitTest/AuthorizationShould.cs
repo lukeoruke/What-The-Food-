@@ -20,7 +20,8 @@ namespace Test.UM
             string testPerm = "scanFood";
 
             // Act
-            Authorization perm1 = new Authorization(id, testPerm);
+            Authorization perm1 = new Authorization(testPerm);
+            perm1.UserID = id;
 
             // Assert
             Assert.NotNull(perm1);
@@ -41,16 +42,18 @@ namespace Test.UM
             string AdminResource = "deleteAccount";
 
             // Act
-            Authorization perm1 = new Authorization(testID, testResource);
+            Authorization perm1 = new Authorization(testResource);
+            perm1.UserID = testID;
        
-            Authorization perm2 = new Authorization(AdminID, AdminResource);
+            Authorization perm2 = new Authorization(AdminResource);
+            perm2.UserID = AdminID;
 
 
             // Assert
             Assert.NotNull(perm1);
             Assert.True(perm1.UserID == testID);
             Assert.True(perm1.Permission == testResource);
-            Assert.True(perm2.UserID == testID);
+            Assert.True(perm2.UserID == AdminID);
             Assert.True(perm2.Permission == AdminResource);
             Assert.NotNull(perm1.Permission);
             Assert.NotNull(perm1.Permission);
@@ -82,6 +85,14 @@ namespace Test.UM
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "historyAccess"));
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "AMR"));
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "foodFlag"));
+
+            Assert.True(await um.HasPermissionAsync(acc.UserID, "scanFood"));
+            Assert.True(await um.HasPermissionAsync(acc.UserID, "editOwnAccount"));
+            Assert.True(await um.HasPermissionAsync(acc.UserID, "leaveReview"));
+            Assert.True(await um.HasPermissionAsync(acc.UserID, "deleteOwnAccount"));
+            Assert.True(await um.HasPermissionAsync(acc.UserID, "historyAccess"));
+            Assert.True(await um.HasPermissionAsync(acc.UserID, "AMR"));
+            Assert.True(await um.HasPermissionAsync(acc.UserID, "foodFlag"));
         }
 
         [Fact]

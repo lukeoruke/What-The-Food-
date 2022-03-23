@@ -30,14 +30,11 @@ namespace Console_Runner.AccountService
         {
             try
             {
-                if(acc.UserID == -1)
+                Random random = new Random();
+                acc.UserID = random.Next();
+                while(await AccountExistsAsync(acc.UserID))
                 {
-                    Random random = new Random();
                     acc.UserID = random.Next();
-                    while(await AccountExistsAsync(acc.UserID))
-                    {
-                        acc.UserID = random.Next();
-                    }
                 }
                 _memContextAccount.Add(acc);
                 return true;
@@ -48,11 +45,11 @@ namespace Console_Runner.AccountService
             
         }
 
-        public async Task<Account?> GetAccountAsync(int UserID)
+        public async Task<Account?> GetAccountAsync(int userID)
         {
             foreach (Account account in _memContextAccount)
             {
-                if (account.UserID == UserID)
+                if (account.UserID == userID)
                 {
                     return account;
                 }

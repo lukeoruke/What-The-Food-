@@ -6,7 +6,6 @@ namespace Test.UM
 {
     public class UMUnitTests
     {
-
         private const string UM_CATEGORY = "Data Store";
         private readonly IAccountGateway _accountAccess = new MemAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new MemAuthorizationGateway();
@@ -26,8 +25,11 @@ namespace Test.UM
             acc.Password = "password1";
             acc.FName = "fname";
             acc.LName = "lname";
-            acc.UserID = -1;
+            Assert.True(acc.UserID == 0);
             Assert.True(await um.UserSignUpAsync(acc));
+            
+            acc = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(tester));
+            Assert.True(acc.UserID != 0);
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "scanFood"));
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "editOwnAccount"));
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "leaveReview"));
@@ -36,8 +38,13 @@ namespace Test.UM
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "AMR"));
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "foodFlag"));
             Assert.True(await um.AccountExistsAsync(acc.UserID));
-            Assert.True(!await _accountAccess.AccountExistsAsync(acc.UserID));
+            Assert.True(await _accountAccess.AccountExistsAsync(acc.UserID));
             Assert.True(_accountAccess.NumberOfAccounts() == 1);
+
+
+
+            
+
 
         }
 
@@ -49,25 +56,27 @@ namespace Test.UM
             AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
 
             Account admin = new Account();
-            admin.Email = "deleteUserSuccessAdminEmail";
+            admin.Email = "deleteUserSuccessAdminEmailvda";
             admin.Password = "password1";
             admin.FName = "fname";
             admin.LName = "lname";
-            admin.UserID = -1;
             await um.UserSignUpAsync(admin);
+            admin = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(admin.Email));
             admin.IsActive = true;
-            await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
+            Assert.True(await _permissionService.AssignDefaultAdminPermissions(admin.UserID));
+
+
             
 
             Account acc = new Account();
-            acc.Email = "deleteUserSuccessEmail";
-            acc.Password = "t";
+            acc.Email = "deleteUserSuccessEmaildd";
+            acc.Password = "dsst";
             acc.FName = "fname";
             acc.LName = "lname";
-            acc.UserID= -1;
             await um.UserSignUpAsync(acc);
+            acc = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(acc.Email));
             //Act
-            await um.UserDeleteAsync(admin, acc.UserID);
+            Assert.True(await um.UserDeleteAsync(admin, acc.UserID));
             //Assert
             Assert.True(! await um.AccountExistsAsync(acc.UserID));
             Assert.True(! await _accountAccess.AccountExistsAsync(acc.UserID));
@@ -84,9 +93,10 @@ namespace Test.UM
             admin.Password = "password1";
             admin.FName = "fname";
             admin.LName = "lname";
-            admin.UserID = -1;
-            await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
+            
             await um.UserSignUpAsync(admin);
+            admin = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(admin.Email));
+            await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
             admin.IsActive = true;
 
 
@@ -94,7 +104,7 @@ namespace Test.UM
             acc.Email = "updateUserSuccessEmail";
             acc.Password = "t";
             await um.UserSignUpAsync(acc);
-
+            acc = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(acc.Email));
             string nName = "new name";
             string nlName = "new last name";
             string nPassword = "NewPassword";
@@ -118,8 +128,10 @@ namespace Test.UM
             admin.FName = "fname";
             admin.LName = "lname";
             await um.UserSignUpAsync(admin);
+            admin = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(admin.Email));
             await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
-            
+
+
             admin.IsActive = true;
 
             Account acc = new Account();
@@ -127,7 +139,8 @@ namespace Test.UM
             acc.Password = "t";
             acc.Enabled = true;
             await um.UserSignUpAsync(acc);
-
+            acc = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(acc.Email));
+            Assert.True(acc.Enabled);
             //act
             Assert.True(await um.DisableAccountAsync(admin, acc.UserID));
             //Assert
@@ -148,21 +161,30 @@ namespace Test.UM
             admin.FName = "fname";
             admin.LName = "lname";
 
-            await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
-            await um.UserSignUpAsync(admin);
+            Assert.True(await um.UserSignUpAsync(admin));
+            admin = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(admin.Email));
             admin.IsActive = true;
+            Assert.True(await _permissionService.AssignDefaultAdminPermissions(admin.UserID));
+            Assert.True(admin.IsActive);
 
             Account acc = new Account();
             acc.Email = "enableeSuccessUserEmail";
-            acc.Password = "t";
+            acc.Password = "tdsfea";
+            acc.FName = "fname";
+            acc.LName = "lname";
+            Assert.True(await um.UserSignUpAsync(acc));
+            acc = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(acc.Email));
             acc.Enabled = false;
-            await um.UserSignUpAsync(acc);
-
+            Assert.True(acc.Enabled == false);
             //act
-            await um.EnableAccountAsync(admin, acc.UserID);
+            Assert.True(await um.EnableAccountAsync(admin, acc.UserID));
             //Assert
             Assert.True(acc.Enabled);
         }
+
+
+
+
         [Fact]
         public async void GetUserSuccess()
         {
@@ -174,11 +196,12 @@ namespace Test.UM
             acc.Password = "t";
             acc.Enabled = false;
             await um.UserSignUpAsync(acc);
-
+            acc = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(acc.Email));
             //act
             Account temp = await um.GetUserAccountAsync(acc.UserID);
-            Console.WriteLine(temp.ToString);
+
             //Assert
+            Assert.True(temp != null);
             Assert.True(temp == acc);
         }
         [Fact]
@@ -190,6 +213,7 @@ namespace Test.UM
             acc.Email = "authenticatePasswordSuccess";
             acc.Password = "password!";
             await um.UserSignUpAsync(acc);
+            acc = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(acc.Email));
 
             //Assert
             Assert.True(await um.AuthenticateUserPassAsync(acc.Email, acc.Password));
@@ -205,9 +229,9 @@ namespace Test.UM
             acc.Email = "signInSuccess";
             acc.Password = "pass";
             await um.UserSignUpAsync(acc);
-            
+            acc = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(acc.Email));
             //act
-            await um.SignInAsync(acc.Email,acc.Password);
+            Assert.True(await um.SignInAsync(acc.Email,acc.Password) != null);
             //Assert
             Assert.True(acc.IsActive);
         }
@@ -223,15 +247,17 @@ namespace Test.UM
             admin.FName = "fname";
             admin.LName = "lname";
 
-            await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
+            
             await um.UserSignUpAsync(admin);
+            admin = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(admin.Email));
+            await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
             admin.IsActive = true;
 
             Account acc = new Account();
             acc.Email = "PromoteToAdminSuccess";
             acc.Password = "pass";
             await um.UserSignUpAsync(acc);
-
+            acc = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(acc.Email));
             //act
             await um.PromoteToAdmin(admin, acc.UserID);
 

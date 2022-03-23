@@ -23,11 +23,12 @@ namespace Console_Runner.AccountService
         public bool Enabled { get; set; }
 
         //TODO: Constructor values?
+        
         public Account()
         {
-           
-            FName = "";
-            LName = "";
+            UserID = 0;
+            Email = "";
+            Password = "";
         }
 
         public override string ToString()

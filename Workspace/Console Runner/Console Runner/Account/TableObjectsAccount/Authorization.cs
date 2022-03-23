@@ -13,9 +13,8 @@ namespace Console_Runner.AccountService
 
         }
 
-        public Authorization(int userID, string resource)
+        public Authorization(string resource)
         {
-            UserID = userID;
             Permission = resource;
         }
     }

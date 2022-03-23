@@ -61,7 +61,8 @@ namespace Console_Runner.AccountService
         {
             try
             {
-                Authorization newPermission = new Authorization(userID, permissions);
+                Authorization newPermission = new Authorization(permissions);
+                newPermission.UserID = userID;
                 if (await HasPermissionAsync(userID, permissions))
                 {
                     _efContext.Authorizations.Remove(newPermission);
@@ -131,7 +132,9 @@ namespace Console_Runner.AccountService
                 List<Authorization> defaultPermsToAdd = new();
                 foreach (String permission in DEFAULT_USER_PERMISSIONS)
                 {
-                    defaultPermsToAdd.Add(new Authorization(userID, permission));
+                    Authorization temp = new Authorization(permission);
+                    temp.UserID = userID;
+                    defaultPermsToAdd.Add(temp);
                 }
                 await AddPermissionsAsync(defaultPermsToAdd);
                 return true;
@@ -147,7 +150,9 @@ namespace Console_Runner.AccountService
                 List<Authorization> defaultPermsToAdd = new();
                 foreach (String permission in DEFAULT_ADMIN_PERMISSIONS)
                 {
-                    defaultPermsToAdd.Add(new Authorization(userID, permission));
+                    Authorization temp = new Authorization(permission);
+                    temp.UserID = userID;
+                    defaultPermsToAdd.Add(temp);
                 }
                 await AddPermissionsAsync(defaultPermsToAdd);
                 return true;

@@ -49,6 +49,7 @@ namespace Console_Runner.AccountService
 		public bool IsMale { get; set; }
 		// weight, height, and age must be non-negative values.
 		// assume properties are measured in metric units - kg, cm, etc.
+
 		public int Weight
 		{
 			get => _weight;

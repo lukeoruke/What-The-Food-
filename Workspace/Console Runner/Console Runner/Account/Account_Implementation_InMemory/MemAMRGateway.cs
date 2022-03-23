@@ -15,7 +15,6 @@ namespace Console_Runner.AccountService
             {
                 return false;
             }
-            return false;
         }
 
         public async Task<bool> AMRExistsAsync(int userID)

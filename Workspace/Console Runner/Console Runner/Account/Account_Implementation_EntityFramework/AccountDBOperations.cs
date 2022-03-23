@@ -20,15 +20,12 @@ namespace Console_Runner.AccountService
         {
             try
             {
-                if(_accountAccess.GetIDFromEmail(acc.Email) == -1); //TODO Validate an ID of 0 will be returned if the user does not exist.
-               
-                {
-                    Console.WriteLine("email already in use");
-                    return false;
-                }
-                await _permissionService.AssignDefaultUserPermissions(acc.UserID);
+                //Need to validate users dont have duplicate Emails.
                 acc.IsActive = false;
                 await _accountAccess.AddAccountAsync(acc);
+                await _permissionService.AssignDefaultUserPermissions(acc.UserID);
+                
+                
                 //_logger.LogAccountCreation(UM_CATEGORY, "Signup page", true, "", acc.Email);
                 Console.WriteLine("UM operation was successful");
                 return true;
@@ -48,12 +45,6 @@ namespace Console_Runner.AccountService
 		 */
         public async Task<bool> UserDeleteAsync(Account currentUser, int userID)
         {
-
-         /*   if (!_permissionService.HasPermission(currentUser.Email, "deleteAccount"))
-            {
-                _logger.LogAccountDeletion(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email);
-                return false;
-            }*/
             try
             {
                 if (! await _accountAccess.AccountExistsAsync(userID))
@@ -62,26 +53,28 @@ namespace Console_Runner.AccountService
                     Console.WriteLine("Account didnt exist and therefore can not be deleted");
                     return false;
                 }
+                
 
                 Account? acc = await _accountAccess.GetAccountAsync(userID);
 
-                if (await _permissionService.HasPermissionAsync(userID, "createAdmin") && (_permissionService.AdminCount() < 2))
+                if (await _permissionService.HasPermissionAsync(currentUser.UserID, "createAdmin"))
                 {
                     Console.WriteLine("Deleting this account would result in there being no admins.");
                     return false;
                 }
+                if(currentUser.UserID == userID &&  (_permissionService.AdminCount() == 1))
+                {
+                    return false;
+                }
 
-                // _permissionService.RemoveAllUserPermissions(acc.Email);
+                _permissionService.RemoveAllUserPermissions(acc.UserID);
                 await _accountAccess.RemoveAccountAsync(acc);
-               // _logger.LogAccountDeletion(UM_CATEGORY, "test page", true, "", acc.Email);
-
-
                 return true;
             }
             catch (Exception ex)
             {
-                //_logger.LogAccountDeletion(UM_CATEGORY, "test page", false, ex.Message, targetEmail);
-                return false;
+                throw (ex);
+
             }
         }
 
@@ -116,7 +109,7 @@ namespace Console_Runner.AccountService
             string fTemp = "", lTemp = "", pTemp = "";
             if (currentUser.UserID != userID)
             {
-                if (! await _permissionService.HasPermissionAsync(currentUser.UserID, "editOtherAccount") || !currentUser.IsActive)
+                if ((! await _permissionService.HasPermissionAsync(currentUser.UserID, "editOtherAccount")) || (!currentUser.IsActive))
                 {
                     Console.WriteLine("CurrentUser " + currentUser.UserID + " does not have permissions to edit account " + userID);
                     //_logger.LogGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
@@ -176,6 +169,10 @@ namespace Console_Runner.AccountService
         public async Task<bool> AuthenticateUserPassAsync(string email, string userPass)
         {
             int userID = _accountAccess.GetIDFromEmail(email);
+            if (userID == -1)
+            {
+                throw new Exception("no account exists");//REMOVE LATER BECAUSE OF SECURITY CONCERN
+            }
             Account acc = await GetUserAccountAsync(userID);
             return (acc != null && acc.Password == userPass);
         }
@@ -217,9 +214,9 @@ namespace Console_Runner.AccountService
             {
                 Account? acc = await _accountAccess.GetAccountAsync(userID);
 
-                if (_permissionService.IsAdmin(userID) && (_permissionService.AdminCount() < 2))
+                if (_permissionService.IsAdmin(currentUser.UserID) && (_permissionService.AdminCount() < 2))
                 {
-                    //Console.WriteLine("Disabling this account would result in there being no admins.");
+                    Console.WriteLine("Disabling this account would result in there being no admins.");
                     return false;
                 }
                 acc.Enabled = false;
@@ -319,7 +316,8 @@ namespace Console_Runner.AccountService
             {
                 if(await HasPermissionAsync(currentUser.UserID, PermissionToBeAdded))
                 {
-                    Authorization newPerm = new(userID, PermissionToBeAdded);
+                    Authorization newPerm = new(PermissionToBeAdded);
+                    newPerm.UserID = userID;
                     await _permissionService.AddPermissionAsync(newPerm);
                     return true;
 

@@ -64,7 +64,9 @@ namespace Console_Runner.AccountService
                 List<Authorization> defaultPermsToAdd = new();
                 foreach (String permission in DEFAULT_ADMIN_PERMISSIONS)
                 {
-                    defaultPermsToAdd.Add(new Authorization(userID, permission));
+                    Authorization temp = new Authorization(permission);
+                    temp.UserID = userID;
+                    defaultPermsToAdd.Add(temp);
                 }
                 await AddPermissionsAsync(defaultPermsToAdd);
                 return true;
@@ -82,7 +84,9 @@ namespace Console_Runner.AccountService
                 List<Authorization> defaultPermsToAdd = new();
                 foreach (String permission in DEFAULT_USER_PERMISSIONS)
                 {
-                    defaultPermsToAdd.Add(new Authorization(userID, permission));
+                    Authorization temp = new Authorization(permission);
+                    temp.UserID = userID;
+                    defaultPermsToAdd.Add(temp);
                 }
                 await AddPermissionsAsync(defaultPermsToAdd);
                 return true;
@@ -148,11 +152,13 @@ namespace Console_Runner.AccountService
             
         }
 
-        public async Task<bool> RemovePermissionsAsync(int userID, string permissions)
+        public async Task<bool> RemovePermissionsAsync(int userID, string permission)
         {
             try
             {
-                _memAuthContext.Remove(new Authorization(userID, permissions));
+                Authorization temp = new Authorization(permission);
+                temp.UserID = userID;
+                _memAuthContext.Remove(temp);
                 return true;
             }
             catch(Exception ex)

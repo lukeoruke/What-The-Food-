@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿
+
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Console_Runner.FoodService;
 
@@ -217,7 +213,7 @@ public class NutritionLabel
         } 
     }
 
-    public ArrayList IngredientsList<String>()
+    public List<Ingredient> IngredientsList<String>()
     {
         throw new NotImplementedException();
     }

@@ -1,5 +1,7 @@
 using Xunit;
 using Console_Runner.AccountService;
+using System;
+
 namespace Test.UM
 {
     public class UMUnitTests
@@ -175,6 +177,7 @@ namespace Test.UM
 
             //act
             Account temp = await um.GetUserAccountAsync(acc.UserID);
+            Console.WriteLine(temp.ToString);
             //Assert
             Assert.True(temp == acc);
         }
@@ -204,7 +207,7 @@ namespace Test.UM
             await um.UserSignUpAsync(acc);
             
             //act
-            await um.SignIn(acc.Email,acc.Password);
+            await um.SignInAsync(acc.Email,acc.Password);
             //Assert
             Assert.True(acc.IsActive);
         }

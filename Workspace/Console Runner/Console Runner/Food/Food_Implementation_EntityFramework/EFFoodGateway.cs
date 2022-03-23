@@ -1,5 +1,4 @@
-﻿using Console_Runner.FoodService;
-
+﻿
 namespace Console_Runner.FoodService
 {
     public class EFFoodGateway : IFoodGateway
@@ -13,7 +12,8 @@ namespace Console_Runner.FoodService
         //TODO The add ingredient and nutrients dont account for the middle layer of label nutrient and label ingredient.
         //TODO add List of tuple, (nutrient, %)
         //(Nutrient, float) test = (vitaminsList.ElementAt(0), 0.01f);
-        public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, List<Ingredient> ingredientList)
+        public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList,
+            LabelNutrient labelNutrient, List<Ingredient> ingredientList, LabelIngredient labelIngredient)
         {
             try
             {
@@ -25,7 +25,7 @@ namespace Console_Runner.FoodService
                 }
                 foreach(Nutrient vitamin in vitaminsList)
                 {
-                    _efContext.LabelNutrients.Add(new LabelNutrient(foodItem.Barcode, vitamin.NutrientID, );
+                   // _efContext.LabelNutrients.Add(new LabelNutrient());
                 }
                 foreach(Nutrient nutrient in vitaminsList)
                 {

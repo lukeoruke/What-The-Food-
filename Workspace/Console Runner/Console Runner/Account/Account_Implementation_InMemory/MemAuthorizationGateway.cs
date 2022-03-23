@@ -104,9 +104,16 @@ namespace Console_Runner.AccountService
             return permissions;
         }
 
-        public Task<bool> HasPermissionAsync(int userID, string permission)
+        public async Task<bool> HasPermissionAsync(int userID, string permission)
         {
-            throw new NotImplementedException();
+            foreach(Authorization perm in _memAuthContext)
+            {
+                if(perm.UserID == userID && perm.Permission == permission)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool IsAdmin(int userID)

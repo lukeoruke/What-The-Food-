@@ -58,6 +58,8 @@ namespace Console_Runner.AccountService
             {
                 if (! await _accountAccess.AccountExistsAsync(userID))
                 {
+                    //Account didnt exist and therefore can not be deleted
+                    Console.WriteLine("Account didnt exist and therefore can not be deleted");
                     return false;
                 }
 
@@ -95,12 +97,14 @@ namespace Console_Runner.AccountService
                 }
                 else
                 {
+                    Console.WriteLine("User with userID " + userID + " does not exist"); 
                     return null;
                 }
             }
             catch (Exception ex)
             {
                 //_logger.LogGeneric(UM_CATEGORY, "test page", false, ex.Message, targetPK, "Failed to read.");
+                Console.WriteLine("An error occured when requesting the user account from the database.");
                 return null;
             }
         }
@@ -114,6 +118,7 @@ namespace Console_Runner.AccountService
             {
                 if (! await _permissionService.HasPermissionAsync(currentUser.UserID, "editOtherAccount") || !currentUser.IsActive)
                 {
+                    Console.WriteLine("CurrentUser " + currentUser.UserID + " does not have permissions to edit account " + userID);
                     //_logger.LogGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
                     return false;
                 }
@@ -160,7 +165,8 @@ namespace Console_Runner.AccountService
             }
             catch (Exception ex)
             {
-               // _logger.LogGeneric(UM_CATEGORY, "test page", false, ex.Message, targetPK, "Could not change user info");
+                // _logger.LogGeneric(UM_CATEGORY, "test page", false, ex.Message, targetPK, "Could not change user info");
+                Console.WriteLine("A failure occured when attempting to update the users(" + userID + ")");
                 return false;
             }
         }
@@ -174,7 +180,7 @@ namespace Console_Runner.AccountService
             return (acc != null && acc.Password == userPass);
         }
         //takes in username and password. If valid returns an account object for the user with specified data.
-        public async Task<Account> SignIn(string email, string userPass)
+        public async Task<Account> SignInAsync(string email, string userPass)
         {
             
             if (await AuthenticateUserPassAsync(email, userPass))

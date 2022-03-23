@@ -1,4 +1,4 @@
-﻿namespace Console_Runner.Logging
+﻿/*namespace Console_Runner.Logging
 {
     public class MemLogGateway : IlogGateway
     {
@@ -15,3 +15,4 @@
         }
     }
 }
+*/

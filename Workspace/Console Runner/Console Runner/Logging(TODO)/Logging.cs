@@ -1,4 +1,4 @@
-﻿
+﻿/*
 
 namespace Console_Runner.Logging
 {
@@ -71,11 +71,11 @@ namespace Console_Runner.Logging
         //code that handles checking if we need to archive the current logs
         private bool _checkToArchive()
         {
-            /**Intended to only be ran if a "Log Archive" directory does not exist. If so, create a directory that will hold archived files.
+            Intended to only be ran if a "Log Archive" directory does not exist. If so, create a directory that will hold archived files.
              * NOTE: Upon Archive object being created this code is ran. HOWEVER, if for whatever reason if someone on the machine were to alter this file,
              *       a deletion or file name change, this code will create the new file.
              * TODO: INTEGRATION TESTING FOR DIRECTORY ACCESSABILITY ERRORS
-             */
+             *
 
             if (!File.Exists(_archiveFolder))               //check if folder we want to archive to exists
             {
@@ -459,4 +459,4 @@ namespace Console_Runner.Logging
             }
         }
     }
-}
+}*/

@@ -20,7 +20,7 @@
   },
   "scripts": {
     "prestart": "node src/scripts/aspnetcore-https",
-    "start": "rimraf ./build && npx http-server src -o -c-1",
+    "start": "rimraf ./build && npx http-server src -c-1",
     "lint": "eslint src/"
   },
   "browserslist": {

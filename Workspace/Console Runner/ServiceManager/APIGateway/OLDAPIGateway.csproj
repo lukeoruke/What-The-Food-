@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'APIGateway' " />
   <ItemGroup>
     <PackageReference Include="Node.js" Version="5.3.0" />
     <PackageReference Include="Ocelot" Version="18.0.0" />

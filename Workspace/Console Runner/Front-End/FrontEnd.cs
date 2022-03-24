@@ -1,3 +1,5 @@
+using Front_End;
+
 public class FrontEnd
 {
     static void Main(string[] args)
@@ -36,7 +38,9 @@ public class FrontEnd
             name: "default",
             pattern: "{controller}/{action=Index}/{id?}");
 
-        app.MapFallbackToFile("index.html"); ;
+        app.MapFallbackToFile("index.html");
+
+        ServiceManager serviceManager = new ServiceManager();
 
         app.Run();
     }

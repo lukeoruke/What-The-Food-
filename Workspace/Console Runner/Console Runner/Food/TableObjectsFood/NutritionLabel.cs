@@ -23,7 +23,7 @@ public class NutritionLabel
     private int _totalSugars;
     private int _addedSugar;
     private int _protein;
-    private List<Nutrient> _nutrients;
+    private List<(Nutrient, float)> _nutrients;
 
     public NutritionLabel()
     {
@@ -32,7 +32,7 @@ public class NutritionLabel
     public NutritionLabel(int calories, int servings, double servingSize,
         int totalFat, int saturatedFat, int transFat, int cholestrol, int sodium,
         int totalCarbohydrate, int dietaryFiber, int totalSugars, int addedSugar,
-        int protein, List<Nutrient> additionalNutrients, string barcode) {
+        int protein, List<(Nutrient, float)> additionalNutrients, string barcode) {
         Calories = calories;
         Servings = servings;
         ServingSize = servingSize;
@@ -49,7 +49,10 @@ public class NutritionLabel
         _nutrients = additionalNutrients;
         Barcode = barcode;
     }
-
+    public List<(Nutrient, float)> GetNutrientList()
+    {
+        return _nutrients;
+    }
     public int Calories           
     { 
         get
@@ -218,7 +221,7 @@ public class NutritionLabel
         throw new NotImplementedException();
     }
 
-    public bool AddNutrient(Nutrient nutrient)
+    public bool AddNutrient((Nutrient, float) nutrient)
     {
         _nutrients.Add(nutrient);
         return true;

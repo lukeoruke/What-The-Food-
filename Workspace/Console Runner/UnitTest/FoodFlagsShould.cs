@@ -24,11 +24,12 @@ namespace Test.UM
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
-            ingredient.IngredientID = _random.Next();
-            int userID = _random.Next();
-            Assert.True(await um.AddFlagToAccountAsync(userID, 1));
-            Assert.True(await _flagGateway.AccountHasFlagAsync(userID, ingredient.IngredientID));
-            Assert.True(_flagGateway.GetAllAccountFlags(userID).Count == 1);
+            await fm.AddIngredientAsync(ingredient);
+            Account acc = new Account();
+            await um.UserSignUpAsync(acc);
+            Assert.True(await um.AddFlagToAccountAsync(acc.UserID, ingredient.IngredientID));
+            Assert.True(await _flagGateway.AccountHasFlagAsync(acc.UserID, ingredient.IngredientID));
+            Assert.True(_flagGateway.GetAllAccountFlags(acc.UserID).Count == 1);
             //Assert.True(fm.GetAllAccountFlagsAsync("Matt@gmail.com").Count == 1);
         }
 
@@ -42,7 +43,7 @@ namespace Test.UM
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
-            ingredient.IngredientID = _random.Next();
+            await fm.AddIngredientAsync(ingredient);
             int userID = _random.Next();
             Assert.True(await um.AddFlagToAccountAsync(userID, ingredient.IngredientID));
             Assert.True(um.GetAllAccountFlags(userID).Count == 1);
@@ -59,7 +60,7 @@ namespace Test.UM
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
-            ingredient.IngredientID = _random.Next();
+            await fm.AddIngredientAsync(ingredient);
             int userID = _random.Next();
             Assert.False(await um.accountHasFlagAsync(userID, ingredient.IngredientID));
             Assert.True(await um.AddFlagToAccountAsync(userID, ingredient.IngredientID));
@@ -74,17 +75,17 @@ namespace Test.UM
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
-            ingredient.IngredientID = _random.Next();
+            await fm.AddIngredientAsync(ingredient);
             Ingredient ingredient2 =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
-            ingredient.IngredientID = _random.Next();
+            await fm.AddIngredientAsync(ingredient);
             Ingredient ingredient3 =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
-            ingredient.IngredientID = _random.Next();
+            await fm.AddIngredientAsync(ingredient);
             int has3Flags = _random.Next();
             int has1Flag = _random.Next();
             int has0Flags = _random.Next();

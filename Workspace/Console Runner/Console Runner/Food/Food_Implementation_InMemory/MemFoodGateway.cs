@@ -9,8 +9,54 @@ namespace Console_Runner.FoodService
         List<LabelIngredient> _ingredientIdentifiersList = new();
         List<Ingredient> _ingredientsList = new();
         List<Nutrient> _vitaminList = new();
+        List<LabelNutrient> _nutrientIdentifiersList = new();
 
-        public async Task<bool> AddFoodItem(FoodItem foodItem)
+
+        
+        public async Task<bool> AddLabelIngredientAsync(LabelIngredient labelIngredient)
+        {
+            try
+            {
+                if (!_ingredientIdentifiersList.Contains(labelIngredient) && labelIngredient is not null)
+                {
+                    _ingredientIdentifiersList.Add(labelIngredient);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                
+            }catch (Exception ex)
+            {
+                return false;
+            }
+            
+        }
+
+        public async Task<bool> AddLabelNutrientAsync(LabelNutrient labelNutrient)
+        {
+            try
+            {
+                if (!_nutrientIdentifiersList.Contains(labelNutrient) && labelNutrient is not null)
+                {
+                    _nutrientIdentifiersList.Add(labelNutrient);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        
+
+        public async Task<bool> AddFoodItemAsync(FoodItem foodItem)
         {
             try
             {
@@ -46,8 +92,14 @@ namespace Console_Runner.FoodService
         {
             try
             {
-                _ingredientsList.Add(ingredient);
-                return true;
+                if(! _ingredientsList.Contains(ingredient))
+                {
+                    Random _random = new Random();
+                    ingredient.IngredientID = _random.Next(1, 10000000);
+                    _ingredientsList.Add(ingredient);
+                    return true;
+                }
+                return false;//ingredient already existed
             }
             catch (Exception ex)
             {
@@ -92,29 +144,7 @@ namespace Console_Runner.FoodService
             }
             return null;
         }
-        public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList, LabelNutrient labelNutrient,List<Ingredient> ingredientList, LabelIngredient labelIngredient)
-        {
-            try
-            {
-                foreach(Ingredient ing in ingredientList)
-                {
-                    _ingredientsList.Add(ing);
-                }
-                foreach(Nutrient nutrient in vitaminsList)
-                {
-                    _vitaminList.Add(nutrient);
-                }
-                _nutritionLabelsList.Add(nutritionLabel);
-                _foodsList.Add(foodItem);
-
-                return true;
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("Failed to add new product in-memory: " + e);
-                return false;
-            }
-        }
+        
         public async Task<bool> AddNutritionLabelAsync(NutritionLabel nutritionLabel)
         {
             try
@@ -132,8 +162,14 @@ namespace Console_Runner.FoodService
         {
             try
             {
-                _vitaminList.Add(nutrient);
-                return true;
+                if(!_vitaminList.Contains(nutrient))
+                {
+                    Random random = new Random();
+                    nutrient.NutrientID = random.Next(1,10000000);
+                    _vitaminList.Add(nutrient);
+                    return true;
+                }
+                return false; //already existed in DB
             }
             catch(Exception e)
             {

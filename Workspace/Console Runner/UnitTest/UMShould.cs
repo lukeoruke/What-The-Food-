@@ -29,7 +29,6 @@ namespace Test.UM
             Assert.True(await um.UserSignUpAsync(acc));
             
             acc = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(tester));
-            Assert.True(acc.UserID != 0);
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "scanFood"));
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "editOwnAccount"));
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "leaveReview"));
@@ -76,6 +75,8 @@ namespace Test.UM
             await um.UserSignUpAsync(acc);
             acc = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(acc.Email));
             //Act
+
+            //Assert
             Assert.True(await um.UserDeleteAsync(admin, acc.UserID));
             //Assert
             Assert.True(! await um.AccountExistsAsync(acc.UserID));
@@ -254,12 +255,15 @@ namespace Test.UM
             admin.IsActive = true;
 
             Account acc = new Account();
-            acc.Email = "PromoteToAdminSuccess";
+            acc.Email = "PromoteToAdminSuccessss";
             acc.Password = "pass";
-            await um.UserSignUpAsync(acc);
+            acc.FName = "esfs";
+            acc.LName = "asda";
+            Assert.True(await um.UserSignUpAsync(acc));
             acc = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(acc.Email));
+            
             //act
-            await um.PromoteToAdmin(admin, acc.UserID);
+            Assert.True(await um.PromoteToAdmin(admin, acc.UserID));
 
             //Assert
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "createAdmin"));

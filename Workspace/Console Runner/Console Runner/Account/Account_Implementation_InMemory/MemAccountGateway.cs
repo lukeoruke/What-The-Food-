@@ -31,10 +31,10 @@ namespace Console_Runner.AccountService
             try
             {
                 Random random = new Random();
-                acc.UserID = random.Next();
+                acc.UserID = random.Next(1,1000);
                 while(await AccountExistsAsync(acc.UserID))
                 {
-                    acc.UserID = random.Next();
+                    acc.UserID = random.Next(1,01000);
                 }
                 _memContextAccount.Add(acc);
                 return true;
@@ -74,7 +74,7 @@ namespace Console_Runner.AccountService
         {
             try
             {
-                await RemoveAccountAsync(acc);
+                _memContextAccount.Remove(acc);
                 return true;
             }catch (Exception ex)
             {
@@ -86,13 +86,13 @@ namespace Console_Runner.AccountService
         {
             try
             {
-                foreach (Account account in _memContextAccount)
+                for(int i = 0; i < _memContextAccount.Count; i++)
                 {
-                    if (account.UserID == acc.UserID)
+                    if (_memContextAccount[i].UserID == acc.UserID)
                     {
-                        await RemoveAccountAsync(account);
-                        await AddAccountAsync(acc);
-                        account.IsActive = false;
+                        _memContextAccount[i] = acc;
+
+                        _memContextAccount[i].IsActive = false;
 
                         return true;
                     }

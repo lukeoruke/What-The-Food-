@@ -10,7 +10,7 @@ namespace Console_Runner.FoodService
         List<Ingredient> _ingredientsList = new();
         List<Nutrient> _vitaminList = new();
 
-        public async Task<bool> AddFoodItem(FoodItem foodItem)
+        public async Task<bool> AddFoodItemAsync(FoodItem foodItem)
         {
             try
             {
@@ -46,6 +46,8 @@ namespace Console_Runner.FoodService
         {
             try
             {
+                Random _random = new Random();
+                ingredient.IngredientID = _random.Next(1000);
                 _ingredientsList.Add(ingredient);
                 return true;
             }

@@ -1,4 +1,4 @@
-﻿/*using Console_Runner.FoodService;
+﻿using Console_Runner.FoodService;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -27,7 +27,7 @@ namespace Test.FM
             nutrient.NutrientID = _random.Next();
             LabelIngredient ingredientIdentifier = new LabelIngredient(barcode, ingredient.IngredientID);
             LabelNutrient nutrientIdentifier = new LabelNutrient(barcode, nutrient.NutrientID, 0.14f);
-            
+
             List<Nutrient> nutritionList = new();
             nutritionList.Add(nutrient);
 
@@ -38,7 +38,7 @@ namespace Test.FM
             //Assert.True(await fm.AddNewProductAsync(foodItem, nutritionLabel, new List<Nutrient>(), ingredientList));
         }
         [Fact]
-        public void GetScannedFoodItemSuccess()
+        public async void GetScannedFoodItemSuccess()
         {
 
             FoodDBOperations fm = new FoodDBOperations(_foodGateway);
@@ -48,8 +48,8 @@ namespace Test.FM
                "containing dissolved carbon dioxide gas, either artificially injected under " +
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
 
-            ingredient.IngredientID = _random.Next();
-            int barcode = _random.Next();
+            await fm.AddIngredientAsync(ingredient);
+            string barcode = "lao109341";
             FoodItem foodItem = new(barcode, "Monster Energy Drink", "CokaCola Co", "r/");
             LabelIngredient labelIdentifier = new LabelIngredient(foodItem.Barcode, ingredient.IngredientID);
             Nutrient nutrient = new Nutrient("SomethingHealthy");
@@ -58,10 +58,10 @@ namespace Test.FM
 
             NutritionLabel nutritionLabel = new NutritionLabel(270, 1, 1.0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, nutritionList, foodItem.Barcode);
 
-            List<Ingredient> ingredientList = new List<Ingredient>();   
+            List<Ingredient> ingredientList = new List<Ingredient>();
             ingredientList.Add(ingredient);
-            fm.AddFoodItem(foodItem, nutritionLabel, new List<Nutrient>(), ingredientList);
-            FoodItem? returnedFoodItem = fm.GetScannedFoodItem(foodItem.Barcode);
+            fm.AddFoodItemAsync(foodItem);
+            FoodItem? returnedFoodItem = fm.GetScannedFoodItemAsync(foodItem.Barcode);
             Assert.True(returnedFoodItem != null);
             Assert.True(returnedFoodItem?.Equals(foodItem));
 
@@ -77,7 +77,7 @@ namespace Test.FM
                "containing dissolved carbon dioxide gas, either artificially injected under " +
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
 
-            ingredient.IngredientID = "18";
+            ingredient.IngredientID = _random.Next(1000)
 
             FoodItem foodItem = new("70847-841411116", "Monster Energy Drink", "CokaCola Co");
             LabelIdentifier labelIdentifier = new LabelIdentifier(foodItem.Barcode, ingredient.IngredientID);
@@ -95,7 +95,7 @@ namespace Test.FM
             Assert.True(returnedLabel?.Equals(nutritionLabel));
         }
         [Fact]
-        public void GetIngredientList()
+        public async void GetIngredientList()
         {
             FoodDBOperations fm = new FoodDBOperations(_foodGateway);
 
@@ -104,10 +104,10 @@ namespace Test.FM
                "containing dissolved carbon dioxide gas, either artificially injected under " +
                "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
 
-            ingredient.IngredientID = "1832";
+            ingredient.IngredientID = _random.Next(1000);
 
             FoodItem foodItem = new("70847-841411116", "Monster Energy Drink", "CokaCola Co");
-            LabelIdentifier labelIdentifier = new LabelIdentifier(foodItem.Barcode, ingredient.IngredientID);
+            LabelIngredient labelIdentifier = new LabelIngredient(foodItem.Barcode, ingredient.IngredientID);
             Nutrient nutrient = new Nutrient(foodItem.Barcode, "SomethingHealthy");
             List<Nutrient> nutritionList = new();
             nutritionList.Add(nutrient);
@@ -117,11 +117,11 @@ namespace Test.FM
             List<Ingredient> ingredientList = new List<Ingredient>();
             ingredientList.Add(ingredient);
             fm.AddFoodItem(foodItem, nutritionLabel, new List<Nutrient>(), ingredientList);
-            List<Ingredient> ingredientListRetrieved = fm.GetIngredientList(foodItem.Barcode);
+            List<Ingredient> ingredientListRetrieved = await fm.GetIngredientsListAsync(foodItem.Barcode);
             Assert.True(ingredientListRetrieved.Count > 0);
             Assert.True(ingredientListRetrieved[0].Equals(ingredient));
         }
 
 
     }
-}*/
+}

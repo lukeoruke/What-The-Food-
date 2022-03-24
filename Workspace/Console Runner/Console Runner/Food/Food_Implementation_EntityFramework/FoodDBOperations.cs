@@ -11,6 +11,18 @@ namespace Console_Runner.FoodService
             this._foodItemAccess = foodItemAccess;
         }
 
+        public async Task<bool> AddFoodItemAsync(FoodItem foodItem)
+        {
+            try
+            {
+                await _foodItemAccess.AddFoodItemAsync(foodItem);
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
+            }
+            
+        }
         public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList,
             LabelNutrient labelNutrient, List<Ingredient> ingredientList, LabelIngredient labelIngredient)
         {
@@ -39,7 +51,7 @@ namespace Console_Runner.FoodService
             return ingList;
         }
 
-        public async Task<FoodItem> getScannedItemAsync(string barcode)
+        public async Task<FoodItem> GetScannedItemAsync(string barcode)
         {
             FoodItem?foodItem = await _foodItemAccess.RetrieveScannedFoodItemAsync(barcode);
             if(foodItem == null)

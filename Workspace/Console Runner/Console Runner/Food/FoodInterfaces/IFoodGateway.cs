@@ -9,7 +9,7 @@ namespace Console_Runner.FoodService
         /// </summary>
         /// <param name="foodItem"></param>
         /// <returns>True if successful, otherwise false</returns>
-        public Task<bool> AddFoodItem(FoodItem foodItem);
+        public Task<bool> AddFoodItemAsync(FoodItem foodItem);
         /// <summary>
         /// 
         /// </summary>

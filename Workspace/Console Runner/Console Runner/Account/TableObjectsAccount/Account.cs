@@ -26,7 +26,6 @@ namespace Console_Runner.AccountService
         
         public Account()
         {
-            UserID = 0;
             Email = "";
             Password = "";
         }

@@ -32,7 +32,7 @@ namespace Console_Runner.FoodService
                     await AddNutrientAsync(nutrient);
                 }
                 await AddNutritionLabelAsync(nutritionLabel);
-                await AddFoodItem(foodItem);
+                await AddFoodItemAsync(foodItem);
                 await _efContext.SaveChangesAsync();
             }
             catch (Exception)
@@ -43,7 +43,7 @@ namespace Console_Runner.FoodService
 
         }
 
-        public async Task<bool> AddFoodItem(FoodItem foodItem)
+        public async Task<bool> AddFoodItemAsync(FoodItem foodItem)
         {
             try
             {

@@ -86,13 +86,13 @@ namespace Console_Runner.AccountService
         {
             try
             {
-                foreach (Account account in _memContextAccount)
+                for(int i = 0; i < _memContextAccount.Count; i++)
                 {
-                    if (account.UserID == acc.UserID)
+                    if (_memContextAccount[i].UserID == acc.UserID)
                     {
-                        await RemoveAccountAsync(account);
-                        await AddAccountAsync(acc);
-                        account.IsActive = false;
+                        _memContextAccount[i] = acc;
+
+                        _memContextAccount[i].IsActive = false;
 
                         return true;
                     }

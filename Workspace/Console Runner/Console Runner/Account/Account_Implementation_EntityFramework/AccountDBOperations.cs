@@ -51,29 +51,30 @@ namespace Console_Runner.AccountService
                 {
                     //Account didnt exist and therefore can not be deleted
                     Console.WriteLine("Account didnt exist and therefore can not be deleted");
+                    throw new Exception("Acount doesnt exist error");
                     return false;
                 }
                 
 
                 Account? acc = await _accountAccess.GetAccountAsync(userID);
 
-                if (await _permissionService.HasPermissionAsync(currentUser.UserID, "createAdmin"))
+                if (!await _permissionService.HasPermissionAsync(currentUser.UserID, "createAdmin"))
                 {
-                    Console.WriteLine("Deleting this account would result in there being no admins.");
-                    return false;
+             
+                    throw new Exception("Insufficient permissions");
+                    
                 }
                 if(currentUser.UserID == userID &&  (_permissionService.AdminCount() == 1))
                 {
-                    return false;
+                    throw new Exception("This will result in no admins and can not be completed");
                 }
-
                 _permissionService.RemoveAllUserPermissions(acc.UserID);
                 await _accountAccess.RemoveAccountAsync(acc);
                 return true;
             }
             catch (Exception ex)
             {
-                throw (ex);
+                throw new Exception("Unknown error");
 
             }
         }
@@ -204,20 +205,22 @@ namespace Console_Runner.AccountService
             if (! await _permissionService.HasPermissionAsync(currentUser.UserID, "disableAccount") || !currentUser.IsActive)
             {
                 //_logger.LogAccountDeactivation(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
-                return false;
+                throw new Exception("The account does not have required permissions to disable another account");
+                //return false;
             }
             if (! await _accountAccess.AccountExistsAsync(userID))
             {
-                return false;
+                throw new Exception("The account being requested for deletion does not exist");
             }
             try
             {
                 Account? acc = await _accountAccess.GetAccountAsync(userID);
 
-                if (_permissionService.IsAdmin(currentUser.UserID) && (_permissionService.AdminCount() < 2))
+                if (_permissionService.IsAdmin(currentUser.UserID) && (_permissionService.AdminCount() > 1))
                 {
-                    Console.WriteLine("Disabling this account would result in there being no admins.");
-                    return false;
+                    throw new Exception("Disabling this account would result in there being no admins.");
+                    //Console.WriteLine("Disabling this account would result in there being no admins.");
+                    //return false;
                 }
                 acc.Enabled = false;
                 acc.IsActive = false;
@@ -291,14 +294,12 @@ namespace Console_Runner.AccountService
                     if (acc == null)
                     {
                         Console.WriteLine("No such account exists");
-                        return false;
+                        throw new Exception("The requested account does not exist");
+                        //return false;
                     }
-
-                    await _permissionService.AssignDefaultAdminPermissions(userID);
+                    
+                    await _permissionService.AssignDefaultAdminPermissions(acc.UserID);
                     await _accountAccess.UpdateAccountAsync(acc);
-                    //_logger.LogAccountPromote(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
-
-                    Console.WriteLine("UM operation was successful");
                     return true;
                 }
                 //_logger.LogAccountPromote(UM_CATEGORY, "Console", false, "User is not admin and/or target account is not active", currentUser.Email, targetPK);
@@ -306,8 +307,9 @@ namespace Console_Runner.AccountService
             }
             catch (Exception ex)
             {
-               // _logger.LogAccountPromote(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, targetPK);
-                return false;
+                // _logger.LogAccountPromote(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, targetPK);
+                throw new Exception("An unexpected failure occured in the Promote to admin method");
+                //return false;
             }
         }
         public async Task<bool> addPermissionAsync(Account currentUser, int userID, string PermissionToBeAdded)

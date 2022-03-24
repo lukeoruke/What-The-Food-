@@ -27,7 +27,7 @@ namespace Console_Runner.AccountService
                 return false;
             }
         }
-
+        
         public async Task<bool> AddPermissionsAsync(List<Authorization> permissionsToAdd)
         {
             try

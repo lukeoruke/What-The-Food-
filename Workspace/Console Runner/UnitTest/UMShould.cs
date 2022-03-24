@@ -29,7 +29,6 @@ namespace Test.UM
             Assert.True(await um.UserSignUpAsync(acc));
             
             acc = await _accountAccess.GetAccountAsync(_accountAccess.GetIDFromEmail(tester));
-            Assert.True(acc.UserID != 0);
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "scanFood"));
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "editOwnAccount"));
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "leaveReview"));

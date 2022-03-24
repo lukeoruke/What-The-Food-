@@ -31,10 +31,10 @@ namespace Console_Runner.AccountService
             try
             {
                 Random random = new Random();
-                acc.UserID = random.Next(1000);
+                acc.UserID = random.Next(1,1000);
                 while(await AccountExistsAsync(acc.UserID))
                 {
-                    acc.UserID = random.Next(1000);
+                    acc.UserID = random.Next(1,01000);
                 }
                 _memContextAccount.Add(acc);
                 return true;

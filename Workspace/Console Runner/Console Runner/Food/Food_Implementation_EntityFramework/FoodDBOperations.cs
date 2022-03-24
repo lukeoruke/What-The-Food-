@@ -23,10 +23,44 @@ namespace Console_Runner.FoodService
             }
             
         }
-        public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList,
-            LabelNutrient labelNutrient, List<Ingredient> ingredientList, LabelIngredient labelIngredient)
+
+        public async Task<bool> AddNutritionLabelAsync(NutritionLabel nutritionLabel)
         {
-            return await _foodItemAccess.AddNewProductAsync(foodItem, nutritionLabel, vitaminsList, labelNutrient, ingredientList, labelIngredient);
+            return await _foodItemAccess.AddNutritionLabelAsync(nutritionLabel);
+        }
+
+        public async Task<bool> AddNutrientAsync(Nutrient nutrient)
+        {
+            return await _foodItemAccess.AddNutrientAsync(nutrient);
+        }
+
+        public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Ingredient> ingredientList)
+        {
+            try
+            {
+                await _foodItemAccess.AddFoodItemAsync(foodItem);
+                nutritionLabel.Barcode = foodItem.Barcode;
+                await _foodItemAccess.AddNutritionLabelAsync(nutritionLabel);
+                List<(Nutrient, float)>  vitaminsList = nutritionLabel.GetNutrientList();
+                foreach (Ingredient ing in ingredientList)
+                {
+                    //will only add ing to DB if it doesnt already exist within the db
+                    //If vitamin doesnt exist it will add it, creating an ID associated with that ingredient in the process
+                    await _foodItemAccess.AddIngredientAsync(ing);
+                    await _foodItemAccess.AddLabelIngredientAsync(new LabelIngredient(foodItem.Barcode, ing.IngredientID));
+                }
+                foreach ((Nutrient, float) vitamin in vitaminsList)
+                {
+                    //will only add vitamin to DB if it doesnt already exist within the db
+                    //If vitamin doesnt exist it will add it, creating a NID associated with that vitamin in the process
+                    await _foodItemAccess.AddNutrientAsync(vitamin.Item1);
+                    await _foodItemAccess.AddLabelNutrientAsync(new LabelNutrient(foodItem.Barcode, vitamin.Item1.NutrientID, vitamin.Item2));
+                }
+                return true;
+            }catch (Exception ex)
+            {
+                return false;
+            }
         }
 
         public async Task<NutritionLabel> GetNutritionLabelAsync(string barcode)

@@ -9,39 +9,55 @@ namespace Console_Runner.FoodService
         {
             _efContext = new ContextFoodDB();
         }
-        //TODO The add ingredient and nutrients dont account for the middle layer of label nutrient and label ingredient.
-        //TODO add List of tuple, (nutrient, %)
-        //(Nutrient, float) test = (vitaminsList.ElementAt(0), 0.01f);
-        public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Nutrient> vitaminsList,
-            LabelNutrient labelNutrient, List<Ingredient> ingredientList, LabelIngredient labelIngredient)
+
+
+        public async Task<bool> AddLabelIngredientAsync(LabelIngredient labelIngredient)
         {
             try
             {
                 
-                foreach(Ingredient ing in ingredientList)
-                {
-                    await AddIngredientAsync(ing);
-                    
+                if (!_efContext.LabelIngredients.Contains(labelIngredient))
+                    {
+                        await _efContext.LabelIngredients.AddAsync(labelIngredient);
+                    return true;
                 }
-                foreach(Nutrient vitamin in vitaminsList)
+                else
                 {
-                   // _efContext.LabelNutrients.Add(new LabelNutrient());
+                    return false;
                 }
-                foreach(Nutrient nutrient in vitaminsList)
-                {
-                    await AddNutrientAsync(nutrient);
-                }
-                await AddNutritionLabelAsync(nutritionLabel);
-                await AddFoodItemAsync(foodItem);
-                await _efContext.SaveChangesAsync();
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("METHOD AddNewProductAsync encountered an un handled error");
+                return false;
             }
-            return false;
 
         }
+
+        public async Task<bool> AddLabelNutrientAsync(LabelNutrient labelNutrient)
+        {
+            try
+            {
+
+                if (!_efContext.LabelNutrients.Contains(labelNutrient))
+                {
+                    await _efContext.LabelNutrients.AddAsync(labelNutrient);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+
+       
 
         public async Task<bool> AddFoodItemAsync(FoodItem foodItem)
         {

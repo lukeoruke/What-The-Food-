@@ -10,6 +10,20 @@ namespace Console_Runner.AccountService
         {
             _memContextAccount = new List<Account>();
         }
+
+        public string getSalt(int userID)
+        {
+            foreach(Account account in _memContextAccount)
+            {
+                if(account.UserID == userID)
+                {
+                    return account.salt;
+                }
+            }
+            return null;
+        }
+
+
         public int NumberOfAccounts()
         {
             return _memContextAccount.Count;

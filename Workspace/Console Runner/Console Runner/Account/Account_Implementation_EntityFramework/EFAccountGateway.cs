@@ -17,6 +17,17 @@ namespace Console_Runner.AccountService
             _efContext = new ContextAccountDB();
         }
 
+        public string getSalt(int userID)
+        {
+            foreach(var account in _efContext.Accounts)
+            {
+                if(account.UserID == userID)
+                {
+                    return account.salt;
+                }
+            }
+            return null;
+        }
 
         /// <summary>
         /// Checks if an account exists

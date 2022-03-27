@@ -1,5 +1,8 @@
 ﻿
 
+using System.Security.Cryptography;
+using System.Text;
+
 namespace Console_Runner.AccountService
 {
     public class AccountDBOperations
@@ -15,11 +18,30 @@ namespace Console_Runner.AccountService
             this._flagService = flagGateway;
         }
 
-        
+        public string ComputeHash(byte[] bytesToHash, byte[] salt)
+        {
+            var byteResult = new Rfc2898DeriveBytes(bytesToHash, salt, 10000);
+            return Convert.ToBase64String(byteResult.GetBytes(24));
+        }
+
+        public string GenerateSalt()
+        {
+            var bytes = new byte[128 / 8];
+            var rng = new RNGCryptoServiceProvider();
+            rng.GetBytes(bytes);
+            return Convert.ToBase64String(bytes);
+        }
+
         public async Task<bool> UserSignUpAsync(Account acc)
         {
             try
             {
+                string salt = GenerateSalt();
+                acc.salt = salt;
+                byte[] saltBytes = Encoding.ASCII.GetBytes(acc.salt);
+                byte[] passBytes = Encoding.ASCII.GetBytes(acc.Password);
+                acc.Password = ComputeHash(saltBytes, passBytes);
+
                 //Need to validate users dont have duplicate Emails.
                 acc.IsActive = false;
                 await _accountAccess.AddAccountAsync(acc);
@@ -174,8 +196,13 @@ namespace Console_Runner.AccountService
             {
                 throw new Exception("no account exists");//REMOVE LATER BECAUSE OF SECURITY CONCERN
             }
+            string salt = _accountAccess.getSalt(userID);
+            byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
+            byte[] passBytes = Encoding.ASCII.GetBytes(userPass);
+            string hashedPass = ComputeHash(saltBytes, passBytes);
             Account acc = await GetUserAccountAsync(userID);
-            return (acc != null && acc.Password == userPass);
+
+            return (acc != null && acc.Password == hashedPass);
         }
         //takes in username and password. If valid returns an account object for the user with specified data.
         public async Task<Account> SignInAsync(string email, string userPass)

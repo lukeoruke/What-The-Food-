@@ -22,6 +22,7 @@ namespace Console_Runner.AccountService
 
         public bool Enabled { get; set; }
 
+        public string salt { get; set; }
         //TODO: Constructor values?
         
         public Account()

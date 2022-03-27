@@ -42,5 +42,8 @@ namespace Console_Runner.AccountService
         public int GetIDFromEmail(string email);
 
         public int NumberOfAccounts();
+
+        public string getSalt(int userID);
+
     }
 }

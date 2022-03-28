@@ -108,9 +108,18 @@ namespace Console_Runner.AccountService
 
         public async Task<int> GetIDFromEmail(string email)
         {
+            foreach(Account account in _efContext.Accounts)
+            {
+                if(account.Email == email)
+                {
+                    return account.UserID;
+                }
+            }
+            return -100;
+/*
             var userEmail = _efContext.Accounts.Where(r => r.Email == email);
             List<Account> tempAcc = await userEmail.ToListAsync();
-            return tempAcc[0].UserID;
+            return tempAcc[0].UserID;*/
         }
 
         public int NumberOfAccounts()

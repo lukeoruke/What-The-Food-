@@ -29,7 +29,7 @@ namespace Microservice.AccountLogin.Controllers
         }
 
         [HttpPost]
-        public void Post()
+        public async void Post()
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations
                 (_accountAccess, _permissionService, _flagGateway);
@@ -48,7 +48,7 @@ namespace Microservice.AccountLogin.Controllers
             {
                
 
-                Account account = _accountDBOperations.SignIn(formData["email"].ToString(), formData["password"].ToString());
+                Account account = await _accountDBOperations.SignInAsync(formData["email"].ToString(), formData["password"].ToString());
                 if (account != null)
                 {
 

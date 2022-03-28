@@ -1,5 +1,17 @@
 var builder = WebApplication.CreateBuilder(args);
 
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      builder =>
+                      {
+                          builder.AllowAnyOrigin();
+                          builder.AllowAnyMethod();
+                          builder.AllowAnyHeader();
+                      });
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -20,6 +32,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+app.UseCors(MyAllowSpecificOrigins);
+
 app.MapControllers();
 
-app.Run();
+app.Run("http://localhost:49200");

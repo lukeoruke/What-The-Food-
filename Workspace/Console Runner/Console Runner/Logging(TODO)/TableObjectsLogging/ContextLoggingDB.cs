@@ -27,6 +27,11 @@ namespace Console_Runner.Logging
             {
                 table.LogId
             });
+
+            builder.Entity<UserIdentifier>().HasKey(table => new
+            {
+                table.UserId
+            });
         }
 
         public DbSet<Log> Logs { get; set; } = null!;

@@ -12,6 +12,11 @@ namespace Console_Runner.Logging
         public string UserId { get; }
         public string UserHash { get; }
 
+        public UserIdentifier()
+        {
+            UserId = "";
+            UserHash = "";
+        }
         public UserIdentifier(string userid)
         {
             UserId = userid;

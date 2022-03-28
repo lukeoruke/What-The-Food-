@@ -13,12 +13,12 @@ async function sendLogin(e) {
     console.log(password);
 
     // HTTP Get Request
-    await fetch('https://localhost:49200/gateway/AccountLogin')
+    await fetch('http://localhost:49200/AccountLogin')
         .then(response => console.log(response.text()))
         .then(data => console.log(data));
 
     // HTTP Post Request
-    await fetch('https://localhost:49200/gateway/AccountLogin', {
+    await fetch('http://localhost:49200/AccountLogin', {
         method: 'POST',
         body: formData,
     }).then(function (response) {

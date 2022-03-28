@@ -29,6 +29,7 @@ namespace Microservice.AccountLogin.Controllers
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations
                 (_accountAccess, _permissionService, _flagGateway);
+ 
             Console.WriteLine("SUCCESSS!!!");
             Console.WriteLine("Received Post from LoginController");
             //Console.WriteLine(Request.Form("username"));
@@ -46,7 +47,10 @@ namespace Microservice.AccountLogin.Controllers
                 Account account = new Account();
                 account.Email = formData["email"].ToString();
                 account.Password = formData["password"].ToString();
-
+                string name = formData["name"];
+                string[] fullName = name.Split(" ");
+                account.FName = fullName[0];
+                account.LName = fullName[1];
                 await _accountDBOperations.UserSignUpAsync(account);
 
                 Console.WriteLine(account.ToString());

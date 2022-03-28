@@ -56,22 +56,32 @@ namespace Console_Runner.AccountService
 
         public async Task<Account?> GetAccountAsync(int UserID)
         {
-            try
+            foreach(var acc in _efContext.Accounts)
             {
-                Account? acc = await _efContext.Accounts.FindAsync(UserID);
-                if (acc != null)
+                if(acc.UserID == UserID)
                 {
                     return acc;
                 }
-                else
-                {
-                    throw new Exception("account not found exception");
-                }
             }
-            catch (Exception)
-            {
-                return null;
-            }
+            throw new Exception("NO ACCOUNT WAS FOUND WITH USERID: " + UserID.ToString());
+            /*
+
+                        try
+                        {
+                            Account? acc = await _efContext.Accounts.FindAsync(UserID);
+                            if (acc != null)
+                            {
+                                return acc;
+                            }
+                            else
+                            {
+                                throw new Exception("account not found exception");
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            throw new Exception("EN ERROR OCCURED DURING METHOD CALL");
+                        }*/
         }
 
         public async Task<bool> RemoveAccountAsync(Account acc)
@@ -108,18 +118,11 @@ namespace Console_Runner.AccountService
 
         public async Task<int> GetIDFromEmail(string email)
         {
-            foreach(Account account in _efContext.Accounts)
-            {
-                if(account.Email == email)
-                {
-                    return account.UserID;
-                }
-            }
-            return -100;
-/*
+
+
             var userEmail = _efContext.Accounts.Where(r => r.Email == email);
             List<Account> tempAcc = await userEmail.ToListAsync();
-            return tempAcc[0].UserID;*/
+            return tempAcc[0].UserID;
         }
 
         public int NumberOfAccounts()

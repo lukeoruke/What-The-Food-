@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -105,10 +106,11 @@ namespace Console_Runner.AccountService
             }
         }
 
-        public int GetIDFromEmail(string email)
+        public async Task<int> GetIDFromEmail(string email)
         {
             var userEmail = _efContext.Accounts.Where(r => r.Email == email);
-            return userEmail.ElementAt(0).UserID;
+            List<Account> tempAcc = await userEmail.ToListAsync();
+            return tempAcc[0].UserID;
         }
 
         public int NumberOfAccounts()

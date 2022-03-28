@@ -37,7 +37,7 @@ namespace Console_Runner.AccountService
         /// <returns>true if account exists false otherwise</returns>
         public async Task<bool>AccountExistsAsync(int UserID)
         {
-            return await _efContext.Accounts.FindAsync(UserID) == null;
+            return await _efContext.Accounts.FindAsync(UserID) != null;
         }
 
         public async Task<bool> AddAccountAsync(Account acc)

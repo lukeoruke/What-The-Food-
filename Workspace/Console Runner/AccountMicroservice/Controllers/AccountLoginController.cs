@@ -43,18 +43,17 @@ namespace Microservice.AccountLogin.Controllers
             Console.WriteLine(formData["password"]);
 
 
-
             try
             {
                
 
-                Account account = await _accountDBOperations.SignInAsync(formData["email"].ToString(), formData["password"].ToString());
+                Account? account = await _accountDBOperations.SignInAsync(formData["email"].ToString(), formData["password"].ToString());
                 if (account != null)
                 {
-
+                    Console.WriteLine(account.ToString());
                 }
                 
-                Console.WriteLine(account.ToString());
+                
             }
             catch (FileNotFoundException e)
             {

@@ -25,6 +25,7 @@ async function sendSignup(e) {
     const formData = new FormData();
     formData.append('email', email);
     formData.append('password', password);
+    formData.append('name', name);
 
     console.log(email);
     console.log(password);

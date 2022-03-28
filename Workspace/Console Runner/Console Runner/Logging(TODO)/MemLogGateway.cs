@@ -1,18 +1,17 @@
-﻿/*namespace Console_Runner.Logging
+﻿namespace Console_Runner.Logging
 {
-    public class MemLogGateway : IlogGateway
+    public class MemLogGateway : ILogGateway
     {
-        private List<Logs> _logsDB;
+        private List<Log> _logsDB;
 
         public MemLogGateway()
         {
-            _logsDB = new List<Logs>();
+            _logsDB = new List<Log>();
         }
-        public bool WriteLog(Logs toLog)
+        public bool WriteLog(Log toLog)
         {
             _logsDB.Add(toLog);
             return true;
         }
     }
 }
-*/

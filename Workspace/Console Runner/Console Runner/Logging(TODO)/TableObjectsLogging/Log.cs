@@ -33,7 +33,7 @@
             ActorIdentifier = uid;
             LogLevel = level;
             Category = category;
-            Timestamp = timestamp;
+            Timestamp = timestamp.ToUniversalTime();
             Message = message;
         }
 

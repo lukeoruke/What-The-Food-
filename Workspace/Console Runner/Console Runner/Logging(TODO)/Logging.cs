@@ -11,17 +11,34 @@
             _userIDAccess = uidAccessor;
         }
 
-        //base logging function that will write to the log.txt file. Will append logging information to the end of current date and time.
-        public async Task<bool> WriteLogAsync(string actorID, LogLevel level, Category category, DateTime timestamp, string message)
+        //base logging function that will write to the log database defined in ContectLoggingDB.cs
+        public async Task<bool> WriteLogAsync(string actorID, LogLevel level, Category category, DateTime timestamp, string message, int timeout = 0)
         {
-            string? userHash = await _userIDAccess.GetUserHashAsync(actorID);
-            if (userHash == null)
+            CancellationTokenSource cts = new CancellationTokenSource();
+            try
             {
-                userHash = await _userIDAccess.AddUserIdAsync(actorID);
+                var token = cts.Token;
+                if(timeout > 0)
+                {
+                    cts.CancelAfter(timeout);
+                }
+                string? userHash = await _userIDAccess.GetUserHashAsync(actorID, token);
+                if (userHash == null)
+                {
+                    userHash = await _userIDAccess.AddUserIdAsync(actorID, token);
+                }
+                Log record = new Log(userHash, level, category, timestamp.ToUniversalTime(), message);
+                await _logAccess.WriteLogAsync(record, token);
+                return true;
             }
-            Log record = new Log(userHash, level, category, timestamp.ToUniversalTime(), message);
-            await _logAccess.WriteLogAsync(record);
-            return true;
+            catch (OperationCanceledException ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                cts.Dispose();
+            }
         }
     }
 }

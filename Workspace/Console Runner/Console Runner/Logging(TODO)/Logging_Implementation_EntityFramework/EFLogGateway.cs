@@ -14,10 +14,11 @@ namespace Console_Runner.Logging
             _efContext = new ContextLoggingDB();
         }
 
-        public async Task<bool> WriteLogAsync(Log toLog)
+        public async Task<bool> WriteLogAsync(Log toLog, CancellationToken ct = default)
         {
-            await _efContext.Logs.AddAsync(toLog);
-            await _efContext.SaveChangesAsync();
+            ct.ThrowIfCancellationRequested();
+            await _efContext.Logs.AddAsync(toLog, ct);
+            await _efContext.SaveChangesAsync(ct);
             return true;
         }
     }

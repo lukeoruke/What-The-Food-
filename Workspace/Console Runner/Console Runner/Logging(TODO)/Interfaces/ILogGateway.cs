@@ -2,6 +2,6 @@
 {
     public interface ILogGateway
     {
-        public Task<bool> WriteLogAsync(Log toSave);
+        public Task<bool> WriteLogAsync(Log toSave, CancellationToken ct);
     }
 }

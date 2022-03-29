@@ -15,25 +15,28 @@ namespace Console_Runner.Logging
             _efContext = new ContextLoggingDB();
         }
 
-        public async Task<string> AddUserIdAsync(string idToAdd)
+        public async Task<string> AddUserIdAsync(string idToAdd, CancellationToken cancellationToken = default)
         {
             UserIdentifier uid = new UserIdentifier(idToAdd);
-            await _efContext.UIDs.AddAsync(uid);
-            await _efContext.SaveChangesAsync();
+            cancellationToken.ThrowIfCancellationRequested();
+            await _efContext.UIDs.AddAsync(uid, cancellationToken);
+            await _efContext.SaveChangesAsync(cancellationToken);
             return uid.UserHash;
         }
 
-        public async Task<string?> GetUserHashAsync(string idToGet)
+        public async Task<string?> GetUserHashAsync(string idToGet, CancellationToken cancellationToken = default)
         {
-            UserIdentifier? uid = await _efContext.UIDs.FindAsync(idToGet);
+            cancellationToken.ThrowIfCancellationRequested();
+            UserIdentifier? uid = await _efContext.UIDs.FindAsync(idToGet, cancellationToken);
             return uid?.UserHash;
         }
 
-        public async Task<bool> RemoveUserIdAsync(string idToRemove)
+        public async Task<bool> RemoveUserIdAsync(string idToRemove, CancellationToken cancellationToken = default)
         {
             UserIdentifier uid = new UserIdentifier(idToRemove);
+            cancellationToken.ThrowIfCancellationRequested();
             _efContext.UIDs.Remove(uid);
-            await _efContext.SaveChangesAsync();
+            await _efContext.SaveChangesAsync(cancellationToken);
             return true;
         }
     }

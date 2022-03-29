@@ -22,7 +22,7 @@
     public class Log
     {
         public int LogId { get; }
-        public string UserIdentifier { get; }
+        public string ActorIdentifier { get; }
         public LogLevel LogLevel { get; }
         public Category Category { get; }
         public DateTime Timestamp { get; }
@@ -30,7 +30,7 @@
 
         public Log(string uid, LogLevel level, Category category, DateTime timestamp, string message)
         {
-            UserIdentifier = uid;
+            ActorIdentifier = uid;
             LogLevel = level;
             Category = category;
             Timestamp = timestamp;
@@ -39,7 +39,7 @@
 
         public override string ToString()
         {
-            return $"User: {UserIdentifier}\nLevel: {LogLevel}\nCategory: {Category}\nTimestamp: {Timestamp}\nMessage: {Message}";
+            return $"User: {ActorIdentifier}\nLevel: {LogLevel}\nCategory: {Category}\nTimestamp: {Timestamp}\nMessage: {Message}";
         }
     }
 }

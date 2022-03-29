@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,7 +37,7 @@ namespace Console_Runner.AccountService
         /// <returns>true if account exists false otherwise</returns>
         public async Task<bool>AccountExistsAsync(int UserID)
         {
-            return await _efContext.Accounts.FindAsync(UserID) == null;
+            return await _efContext.Accounts.FindAsync(UserID) != null;
         }
 
         public async Task<bool> AddAccountAsync(Account acc)
@@ -55,22 +56,32 @@ namespace Console_Runner.AccountService
 
         public async Task<Account?> GetAccountAsync(int UserID)
         {
-            try
+            foreach(var acc in _efContext.Accounts)
             {
-                Account? acc = await _efContext.Accounts.FindAsync(UserID);
-                if (acc != null)
+                if(acc.UserID == UserID)
                 {
                     return acc;
                 }
-                else
-                {
-                    throw new Exception("account not found exception");
-                }
             }
-            catch (Exception)
-            {
-                return null;
-            }
+            throw new Exception("NO ACCOUNT WAS FOUND WITH USERID: " + UserID.ToString());
+            /*
+
+                        try
+                        {
+                            Account? acc = await _efContext.Accounts.FindAsync(UserID);
+                            if (acc != null)
+                            {
+                                return acc;
+                            }
+                            else
+                            {
+                                throw new Exception("account not found exception");
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            throw new Exception("EN ERROR OCCURED DURING METHOD CALL");
+                        }*/
         }
 
         public async Task<bool> RemoveAccountAsync(Account acc)
@@ -105,10 +116,13 @@ namespace Console_Runner.AccountService
             }
         }
 
-        public int GetIDFromEmail(string email)
+        public async Task<int> GetIDFromEmail(string email)
         {
+
+
             var userEmail = _efContext.Accounts.Where(r => r.Email == email);
-            return userEmail.ElementAt(0).UserID;
+            List<Account> tempAcc = await userEmail.ToListAsync();
+            return tempAcc[0].UserID;
         }
 
         public int NumberOfAccounts()

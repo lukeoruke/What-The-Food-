@@ -71,7 +71,7 @@ namespace Console_Runner.AccountService
             return null;
         }
 
-        public int GetIDFromEmail(string email)
+        public async Task<int> GetIDFromEmail(string email)
         {
             foreach (Account account in _memContextAccount)
             {

@@ -191,7 +191,7 @@ namespace Console_Runner.AccountService
         //authenticates a users input password for login. True if pass matches, false otherwise
         public async Task<bool> AuthenticateUserPassAsync(string email, string userPass)
         {
-            int userID = _accountAccess.GetIDFromEmail(email);
+            int userID = await _accountAccess.GetIDFromEmail(email);
             if (userID == -1)
             {
                 throw new Exception("no account exists");//REMOVE LATER BECAUSE OF SECURITY CONCERN
@@ -211,7 +211,7 @@ namespace Console_Runner.AccountService
             if (await AuthenticateUserPassAsync(email, userPass))
             {
                 //  _logger.LogLogin(UM_CATEGORY, "test page", true, "", user);
-                int ID = _accountAccess.GetIDFromEmail(email);
+                int ID = await _accountAccess.GetIDFromEmail(email);
                 Account acc = await GetUserAccountAsync(ID);
                 acc.IsActive = true;
                 return acc;

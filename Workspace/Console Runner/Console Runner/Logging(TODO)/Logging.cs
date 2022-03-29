@@ -12,15 +12,15 @@
         }
 
         //base logging function that will write to the log.txt file. Will append logging information to the end of current date and time.
-        public bool Log(string actorID, LogLevel level, Category category, DateTime timestamp, string message)
+        public async Task<bool> WriteLogAsync(string actorID, LogLevel level, Category category, DateTime timestamp, string message)
         {
-            string? userHash = _userIDAccess.GetUserHash(actorID);
+            string? userHash = await _userIDAccess.GetUserHashAsync(actorID);
             if (userHash == null)
             {
-                userHash = _userIDAccess.AddUserId(actorID);
+                userHash = await _userIDAccess.AddUserIdAsync(actorID);
             }
             Log record = new Log(userHash, level, category, timestamp.ToUniversalTime(), message);
-            _logAccess.WriteLog(record);
+            await _logAccess.WriteLogAsync(record);
             return true;
         }
     }

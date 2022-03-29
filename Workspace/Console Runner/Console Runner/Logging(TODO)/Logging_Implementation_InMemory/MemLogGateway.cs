@@ -1,4 +1,4 @@
-﻿namespace Console_Runner.Logging
+﻿namespace Console_Runner.Logging.Testing
 {
     public class MemLogGateway : ILogGateway
     {
@@ -8,7 +8,7 @@
         {
             _logsDB = new List<Log>();
         }
-        public bool WriteLog(Log toLog)
+        public async Task<bool> WriteLogAsync(Log toLog)
         {
             _logsDB.Add(toLog);
             return true;

@@ -15,24 +15,25 @@ namespace Console_Runner.Logging
             _efContext = new ContextLoggingDB();
         }
 
-        public string AddUserId(string idToAdd)
+        public async Task<string> AddUserIdAsync(string idToAdd)
         {
             UserIdentifier uid = new UserIdentifier(idToAdd);
-            _efContext.Add(uid);
+            await _efContext.UIDs.AddAsync(uid);
+            await _efContext.SaveChangesAsync();
             return uid.UserHash;
         }
 
-        public string? GetUserHash(string idToGet)
+        public async Task<string?> GetUserHashAsync(string idToGet)
         {
-            UserIdentifier? uid = _efContext.UIDs.Find(idToGet);
-            if (uid == null) return null;
-            else return uid.UserHash;
+            UserIdentifier? uid = await _efContext.UIDs.FindAsync(idToGet);
+            return uid?.UserHash;
         }
 
-        public bool RemoveUserId(string idToRemove)
+        public async Task<bool> RemoveUserIdAsync(string idToRemove)
         {
             UserIdentifier uid = new UserIdentifier(idToRemove);
             _efContext.UIDs.Remove(uid);
+            await _efContext.SaveChangesAsync();
             return true;
         }
     }

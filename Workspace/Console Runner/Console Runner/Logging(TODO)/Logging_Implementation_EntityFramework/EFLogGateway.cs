@@ -14,9 +14,10 @@ namespace Console_Runner.Logging
             _efContext = new ContextLoggingDB();
         }
 
-        public bool WriteLog(Log toLog)
+        public async Task<bool> WriteLogAsync(Log toLog)
         {
-            _efContext.Logs.Add(toLog);
+            await _efContext.Logs.AddAsync(toLog);
+            await _efContext.SaveChangesAsync();
             return true;
         }
     }

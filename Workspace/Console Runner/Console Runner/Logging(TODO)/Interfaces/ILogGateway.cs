@@ -2,6 +2,6 @@
 {
     public interface ILogGateway
     {
-        public bool WriteLog(Log toSave);
+        public Task<bool> WriteLogAsync(Log toSave);
     }
 }

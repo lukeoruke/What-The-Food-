@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ICSharpCode.SharpZipLib.Tar;
+using ICSharpCode.SharpZipLib.GZip;
 
 namespace Console_Runner.Logging
 {
@@ -120,14 +122,13 @@ namespace Console_Runner.Logging
                         Console.WriteLine("Archive Log file created.");
                         sw.WriteLine("-------Start of logs-------");
 
-                        using (var context = new Context())
+                        using (var context = new ContextLoggingDB())
                         {
                             DateTime logDate;
                             foreach (var oldLogs in context.Logs)
-                            {
-                                logDate = Convert.ToDateTime(oldLogs.Date + " " + oldLogs.Time);             //get the string value of Date from Logs datastore and convert to DateTime
+                            {         //get the string value of Date from Logs datastore and convert to DateTime
                                 Console.WriteLine(oldLogs.ToString());
-                                if ((int)DateTime.Now.Subtract(logDate).Seconds >= 30)                      //get the integer value of days between now and the log in question,
+                                if ((int)DateTime.Now.Subtract(oldLogs.Timestamp).Days >= 30)                      //get the integer value of days between now and the log in question,
                                                                                                             //if greater than or equal to 30 days then execute
                                 {
                                     sw.WriteLine(oldLogs.ToString());

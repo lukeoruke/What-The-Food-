@@ -27,7 +27,7 @@ namespace Console_Runner.Logging
         public async Task<string?> GetUserHashAsync(string idToGet, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            UserIdentifier? uid = await _efContext.UIDs.FindAsync(idToGet, cancellationToken);
+            UserIdentifier? uid = await _efContext.UIDs.FindAsync(new string[] { idToGet }, cancellationToken);
             return uid?.UserHash;
         }
 

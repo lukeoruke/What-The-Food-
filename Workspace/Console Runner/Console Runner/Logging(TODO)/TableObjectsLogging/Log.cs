@@ -21,17 +21,21 @@
      */
     public class Log
     {
-        public int LogId { get; }
-        public string ActorIdentifier { get; }
-        public LogLevel LogLevel { get; }
-        public Category Category { get; }
-        public DateTime Timestamp { get; }
-        public string Message { get; }
+        public int LogId { get; set; }
+        public string ActorIdentifier { get; set; }
+        public LogLevel LogLevel { get; set; }
+        public Category Category { get; set; }
+        public DateTime Timestamp { get; set; }
+        public string Message { get; set; }
 
-        public Log(string uid, LogLevel level, Category category, DateTime timestamp, string message)
+        public Log()
         {
-            ActorIdentifier = uid;
-            LogLevel = level;
+
+        }
+        public Log(string actorIdentifier, LogLevel logLevel, Category category, DateTime timestamp, string message)
+        {
+            ActorIdentifier = actorIdentifier;
+            LogLevel = logLevel;
             Category = category;
             Timestamp = timestamp.ToUniversalTime();
             Message = message;

@@ -1,11 +1,11 @@
 ﻿namespace Console_Runner.Logging
 {
-    public class Logging
+    public class LogService
     {
         private ILogGateway _logAccess;
         private IUserIDGateway _userIDAccess;
         //logging objects
-        public Logging(ILogGateway logAccessor, IUserIDGateway uidAccessor)
+        public LogService(ILogGateway logAccessor, IUserIDGateway uidAccessor)
         {
             _logAccess = logAccessor;
             _userIDAccess = uidAccessor;

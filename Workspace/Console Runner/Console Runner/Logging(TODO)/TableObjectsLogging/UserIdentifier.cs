@@ -9,9 +9,13 @@ namespace Console_Runner.Logging
 {
     public class UserIdentifier
     {
-        public string UserId { get; }
-        public string UserHash { get; }
+        public string UserId { get; set; }
+        public string UserHash { get; set; }
 
+        public UserIdentifier()
+        {
+
+        }
         public UserIdentifier(string userid)
         {
             UserId = userid;

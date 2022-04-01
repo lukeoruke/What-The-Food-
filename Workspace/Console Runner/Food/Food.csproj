@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Console Runner\Console Runner.csproj" />
+  </ItemGroup>
+
 </Project>

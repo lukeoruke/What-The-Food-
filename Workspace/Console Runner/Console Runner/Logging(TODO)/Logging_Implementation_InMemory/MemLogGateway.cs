@@ -10,6 +10,7 @@
         }
         public async Task<bool> WriteLogAsync(Log toLog, CancellationToken cancellationToken = default)
         {
+            Thread.Sleep(100);
             cancellationToken.ThrowIfCancellationRequested();
             _logsDB.Add(toLog);
             return true;

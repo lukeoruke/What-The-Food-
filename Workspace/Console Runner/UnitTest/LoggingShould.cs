@@ -44,9 +44,6 @@ namespace UnitTest
             Assert.Equal(thirdLog.Item4, thirdSuccess.Timestamp);
             Assert.Equal(thirdLog.Item5, thirdSuccess.Message);
         }
-
-
-        // program runs so fast that a 1ms timeout seems to not work. we can only trust that 
         
         [Fact]
         public async void ThrowsOperationCanceledExceptionOnTimeout()
@@ -54,6 +51,8 @@ namespace UnitTest
             LogService logger = new LogService(_logGateway, _userIDGateway);
             var firstLog = ("example@email.com", LogLevel.Info, Category.Server, DateTime.Now.ToUniversalTime(), "Example log message.");
             Func<Task> attempt = async () => await logger.WriteLogAsync(firstLog.Item1, firstLog.Item2, firstLog.Item3, firstLog.Item4, firstLog.Item5, 0);
+            await Assert.ThrowsAsync<OperationCanceledException>(attempt);
+            Func<Task> secondAttempt = async () => await logger.WriteLogAsync(firstLog.Item1, firstLog.Item2, firstLog.Item3, firstLog.Item4, firstLog.Item5, 10);
             await Assert.ThrowsAsync<OperationCanceledException>(attempt);
         }
         

@@ -12,13 +12,13 @@
         }
 
         //base logging function that will write to the log database defined in ContectLoggingDB.cs
-        public async Task<bool> WriteLogAsync(string actorID, LogLevel level, Category category, DateTime timestamp, string message, int timeout = 0)
+        public async Task<Log> WriteLogAsync(string actorID, LogLevel level, Category category, DateTime timestamp, string message, int timeout = -1)
         {
             CancellationTokenSource cts = new CancellationTokenSource();
             try
             {
                 var token = cts.Token;
-                if(timeout > 0)
+                if(timeout > -1)
                 {
                     cts.CancelAfter(timeout);
                 }
@@ -27,9 +27,10 @@
                 {
                     userHash = await _userIDAccess.AddUserIdAsync(actorID, token);
                 }
+                Console.WriteLine("writing log...");
                 Log record = new Log(userHash, level, category, timestamp.ToUniversalTime(), message);
                 await _logAccess.WriteLogAsync(record, token);
-                return true;
+                return record;
             }
             catch (OperationCanceledException ex)
             {

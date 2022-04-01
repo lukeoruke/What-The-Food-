@@ -25,10 +25,10 @@ namespace Console_Runner.Logging
             }
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null) return false;
-            UserIdentifier objAsPart = obj as UserIdentifier;
+            UserIdentifier? objAsPart = obj as UserIdentifier;
             if (objAsPart == null) return false;
             else return Equals(objAsPart);
         }

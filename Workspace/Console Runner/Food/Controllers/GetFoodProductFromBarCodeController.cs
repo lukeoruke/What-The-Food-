@@ -9,9 +9,11 @@ namespace Food.Controllers
     public class GetFoodProductFromBarCodeController : ControllerBase
     {
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();
-        private readonly FoodDBOperations _foodDB;
+        private  FoodDBOperations _foodDB;
         private string barcode;
-        public GetFoodProductFromBarCodeController()
+
+        [HttpPost]
+        public async void Post()
         {
             _foodDB = new FoodDBOperations(_foodServiceGateway);
             IFormCollection formData = Request.Form;
@@ -19,7 +21,7 @@ namespace Food.Controllers
         }
 
 
-        [HttpPost]
+        [HttpGet]
         public async Task<ActionResult<FoodItem>> GET()
         {
             return await _foodDB.GetScannedItemAsync(barcode);

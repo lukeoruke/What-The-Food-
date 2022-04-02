@@ -87,6 +87,10 @@ namespace Console_Runner.FoodService
 
         public async Task<FoodItem> GetScannedItemAsync(string barcode)
         {
+            if(barcode == null)
+            {
+                throw (new Exception("provided barcode was null"));
+            }
             FoodItem?foodItem = await _foodItemAccess.RetrieveScannedFoodItemAsync(barcode);
             if(foodItem == null)
             {

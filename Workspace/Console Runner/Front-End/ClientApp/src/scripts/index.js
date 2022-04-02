@@ -32,7 +32,7 @@ fetch(API)
     }).then((completedata) => {
         let data1 = "";
         console.log(completedata);
-        completedata.articles.map((values) => {;
+        completedata.articles.map((values) => {
             data1 = `<div class = "newsBox">
                 <div class = "imageBox">
                     <img src = ${values.urlToImage} class ="center">

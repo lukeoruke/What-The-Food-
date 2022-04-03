@@ -7,7 +7,6 @@ namespace Food.Controllers
     
     [Route("api/[controller]")]
     [ApiController]
-    
     public class GetFoodProductFromBarCodeController : ControllerBase
     {
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();

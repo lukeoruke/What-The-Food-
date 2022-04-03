@@ -89,7 +89,7 @@ namespace Console_Runner.FoodService
         {
             if(barcode == null)
             {
-                throw (new Exception("provided barcode was null"));
+                throw (new Exception("provided barcode was null, this error is called from FoodDbOperations.GetScannedItemAsync() method "));
             }
             FoodItem?foodItem = await _foodItemAccess.RetrieveScannedFoodItemAsync(barcode);
             if(foodItem == null)

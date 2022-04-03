@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace Food.Controllers
 
 {
+    
     [Route("api/[controller]")]
     [ApiController]
+    
     public class GetFoodProductFromBarCodeController : ControllerBase
     {
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();
@@ -17,15 +19,22 @@ namespace Food.Controllers
         {
             _foodDB = new FoodDBOperations(_foodServiceGateway);
 
-            barcode = Request.Form["barcode"];
+            //IFormCollection formData = Request.Form;
+
+            //barcode = formData["barcode"];
+            Console.WriteLine(barcode);
+            Console.WriteLine(barcode);
+            Console.WriteLine(barcode);
+            Console.WriteLine(barcode);
+            Console.WriteLine(barcode);
             //barcode = Request.Form["barcode"];
         }
 
 
         [HttpGet]
-        public async Task<ActionResult<FoodItem>> GET()
+        public async Task<FoodItem> GET()
         {
-            barcode = Request.Form["barcode"];
+            barcode = "1010";
             Console.WriteLine(barcode);
             _foodDB = new FoodDBOperations(_foodServiceGateway);
             return await _foodDB.GetScannedItemAsync(barcode);

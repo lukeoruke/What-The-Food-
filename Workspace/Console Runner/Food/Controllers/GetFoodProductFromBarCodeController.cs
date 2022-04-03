@@ -10,56 +10,71 @@ namespace Food.Controllers
     [ApiController]
     public class GetFoodProductFromBarCodeController : ControllerBase
     {
+        private const string UM_CATEGORY = "Data Store";
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();
         private  FoodDBOperations _foodDB;
-        private string barcode;
+        private IFormCollection formData;
+        //private string barcode;
+
+
+
+
+        [HttpGet]
+        public async Task<ActionResult<string>> GET()
+        {
+            Console.WriteLine("This is the start of Get Req");
+            List<Ingredient> ingredients;
+            FoodItem foodItem;
+            NutritionLabel label;
+
+
+            //TODO: ADD CHECK TO SEE IF BARCODE IS IN OUR DB
+
+            _foodDB = new FoodDBOperations(_foodServiceGateway);
+
+            //string barcode = Request.Form["barcode"];
+            string barcode = "1010";
+
+
+            try
+            {
+                Console.WriteLine("GET " + barcode);
+
+                
+                foodItem = await _foodDB.GetScannedItemAsync(barcode);
+                ingredients = await _foodDB.GetIngredientsListAsync(barcode);
+                label = await _foodDB.GetNutritionLabelAsync(barcode);
+
+                string jsonStr = "{";
+                string foodItemStr = foodItem.FormatJsonString();
+                string labelStr = label.FormatJsonString();
+                string ingredientsStr = FormatIngredientsJsonString(ingredients);
+
+                jsonStr += foodItemStr + ", " + labelStr + ", " + ingredientsStr + "}";
+
+
+
+                return jsonStr;
+            }catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return "BIG OL FAIL";
+            }
+
+            //return await _foodDB.GetScannedItemAsync(barcode); unsure if we will need this later
+        }
 
         [HttpPost]
         public async void Post()
         {
             _foodDB = new FoodDBOperations(_foodServiceGateway);
 
-            //IFormCollection formData = Request.Form;
-
-            //barcode = formData["barcode"];
-            Console.WriteLine(barcode);
-            Console.WriteLine(barcode);
-            Console.WriteLine(barcode);
-            Console.WriteLine(barcode);
-            Console.WriteLine(barcode);
+            formData = Request.Form;
+            string barcode;
+            //barcode = formData["barcode"].ToString();
+            barcode = Request.Body.ToString();
+            Console.WriteLine("POST" + barcode);
             //barcode = Request.Form["barcode"];
-        }
-
-
-        [HttpGet]
-        public async Task<ActionResult<String>> GET()
-        {
-            List<Ingredient> ingredients;
-            FoodItem foodItem;
-            NutritionLabel label;
-
-            barcode = Request.Form["barcode"];
-            Console.WriteLine(barcode);
-
-            //TODO: ADD CHECK TO SEE IF BARCODE IS IN OUR DB
-
-            _foodDB = new FoodDBOperations(_foodServiceGateway);
-
-            ingredients = await _foodDB.GetIngredientsListAsync(barcode);
-            foodItem = await _foodDB.GetScannedItemAsync(barcode);
-            label = await _foodDB.GetNutritionLabelAsync(barcode);
-            
-            string jsonStr = "{";
-            string foodItemStr = foodItem.FormatJsonString();
-            string labelStr = label.FormatJsonString();
-            string ingredientsStr = FormatIngredientsJsonString(ingredients);
-
-            jsonStr += foodItemStr + ", " + labelStr + ", " + ingredientsStr + "}";
-
-            
-
-            return jsonStr;
-            //return await _foodDB.GetScannedItemAsync(barcode); unsure if we will need this later
         }
 
         /// <summary>

@@ -5,6 +5,7 @@ using System.Text.Json;
 namespace Food.Controllers
 
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class GetFoodProductFromBarCodeController : ControllerBase
@@ -18,7 +19,14 @@ namespace Food.Controllers
         {
             _foodDB = new FoodDBOperations(_foodServiceGateway);
 
-            barcode = Request.Form["barcode"];
+            //IFormCollection formData = Request.Form;
+
+            //barcode = formData["barcode"];
+            Console.WriteLine(barcode);
+            Console.WriteLine(barcode);
+            Console.WriteLine(barcode);
+            Console.WriteLine(barcode);
+            Console.WriteLine(barcode);
             //barcode = Request.Form["barcode"];
         }
 

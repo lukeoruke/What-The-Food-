@@ -1,4 +1,8 @@
 ﻿body {
+    background-color: #ffffff;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
 }
 #logo {
     height: 150px;
@@ -69,9 +73,9 @@
     border-spacing: 15px;
 }
 img {
-    max-width: 200%;
-    max-height: 200%;
-    display: block; /* remove extra space below image */
+    aspect-ratio: auto 200 / 200;
+    height: 150px;
+    width: 200px;
 }
 .center{
   margin-left: auto;
@@ -83,21 +87,19 @@ img {
     display: inline-block;
     height: 50px;
     width: 728px;
-    border: 1px solid blue;
-    overflow: hidden;
+    overflow: auto;
     border-collapse: separate;
-    font-size: 40px;
+    font-size:20px;
     font-weight: bold;
+    word-wrap: break-word;
     position:relative;
-    bottom: 30px;
 }
 .textBox {
     display: inline-block;
-    height: 95px;
+    height: 110px;
     width: 728px;
-    border: 1px solid red;
-    overflow: hidden;
-    font-size: 20px;
+    overflow: auto;
+    font-size: 15px;
     position: relative;
-    bottom: 80px;
+    bottom: 20px;
 }

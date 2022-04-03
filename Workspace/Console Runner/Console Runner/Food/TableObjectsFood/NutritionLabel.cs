@@ -226,4 +226,45 @@ public class NutritionLabel
         _nutrients.Add(nutrient);
         return true;
     }
+
+    public string FormatJsonString()
+    {
+        string str = $"\"Calories\":\"{Calories}\"," +
+            $"\"Servings\":\"{Servings}\"," +
+            $"\"ServingSize\":\"{ServingSize}\"," +
+            $"\"TotalFat\":\"{TotalFat}\"," +
+            $"\"SaturatedFat\":\"{SaturatedFat}\"," +
+            $"\"TransFat\":\"{TransFat}\"," +
+            $"\"Cholesterol\":\"{Cholesterol}\"," +
+            $"\"Sodium\":\"{Sodium}\"," +
+            $"\"TotalCarbohydrate\":\"{TotalCarbohydrate}\"," +
+            $"\"DietaryFiber\":\"{DietaryFiber}\"," +
+            $"\"TotalSugars\":\"{TotalSugars}\"," +
+            $"\"AddedSugar\":\"{AddedSugar}\"," +
+            $"\"Protein\":\"{Protein}\",";
+        string listNut = "\"Nutrients\": [";
+        string listNutAmt = "\"NutrientsAmount\": [";
+
+        for (int i = 0; i < _nutrients.Count; i++)
+        {
+            listNut += $"\"{_nutrients[i].Item2}\"";
+            listNutAmt += $"\"{_nutrients[i].Item1}\"";
+
+            if (i < _nutrients.Count - 1)
+            {
+                listNut += ",";
+                listNutAmt += ",";
+            }
+            else if(i == _nutrients.Count - 1)
+            {
+                listNut += "]";
+                listNutAmt += "]";
+            }
+        }
+
+        str += listNut + ", " + listNutAmt;
+
+
+        return str;
+    }
 }

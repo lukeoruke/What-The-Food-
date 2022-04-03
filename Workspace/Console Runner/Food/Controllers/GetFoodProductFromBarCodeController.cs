@@ -14,26 +14,24 @@ namespace Food.Controllers
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();
         private  FoodDBOperations _foodDB;
         private IFormCollection formData;
-        //private string barcode;
-
-
-
+        private string barcode;
+      
 
         [HttpGet]
         public async Task<ActionResult<string>> GET()
         {
             Console.WriteLine("This is the start of Get Req");
+            barcode = Request.QueryString.Value;
+            barcode = barcode.Substring(1);
             List<Ingredient> ingredients;
             FoodItem foodItem;
             NutritionLabel label;
 
 
-            //TODO: ADD CHECK TO SEE IF BARCODE IS IN OUR DB
-
             _foodDB = new FoodDBOperations(_foodServiceGateway);
 
-            //string barcode = Request.Form["barcode"];
-            string barcode = "1010";
+            
+
 
 
             try
@@ -67,14 +65,7 @@ namespace Food.Controllers
         [HttpPost]
         public async void Post()
         {
-            _foodDB = new FoodDBOperations(_foodServiceGateway);
-
-            formData = Request.Form;
-            string barcode;
-            //barcode = formData["barcode"].ToString();
-            barcode = Request.Body.ToString();
-            Console.WriteLine("POST" + barcode);
-            //barcode = Request.Form["barcode"];
+ 
         }
 
         /// <summary>

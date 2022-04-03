@@ -11,7 +11,7 @@
 
 
     // HTTP Get Request
-    await fetch('http://localhost:49200/api/GetFoodProductFromBarCode')
+    await fetch('http://localhost:49200/api/GetFoodProductFromBarCode?' + barcode)
         .then(response => console.log(response.text()))
         .then(data => console.log(data));
 

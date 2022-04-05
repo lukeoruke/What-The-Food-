@@ -17,6 +17,7 @@ namespace Console_Runner.Logging
         public async Task<bool> WriteLogAsync(Log toLog, CancellationToken ct = default)
         {
             ct.ThrowIfCancellationRequested();
+            _efContext.Entry(toLog.UserIdentifier).State = Microsoft.EntityFrameworkCore.EntityState.Unchanged;
             await _efContext.Logs.AddAsync(toLog, ct);
             await _efContext.SaveChangesAsync(ct);
             return true;

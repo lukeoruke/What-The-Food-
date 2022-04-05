@@ -31,13 +31,12 @@
                 {
                     cts.CancelAfter(timeout);
                 }
-                string? userHash = await _userIDAccess.GetUserHashAsync(actorID, token);
-                if (userHash == null)
+                UserIdentifier? uid = await _userIDAccess.GetUserIdentifierAsync(actorID, token);
+                if(uid == null)
                 {
-                    userHash = await _userIDAccess.AddUserIdAsync(actorID, token);
+                    uid = await _userIDAccess.AddUserIdAsync(actorID, token);
                 }
-                Console.WriteLine("writing log...");
-                Log record = new Log(userHash, level, category, timestamp.ToUniversalTime(), message);
+                Log record = new Log(uid, level, category, timestamp.ToUniversalTime(), message);
                 await _logAccess.WriteLogAsync(record, token);
                 return record;
             }

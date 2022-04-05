@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,13 +16,13 @@ namespace Console_Runner.Logging
             _efContext = new ContextLoggingDB();
         }
 
-        public async Task<string> AddUserIdAsync(string idToAdd, CancellationToken cancellationToken = default)
+        public async Task<UserIdentifier> AddUserIdAsync(string idToAdd, CancellationToken cancellationToken = default)
         {
             UserIdentifier uid = new UserIdentifier(idToAdd);
             cancellationToken.ThrowIfCancellationRequested();
             await _efContext.UIDs.AddAsync(uid, cancellationToken);
             await _efContext.SaveChangesAsync(cancellationToken);
-            return uid.UserHash;
+            return uid;
         }
 
         public async Task<string?> GetUserHashAsync(string idToGet, CancellationToken cancellationToken = default)
@@ -29,6 +30,12 @@ namespace Console_Runner.Logging
             cancellationToken.ThrowIfCancellationRequested();
             UserIdentifier? uid = await _efContext.UIDs.FindAsync(new string[] { idToGet }, cancellationToken);
             return uid?.UserHash;
+        }
+
+        public async Task<UserIdentifier?> GetUserIdentifierAsync(string idToGet, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return await _efContext.UIDs.FirstOrDefaultAsync((c => c.UserId == idToGet), cancellationToken);
         }
 
         public async Task<bool> RemoveUserIdAsync(string idToRemove, CancellationToken cancellationToken = default)

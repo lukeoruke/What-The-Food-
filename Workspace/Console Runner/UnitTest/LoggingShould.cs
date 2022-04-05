@@ -26,19 +26,19 @@ namespace UnitTest
             Log secondSuccess = await logger.WriteLogAsync(secondLog.Item1, secondLog.Item2, secondLog.Item3, secondLog.Item4, secondLog.Item5);
             Log thirdSuccess = await logger.WriteLogAsync(thirdLog.Item1, thirdLog.Item2, thirdLog.Item3, thirdLog.Item4, thirdLog.Item5);
 
-            Assert.Equal(await _userIDGateway.GetUserHashAsync(firstLog.Item1), firstSuccess.ActorIdentifier);
+            Assert.Equal(await _userIDGateway.GetUserHashAsync(firstLog.Item1), firstSuccess.UserIdentifier.UserId);
             Assert.Equal(firstLog.Item2, firstSuccess.LogLevel);
             Assert.Equal(firstLog.Item3, firstSuccess.Category);
             Assert.Equal(firstLog.Item4, firstSuccess.Timestamp);
             Assert.Equal(firstLog.Item5, firstSuccess.Message);
 
-            Assert.Equal(await _userIDGateway.GetUserHashAsync(secondLog.Item1), secondSuccess.ActorIdentifier);
+            Assert.Equal(await _userIDGateway.GetUserHashAsync(secondLog.Item1), secondSuccess.UserIdentifier.UserId);
             Assert.Equal(secondLog.Item2, secondSuccess.LogLevel);
             Assert.Equal(secondLog.Item3, secondSuccess.Category);
             Assert.Equal(secondLog.Item4, secondSuccess.Timestamp);
             Assert.Equal(secondLog.Item5, secondSuccess.Message);
 
-            Assert.Equal(await _userIDGateway.GetUserHashAsync(thirdLog.Item1), thirdSuccess.ActorIdentifier);
+            Assert.Equal(await _userIDGateway.GetUserHashAsync(thirdLog.Item1), thirdSuccess.UserIdentifier.UserId);
             Assert.Equal(thirdLog.Item2, thirdSuccess.LogLevel);
             Assert.Equal(thirdLog.Item3, thirdSuccess.Category);
             Assert.Equal(thirdLog.Item4, thirdSuccess.Timestamp);

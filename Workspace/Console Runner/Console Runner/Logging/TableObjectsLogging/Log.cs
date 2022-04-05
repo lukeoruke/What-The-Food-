@@ -22,7 +22,7 @@
     public class Log
     {
         public int LogId { get; set; }
-        public string ActorIdentifier { get; set; }
+        public UserIdentifier UserIdentifier { get; set; } = null!;
         public LogLevel LogLevel { get; set; }
         public Category Category { get; set; }
         public DateTime Timestamp { get; set; }
@@ -32,9 +32,9 @@
         {
 
         }
-        public Log(string actorIdentifier, LogLevel logLevel, Category category, DateTime timestamp, string message)
+        public Log(UserIdentifier userId, LogLevel logLevel, Category category, DateTime timestamp, string message)
         {
-            ActorIdentifier = actorIdentifier;
+            UserIdentifier = userId;
             LogLevel = logLevel;
             Category = category;
             Timestamp = timestamp.ToUniversalTime();
@@ -43,7 +43,7 @@
 
         public override string ToString()
         {
-            return $"User: {ActorIdentifier}\nLevel: {LogLevel}\nCategory: {Category}\nTimestamp: {Timestamp}\nMessage: {Message}";
+            return $"User: {UserIdentifier?.UserHash ?? "Unidentified"}\nLevel: {LogLevel}\nCategory: {Category}\nTimestamp: {Timestamp}\nMessage: {Message}";
         }
     }
 }

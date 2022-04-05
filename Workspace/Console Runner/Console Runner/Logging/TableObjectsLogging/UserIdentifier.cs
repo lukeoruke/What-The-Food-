@@ -11,6 +11,7 @@ namespace Console_Runner.Logging
     {
         public string UserId { get; set; }
         public string UserHash { get; set; }
+        public List<Log> Logs { get; set; } = null!;
 
         public UserIdentifier()
         {

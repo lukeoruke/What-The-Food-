@@ -14,7 +14,7 @@ namespace Console_Runner.Logging.Testing
         {
             _uidsDB = new List<UserIdentifier>();
         }
-        public async Task<string> AddUserIdAsync(string idToAdd, CancellationToken cancellationToken = default)
+        public async Task<UserIdentifier> AddUserIdAsync(string idToAdd, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             UserIdentifier newUID = new UserIdentifier(idToAdd);
@@ -22,13 +22,19 @@ namespace Console_Runner.Logging.Testing
             {
                 _uidsDB.Add(newUID);
             }
-            return newUID.UserHash;
+            return newUID;
         }
 
         public async Task<string?> GetUserHashAsync(string idToGet, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return _uidsDB.Find(uid => uid.UserId == idToGet)?.UserHash;
+        }
+
+        public async Task<UserIdentifier?> GetUserIdentifierAsync(string idToGet, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return _uidsDB.Find(uid => uid.UserId.Equals(idToGet));
         }
 
         public async Task<bool> RemoveUserIdAsync(string idToRemove, CancellationToken cancellationToken = default)

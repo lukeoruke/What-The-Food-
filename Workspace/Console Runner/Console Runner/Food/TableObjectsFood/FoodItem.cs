@@ -7,7 +7,8 @@ public class FoodItem
     public string Barcode { get; set; }
     public string ProductName { get; set; }
     public string CompanyName { get; set; }
-    public string productPic { get; set; }
+    public string ProductPic { get; set; }
+    public List<FoodUpdate> FoodUpdates { get; set; }
     //public string labelID { get; set; }
     public FoodItem()
     {
@@ -18,7 +19,8 @@ public class FoodItem
         Barcode = barcode;
         ProductName = productName;
         CompanyName = companyName;
-        productPic = pic;
+        ProductPic = pic;
+        FoodUpdates = new List<FoodUpdate>();
     }
    
 

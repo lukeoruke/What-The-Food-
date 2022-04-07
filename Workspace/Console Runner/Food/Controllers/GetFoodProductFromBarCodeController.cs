@@ -23,7 +23,7 @@ namespace Food.Controllers
             Console.WriteLine("This is the start of Get Req");
             barcode = Request.QueryString.Value;
             barcode = barcode.Substring(1);
-            List<Ingredient> ingredients;
+            List<Ingredient> ingredients = new();
             FoodItem foodItem;
             NutritionLabel label;
 
@@ -40,11 +40,21 @@ namespace Food.Controllers
 
                 
                 foodItem = await _foodDB.GetScannedItemAsync(barcode);
+
                 ingredients = await _foodDB.GetIngredientsListAsync(barcode);
                 label = await _foodDB.GetNutritionLabelAsync(barcode);
+                List<(Nutrient, float)> nutrientListTuple = await _foodDB.GetNutrientListForUserDisplay(barcode);
+                List<Nutrient> nutrientList = new();
+                for (int i = 0; i < nutrientListTuple.Count; i++)
+                {
+                    label.AddNutrient(nutrientListTuple[i]);
+                    nutrientList.Add(nutrientListTuple[i].Item1);
+                }
 
                 string jsonStr = "{";
                 string foodItemStr = foodItem.FormatJsonString();
+                
+                //nutrientList = _foodDB.get
                 string labelStr = label.FormatJsonString();
                 string ingredientsStr = FormatIngredientsJsonString(ingredients);
 
@@ -81,6 +91,7 @@ namespace Food.Controllers
 
             for (int i = 0; i < ingredientList.Count; i++)
             {
+
                 strNameList += $"\"{ingredientList[i].IngredientName}\"";
                 strAltList += $"\"{ingredientList[i].AlternateName}\"";
                 strDescList += $"\"{ingredientList[i].IngredientDescription}\"";

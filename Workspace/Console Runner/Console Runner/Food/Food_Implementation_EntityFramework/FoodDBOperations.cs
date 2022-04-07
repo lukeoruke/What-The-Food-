@@ -24,7 +24,16 @@ namespace Console_Runner.FoodService
             
         }
 
-        public async Task<bool> AddNutritionLabelAsync(NutritionLabel nutritionLabel)
+        public async Task<List<(Nutrient, float)>> GetNutrientListForUserDisplay(string barcode)
+        {
+            
+            List<LabelNutrient> temp =  await _foodItemAccess.RetrieveLabelNutrientByBarcodeAsync(barcode);
+            List<(Nutrient, float)> nutrients = await _foodItemAccess.RetrieveNutrientListByIDAsync(temp);
+            return nutrients;
+
+        }
+
+    public async Task<bool> AddNutritionLabelAsync(NutritionLabel nutritionLabel)
         {
             return await _foodItemAccess.AddNutritionLabelAsync(nutritionLabel);
         }

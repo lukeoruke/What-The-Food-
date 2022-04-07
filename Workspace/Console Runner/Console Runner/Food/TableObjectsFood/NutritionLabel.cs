@@ -23,7 +23,7 @@ public class NutritionLabel
     private int _totalSugars;
     private int _addedSugar;
     private int _protein;
-    private List<(Nutrient, float)> _nutrients;
+    private List<(Nutrient, float)> _nutrients = new();
 
     public NutritionLabel()
     {

@@ -4,6 +4,8 @@ namespace Console_Runner.FoodService
 {
     public interface IFoodGateway
     {
+        public Task<List<(Nutrient, float)>> RetrieveNutrientListByIDAsync(List<LabelNutrient> list);
+        public Task<List<LabelNutrient>> RetrieveLabelNutrientByBarcodeAsync(string barcode);
         public Task<bool> AddLabelNutrientAsync(LabelNutrient labelNutrient);
         public Task<bool> AddLabelIngredientAsync(LabelIngredient labelIngredient);
 

@@ -135,7 +135,7 @@ namespace Console_Runner.FoodService
             var ListOfIngredients = _efContext.LabelIngredients.Where(r => r.Barcode == barcode).ToList();
             for(int i = 0; i < ListOfIngredients.Count(); i++)
             {
-                ingredients.Add(await _efContext.Ingredients.FindAsync(ListOfIngredients.ElementAt(i).IngredientID));
+                ingredients.Add(await _efContext.Ingredients.FindAsync(ListOfIngredients[0].IngredientID));
             }
 /*            foreach(LabelIngredient ings in ListOfIngredients)
             {
@@ -153,6 +153,22 @@ namespace Console_Runner.FoodService
         {
             FoodItem? food = await _efContext.FoodItem.FindAsync(barcode);
             return food;
+        }
+
+
+        public async Task<List<LabelNutrient>> RetrieveLabelNutrientByBarcodeAsync(string barcode)
+        {
+            return _efContext.LabelNutrients.Where(r => r.Barcode == barcode).ToList();
+        }
+
+        public async Task<List<(Nutrient, float)>> RetrieveNutrientListByIDAsync(List<LabelNutrient> list)
+        {
+            List<(Nutrient?, float)> nutrientList = new();
+            for (int i = 0; i < list.Count; i++)
+            {
+                 nutrientList.Add((await _efContext.Nutrient.FindAsync(list[i].NutrientID), list[i].NutrientPercentage));
+            }
+            return nutrientList;
         }
     }
 }

@@ -36,7 +36,7 @@
 
 #setting {
     position: relative;
-    height: 500px;
+    height: 650px;
     width: 980px;
     background-color: lightgreen;
     padding: 20px;
@@ -54,7 +54,7 @@
 }
 
 .box2 {
-    height: 450px;
+    height: 600px;
     width: 980px;
     background-color: white;
     display: flex;
@@ -63,7 +63,7 @@
 
 .box3{
     height: 200px;
-    width: 400px;
+    width: 450px;
     background-color: pink;
 }
 

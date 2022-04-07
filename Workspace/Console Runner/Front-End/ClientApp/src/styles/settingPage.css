@@ -12,7 +12,7 @@
     font-size: 25px;
 }
 .button {
-    
+
     background-color: lightblue;
     color: black;
     padding: 15px 32px;
@@ -50,18 +50,20 @@
     height:350px;
     width: 980px;
     background-color: white;
-    
+
 }
 
 .box2 {
     height: 450px;
     width: 980px;
     background-color: white;
+    display: flex;
+    flex-direction: column;
 }
 
 .box3{
-    height: 100px;
-    width: 200px;
+    height: 200px;
+    width: 400px;
     background-color: pink;
 }
 

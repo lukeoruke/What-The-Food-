@@ -6,17 +6,11 @@ using System.Threading.Tasks;
 
 namespace Console_Runner.FoodService
 {
-    public enum UpdateType
-    {
-        Recall,
-        RecipeChange
-    }
     public class FoodUpdate
     {
         public FoodItem FoodItem { get; set; }
         public int FoodItemId { get; set; }
         public DateTime UpdateTime { get; set; }
-        public UpdateType UpdateType { get; set; }
         public string Message { get; set; }
 
         public FoodUpdate()
@@ -24,11 +18,10 @@ namespace Console_Runner.FoodService
 
         }
 
-        public FoodUpdate(FoodItem foodItem, DateTime updateTime, UpdateType updateType, string message)
+        public FoodUpdate(FoodItem foodItem, DateTime updateTime, string message)
         {
             FoodItem = foodItem;
             UpdateTime = updateTime;
-            UpdateType = updateType;
             Message = message;
         }
     }

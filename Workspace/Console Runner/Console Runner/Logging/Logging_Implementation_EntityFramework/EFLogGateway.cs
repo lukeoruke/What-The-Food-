@@ -7,19 +7,18 @@ namespace Console_Runner.Logging
 {
     public class EFLogGateway : ILogGateway
     {
-        private readonly ContextLoggingDB _efContext;
 
         public EFLogGateway()
         {
-            _efContext = new ContextLoggingDB();
         }
 
         public async Task<bool> WriteLogAsync(Log toLog, CancellationToken ct = default)
         {
             ct.ThrowIfCancellationRequested();
-            _efContext.Entry(toLog.UserIdentifier).State = Microsoft.EntityFrameworkCore.EntityState.Unchanged;
-            await _efContext.Logs.AddAsync(toLog, ct);
-            await _efContext.SaveChangesAsync(ct);
+            using ContextLoggingDB efContext = new ContextLoggingDB();
+            efContext.Entry(toLog.UserIdentifier).State = Microsoft.EntityFrameworkCore.EntityState.Unchanged;
+            await efContext.Logs.AddAsync(toLog, ct);
+            await efContext.SaveChangesAsync(ct);
             return true;
         }
     }

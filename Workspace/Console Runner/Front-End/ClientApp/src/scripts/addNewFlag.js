@@ -4,12 +4,18 @@
     var jsonData = localStorage.getItem('allIngredients');
     console.log(jsonData);
     const jsonConst = JSON.parse(jsonData);
+    var getNames = jsonConst.IngredientName;
+    console.log(getNames[0]);
+
+
     console.log(jsonConst);
     
     // create the necessary elements
-    for (data in jsonConst) {
+
+    for (data in getNames) {
+
     //for(var i = 0; i < 4; i++){
-        var text = data + ": " + jsonConst[data];
+        var text = "Ingredient Name: " + getNames[data];
         //var text = i + ": " + i;
         var label = document.createElement("label");
         var description = document.createTextNode(text);

@@ -26,9 +26,10 @@
                 try{
                 var allIngredientList = await _foodDBOperations.getAllIngredientsAsync();
                 Console.WriteLine("Length of ing list = " + allIngredientList.Count());
-                string jsonIngString = FormatIngredientsJsonString(allIngredientList);
-                Console.WriteLine(jsonIngString);
-                return jsonIngString;
+                string jsonStr = "{";
+                jsonStr += FormatIngredientsJsonString(allIngredientList);
+                Console.WriteLine(jsonStr);
+                return jsonStr + "}";
                 }
                 catch (Exception ex)
                 {
@@ -65,7 +66,7 @@
                     }
                 }
 
-                return strNameList + ", " + strAltList + ", " + strDescList;
+                return strNameList;
             }
         }
     }

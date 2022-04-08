@@ -22,4 +22,19 @@ public class Ingredient
         AlternateName = alternateName;
 
     }
+
+
+
+    public string FormatIngredientsJsonString()
+    {
+        string strName = "\"IngredientName\": [";
+        string strAlt = "\"IngredientAlternateName\": [";
+        string strDesc = "\"IngredientDescription\": [";
+
+        strName += $"\"{IngredientName}\"";
+        strAlt += $"\"{AlternateName}\"";
+        strDesc += $"\"{IngredientDescription}\"";
+
+        return strName + ", " + strAlt + ", " + strDesc;
+    }
 }

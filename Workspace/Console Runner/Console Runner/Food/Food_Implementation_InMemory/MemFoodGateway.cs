@@ -209,5 +209,12 @@ namespace Console_Runner.FoodService
             }
             return list;
         }
+
+
+        //TODO IMPLEMENT THIS!!!
+        public Task<List<Ingredient>> RetrieveAllIngredientsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

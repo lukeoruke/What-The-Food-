@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
+
 namespace Console_Runner.FoodService
 {
     public class EFFoodGateway : IFoodGateway
@@ -10,6 +12,11 @@ namespace Console_Runner.FoodService
             _efContext = new ContextFoodDB();
         }
 
+        public async Task<List<Ingredient>>RetrieveAllIngredientsAsync()
+        {
+            var ListOfAllIngredients = await _efContext.Ingredients.Where(r => r.IngredientID != -1).ToListAsync();
+            return ListOfAllIngredients;
+        }
 
         public async Task<bool> AddLabelIngredientAsync(LabelIngredient labelIngredient)
         {

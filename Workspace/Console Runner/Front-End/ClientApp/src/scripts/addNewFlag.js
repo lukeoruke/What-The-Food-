@@ -1,17 +1,41 @@
-﻿namespace Front_End.ClientApp.src.scripts
-{
-    var label = document.createElement("label");
-    var description = document.createTextNode(pair);
-    var checkbox = document.createElement("input");
+﻿async function AddFlagCheckBoxes() {
+    await getIngs();
 
-    checkbox.type = "checkbox";    // make the element a checkbox
-    checkbox.name = "slct[]";      // give it a name we can check on the server side
-    checkbox.value = pair;         // make its value "pair"
+    var jsonData = localStorage.getItem('allIngredients');
+    console.log(jsonData);
+    const jsonConst = JSON.parse(jsonData);
+    console.log(jsonConst);
+    
+    // create the necessary elements
+    for (data in jsonConst) {
+    //for(var i = 0; i < 4; i++){
+        var text = data + ": " + jsonConst[data];
+        //var text = i + ": " + i;
+        var label = document.createElement("label");
+        var description = document.createTextNode(text);
 
-    label.appendChild(checkbox);   // add the box to the element
-    label.appendChild(description);// add the description to the element
+        var checkbox = document.createElement("input");
 
-    // add the label element to your div
-    document.getElementById('box1').appendChild(label);
-    document.getElementById('box1').innerHTML = 'box1213123123';
+        checkbox.type = "checkbox";    // make the element a checkbox
+        checkbox.name = "box1";      // give it a name we can check on the server side
+        checkbox.value = description;         // make its value "pair"
+
+        label.appendChild(checkbox);   // add the box to the element
+        label.appendChild(description);// add the description to the element
+
+        // add the label element to your div
+        document.getElementById('container').appendChild(label);
+        document.getElementById('container').innerHTML += "<br/>";
+
+
+    }
+
+
 }
+async function getIngs() {
+    console.log("SADASDASDAWDASDAWDA????");
+    await fetch('http://localhost:49200/api/GetAllIngredients')
+        .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
+        .then(data => console.log(data));
+}
+

@@ -4,8 +4,9 @@
 <head>
     <link rel="stylesheet" href="styles/settingPage.css">
     <link rel="stylesheet" href="styles/foodInformation.css">
+    <script src="scripts/foodInformation.js"></script>
 </head>
-<body>
+<body onload="populateFoodInfo()">
 <a href="index.html"><img src="images/apple.png" alt="What The Food?!" width="200" height="200"></a>
 <a href="scanBarcode.html"><button class="button">Scan</button></a>
 <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
@@ -17,7 +18,7 @@
     <div class="setting">
         <div class="box2">
             <section>
-                <span>Food Name - Barcode Number</span>
+                <span id="foodName">Food Name</span> - <span id="barcodeNumber">Barcode Number</span>
                 <br>
                 <a href="foodAlternative.html">Find an Alternative</a>
             </section>
@@ -31,7 +32,7 @@
                         <span>Reviews</span>
                     </div>
                     <div class="box3">
-
+                        <span id="info">Info</span>
                     </div>
                 </div>
             </div>

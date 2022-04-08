@@ -12,7 +12,7 @@
 
     // HTTP Get Request
     await fetch('http://localhost:49200/api/GetFoodProductFromBarCode?' + barcode)
-        .then(response => console.log(response.text()))
+        .then(async response => localStorage.setItem('foodInfo', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 
     // HTTP Post Request
@@ -22,4 +22,6 @@
     }).then(function (response) {
         console.log(response.status); // returns 200;
     });
+
+    window.location.replace("/foodInformation.html");
 }

@@ -3,7 +3,7 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
-    using Console_Runner.AccountService;
+
     using Console_Runner.FoodService;
     namespace Food.Controllers
 {
@@ -12,15 +12,11 @@
         public class GetAllIngredientsController : ControllerBase
         {
             private const string UM_CATEGORY = "Data Store";
-            private readonly IAccountGateway _accountAccess = new EFAccountGateway();
-            private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
-            private readonly IFlagGateway _flagGateway = new EFFlagGateway();
+
             private readonly IFoodGateway _foodGateway = new EFFoodGateway();
             [HttpGet]
             public async Task<ActionResult<string>> GET()
             {
-                AccountDBOperations _accountDBOperations = new AccountDBOperations
-                (_accountAccess, _permissionService, _flagGateway);
                 FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway);
                 
                 try{

@@ -1,4 +1,5 @@
 ﻿const checkBoxList = [];
+var getIDs = [];
 async function AddFlagCheckBoxes() {
     console.log("ADD FLAG CHECK BOXES FUNCTION STARTING");
     await getIngs();
@@ -7,7 +8,7 @@ async function AddFlagCheckBoxes() {
     console.log(jsonData);
     const jsonConst = JSON.parse(jsonData);
     var getNames = jsonConst.IngredientName;
-    var getIDs = jsonConst.IngredientID;
+    getIDs = jsonConst.IngredientID;
     
 
     console.log(jsonConst);
@@ -23,7 +24,7 @@ async function AddFlagCheckBoxes() {
         var description = document.createTextNode(text);
 
         var checkbox = document.createElement("input");
-
+        checkbox.id = getIDs[data];
 
         checkbox.type = "checkbox";
         checkbox.name = "box" + data;
@@ -38,6 +39,7 @@ async function AddFlagCheckBoxes() {
         checkBoxList[data] = checkbox;
         
     }
+    
 
     
 }
@@ -48,10 +50,12 @@ async function getIngs() {
 }
 
 async function sendFlagUpdate(e) {
+    e.preventDefault();
     console.log("IN SENDFLAGUPDATE");
     for (data in checkBoxList) {
         console.log("check box[" + data + "] = " + checkBoxList[data].checked);
-        console.log(checkBoxList[data].name + " " + + checkBoxList[data].checked);
+        console.log(document.getElementById(getIDs[data]).checked);
+
     }
 
 }

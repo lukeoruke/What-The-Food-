@@ -18,9 +18,12 @@
             public async Task<ActionResult<string>> GET()
             {
                 FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway);
-                
-                try{
-                var allIngredientList = await _foodDBOperations.GetNIngredients(2, 7);
+                string page = Request.QueryString.Value;
+                page = page.Substring(1);
+            try
+            {
+                Console.WriteLine("Page " + page);
+                var allIngredientList = await _foodDBOperations.GetNIngredients(5*int.Parse(page), 5);
                 Console.WriteLine("Length of ing list = " + allIngredientList.Count());
                 string jsonStr = "{";
                 jsonStr += FormatIngredientsJsonString(allIngredientList);

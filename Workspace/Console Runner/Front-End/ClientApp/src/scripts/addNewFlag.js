@@ -2,6 +2,7 @@
 var getIDs = [];
 var searching = false;
 var search;
+var page = "0";
 async function AddFlagCheckBoxes() {
     console.log("ADD FLAG CHECK BOXES FUNCTION STARTING");
     if (!searching) {
@@ -30,10 +31,10 @@ function displayIngs() {
 
     for (data in getNames) {
 
-        //for(var i = 0; i < 4; i++){
+
         var text = "Ingredient Name: " + getNames[data];
-        //var text = i + ": " + i;
-        var label = document.createElement("data");
+
+        var label = document.createElement("data"); 
         var description = document.createTextNode(text);
 
         var checkbox = document.createElement("input");
@@ -54,14 +55,18 @@ function displayIngs() {
     }
 }
 
+
 async function getIngs() {
-    await fetch('http://localhost:49200/api/GetNIngredients')
+
+    console.log(page);
+    await fetch('http://localhost:49200/api/GetNIngredients?' + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 }
 
 async function searchIngs(e) {
     e.preventDefault();
+    page = "0";
     searching = true;
     let search = document.getElementById('search').value;
 
@@ -101,12 +106,19 @@ async function sendFlagUpdate(e) {
 
 }
 
-function myFunction() {
-    console.log("TEST");
-    checkBoxList[0].checked = true;
-    console.log(checkBoxList[0].name);
-}
+async function loadnextPage(e) {
+    e.preventDefault();
+    var parent = document.getElementById('container');
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
 
+    var pageNumber = parseInt(page);
+    pageNumber += 1;
+    page = String(pageNumber);
+    await getIngs()
+    displayIngs();
+}
 
 
 

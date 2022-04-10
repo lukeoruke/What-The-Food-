@@ -1,21 +1,29 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-
+using System.Linq;
 namespace Console_Runner.FoodService
 {
     public class EFFoodGateway : IFoodGateway
     {
         private readonly ContextFoodDB _efContext;
 
+
+
         public EFFoodGateway()
         {
             _efContext = new ContextFoodDB();
         }
 
-        public async Task<List<Ingredient>>RetrieveAllIngredientsAsync()
+        public async Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take)
         {
-            var ListOfAllIngredients = await _efContext.Ingredients.Where(r => r.IngredientID != -1).ToListAsync();
-            return ListOfAllIngredients;
+            List<Ingredient> results = await _efContext.Ingredients.Where(x => x.IngredientName.Contains(search)).OrderBy(x => x.IngredientName).ToListAsync();
+            return results;
+        }
+
+        public async Task<List<Ingredient>>RetrieveNIngredientsAsync(int skip, int take)
+        {
+            List<Ingredient> results = await _efContext.Ingredients.OrderBy(x => x.IngredientName).Skip(skip).Take(take).ToListAsync();
+            return results;
         }
 
         public async Task<bool> AddLabelIngredientAsync(LabelIngredient labelIngredient)

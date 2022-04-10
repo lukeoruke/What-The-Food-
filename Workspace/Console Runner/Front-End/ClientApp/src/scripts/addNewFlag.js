@@ -1,8 +1,17 @@
 ﻿const checkBoxList = [];
 var getIDs = [];
+var searching = false;
+var search;
 async function AddFlagCheckBoxes() {
     console.log("ADD FLAG CHECK BOXES FUNCTION STARTING");
-    await getIngs();
+    if (!searching) {
+        await getIngs();
+    } else {
+
+        searching = false;
+        console.log(search);
+    }
+    
 
     var jsonData = localStorage.getItem('allIngredients');
     console.log(jsonData);
@@ -40,8 +49,18 @@ async function AddFlagCheckBoxes() {
     }
 }
 async function getIngs() {
-    await fetch('http://localhost:49200/api/GetAllIngredients')
+    await fetch('http://localhost:49200/api/GetNIngredients')
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
+        .then(data => console.log(data));
+}
+
+async function searchIngs(e) {
+    e.preventDefault();
+    searching = true;
+    let search = document.getElementById('search').value;
+
+    await fetch('http://localhost:49200/api/AccountSearchIngredients?' + search)
+        .then(async response => (JSON.stringify(await response.json())))
         .then(data => console.log(data));
 }
 

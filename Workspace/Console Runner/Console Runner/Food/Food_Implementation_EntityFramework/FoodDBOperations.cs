@@ -11,9 +11,14 @@ namespace Console_Runner.FoodService
             this._foodItemAccess = foodItemAccess;
         }
 
-        public async Task<List<Ingredient>> getAllIngredientsAsync()
+        public async Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take)
         {
-           return await _foodItemAccess.RetrieveAllIngredientsAsync();
+            return await _foodItemAccess.GetIngredientBySearchAsync(search, skip, take);
+        }
+
+        public async Task<List<Ingredient>> GetNIngredients(int skip, int take)
+        {
+           return await _foodItemAccess.RetrieveNIngredientsAsync(skip, take);
         }
 
         public async Task<bool> AddFoodItemAsync(FoodItem foodItem)

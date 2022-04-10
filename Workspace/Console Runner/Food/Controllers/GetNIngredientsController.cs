@@ -9,7 +9,7 @@
 {
         [Route("api/[controller]")]
         [ApiController]
-        public class GetAllIngredientsController : ControllerBase
+        public class GetNIngredientsController : ControllerBase
         {
             private const string UM_CATEGORY = "Data Store";
 
@@ -20,7 +20,7 @@
                 FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway);
                 
                 try{
-                var allIngredientList = await _foodDBOperations.getAllIngredientsAsync();
+                var allIngredientList = await _foodDBOperations.GetNIngredients(2, 7);
                 Console.WriteLine("Length of ing list = " + allIngredientList.Count());
                 string jsonStr = "{";
                 jsonStr += FormatIngredientsJsonString(allIngredientList);

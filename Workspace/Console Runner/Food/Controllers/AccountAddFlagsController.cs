@@ -16,21 +16,23 @@ namespace Food.Controllers
         public async void Post()
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
-            int userId = 0;
+            int userId = 0;// NEED TO GET USER ID
             using (var reader = new StreamReader(Request.Body))
             {
                 var body = await reader.ReadToEndAsync();
+
                 var ingsId = body.Split(",");
+                if (ingsId[0] == "" || ingsId[0] == null)
+                {
+                    return;
+                }
+                Console.Write("ings[0] = ");
                 Console.WriteLine(ingsId[0]);
                 for(int i = 0; i < ingsId.Length; i++)
                 {
-                    await _accountDBOperations.AddFlagToAccountAsync(userId, ingsId[i]);
+                    await _accountDBOperations.AddFlagToAccountAsync(userId, int.Parse(ingsId[i]));
                 }
             }
-
-            
-            Console.WriteLine("TEST WAS ABOVE THIS");
-            //await _accountDBOperations.AddFlagToAccountAsync(11, 11);
         }
 
 

@@ -216,5 +216,15 @@ namespace Console_Runner.FoodService
         {
             throw new NotImplementedException();
         }
+
+        public Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Ingredient>> RetrieveNIngredientsAsync(int skip, int take)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

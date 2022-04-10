@@ -14,13 +14,22 @@
     <div class="main">
         <img class="logo" src="images/apple.png" alt="What The Food?!">
         <header class="header">
+            <section class="section">
+                <label>Search:</label>
+                <label>
 
+                    <input class="input" id="search" type="text" name="search"
+                           placeholder='search by name' />
+                    <label id="submitSearch"></label>
+
+                </label>
+                <form class="form" onsubmit="searchIngs(event); ">
+                    <input class="input" type="submit" value="search" />
+                </form>
+            </section>
             <div id="container"></div>
 
-            <div>
 
-
-            </div>
         </header>
 
     </div>

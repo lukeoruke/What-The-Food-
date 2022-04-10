@@ -73,10 +73,7 @@ async function searchIngs(e) {
     await fetch('http://localhost:49200/api/AccountSearchIngredients?' + search)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
-    var parent = document.getElementById('container');
-    while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
-    }
+    deleteCurrentData(e);
     displayIngs();
 }
 
@@ -108,10 +105,7 @@ async function sendFlagUpdate(e) {
 
 async function loadnextPage(e) {
     e.preventDefault();
-    var parent = document.getElementById('container');
-    while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
-    }
+    deleteCurrentData(e);
 
     var pageNumber = parseInt(page);
     pageNumber += 1;
@@ -120,6 +114,23 @@ async function loadnextPage(e) {
     displayIngs();
 }
 
+async function loadPreviousPage(e) {
+    e.preventDefault();
+    deleteCurrentData(e);
 
+    var pageNumber = parseInt(page);
+    pageNumber -= 1;
+    page = String(pageNumber);
+    await getIngs()
+    displayIngs();
+}
+
+function deleteCurrentData(e) {
+    e.preventDefault();
+    var parent = document.getElementById('container');
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+}
 
 

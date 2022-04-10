@@ -36,12 +36,8 @@ async function AddFlagCheckBoxes() {
         document.getElementById('container').appendChild(label);
         document.getElementById('container').innerHTML += "<br/>";
 
-        checkBoxList[data] = checkbox;
-        
+        checkBoxList[data] = checkbox;   
     }
-    
-
-    
 }
 async function getIngs() {
     await fetch('http://localhost:49200/api/GetAllIngredients')
@@ -52,11 +48,26 @@ async function getIngs() {
 async function sendFlagUpdate(e) {
     e.preventDefault();
     console.log("IN SENDFLAGUPDATE");
+    const itemsToAdd = [];
+    var counter = 0;
     for (data in checkBoxList) {
         console.log("check box[" + data + "] = " + checkBoxList[data].checked);
         console.log(document.getElementById(getIDs[data]).checked);
-
+        if (document.getElementById(getIDs[data]).checked) {
+            itemsToAdd[counter] = getIDs[data];
+            counter += 1;
+        }
     }
+    console.log(itemsToAdd);
+
+
+    await fetch('http://localhost:49200/api/AccountAddFlags', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: (itemsToAdd),
+    })
 
 }
 

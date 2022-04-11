@@ -1,4 +1,4 @@
-﻿
+﻿using Console_Runner.Logging;
 
 namespace Console_Runner.FoodService
 {
@@ -6,18 +6,24 @@ namespace Console_Runner.FoodService
     {
         private const string UM_CATEGORY = "Data Store";
         private readonly IFoodGateway _foodItemAccess;
-        public FoodDBOperations(IFoodGateway foodItemAccess)
+        private readonly LogService _logService;
+        public FoodDBOperations(IFoodGateway foodItemAccess, LogService logService)
         {
-            this._foodItemAccess = foodItemAccess;
+            _foodItemAccess = foodItemAccess;
+            _logService = logService;
         }
 
+        //TODO: how to get user id???
         public async Task<bool> AddFoodItemAsync(FoodItem foodItem)
         {
             try
             {
                 await _foodItemAccess.AddFoodItemAsync(foodItem);
+                _ = _logService.WriteLogAsync("placeholder", LogLevel.Info, Category.Data, DateTime.Now,
+                        $"Added food item \"{foodItem.ProductName}\"");
                 return true;
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 return false;
             }
@@ -26,12 +32,18 @@ namespace Console_Runner.FoodService
 
         public async Task<bool> AddNutritionLabelAsync(NutritionLabel nutritionLabel)
         {
-            return await _foodItemAccess.AddNutritionLabelAsync(nutritionLabel);
+            var toReturn = await _foodItemAccess.AddNutritionLabelAsync(nutritionLabel);
+            _ = _logService.WriteLogAsync("placeholder", LogLevel.Info, Category.Data, DateTime.Now,
+                    $"Added nutrition label for food item {nutritionLabel.Barcode}");
+            return toReturn;
         }
 
         public async Task<bool> AddNutrientAsync(Nutrient nutrient)
         {
-            return await _foodItemAccess.AddNutrientAsync(nutrient);
+            var toReturn = await _foodItemAccess.AddNutrientAsync(nutrient);
+            _ = _logService.WriteLogAsync("placeholder", LogLevel.Info, Category.Data, DateTime.Now,
+                    $"Added nutrient \"{nutrient.Name}\"");
+            return toReturn;
         }
 
         public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Ingredient> ingredientList)
@@ -56,6 +68,8 @@ namespace Console_Runner.FoodService
                     await _foodItemAccess.AddNutrientAsync(vitamin.Item1);
                     await _foodItemAccess.AddLabelNutrientAsync(new LabelNutrient(foodItem.Barcode, vitamin.Item1.NutrientID, vitamin.Item2));
                 }
+                _ = _logService.WriteLogAsync("placeholder", LogLevel.Info, Category.Data, DateTime.Now,
+                        $"Added product \"{foodItem.ProductName}\"");
                 return true;
             }catch (Exception ex)
             {
@@ -70,28 +84,37 @@ namespace Console_Runner.FoodService
             {
                 throw new Exception("No label exists for the provided barcode");
             }
+            _ = _logService.WriteLogAsync("placeholder", LogLevel.Info, Category.Data, DateTime.Now,
+                    $"Retrieved nutrition label for food item {barcode}");
             return label;
         }
 
         public async Task<bool> AddIngredientAsync(Ingredient ingredient)
         {
-            return await _foodItemAccess.AddIngredientAsync(ingredient);
+            var toReturn = await _foodItemAccess.AddIngredientAsync(ingredient);
+            _ = _logService.WriteLogAsync("placeholder", LogLevel.Info, Category.Data, DateTime.Now,
+                    $"Added ingredient \"{ingredient.IngredientName}\"");
+            return toReturn;
         }
 
         public async Task<List<Ingredient>> GetIngredientsListAsync(string barcode)
         {
             List<Ingredient> ingList = new List<Ingredient>();
             ingList = await _foodItemAccess.RetrieveIngredientListAsync(barcode);
+            _ = _logService.WriteLogAsync("placeholder", LogLevel.Info, Category.Data, DateTime.Now,
+                    $"Retrieved ingredients for item {barcode}");
             return ingList;
         }
 
         public async Task<FoodItem> GetScannedItemAsync(string barcode)
         {
-            FoodItem?foodItem = await _foodItemAccess.RetrieveScannedFoodItemAsync(barcode);
+            FoodItem? foodItem = await _foodItemAccess.RetrieveScannedFoodItemAsync(barcode);
             if(foodItem == null)
             {
                 throw (new Exception("No such product exists in the DB"));
             }
+            _ = _logService.WriteLogAsync("placeholder", LogLevel.Info, Category.Data, DateTime.Now,
+                    $"Retrieved food item \"{foodItem.ProductName}\"");
             return foodItem;
         }
     }

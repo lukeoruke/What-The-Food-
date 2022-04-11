@@ -1,14 +1,25 @@
-﻿namespace Console_Runner.Logging
+﻿using Console_Runner.Logging.Testing;
+namespace Console_Runner.Logging
 {
-    public class LogService
+    public static class LogService
     {
-        private ILogGateway _logAccess;
-        private IUserIDGateway _userIDAccess;
+        //TODO: read DataStoreType as a value from a config file instead of hardcoding
+        private const string DataStoreType = "EF";
+        private static ILogGateway _logAccess;
+        private static IUserIDGateway _userIDAccess;
         //logging objects
-        public LogService(ILogGateway logAccessor, IUserIDGateway uidAccessor)
+        static LogService()
         {
-            _logAccess = logAccessor;
-            _userIDAccess = uidAccessor;
+            if(DataStoreType == "EF")
+            {
+                _logAccess = new EFLogGateway();
+                _userIDAccess = new EFUserIdentifierGateway();
+            }
+            else
+            {
+                _logAccess = new MemLogGateway();
+                _userIDAccess = new MemUserIdentifierGateway();
+            }
         }
 
         /// <summary>
@@ -21,7 +32,7 @@
         /// <param name="message">A string containing a message to be included with the log entry.</param>
         /// <param name="timeout">The time in milliseconds that are allowed to elapse before the log attempt is considered failed.</param>
         /// <returns>A Log object representing the log entry to be written to the database.</returns>
-        public async Task<Log> WriteLogAsync(string actorID, LogLevel level, Category category, DateTime timestamp, string message, int timeout = -1)
+        public static async Task<Log> WriteLogAsync(string actorID, LogLevel level, Category category, DateTime timestamp, string message, int timeout = -1)
         {
             CancellationTokenSource cts = new CancellationTokenSource();
             try

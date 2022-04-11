@@ -1,4 +1,5 @@
 ﻿using Console_Runner.FoodService;
+using Console_Runner.Logging;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Food.Controllers
@@ -8,12 +9,11 @@ namespace Food.Controllers
     [ApiController]
     public class GetFoodProductFromBarCodeController : ControllerBase
     {
-        private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();
-        private readonly FoodDBOperations _foodDB;
         private string barcode;
         public GetFoodProductFromBarCodeController()
         {
-            _foodDB = new FoodDBOperations(_foodServiceGateway);
+            LogService logger = LogServiceLocator.GetLogService(LogServiceLocator.DataStoreType.EntityFramework);
+            FoodDBOperations foodDb = FoodServiceLocator.GetFoodService(FoodServiceLocator.DataStoreType.EntityFramework);
             IFormCollection formData = Request.Form;
             barcode = formData["barcode"];
         }
@@ -22,7 +22,13 @@ namespace Food.Controllers
         [HttpPost]
         public async Task<ActionResult<FoodItem>> GET()
         {
-            return await _foodDB.GetScannedItemAsync(barcode);
+            LogService logger = LogServiceLocator.GetLogService(LogServiceLocator.DataStoreType.EntityFramework);
+            FoodDBOperations foodDb = FoodServiceLocator.GetFoodService(FoodServiceLocator.DataStoreType.EntityFramework);
+            return await foodDb.GetScannedItemAsync(barcode);
+        }
+
+        private void InstantiateServices(out FoodDBOperations foodDb)
+        {
         }
     }
 }

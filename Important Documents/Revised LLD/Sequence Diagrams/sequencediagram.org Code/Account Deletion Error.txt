@@ -1,0 +1,89 @@
+title UM Account Deletion Error
+
+participant "Front End" as fe
+participant "Service Broker" as sb
+participant "UserServiceController" as uc
+participant "UserManagement" as um
+participant "EntityFrameworkPermissionGateway" as pdao
+participant "EntityFrameworkUserGateway" as udao
+participant "User Database (MariaDB)" as udb
+participant "LoggingService" as ls
+participant "EntityFrameworkLogGateway" as ldao
+participant "Logs Database" as ldb
+
+# begin
+note left of fe: Assume that before this sequence,\nthe user attempting this action is\nlogged in and on the\naccount management view.
+activate fe
+fe-->sb:HTTP DELETE specifying account deletion request\nwith actor ID and one-time password, and target ID
+# instantiation
+activate sb
+sb-->uc:HTTP DELETE specifying account deletion request\nwith actor ID and one-time password, and target ID
+activate uc
+uc->udao:UserAccess = new EntityFrameworkUserGateway()
+activate udao
+udao->udao:ctor
+udao-->uc:EntityFrameworkUserGateway instance
+deactivate udao
+uc->pdao:PermissionAccess = new EntityFrameworkPermissionGateway()
+activate pdao
+pdao->pdao:ctor
+pdao-->uc:EntityFrameworkPermissionGateway instance
+deactivate pdao
+uc->um:UM = new UserManagement(UserAccess, PermissionAccess)
+activate um
+um->um:ctor
+um-->uc:UserManagement instance
+deactivate um
+# auth actor
+uc-->um:UM.HasPermission(actorID, "deleteAccount")
+activate um
+um-->pdao:PermissionAccess.HasPermission(actorID, "deleteAccount")
+activate pdao
+pdao-->udb:SELECT FROM permissions JOIN users\nWHERE(accountID = ... AND resource = 'deleteAccount')
+activate udb
+udb-->pdao: 1 tuple
+deactivate udb
+pdao-->um:true
+deactivate pdao
+um-->uc:true
+deactivate um
+# perform action
+uc-->um:UM.DeleteUser(targetID)
+activate um
+um-->udao:UserAccess.RemoveAccount(targetID)
+activate udao
+udao-->udb:DELETE FROM users WHERE accountID = targetID
+activate udb
+udb-->udao:0
+deactivate udb
+udao-->um:new ArgumentException
+deactivate udao
+um-->uc:new ArgumentException
+deactivate um
+uc-->sb:HTTP Status code 409
+deactivate uc
+sb->ldao:LogAccess = new EntityFrameworkLogGateway()
+activate ldao
+ldao->ldao:ctor
+ldao-->sb: EntityFrameworkLogGateway instance
+deactivate ldao
+sb->ls:LogService = new LoggingService(LogAccess)
+activate ls
+ls->ls:ctor
+ls-->sb:LoggingService instance
+deactivate ls
+sb-->ls:LogService.LogAccountDeletion("Error", "Account Deletion", true, "Server", actorID, targetID)
+activate ls
+ls->ls:ToLog = new Log("Error", "Account Deletion", true, "Server", actorID, targetID)
+ls-->ldao:LogAccess.WriteLog(ToLog)
+activate ldao
+ldao-->ldb:INSERT INTO logs VALUES(...)
+activate ldb
+ldb-->ldao:1
+deactivate ldb
+ldao-->ls:true
+deactivate ldao
+ls-->sb:true
+deactivate ls
+sb-->fe:HTTP Status code 200
+deactivate sb

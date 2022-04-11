@@ -4,8 +4,7 @@
  */
 using Microsoft.Extensions.DependencyInjection;
 using Console_Runner;
-using Console_Runner.DAL;
-using Console_Runner.AMRModel;
+
 
 
 [STAThread]
@@ -17,5 +16,5 @@ static void Main()
 /**
 IDataAccess dal = new DummyDaL();
 ILogger log = new Logging(dal);
-UM um = new UM(dal, log);
+UM um = new UM(dal, log); //UM has been removed from this scope
 **/

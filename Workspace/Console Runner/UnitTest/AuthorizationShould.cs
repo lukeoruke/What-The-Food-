@@ -1,98 +1,121 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using Console_Runner.AccountService;
 using Xunit;
-using Console_Runner;
-using Console_Runner.DAL;
-using Console_Runner.User_Management;
-
-namespace UnitTest
+namespace Test.UM
 {
     public class AuthorizationShould
     {
+        private const string UM_CATEGORY = "Data Store";
+        private readonly IAccountGateway _accountAccess = new MemAccountGateway();
+        private readonly IAuthorizationGateway _permissionService = new MemAuthorizationGateway();
+        private readonly IFlagGateway _flagGateway = new MemFlagGateway();
+
         [Fact]
         public void InstantiateProperly()
         {
 
             // Arrange
-            IPermissionGateway EfPermission = new MemPermissionGateway();
-            string testEmail = "test@example.com";
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            int id = 91929821;
             string testPerm = "scanFood";
 
             // Act
-            Permission perm1 = new Permission(testEmail, testPerm);
+            Authorization perm1 = new Authorization(testPerm);
+            perm1.UserID = id;
 
             // Assert
             Assert.NotNull(perm1);
-            Assert.NotNull(perm1.Email);
-            Assert.NotNull(perm1.Resource);
-            Assert.Equal(testEmail, perm1.Email);
-            Assert.Equal(testPerm, perm1.Resource);
+            Assert.True(perm1.UserID != 0);
+            Assert.NotNull(perm1.Permission);
+            Assert.Equal(id, perm1.UserID);
+            Assert.Equal(testPerm, perm1.Permission);
         }
 
         [Fact]
         public void SetPropertiesProperly()
         {
             // Arrange
-            IPermissionGateway EfPermission = new MemPermissionGateway();
-            string testEmail = "test@example.com";
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            int testID = 12312;
             string testResource = "scanFood";
-            string modEmail = "test1@example.com";
-            string modResource = "deleteAccount";
+            int AdminID = 446546;
+            string AdminResource = "deleteAccount";
 
             // Act
-            Permission perm1 = new Permission(testEmail, testResource);
-            EfPermission.AddPermission(perm1);
+            Authorization perm1 = new Authorization(testResource);
+            perm1.UserID = testID;
+       
+            Authorization perm2 = new Authorization(AdminResource);
+            perm2.UserID = AdminID;
+
 
             // Assert
             Assert.NotNull(perm1);
-            Assert.NotNull(perm1.Email);
-            Assert.NotNull(perm1.Resource);
-            Assert.NotEqual(modEmail, perm1.Email);
-            Assert.NotEqual(modResource, perm1.Resource);
+            Assert.True(perm1.UserID == testID);
+            Assert.True(perm1.Permission == testResource);
+            Assert.True(perm2.UserID == AdminID);
+            Assert.True(perm2.Permission == AdminResource);
+            Assert.NotNull(perm1.Permission);
+            Assert.NotNull(perm1.Permission);
+            Assert.NotNull(perm2.Permission);
+            Assert.NotNull(perm2.Permission);
+            Assert.NotEqual(AdminID, perm1.UserID);
+            Assert.NotEqual(AdminResource, perm1.Permission);
         }
 
         [Fact]
-        public void SetDefaultPermissionsProperly()
+        public async void SetDefaultPermissionsProperly()
         {
             // Arrange
-            IPermissionGateway EfPermission = new MemPermissionGateway();
-            string testEmail = "test@example.com";
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            string tester = "SetDefaultPermissionsProperly";
+            Account acc = new Account();
+            acc.Email = tester;
+            acc.UserID = 509123;
 
             // Act
-            PermissionService permService = new PermissionService(EfPermission);
-            permService.AssignDefaultUserPermissions(testEmail);
-;
+
+            await _permissionService.AssignDefaultUserPermissions(acc.UserID);
 
             // Assert
-            Assert.True(EfPermission.HasPermission(testEmail, "scanFood"));
-            Assert.True(EfPermission.HasPermission(testEmail, "editOwnAccount"));
-            Assert.True(EfPermission.HasPermission(testEmail, "leaveReview"));
-            Assert.True(EfPermission.HasPermission(testEmail, "deleteOwnAccount"));
-            Assert.True(EfPermission.HasPermission(testEmail, "historyAccess"));
-            Assert.True(EfPermission.HasPermission(testEmail, "AMR"));
-            Assert.True(EfPermission.HasPermission(testEmail, "foodFlag"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "scanFood"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "editOwnAccount"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "leaveReview"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "deleteOwnAccount"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "historyAccess"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "AMR"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "foodFlag"));
+
+            Assert.True(await um.HasPermissionAsync(acc.UserID, "scanFood"));
+            Assert.True(await um.HasPermissionAsync(acc.UserID, "editOwnAccount"));
+            Assert.True(await um.HasPermissionAsync(acc.UserID, "leaveReview"));
+            Assert.True(await um.HasPermissionAsync(acc.UserID, "deleteOwnAccount"));
+            Assert.True(await um.HasPermissionAsync(acc.UserID, "historyAccess"));
+            Assert.True(await um.HasPermissionAsync(acc.UserID, "AMR"));
+            Assert.True(await um.HasPermissionAsync(acc.UserID, "foodFlag"));
         }
 
         [Fact]
-        public void SetAdminPermissionsProperly()
+        public async void SetAdminPermissionsProperly()
         {
             // Arrange
-            IPermissionGateway EfPermission = new MemPermissionGateway();
-            string testEmail = "test@example.com";
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            string tester = "SetAdminPermissionsProperly";
+            Account acc = new Account();
+            acc.Email = tester;
+
+            acc.UserID = 509123;
 
             // Act
-            PermissionService permService = new PermissionService(EfPermission);
-            permService.AssignDefaultAdminPermissions(testEmail);
+
+            await _permissionService.AssignDefaultAdminPermissions(acc.UserID);
 
             // Assert
-            Assert.True(EfPermission.HasPermission(testEmail, "enableAccount"));
-            Assert.True(EfPermission.HasPermission(testEmail, "disableAccount"));
-            Assert.True(EfPermission.HasPermission(testEmail, "deleteAccount"));
-            Assert.True(EfPermission.HasPermission(testEmail, "createAdmin"));
-            Assert.True(EfPermission.HasPermission(testEmail, "editOtherAccount"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "enableAccount"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "disableAccount"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "deleteAccount"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "createAdmin"));
+            Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "editOtherAccount"));
         }
 
 

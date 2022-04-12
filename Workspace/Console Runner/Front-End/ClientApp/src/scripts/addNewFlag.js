@@ -59,7 +59,7 @@ function displayIngs() {
 
 
 async function getIngs() {
-
+    displayingFlags = false;
     console.log(page);
     await fetch('http://localhost:49200/api/GetNIngredients?' + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
@@ -68,6 +68,13 @@ async function getIngs() {
 
 async function getUserFlags(e) {
     e.preventDefault();
+    var btn = document.getElementById("viewFlags");
+    btn.value = "return to add flags page";
+    btn = document.getElementById("returnButton");
+    btn.onsubmit = function () { returnToAddFlags };
+
+    
+
     deleteCurrentData(e);
     await fetch('http://localhost:49200/api/GetAllAccountFlags?' + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
@@ -75,8 +82,12 @@ async function getUserFlags(e) {
     console.log("display user flags was clicked");
     displayingFlags = true;
 
+
     displayIngs();
 
+}
+async function returnToAddFlags() {
+    console.log("test");
 }
 
 async function addOrRemoveFlags(e) {
@@ -150,6 +161,7 @@ async function removeFlag(e) {
         },
         body: (itemsToRemove),
     })
+
 }
 
 async function loadnextPage(e) {

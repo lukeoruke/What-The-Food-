@@ -3,6 +3,7 @@ var getIDs = [];
 var searching = false;
 var search;
 var page = "0";
+var displayingFlags = false;
 async function AddFlagCheckBoxes() {
     console.log("ADD FLAG CHECK BOXES FUNCTION STARTING");
     if (!searching) {
@@ -47,6 +48,7 @@ function displayIngs() {
         label.appendChild(description);
         label.id = data * 100;
 
+
         // add the label element to your div
         document.getElementById('container').appendChild(label);
         document.getElementById('container').innerHTML += "<br/>";
@@ -62,6 +64,28 @@ async function getIngs() {
     await fetch('http://localhost:49200/api/GetNIngredients?' + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
+}
+
+async function getUserFlags(e) {
+    e.preventDefault();
+    deleteCurrentData(e);
+    await fetch('http://localhost:49200/api/GetAllAccountFlags?' + page)
+        .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
+        .then(data => console.log(data));
+    console.log("display user flags was clicked");
+    displayingFlags = true;
+
+    displayIngs();
+
+}
+
+async function addOrRemoveFlags(e) {
+    e.preventDefault();
+    if (displayingFlags) {
+        removeFlag(e);
+    } else {
+        sendFlagUpdate(e);
+    }
 }
 
 async function searchIngs(e) {
@@ -103,6 +127,31 @@ async function sendFlagUpdate(e) {
 
 }
 
+
+
+async function removeFlag(e) {
+    e.preventDefault();
+
+    const itemsToRemove = [];
+    var counter = 0;
+    for (data in checkBoxList) {
+        console.log("check box[" + data + "] = " + checkBoxList[data].checked);
+        console.log(document.getElementById(getIDs[data]).checked);
+        if (document.getElementById(getIDs[data]).checked) {
+            itemsToRemove[counter] = getIDs[data];
+            counter += 1;
+        }
+    }
+    console.log(itemsToRemove);
+    await fetch('http://localhost:49200/api/AccountRemoveFlag', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: (itemsToRemove),
+    })
+}
+
 async function loadnextPage(e) {
     e.preventDefault();
     deleteCurrentData(e);
@@ -131,6 +180,7 @@ function deleteCurrentData(e) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
+    checkBoxList = [];
 }
 
 

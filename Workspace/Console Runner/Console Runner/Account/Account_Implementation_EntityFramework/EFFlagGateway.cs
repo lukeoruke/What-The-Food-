@@ -16,8 +16,8 @@ namespace Console_Runner.AccountService
         }
         public async Task<bool> AccountHasFlagAsync(int userID, int ingredientID)
         {
-            FoodFlag foodFlag = new(userID, ingredientID);
-            return await _efContext.FoodFlags.FindAsync(foodFlag) != null;
+            //FoodFlag foodFlag = new(userID, ingredientID);
+            return await _efContext.FoodFlags.FindAsync(userID, ingredientID) != null;
         }
 
         public async Task<bool> AddFlagAsync(FoodFlag flag)
@@ -49,14 +49,18 @@ namespace Console_Runner.AccountService
 
         public async Task<bool> RemoveFoodFlagAsync(int userID, int ingredientID)
         {
-            if (await AccountHasFlagAsync(userID, ingredientID))
+            try
             {
                 FoodFlag foodFlag = new(userID, ingredientID);
                 _efContext.FoodFlags.Remove(foodFlag);
                 await _efContext.SaveChangesAsync();
                 return true;
+            }catch(Exception ex)
+            {
+                throw new Exception("Remove flag failed: " + ex.ToString);
             }
-            return false;
+                
+
         }
     }
 }

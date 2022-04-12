@@ -14,6 +14,10 @@ namespace Console_Runner.FoodService
             _efContext = new ContextFoodDB();
         }
 
+        public Ingredient GetIngredient(int id)
+        {
+            return _efContext.Ingredients.Where(x => x.IngredientID == id).ToList().ElementAt(0);
+        }
         public async Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take)
         {
             List<Ingredient> results = await _efContext.Ingredients.Where(x => x.IngredientName.Contains(search)).OrderBy(x => x.IngredientName).ToListAsync();

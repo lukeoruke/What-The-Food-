@@ -5,13 +5,13 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Console_Runner.Account.Account_Authentication
+namespace Console_Runner.AccountService.Authentication
 {
-    internal interface IAuthenticationService
+    public interface IAuthenticationService
     {
-        public string generateToken(string data, ClaimsIdentity claimsIdentity);
+        public string GenerateToken(string data);
         public string Decrypt(string encryptedData);
         public bool ValidateToken(string token);
-        public string getUsername(string token);
+        public string GetUsername(string token);
     }
 }

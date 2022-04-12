@@ -1,6 +1,6 @@
 ﻿using Console_Runner.AccountService;
 using Microsoft.AspNetCore.Mvc;
-using  Microservice.AccountLogin;
+
 namespace Microservice.AccountLogin.Controllers
 {
     [Route("api/[controller]")]
@@ -37,13 +37,10 @@ namespace Microservice.AccountLogin.Controllers
 
             Console.WriteLine(formData["email"]);
             Console.WriteLine(formData["password"]);
-
-
-
             try
             {
                 AMR amr = new AMR();
-                Account account = new Account();
+                Console_Runner.AccountService.Account account = new();
                 account.Email = formData["email"].ToString();
                 account.Password = formData["password"].ToString();
 

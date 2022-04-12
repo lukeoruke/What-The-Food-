@@ -43,7 +43,7 @@ namespace Console_Runner.AccountService
 
         public int NumberOfAccounts();
 
-        public string getSalt(int userID);
+        public string? GetSalt(int userID);
 
     }
 }

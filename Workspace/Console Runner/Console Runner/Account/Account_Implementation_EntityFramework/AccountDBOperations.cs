@@ -194,9 +194,10 @@ namespace Console_Runner.AccountService
             int userID = _accountAccess.GetIDFromEmail(email);
             if (userID == -1)
             {
-                throw new Exception("no account exists");//REMOVE LATER BECAUSE OF SECURITY CONCERN
+                return false;
+                //throw new Exception("no account exists");//REMOVE LATER BECAUSE OF SECURITY CONCERN
             }
-            string salt = _accountAccess.getSalt(userID);
+            string salt = _accountAccess.GetSalt(userID);
             byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
             byte[] passBytes = Encoding.ASCII.GetBytes(userPass);
             string hashedPass = ComputeHash(saltBytes, passBytes);
@@ -205,7 +206,7 @@ namespace Console_Runner.AccountService
             return (acc != null && acc.Password == hashedPass);
         }
         //takes in username and password. If valid returns an account object for the user with specified data.
-        public async Task<Account> SignInAsync(string email, string userPass)
+        public async Task<Account?> SignInAsync(string email, string userPass)
         {
             
             if (await AuthenticateUserPassAsync(email, userPass))

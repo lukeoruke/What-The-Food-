@@ -9,9 +9,9 @@ using System.Text.Json.Nodes;
 using System.Web;
 using Microsoft.Extensions.Configuration;
 
-namespace Console_Runner.Account.Account_Authentication
+namespace Console_Runner.AccountService.Authentication
 {
-    public class JWTAuthenticationService
+    public class JWTAuthenticationService : IAuthenticationService
     {
         private readonly string _key;
 
@@ -23,17 +23,19 @@ namespace Console_Runner.Account.Account_Authentication
 
 
 
-        public string generateToken(string data, ClaimsIdentity claimsIdentity)
+        public string GenerateToken(string data)
         {
             byte[] keyBytes = Encoding.UTF8.GetBytes(_key);
             var segments = new List<string>();
 
-            claimsIdentity.AddClaim(new Claim("username", data));
-            claimsIdentity.AddClaim(new Claim("iat", DateTimeOffset.Now.ToUnixTimeSeconds().ToString()));
+            List<Claim> userClaims = new();
+            userClaims.Add(new Claim("username", data));
+            userClaims.Add(new Claim("iat", DateTimeOffset.Now.ToUnixTimeSeconds().ToString()));
+            userClaims.Add(new Claim("exp", DateTimeOffset.Now.AddHours(1).ToUnixTimeSeconds().ToString()));
 
             var header = new { alg = "HS256", typ = "JWT" };
             byte[] headerBytes = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(header));
-            JwtPayload payload = new JwtPayload(claimsIdentity.Claims);
+            JwtPayload payload = new JwtPayload(userClaims);
 
             byte[] payloadBytes = Encoding.UTF8.GetBytes(payload.SerializeToJson());
 
@@ -99,7 +101,7 @@ namespace Console_Runner.Account.Account_Authentication
         }
 
 
-        public string getUsername(string token)
+        public string GetUsername(string token)
         {
 
             var parts = token.Split('.');

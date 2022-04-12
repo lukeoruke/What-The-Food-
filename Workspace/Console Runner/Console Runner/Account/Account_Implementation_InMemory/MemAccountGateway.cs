@@ -11,7 +11,7 @@ namespace Console_Runner.AccountService
             _memContextAccount = new List<Account>();
         }
 
-        public string getSalt(int userID)
+        public string? GetSalt(int userID)
         {
             foreach(Account account in _memContextAccount)
             {

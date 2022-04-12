@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Console_Runner.AccountService;
+using Console_Runner.AccountService.Authentication;
 namespace Microservice.AccountLogin.Controllers
 {
     [Route("api/[controller]")]
@@ -10,18 +11,21 @@ namespace Microservice.AccountLogin.Controllers
     //[EnableCors("MyAllowSpecificOrigins")] fts
     public class AccountLoginController : ControllerBase
     {
-
+        private readonly IConfiguration _configuration;
         private const string UM_CATEGORY = "Data Store";
         private readonly IAccountGateway _accountAccess = new EFAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
         
-
-        [HttpGet]
-        //place methods here
-        public async Task<ActionResult<AccountLogin>> Get()
+        public AccountLoginController(IConfiguration config)
         {
-            
+            _configuration = config;
+        }
+
+        //place methods here
+        [HttpGet]
+        public IActionResult TestOne()
+        {
             var user = new AccountLogin();
             Console.WriteLine("asdkfhjaweklfhjasdfhlafhlakfha2");
             user.email = "something@testEmail.com";
@@ -29,36 +33,33 @@ namespace Microservice.AccountLogin.Controllers
         }
 
         [HttpPost]
-        public void Post()
+        public IActionResult TestTwo()
         {
-            AccountDBOperations _accountDBOperations = new AccountDBOperations
+            Console.WriteLine("Post received");
+            AccountDBOperations accountService = new AccountDBOperations
                 (_accountAccess, _permissionService, _flagGateway);
-            Console.WriteLine("SUCCESSS!!!");
-            Console.WriteLine("Received Post from LoginController");
-            //Console.WriteLine(Request.Form("username"));
+            IAuthenticationService authenticationService = new JWTAuthenticationService(_configuration["JWTSecret"].ToString());
 
             IFormCollection formData = Request.Form;
 
-            Console.WriteLine(formData["email"]);
-            Console.WriteLine(formData["password"]);
-
-
-
             try
             {
-               
-
-                Console_Runner.AccountService.Account account = _accountDBOperations.SignIn(formData["email"].ToString(), formData["password"].ToString());
+                Console.WriteLine($"email: {formData["email"].ToString()} pass: {formData["password"].ToString()}");
+                Console_Runner.AccountService.Account? account = accountService.SignInAsync(formData["email"].ToString(), formData["password"].ToString()).Result;
                 if (account != null)
                 {
-
+                    return Ok(authenticationService.GenerateToken(account.Email));   
                 }
-                
-                Console.WriteLine(account.ToString());
+                else
+                {
+                    return new UnauthorizedResult();
+                }
+                Console.WriteLine(account?.ToString() ?? "Account not found.");
             }
             catch (FileNotFoundException e)
             {
                 Console.WriteLine(e.ToString());
+                return new StatusCodeResult(500);
             }
         }
     }

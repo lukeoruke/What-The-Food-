@@ -17,7 +17,7 @@ namespace Console_Runner.AccountService
             _efContext = new ContextAccountDB();
         }
 
-        public string getSalt(int userID)
+        public string? GetSalt(int userID)
         {
             foreach(var account in _efContext.Accounts)
             {
@@ -36,7 +36,7 @@ namespace Console_Runner.AccountService
         /// <returns>true if account exists false otherwise</returns>
         public async Task<bool>AccountExistsAsync(int UserID)
         {
-            return await _efContext.Accounts.FindAsync(UserID) == null;
+            return await _efContext.Accounts.FindAsync(UserID) != null;
         }
 
         public async Task<bool> AddAccountAsync(Account acc)
@@ -107,8 +107,8 @@ namespace Console_Runner.AccountService
 
         public int GetIDFromEmail(string email)
         {
-            var userEmail = _efContext.Accounts.Where(r => r.Email == email);
-            return userEmail.ElementAt(0).UserID;
+            var userEmail = _efContext.Accounts.Where(r => r.Email == email).FirstOrDefault();
+            return userEmail?.UserID ?? -1;
         }
 
         public int NumberOfAccounts()

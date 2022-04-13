@@ -26,7 +26,7 @@ namespace Food.Controllers
                 string search = inputarr[1];
 
                 string page = inputarr[2];
-                int numberOfItemsDisplayedAtOnce = 5;
+                int numberOfItemsDisplayedAtOnce = 1;
                 Console.WriteLine("GET " + search);
                 var allIngredientList = await _foodDBOperations.GetIngredientBySearchAsync(search, numberOfItemsDisplayedAtOnce * int.Parse(page)
                     , numberOfItemsDisplayedAtOnce);

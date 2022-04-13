@@ -390,6 +390,11 @@ namespace Console_Runner.AccountService
             return await _flagService.AccountHasFlagAsync(userID, IngredientID);
         }
 
+        public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take)
+        {
+            return await _flagService.GetNAccountFlags(userID, skip, take);
+        }
+
         public List<FoodFlag> GetAllAccountFlags(int userID)
         {
             return _flagService.GetAllAccountFlags(userID);

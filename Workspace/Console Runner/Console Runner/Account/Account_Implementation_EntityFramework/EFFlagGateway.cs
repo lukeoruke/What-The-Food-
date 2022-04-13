@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,7 +34,12 @@ namespace Console_Runner.AccountService
                 return false;
             }
         }
-
+        public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take)
+        {
+            List<FoodFlag> results =  await _efContext.FoodFlags.Where(x => x.UserID == userID).
+                OrderBy(x => x.IngredientID).Skip(skip).Take(take).ToListAsync();
+            return results;
+        }
         public List<FoodFlag> GetAllAccountFlags(int userID)
         {
             List<FoodFlag> flagList = new List<FoodFlag>();

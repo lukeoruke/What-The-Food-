@@ -22,12 +22,13 @@ namespace Food.Controllers
             int userID = 0;//TODO GET USER ID
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway);
-            //string page = Request.QueryString.Value;
-            //page = page.Substring(1);
+            string page = Request.QueryString.Value;
+            page = page.Substring(1);
+            int numberOfItemsDisplayedAtOnce = 2;
             try
             {
-
-                var allFlags =  _accountDBOperations.GetAllAccountFlags(userID);
+                var allFlags = await _accountDBOperations.GetNAccountFlags(userID, numberOfItemsDisplayedAtOnce * int.Parse(page)
+                    , numberOfItemsDisplayedAtOnce);
                 List<Ingredient> ingredients = new List<Ingredient>();
                 for(int i = 0; i < allFlags.Count; i++)
                 {

@@ -75,8 +75,6 @@ async function getUserFlags(e) {
     btn.value = "return to add flags page";
     btn = document.getElementById("returnButton");
     btn.onsubmit = function () { returnToAddFlags };
-    currentPage = "userFlags";
-    
 
     deleteCurrentData(e);
     await fetch('http://localhost:49200/api/GetAllAccountFlags?' + page)
@@ -90,13 +88,16 @@ async function getUserFlags(e) {
 
 }
 async function returnToAddFlags() {
+    console.log("RETURNING TO BASE PAGE");
+    page = "0";
+    currentPage = "default";
     console.log("test");
     getIngs();
     displayIngs();
     return;
 }
 
-async function addOrRemoveFlags(e) {
+async function UpdateFlagsButtonPressed(e) {
     e.preventDefault();
     if (displayingFlags) {
         removeFlag(e);
@@ -168,10 +169,8 @@ async function removeFlag(e) {
             counter += 1;
         }
     }
-
-
     console.log(itemsToRemove);
-    await fetch('http://localhost:49200/api/AccountRemoveFlag', {
+    await fetch('http://localhost:49200/api/AccountRemoveFlag?' + page, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -179,8 +178,15 @@ async function removeFlag(e) {
         body: (itemsToRemove),
     })
     alert("Flag(s) removed from your account");
+    
     returnToAddFlags(e);
 
+}
+
+async function getUserFlagButtonPressed(e) {
+    page = "0";
+    currentPage = "removeFlags";
+    getUserFlags(e);
 }
 
 async function loadnextPage(e) {
@@ -196,7 +202,9 @@ async function loadnextPage(e) {
         displayIngs();
     } else if (currentPage == "search") {
         await searchIngs(e);
-    } else {
+    } else if (currentPage == "removeFlags") {
+        await getUserFlags(e);
+    }else {
         displayIngs();
     }
     console.log("page: " + page);
@@ -215,6 +223,8 @@ async function loadPreviousPage(e) {
         displayIngs();
     } else if (currentPage == "search") {
         await searchIngs(e);
+    } else if (currentPage == "removeFlags") {
+        await getUserFlags(e);
     } else {
         displayIngs();
     }

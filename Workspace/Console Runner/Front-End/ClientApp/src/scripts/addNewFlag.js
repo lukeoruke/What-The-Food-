@@ -4,14 +4,16 @@ var searching = false;
 var search;
 var page = "0";
 var displayingFlags = false;
+var currentPage = "default";
 async function AddFlagCheckBoxes() {
+    console.log(currentPage);
     console.log("ADD FLAG CHECK BOXES FUNCTION STARTING");
     if (!searching) {
         await getIngs();
     } else {
 
         searching = false;
-        console.log(search);
+        console.log("Search: " + search);
     }
     
     displayIngs();
@@ -22,6 +24,7 @@ function displayIngs() {
     var jsonData = localStorage.getItem('allIngredients');
     console.log(jsonData);
     const jsonConst = JSON.parse(jsonData);
+    console.log(jsonConst)
     var getNames = jsonConst.IngredientName;
     getIDs = jsonConst.IngredientID;
 
@@ -72,7 +75,7 @@ async function getUserFlags(e) {
     btn.value = "return to add flags page";
     btn = document.getElementById("returnButton");
     btn.onsubmit = function () { returnToAddFlags };
-
+    currentPage = "userFlags";
     
 
     deleteCurrentData(e);
@@ -88,6 +91,9 @@ async function getUserFlags(e) {
 }
 async function returnToAddFlags() {
     console.log("test");
+    getIngs();
+    displayIngs();
+    return;
 }
 
 async function addOrRemoveFlags(e) {
@@ -95,24 +101,32 @@ async function addOrRemoveFlags(e) {
     if (displayingFlags) {
         removeFlag(e);
     } else {
-        sendFlagUpdate(e);
+        sendNewFlag(e);
     }
 }
 
 async function searchIngs(e) {
     e.preventDefault();
-    page = "0";
-    searching = true;
+    deleteCurrentData(e);
     let search = document.getElementById('search').value;
-
-    await fetch('http://localhost:49200/api/AccountSearchIngredients?' + search)
+    if (search == "" || search == " ") {
+        returnToAddFlags(e);
+        return;
+    }
+    await fetch('http://localhost:49200/api/AccountSearchIngredients?' + search  + "?" + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
-    deleteCurrentData(e);
+    
     displayIngs();
 }
+async function searchButtonPressed(e) {
+    page = "0";
+    searching = true;
+    currentPage = "search";
+    searchIngs(e);
+}
 
-async function sendFlagUpdate(e) {
+async function sendNewFlag(e) {
     e.preventDefault();
     console.log("IN SENDFLAGUPDATE");
     const itemsToAdd = [];
@@ -125,6 +139,7 @@ async function sendFlagUpdate(e) {
             counter += 1;
         }
     }
+    alert("Flag(s) added to your account!");
     console.log(itemsToAdd);
 
 
@@ -153,6 +168,8 @@ async function removeFlag(e) {
             counter += 1;
         }
     }
+
+
     console.log(itemsToRemove);
     await fetch('http://localhost:49200/api/AccountRemoveFlag', {
         method: 'POST',
@@ -161,6 +178,8 @@ async function removeFlag(e) {
         },
         body: (itemsToRemove),
     })
+    alert("Flag(s) removed from your account");
+    returnToAddFlags(e);
 
 }
 
@@ -171,8 +190,17 @@ async function loadnextPage(e) {
     var pageNumber = parseInt(page);
     pageNumber += 1;
     page = String(pageNumber);
-    await getIngs()
-    displayIngs();
+    
+    if (currentPage == "default") {
+        await getIngs();
+        displayIngs();
+    } else if (currentPage == "search") {
+        await searchIngs(e);
+    } else {
+        displayIngs();
+    }
+    console.log("page: " + page);
+    
 }
 
 async function loadPreviousPage(e) {
@@ -182,8 +210,16 @@ async function loadPreviousPage(e) {
     var pageNumber = parseInt(page);
     pageNumber -= 1;
     page = String(pageNumber);
-    await getIngs()
-    displayIngs();
+    if (currentPage == "default") {
+        await getIngs();
+        displayIngs();
+    } else if (currentPage == "search") {
+        await searchIngs(e);
+    } else {
+        displayIngs();
+    }
+    console.log("page: " + page);
+    
 }
 
 function deleteCurrentData(e) {

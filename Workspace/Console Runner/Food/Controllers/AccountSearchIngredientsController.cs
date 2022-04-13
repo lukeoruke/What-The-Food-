@@ -18,15 +18,18 @@ namespace Food.Controllers
         {
             FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway);
 
-            int skip = 0;
-            int take = 10;
             try
             {
-                string search = Request.QueryString.Value;
-                search = search.Substring(1);
+                string input = Request.QueryString.Value;
+                Console.WriteLine("(accountSearchController)input: " + input);
+                string[] inputarr = input.Split('?');
+                string search = inputarr[1];
 
+                string page = inputarr[2];
+                int numberOfItemsDisplayedAtOnce = 5;
                 Console.WriteLine("GET " + search);
-                var allIngredientList = await _foodDBOperations.GetIngredientBySearchAsync(search, skip, take);
+                var allIngredientList = await _foodDBOperations.GetIngredientBySearchAsync(search, numberOfItemsDisplayedAtOnce * int.Parse(page)
+                    , numberOfItemsDisplayedAtOnce);
                 Console.WriteLine("Length of ing list(search function) = " + allIngredientList.Count());
                 string jsonStr = "{";
                 

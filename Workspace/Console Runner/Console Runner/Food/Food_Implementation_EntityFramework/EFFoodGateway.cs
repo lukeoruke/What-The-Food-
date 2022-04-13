@@ -20,13 +20,15 @@ namespace Console_Runner.FoodService
         }
         public async Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take)
         {
-            List<Ingredient> results = await _efContext.Ingredients.Where(x => x.IngredientName.Contains(search)).OrderBy(x => x.IngredientName).ToListAsync();
+            List<Ingredient> results = await _efContext.Ingredients.Where(x => x.IngredientName.Contains(search))
+                .OrderBy(x => x.IngredientName).Skip(skip).Take(take).ToListAsync();
             return results;
         }
 
         public async Task<List<Ingredient>>RetrieveNIngredientsAsync(int skip, int take)
         {
-            List<Ingredient> results = await _efContext.Ingredients.OrderBy(x => x.IngredientName).Skip(skip).Take(take).ToListAsync();
+            List<Ingredient> results = await _efContext.Ingredients.OrderBy(x => x.IngredientName)
+                .Skip(skip).Take(take).ToListAsync();
             return results;
         }
 

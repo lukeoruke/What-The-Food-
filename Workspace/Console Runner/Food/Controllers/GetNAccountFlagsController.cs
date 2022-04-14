@@ -8,7 +8,7 @@ namespace Food.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class GetAllAccountFlagsController : ControllerBase
+    public class GetNAccountFlagsController : ControllerBase
     {
         private const string UM_CATEGORY = "Data Store";
 

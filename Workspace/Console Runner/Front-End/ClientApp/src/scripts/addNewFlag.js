@@ -79,10 +79,11 @@ async function getUserFlags(e) {
 
     var btn2 = document.getElementById("updateFlagsLabel");
     btn2.value = "Remove Flag";
+ 
 
 
     deleteCurrentData(e);
-    await fetch('http://localhost:49200/api/GetAllAccountFlags?' + page)
+    await fetch('http://localhost:49200/api/GetNAccountFlags?' + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
     console.log("display user flags was clicked");
@@ -106,36 +107,15 @@ async function UpdateFlagsButtonPressed(e) {
     e.preventDefault();
     if (currentPage == "displayFlags") {
         removeFlag(e);
-    } else {
+    } else if (currentPage == "default") {
         sendNewFlag(e);
+    } else if(currentPage == "search") {
+
+    }else {
+        throw ("CurrentPage is not one of the values it is allowed to take.");
     }
 }
 
-async function searchIngs(e) {
-    e.preventDefault();
-    deleteCurrentData(e);
-    let search = document.getElementById('search').value;
-
-    await fetch('http://localhost:49200/api/AccountSearchIngredients?' + search  + "?" + page)
-        .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
-        .then(data => console.log(data));
-    
-    displayIngs();
-}
-async function searchButtonPressed(e) {
-    page = "0";
-    searching = true;
-    currentPage = "search";
-    var btn = document.getElementById("viewFlagsLabel");
-    btn.value = "Return to start";
-    btn = document.getElementById("viewFlags");
-    btn.onsubmit = function () { getUserFlagButtonPressed(e) };
-
-    var btn2 = document.getElementById("updateFlagsLabel");
-    btn2.value = "Add Flags";
-
-    await searchIngs(e);
-}
 
 async function sendNewFlag(e) {
     e.preventDefault();
@@ -194,9 +174,14 @@ async function removeFlag(e) {
 
 
 
+function deleteCurrentData() {
 
-
-
+    var parent = document.getElementById('container');
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
+    }
+    checkBoxList = [];
+}
 
 async function loadnextPage(e) {
     e.preventDefault();
@@ -205,7 +190,7 @@ async function loadnextPage(e) {
     var pageNumber = parseInt(page);
     pageNumber += 1;
     page = String(pageNumber);
-    
+
     if (currentPage == "default") {
         await getIngs();
         displayIngs();
@@ -213,11 +198,11 @@ async function loadnextPage(e) {
         await searchIngs(e);
     } else if (currentPage == "displayFlags") {
         await getUserFlags(e);
-    }else {
+    } else {
         displayIngs();
     }
     console.log("page: " + page);
-    
+
 }
 
 async function loadPreviousPage(e) {
@@ -238,16 +223,30 @@ async function loadPreviousPage(e) {
         displayIngs();
     }
     console.log("page: " + page);
-    
+
 }
+async function searchIngs(e) {
+    e.preventDefault();
+    deleteCurrentData(e);
+    let search = document.getElementById('search').value;
 
-function deleteCurrentData() {
+    await fetch('http://localhost:49200/api/AccountSearchIngredients?' + search + "?" + page)
+        .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
+        .then(data => console.log(data));
 
-    var parent = document.getElementById('container');
-    while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
-    }
-    checkBoxList = [];
+    displayIngs();
 }
+async function searchButtonPressed(e) {
+    page = "0";
+    searching = true;
+    currentPage = "search";
+    var btn = document.getElementById("viewFlagsLabel");
+    btn.value = "Return to start";
+    btn = document.getElementById("viewFlags");
+    btn.onsubmit = function () { getUserFlagButtonPressed(e) };
 
+    var btn2 = document.getElementById("updateFlagsLabel");
+    btn2.value = "Add Flags";
 
+    await searchIngs(e);
+}

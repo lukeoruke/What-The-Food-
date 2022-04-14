@@ -3,18 +3,12 @@ var getIDs = [];
 var searching = false;
 var search;
 var page = "0";
-var displayingFlags = false;
 var currentPage = "default";
 async function AddFlagCheckBoxes() {
     console.log(currentPage);
     console.log("ADD FLAG CHECK BOXES FUNCTION STARTING");
-    if (!searching) {
-        await getIngs();
-    } else {
+    await getIngs();
 
-        searching = false;
-        console.log("Search: " + search);
-    }
     
     displayIngs();
 }
@@ -62,26 +56,34 @@ function displayIngs() {
 
 
 async function getIngs() {
-    displayingFlags = false;
     console.log(page);
     await fetch('http://localhost:49200/api/GetNIngredients?' + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 }
 
+async function getUserFlagButtonPressed(e) {
+    page = "0";
+    currentPage = "displayFlags";
+    getUserFlags(e);
+}
+
 async function getUserFlags(e) {
     e.preventDefault();
-    var btn = document.getElementById("viewFlags");
+    var btn = document.getElementById("viewFlagsLabel");
     btn.value = "return to add flags page";
-    btn = document.getElementById("returnButton");
+    btn = document.getElementById("viewFlags");
     btn.onsubmit = function () { returnToAddFlags };
+
+    var btn2 = document.getElementById("updateFlagsLabel");
+    btn2.value = "Remove Flag";
+
 
     deleteCurrentData(e);
     await fetch('http://localhost:49200/api/GetAllAccountFlags?' + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
     console.log("display user flags was clicked");
-    displayingFlags = true;
 
 
     displayIngs();
@@ -99,7 +101,7 @@ async function returnToAddFlags() {
 
 async function UpdateFlagsButtonPressed(e) {
     e.preventDefault();
-    if (displayingFlags) {
+    if (currentPage == "displayFlags") {
         removeFlag(e);
     } else {
         sendNewFlag(e);
@@ -111,7 +113,7 @@ async function searchIngs(e) {
     deleteCurrentData(e);
     let search = document.getElementById('search').value;
     if (search == "" || search == " ") {
-        returnToAddFlags(e);
+        returnToAddFlags();
         return;
     }
     await fetch('http://localhost:49200/api/AccountSearchIngredients?' + search  + "?" + page)
@@ -154,8 +156,6 @@ async function sendNewFlag(e) {
 
 }
 
-
-
 async function removeFlag(e) {
     e.preventDefault();
 
@@ -178,16 +178,17 @@ async function removeFlag(e) {
         body: (itemsToRemove),
     })
     alert("Flag(s) removed from your account");
-    
-    returnToAddFlags(e);
+
+    //returnToAddFlags();
+    getUserFlagButtonPressed(e);
 
 }
 
-async function getUserFlagButtonPressed(e) {
-    page = "0";
-    currentPage = "removeFlags";
-    getUserFlags(e);
-}
+
+
+
+
+
 
 async function loadnextPage(e) {
     e.preventDefault();
@@ -202,7 +203,7 @@ async function loadnextPage(e) {
         displayIngs();
     } else if (currentPage == "search") {
         await searchIngs(e);
-    } else if (currentPage == "removeFlags") {
+    } else if (currentPage == "displayFlags") {
         await getUserFlags(e);
     }else {
         displayIngs();
@@ -223,7 +224,7 @@ async function loadPreviousPage(e) {
         displayIngs();
     } else if (currentPage == "search") {
         await searchIngs(e);
-    } else if (currentPage == "removeFlags") {
+    } else if (currentPage == "displayFlags") {
         await getUserFlags(e);
     } else {
         displayIngs();

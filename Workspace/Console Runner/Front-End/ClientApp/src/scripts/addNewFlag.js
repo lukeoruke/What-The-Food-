@@ -1,9 +1,11 @@
-﻿var checkBoxList = [];
+﻿console.log("TOP OF FILE");
+var checkBoxList = [];
 var getIDs = [];
 var searching = false;
 var search;
 var page = "0";
 var currentPage = "default";
+
 async function AddFlagCheckBoxes() {
     console.log(currentPage);
     console.log("ADD FLAG CHECK BOXES FUNCTION STARTING");
@@ -73,7 +75,7 @@ async function getUserFlags(e) {
     var btn = document.getElementById("viewFlagsLabel");
     btn.value = "return to add flags page";
     btn = document.getElementById("viewFlags");
-    btn.onsubmit = function () { returnToAddFlags };
+    btn.onsubmit = function () { returnToAddFlags() };
 
     var btn2 = document.getElementById("updateFlagsLabel");
     btn2.value = "Remove Flag";
@@ -93,6 +95,7 @@ async function returnToAddFlags() {
     console.log("RETURNING TO BASE PAGE");
     page = "0";
     currentPage = "default";
+    deleteCurrentData();
     console.log("test");
     getIngs();
     displayIngs();
@@ -112,10 +115,7 @@ async function searchIngs(e) {
     e.preventDefault();
     deleteCurrentData(e);
     let search = document.getElementById('search').value;
-    if (search == "" || search == " ") {
-        returnToAddFlags();
-        return;
-    }
+
     await fetch('http://localhost:49200/api/AccountSearchIngredients?' + search  + "?" + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
@@ -126,7 +126,15 @@ async function searchButtonPressed(e) {
     page = "0";
     searching = true;
     currentPage = "search";
-    searchIngs(e);
+    var btn = document.getElementById("viewFlagsLabel");
+    btn.value = "Return to start";
+    btn = document.getElementById("viewFlags");
+    btn.onsubmit = function () { getUserFlagButtonPressed(e) };
+
+    var btn2 = document.getElementById("updateFlagsLabel");
+    btn2.value = "Add Flags";
+
+    await searchIngs(e);
 }
 
 async function sendNewFlag(e) {
@@ -233,8 +241,8 @@ async function loadPreviousPage(e) {
     
 }
 
-function deleteCurrentData(e) {
-    e.preventDefault();
+function deleteCurrentData() {
+
     var parent = document.getElementById('container');
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);

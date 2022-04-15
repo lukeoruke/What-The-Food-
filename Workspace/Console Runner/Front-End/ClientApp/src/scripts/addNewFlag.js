@@ -6,7 +6,7 @@ var search;
 var page = "0";
 var currentPage = "default";
 
-async function AddFlagCheckBoxes() {
+async function addFlagCheckBoxes() {
     console.log(currentPage);
     console.log("ADD FLAG CHECK BOXES FUNCTION STARTING");
     await getIngs();
@@ -168,7 +168,7 @@ async function returnToAddFlags() {
     return;
 }
 
-async function UpdateFlagsButtonPressed(e) {
+async function updateFlagsButtonPressed(e) {
     e.preventDefault();
     if (currentPage == "displayFlags") {
         removeFlag(e);

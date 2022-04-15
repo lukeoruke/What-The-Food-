@@ -26,8 +26,7 @@ namespace Food.Controllers
                 {
                     return;
                 }
-                Console.Write("ings[0] = ");
-                Console.WriteLine(ingsId[0]);
+
                 for(int i = 0; i < ingsId.Length; i++)
                 {
                     await _accountDBOperations.AddFlagToAccountAsync(userId, int.Parse(ingsId[i]));

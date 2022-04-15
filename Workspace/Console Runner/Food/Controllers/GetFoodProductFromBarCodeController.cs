@@ -20,7 +20,7 @@ namespace Food.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> GET()
         {
-            Console.WriteLine("This is the start of Get Req");
+
             barcode = Request.QueryString.Value;
             barcode = barcode.Substring(1);
             List<Ingredient> ingredients = new();

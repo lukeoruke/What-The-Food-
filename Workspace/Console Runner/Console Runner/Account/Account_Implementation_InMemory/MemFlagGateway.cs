@@ -45,6 +45,11 @@ namespace Console_Runner.AccountService
             return accountFlags;
         }
 
+        public Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take)
         {
             throw new NotImplementedException();

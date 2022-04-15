@@ -8,7 +8,7 @@ namespace Food.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class GetNAccountFlagsController : ControllerBase
+    public class GetAccountFlagBySearchController : ControllerBase
     {
         private const string UM_CATEGORY = "Data Store";
 
@@ -22,29 +22,35 @@ namespace Food.Controllers
             int userID = 0;//TODO GET USER ID
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway);
-            string page = Request.QueryString.Value;
-            page = page.Substring(1);
-            int numberOfItemsDisplayedAtOnce = 2;
+            string input = Request.QueryString.Value;
+            string[] inputarr = input.Split('?');
+            string search = inputarr[1];
+
+            string page = inputarr[2];
+            int numberOfItemsDisplayedAtOnce = 1;
             try
             {
-                var allFlags = await _accountDBOperations.GetNAccountFlags(userID, numberOfItemsDisplayedAtOnce * int.Parse(page)
-                    , numberOfItemsDisplayedAtOnce);
+                var allFlags =  await _accountDBOperations.GetAllAccountFlagsAsync(userID);
                 List<Ingredient> ingredients = new List<Ingredient>();
                 for(int i = 0; i < allFlags.Count; i++)
                 {
                     ingredients.Add(await _foodDBOperations.GetIngredient(allFlags[i].IngredientID));
                 }
 
+                ingredients = ingredients.Where(x => x.IngredientName.Contains(search)).OrderBy(x => x.IngredientName).Skip(numberOfItemsDisplayedAtOnce * int.Parse(page)).Take(numberOfItemsDisplayedAtOnce).ToList();
+
+                
+                Console.WriteLine("(SearchFlags)Length of ing list = " + ingredients.Count());
 
                 string jsonStr = "{";
                 jsonStr += FormatIngredientsJsonString(ingredients);
-
+                Console.WriteLine(jsonStr);
                 return jsonStr + "}";
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                return "Something went wrong getting the ingredients from flag list";
+                return "(GetAccountFlagBySearchController)-Something went wrong getting the ingredients from flag list";
             }
         }
         public string FormatIngredientsJsonString(List<Ingredient> ingredientList)

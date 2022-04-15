@@ -40,17 +40,10 @@ namespace Console_Runner.AccountService
                 OrderBy(x => x.IngredientID).Skip(skip).Take(take).ToListAsync();
             return results;
         }
-        public List<FoodFlag> GetAllAccountFlags(int userID)
+        public async Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID)
         {
-            List<FoodFlag> flagList = new List<FoodFlag>();
-            foreach (var flag in _efContext.FoodFlags)
-            {
-                if (flag.UserID == userID)
-                {
-                    flagList.Add(flag);
-                }
-            }
-            return flagList;
+            List<FoodFlag> results = await _efContext.FoodFlags.Where(x => x.UserID == userID).ToListAsync();
+            return results;
         }
 
         public async Task<bool> RemoveFoodFlagAsync(int userID, int ingredientID)

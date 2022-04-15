@@ -18,9 +18,10 @@ async function AddFlagCheckBoxes() {
 function displayIngs() {
 
     var jsonData = localStorage.getItem('allIngredients');
-    console.log(jsonData);
+    
+
     const jsonConst = JSON.parse(jsonData);
-    console.log(jsonConst)
+
     var getNames = jsonConst.IngredientName;
     getIDs = jsonConst.IngredientID;
 
@@ -58,7 +59,7 @@ function displayIngs() {
 
 
 async function getIngs() {
-    console.log(page);
+
     await fetch('http://localhost:49200/api/GetNIngredients?' + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
@@ -66,12 +67,16 @@ async function getIngs() {
 
 async function getUserFlagButtonPressed(e) {
     page = "0";
-    currentPage = "displayFlags";
+
     getUserFlags(e);
 }
 
 async function getUserFlags(e) {
     e.preventDefault();
+   
+    currentPage = "displayFlags";
+
+
     var btn = document.getElementById("viewFlagsLabel");
     btn.value = "return to add flags page";
     btn = document.getElementById("viewFlags");
@@ -79,7 +84,11 @@ async function getUserFlags(e) {
 
     var btn2 = document.getElementById("updateFlagsLabel");
     btn2.value = "Remove Flag";
- 
+
+    //var btn3 = document.getElementById("searchType");
+    //btn3.onsubmit = function () { searchAccountFlags(e) };
+    var btn4 = document.getElementById("searchTypeLabel");
+    btn4.value = "Search Your Flags";
 
 
     deleteCurrentData(e);
@@ -92,12 +101,68 @@ async function getUserFlags(e) {
     displayIngs();
 
 }
+
+async function searchAccountFlags(e) {
+    e.preventDefault();
+    try {
+        deleteCurrentData(e);
+        currentPage = "searchFlags";
+        let search = document.getElementById('search').value;
+        console.log(search);
+        await fetch('http://localhost:49200/api/GetAccountFlagBySearch?' + search + "?" + page)
+            .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
+            .then(data => console.log(data));
+        console.log("made it to the otherside of searchAccountFlags");
+
+        displayIngs();
+    } catch (ex) {
+        console.log("searchAccountFlags: " + ex);
+        throw ex;
+    }
+
+}
+
+async function searchIngs(e) {
+    e.preventDefault();
+    
+
+    deleteCurrentData(e);
+    currentPage = "searchIngredients";
+    let search = document.getElementById('search').value;
+
+    await fetch('http://localhost:49200/api/AccountSearchIngredients?' + search + "?" + page)
+        .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
+        .then(data => console.log(data));
+
+    displayIngs();
+}
+async function searchButtonPressed(e) {
+    if (currentPage == "displayFlags") {
+        console.log("Go to searchAccountFlags");
+        searchAccountFlags(e);
+        return;
+    }
+    page = "0";
+    searching = true;
+    currentPage = "searchIngredients";
+    var btn = document.getElementById("viewFlagsLabel");
+    btn.value = "Return to start";
+    btn = document.getElementById("viewFlags");
+    btn.onsubmit = function () { getUserFlagButtonPressed(e) };
+
+    var btn2 = document.getElementById("updateFlagsLabel");
+    btn2.value = "Add Flags";
+
+    await searchIngs(e);
+}
+
+
 async function returnToAddFlags() {
-    console.log("RETURNING TO BASE PAGE");
+
     page = "0";
     currentPage = "default";
     deleteCurrentData();
-    console.log("test");
+
     getIngs();
     displayIngs();
     return;
@@ -109,10 +174,13 @@ async function UpdateFlagsButtonPressed(e) {
         removeFlag(e);
     } else if (currentPage == "default") {
         sendNewFlag(e);
-    } else if(currentPage == "search") {
+    } else if (currentPage == "searchIngredients") {
+        sendNewFlag(e);
+    } else if (currentPage == "searchFlags") {
+        removeFlag(e);
+    } else{
 
-    }else {
-        throw ("CurrentPage is not one of the values it is allowed to take.");
+        throw ("CurrentPage is not one of the values it is allowed to take.: Currently = " + currentPage);
     }
 }
 
@@ -123,15 +191,14 @@ async function sendNewFlag(e) {
     const itemsToAdd = [];
     var counter = 0;
     for (data in checkBoxList) {
-        console.log("check box[" + data + "] = " + checkBoxList[data].checked);
-        console.log(document.getElementById(getIDs[data]).checked);
+
         if (document.getElementById(getIDs[data]).checked) {
             itemsToAdd[counter] = getIDs[data];
             counter += 1;
         }
     }
     alert("Flag(s) added to your account!");
-    console.log(itemsToAdd);
+
 
 
     await fetch('http://localhost:49200/api/AccountAddFlags', {
@@ -150,14 +217,13 @@ async function removeFlag(e) {
     const itemsToRemove = [];
     var counter = 0;
     for (data in checkBoxList) {
-        console.log("check box[" + data + "] = " + checkBoxList[data].checked);
-        console.log(document.getElementById(getIDs[data]).checked);
+
         if (document.getElementById(getIDs[data]).checked) {
             itemsToRemove[counter] = getIDs[data];
             counter += 1;
         }
     }
-    console.log(itemsToRemove);
+
     await fetch('http://localhost:49200/api/AccountRemoveFlag?' + page, {
         method: 'POST',
         headers: {
@@ -194,9 +260,11 @@ async function loadnextPage(e) {
     if (currentPage == "default") {
         await getIngs();
         displayIngs();
-    } else if (currentPage == "search") {
+    } else if (currentPage == "searchIngredients") {
         await searchIngs(e);
-    } else if (currentPage == "displayFlags") {
+    } else if (currentPage == "searchFlags") {
+        await searchAccountFlags(e);
+    }else if (currentPage == "displayFlags") {
         await getUserFlags(e);
     } else {
         displayIngs();
@@ -215,8 +283,10 @@ async function loadPreviousPage(e) {
     if (currentPage == "default") {
         await getIngs();
         displayIngs();
-    } else if (currentPage == "search") {
+    } else if (currentPage == "searchIngredients") {
         await searchIngs(e);
+    } else if (currentPage == "searchFlags") {
+        await searchAccountFlags(e);
     } else if (currentPage == "displayFlags") {
         await getUserFlags(e);
     } else {
@@ -225,28 +295,4 @@ async function loadPreviousPage(e) {
     console.log("page: " + page);
 
 }
-async function searchIngs(e) {
-    e.preventDefault();
-    deleteCurrentData(e);
-    let search = document.getElementById('search').value;
 
-    await fetch('http://localhost:49200/api/AccountSearchIngredients?' + search + "?" + page)
-        .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
-        .then(data => console.log(data));
-
-    displayIngs();
-}
-async function searchButtonPressed(e) {
-    page = "0";
-    searching = true;
-    currentPage = "search";
-    var btn = document.getElementById("viewFlagsLabel");
-    btn.value = "Return to start";
-    btn = document.getElementById("viewFlags");
-    btn.onsubmit = function () { getUserFlagButtonPressed(e) };
-
-    var btn2 = document.getElementById("updateFlagsLabel");
-    btn2.value = "Add Flags";
-
-    await searchIngs(e);
-}

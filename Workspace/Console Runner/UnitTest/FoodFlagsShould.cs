@@ -29,7 +29,7 @@ namespace Test.UM
             await um.UserSignUpAsync(acc);
             Assert.True(await um.AddFlagToAccountAsync(acc.UserID, ingredient.IngredientID));
             Assert.True(await _flagGateway.AccountHasFlagAsync(acc.UserID, ingredient.IngredientID));
-            Assert.True(_flagGateway.GetAllAccountFlags(acc.UserID).Count == 1);
+            Assert.True(_flagGateway.GetAllAccountFlagsAsync(acc.UserID).Count == 1);
             //Assert.True(fm.GetAllAccountFlagsAsync("Matt@gmail.com").Count == 1);
         }
 

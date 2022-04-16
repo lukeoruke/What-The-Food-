@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Console_Runner.FoodService;
+using Console_Runner.Logging;
 
 namespace Food.Controllers
 {
@@ -7,12 +8,11 @@ namespace Food.Controllers
     [ApiController]
     public class FoodAddController : Controller
     {
-        private  IFoodGateway _foodGateway = new EFFoodGateway();
-        
         [HttpPost]
         public async void Post()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
+            FoodDBOperations foodDB = FoodServiceFactory.GetFoodService(FoodServiceFactory.DataStoreType.EntityFramework);
 
             IFormCollection formData = Request.Form;
 

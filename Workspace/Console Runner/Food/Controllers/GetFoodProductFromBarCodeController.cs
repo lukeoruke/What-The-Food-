@@ -12,8 +12,8 @@ namespace Food.Controllers
         private string barcode;
         public GetFoodProductFromBarCodeController()
         {
-            LogService logger = LogServiceLocator.GetLogService(LogServiceLocator.DataStoreType.EntityFramework);
-            FoodDBOperations foodDb = FoodServiceLocator.GetFoodService(FoodServiceLocator.DataStoreType.EntityFramework);
+            LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
+            FoodDBOperations foodDb = FoodServiceFactory.GetFoodService(FoodServiceFactory.DataStoreType.EntityFramework);
             IFormCollection formData = Request.Form;
             barcode = formData["barcode"];
         }
@@ -22,13 +22,11 @@ namespace Food.Controllers
         [HttpPost]
         public async Task<ActionResult<FoodItem>> GET()
         {
-            LogService logger = LogServiceLocator.GetLogService(LogServiceLocator.DataStoreType.EntityFramework);
-            FoodDBOperations foodDb = FoodServiceLocator.GetFoodService(FoodServiceLocator.DataStoreType.EntityFramework);
-            return await foodDb.GetScannedItemAsync(barcode);
-        }
-
-        private void InstantiateServices(out FoodDBOperations foodDb)
-        {
+            LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
+            // integrate userID get with JWT tokens
+            logger.UserID = "how do i get this";
+            FoodDBOperations foodDb = FoodServiceFactory.GetFoodService(FoodServiceFactory.DataStoreType.EntityFramework);
+            return await foodDb.GetScannedItemAsync(barcode, logger);
         }
     }
 }

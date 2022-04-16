@@ -7,7 +7,7 @@ using Console_Runner.Logging.Testing;
 
 namespace Console_Runner.Logging
 {
-    public static class LogServiceLocator
+    public static class LogServiceFactory
     {
         public enum DataStoreType
         {

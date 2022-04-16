@@ -22,13 +22,14 @@ namespace Console_Runner.Logging
         public Category Category { get; }
         public string Message { get; }
         public string? ExceptionType { get; }
-        public List<LoggableResponse<object>> InnerResponses { get; }
+        public IEnumerable<LoggableResponse<object>> InnerResponses { get; }
 
         public LoggableResponse (T data, bool isSuccessful, string message, string exceptionType = null){
             Data = data;
-            IsSuccessful = IsSuccessful;
+            IsSuccessful = isSuccessful;
             Message = message;
             ExceptionType = exceptionType;
+            InnerResponses = new List<LoggableResponse<object>>();
         }
 
         public List<LogData> ToLogData()

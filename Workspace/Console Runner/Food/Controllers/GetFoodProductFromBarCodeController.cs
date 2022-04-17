@@ -20,7 +20,7 @@ namespace Food.Controllers
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
         private AccountDBOperations _accountDBOperations;
         private string barcode;
-        
+        private List<Ingredient> flaggedIngredients = new();
 
 
         [HttpGet]
@@ -50,7 +50,7 @@ namespace Food.Controllers
 
                 int userID = 0; //TODO NEED THE ACTUAL USER ID;
                 List<FoodFlag> flags = await _accountDBOperations.GetAllAccountFlagsAsync(userID);
-                List<Ingredient> flaggedIngredients = new();
+               
                 for( int i = 0; i < flags.Count; i++)
                 {
                     for(int j = 0; j < ingredients.Count; j++)
@@ -109,14 +109,25 @@ namespace Food.Controllers
             string strNameList = "\"IngredientName\": [";
             string strAltList = "\"IngredientAlternateName\": [";
             string strDescList = "\"IngredientDescription\": [";
+            string flaggedItemList = "\"FlaggedItems\": [";
+            for(int i = 0; i < flaggedIngredients.Count; i++)
+            {
+                flaggedItemList += $"\"{flaggedIngredients[i].IngredientName}\"";
+                if (i < flaggedIngredients.Count - 1)
+                {
+                    flaggedItemList += ",";
+                }
+                else if (i == flaggedIngredients.Count - 1)
+                {
+                    flaggedItemList += "]";
+                }
+            }
 
             for (int i = 0; i < ingredientList.Count; i++)
             {
-
                 strNameList += $"\"{ingredientList[i].IngredientName}\"";
                 strAltList += $"\"{ingredientList[i].AlternateName}\"";
                 strDescList += $"\"{ingredientList[i].IngredientDescription}\"";
-
                 if (i < ingredientList.Count - 1)
                 {
                     strNameList += ",";
@@ -131,7 +142,7 @@ namespace Food.Controllers
                 }
             }
 
-            return strNameList + ", " + strAltList + ", " + strDescList;
+            return strNameList + ", " + strAltList + ", " + strDescList + ", " + flaggedItemList;
         }
     }
 }

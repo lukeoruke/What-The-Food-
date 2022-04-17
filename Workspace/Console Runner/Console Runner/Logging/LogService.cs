@@ -44,11 +44,7 @@
                     cts.CancelAfter((int)DefaultTimeOut);
                 }
                 token.ThrowIfCancellationRequested();
-                UserIdentifier? uid = await _userIDAccess.GetUserIdentifierAsync(actorID, token);
-                if(uid == null)
-                {
-                    uid = await _userIDAccess.AddUserIdAsync(actorID, token);
-                }
+                UserIdentifier uid = await GetOrCreateUserID(actorID, token);
                 Log record = new Log(uid, level, category, timestamp.ToUniversalTime(), message);
                 token.ThrowIfCancellationRequested();
                 await _logAccess.WriteLogAsync(record, token);
@@ -77,7 +73,7 @@
         {
             if(UserID == null)
             {
-                throw new InvalidOperationException("User ID was not set in LogService before calling WriteLogAsync without a given User ID");
+                throw new InvalidOperationException("User ID was not set in LogService before calling LogWithSetUserAsync");
             }
             CancellationTokenSource cts = new CancellationTokenSource();
             try
@@ -92,11 +88,7 @@
                     cts.CancelAfter((int)DefaultTimeOut);
                 }
                 token.ThrowIfCancellationRequested();
-                UserIdentifier? uid = await _userIDAccess.GetUserIdentifierAsync(UserID, token);
-                if (uid == null)
-                {
-                    uid = await _userIDAccess.AddUserIdAsync(UserID, token);
-                }
+                UserIdentifier uid = await GetOrCreateUserID(UserID, token);
                 Log record = new Log(uid, level, category, timestamp.ToUniversalTime(), message);
                 token.ThrowIfCancellationRequested();
                 await _logAccess.WriteLogAsync(record, token);
@@ -124,11 +116,7 @@
                     cts.CancelAfter(timeout);
                 }
                 token.ThrowIfCancellationRequested();
-                UserIdentifier? uid = await _userIDAccess.GetUserIdentifierAsync(actorID, token);
-                if (uid == null)
-                {
-                    uid = await _userIDAccess.AddUserIdAsync(actorID, token);
-                }
+                UserIdentifier uid = await GetOrCreateUserID(actorID, token);
                 List<Log> toLog = new();
                 foreach (LogData data in logsdata)
                 {
@@ -146,6 +134,51 @@
             {
                 cts.Dispose();
             }
+        }
+
+        public async Task<bool> LogListWithSetUserAsync(IEnumerable<LogData> logsdata, int timeout = -1)
+        {
+            if (UserID == null)
+            {
+                throw new InvalidOperationException("User ID was not set in LogService before calling LogListWithSetUserAsync");
+            }
+            CancellationTokenSource cts = new CancellationTokenSource();
+            try
+            {
+                var token = cts.Token;
+                if (timeout > -1)
+                {
+                    cts.CancelAfter(timeout);
+                }
+                token.ThrowIfCancellationRequested();
+                UserIdentifier uid = await GetOrCreateUserID(UserID, token);
+                List<Log> toLog = new();
+                foreach (LogData data in logsdata)
+                {
+                    toLog.Add(new Log(uid, data.LogLevel, data.Category, data.Timestamp.ToUniversalTime(), data.Message));
+                }
+                token.ThrowIfCancellationRequested();
+                await _logAccess.WriteLogsAsync(toLog, token);
+                return true;
+            }
+            catch (OperationCanceledException ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                cts.Dispose();
+            }
+        }
+
+        private async Task<UserIdentifier> GetOrCreateUserID(string uid, CancellationToken token = default)
+        {
+            UserIdentifier? identifier = await _userIDAccess.GetUserIdentifierAsync(uid, token);
+            if (identifier == null)
+            {
+                identifier = await _userIDAccess.AddUserIdAsync(uid, token);
+            }
+            return identifier;
         }
     }
 }

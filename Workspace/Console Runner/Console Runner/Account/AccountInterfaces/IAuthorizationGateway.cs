@@ -70,7 +70,7 @@ namespace Console_Runner.AccountService
         /// Counts the number of Accounts on the database currently assigned as administrators.
         /// </summary>
         /// <returns>An int reflecting the number of Accounts on the database with administrator permissions.</returns>
-        public int AdminCount(, LogService? logService = null);
+        public int AdminCount(LogService? logService = null);
 
         /// <summary>
         /// Determines if a specified Account is assigned as an administrator in the database.

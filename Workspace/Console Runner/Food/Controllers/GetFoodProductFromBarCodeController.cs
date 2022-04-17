@@ -1,4 +1,5 @@
-﻿using Console_Runner.FoodService;
+﻿using Console_Runner.AccountService;
+using Console_Runner.FoodService;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
@@ -14,8 +15,13 @@ namespace Food.Controllers
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();
         private  FoodDBOperations _foodDB;
         private IFormCollection formData;
+        private readonly IAccountGateway _accountAccess = new EFAccountGateway();
+        private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
+        private readonly IFlagGateway _flagGateway = new EFFlagGateway();
+        private AccountDBOperations _accountDBOperations;
         private string barcode;
-      
+        
+
 
         [HttpGet]
         public async Task<ActionResult<string>> GET()
@@ -29,8 +35,7 @@ namespace Food.Controllers
 
 
             _foodDB = new FoodDBOperations(_foodServiceGateway);
-
-            
+            _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
 
 
 
@@ -42,6 +47,22 @@ namespace Food.Controllers
                 foodItem = await _foodDB.GetScannedItemAsync(barcode);
 
                 ingredients = await _foodDB.GetIngredientsListAsync(barcode);
+
+                int userID = 0; //TODO NEED THE ACTUAL USER ID;
+                List<FoodFlag> flags = await _accountDBOperations.GetAllAccountFlagsAsync(userID);
+                List<Ingredient> flaggedIngredients = new();
+                for( int i = 0; i < flags.Count; i++)
+                {
+                    for(int j = 0; j < ingredients.Count; j++)
+                    {
+                        if(flags[i].IngredientID == ingredients[j].IngredientID)
+                        {
+                            flaggedIngredients.Add(ingredients[j]);
+                            Console.WriteLine(ingredients[j].IngredientName);
+                        }
+                    }
+                }
+                
                 label = await _foodDB.GetNutritionLabelAsync(barcode);
                 List<(Nutrient, float)> nutrientListTuple = await _foodDB.GetNutrientListForUserDisplay(barcode);
                 List<Nutrient> nutrientList = new();

@@ -153,15 +153,12 @@ namespace Console_Runner.FoodService
         public async Task<List<Ingredient>> RetrieveIngredientListAsync(string barcode)
         {
             List<Ingredient> ingredients = new List<Ingredient>();
-            var ListOfIngredients = _efContext.LabelIngredients.Where(r => r.Barcode == barcode).ToList();
+            var ListOfIngredients = await _efContext.LabelIngredients.Where(r => r.Barcode == barcode).ToListAsync();
             for(int i = 0; i < ListOfIngredients.Count(); i++)
             {
-                ingredients.Add(await _efContext.Ingredients.FindAsync(ListOfIngredients[0].IngredientID));
+                ingredients.Add(await _efContext.Ingredients.FindAsync(ListOfIngredients[i].IngredientID));
             }
-/*            foreach(LabelIngredient ings in ListOfIngredients)
-            {
-                ingredients.Add(await _efContext.Ingredients.FindAsync(ings.IngredientID));
-            }*/
+
             return ingredients;
         }
 

@@ -58,7 +58,7 @@ namespace Console_Runner.AccountService
             return accountFlags;
         }
 
-        public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take)
+        public async Task<List<FoodFlag>> GetNAccountFlagsAsync(int userID, int skip, int take)
         {
             List<FoodFlag> accountFlags = new List<FoodFlag>();
 

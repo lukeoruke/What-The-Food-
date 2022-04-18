@@ -34,7 +34,7 @@ namespace Console_Runner.AccountService
                 return false;
             }
         }
-        public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take)
+        public async Task<List<FoodFlag>> GetNAccountFlagsAsync(int userID, int skip, int take)
         {
             List<FoodFlag> results =  await _efContext.FoodFlags.Where(x => x.UserID == userID).
                 OrderBy(x => x.IngredientID).Skip(skip).Take(take).ToListAsync();

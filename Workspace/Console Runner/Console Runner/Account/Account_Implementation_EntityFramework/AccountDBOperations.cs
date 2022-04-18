@@ -191,7 +191,7 @@ namespace Console_Runner.AccountService
         //authenticates a users input password for login. True if pass matches, false otherwise
         public async Task<bool> AuthenticateUserPassAsync(string email, string userPass)
         {
-            int userID = await _accountAccess.GetIDFromEmail(email);
+            int userID = await _accountAccess.GetIDFromEmailId(email);
             if (userID == -1)
             {
                 throw new Exception("no account exists");//REMOVE LATER BECAUSE OF SECURITY CONCERN
@@ -211,7 +211,7 @@ namespace Console_Runner.AccountService
             if (await AuthenticateUserPassAsync(email, userPass))
             {
                 //  _logger.LogLogin(UM_CATEGORY, "test page", true, "", user);
-                int ID = await _accountAccess.GetIDFromEmail(email);
+                int ID = await _accountAccess.GetIDFromEmailId(email);
                 Account acc = await GetUserAccountAsync(ID);
                 acc.IsActive = true;
                 return acc;
@@ -392,7 +392,7 @@ namespace Console_Runner.AccountService
 
         public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take)
         {
-            return await _flagService.GetNAccountFlags(userID, skip, take);
+            return await _flagService.GetNAccountFlagsAsync(userID, skip, take);
         }
 
         public async Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID)
@@ -400,27 +400,7 @@ namespace Console_Runner.AccountService
             return await _flagService.GetAllAccountFlagsAsync(userID);
         }
 
-    
 
-        /////////////////////////////////////////////////////////////////TODO THIS IS ON HOLD UNTIL SERVICE MANAGER IS COMPLETED.////////////////////////////////////////////////////////////////
-       
-        
-        
-        /*        public List<Ingredient> CheckProductForFlags(string barcode, string email)
-                {
-                    FoodItem? food = GetScannedFoodItem(barcode);
-                    if (food == null) return new List<Ingredient>();
-                    List<Ingredient> ingredientList = GetIngredientList(food.Barcode);
-                    List<Ingredient> flaggedItems = new List<Ingredient>();
-                    for (int i = 0; i < ingredientList.Count; i++)
-                    {
-                        if (_flagGateway.AccountHasFlag(email, ingredientList[i].IngredientID))
-                        {
-                            flaggedItems.Add(ingredientList[i]);
-                        }
-                    }
-                    return flaggedItems;
-                }*/
 
 
     }

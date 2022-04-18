@@ -116,7 +116,7 @@ namespace Console_Runner.AccountService
             }
         }
 
-        public async Task<int> GetIDFromEmail(string email)
+        public async Task<int> GetIDFromEmailId(string email)
         {
 
 

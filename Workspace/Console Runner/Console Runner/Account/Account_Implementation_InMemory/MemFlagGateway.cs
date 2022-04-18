@@ -45,14 +45,42 @@ namespace Console_Runner.AccountService
             return accountFlags;
         }
 
-        public Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID)
+        public async Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID)
         {
-            throw new NotImplementedException();
+            List<FoodFlag> accountFlags = new List<FoodFlag>();
+            foreach (var flag in _flagsListDB)
+            {
+                if (flag.UserID == userID)
+                {
+                    accountFlags.Add(flag);
+                }
+            }
+            return accountFlags;
         }
 
-        public Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take)
+        public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take)
         {
-            throw new NotImplementedException();
+            List<FoodFlag> accountFlags = new List<FoodFlag>();
+
+            for(int i = 0; i < _flagsListDB.Count; i++)
+            {
+                if(_flagsListDB[i].UserID == userID)
+                {
+                    accountFlags.Add(_flagsListDB[i]);
+                }
+            }
+            List<FoodFlag> subList = new List<FoodFlag>();
+            for (int i = skip; i < accountFlags.Count; i++)
+            {
+                if(take == 0)
+                {
+                    return subList;
+                }
+                subList.Add(accountFlags[i]);
+                take--;
+
+            }
+            return subList;
         }
 
         public async Task<bool> RemoveFoodFlagAsync(int userID, int ingredientID)

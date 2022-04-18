@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
+using Console_Runner.Logging;
+
 namespace Food.Controllers
 {
 
@@ -16,6 +18,10 @@ namespace Food.Controllers
         public async void Post()
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
+            // TODO: replace this string with the user email when we can get it
+            logger.UserID = "placeholder";
+            logger.DefaultTimeOut = 5000;
             int userId = 0;// NEED TO GET USER ID
             using (var reader = new StreamReader(Request.Body))
             {
@@ -30,7 +36,7 @@ namespace Food.Controllers
                 for (int i = 0; i < ingsId.Length; i++)
                 {
                     Console.WriteLine(ingsId[i]);
-                    await _accountDBOperations.RemoveFoodFlagAsync(userId, int.Parse(ingsId[i]));
+                    await _accountDBOperations.RemoveFoodFlagAsync(userId, int.Parse(ingsId[i]), logger);
                 }
             }
         }

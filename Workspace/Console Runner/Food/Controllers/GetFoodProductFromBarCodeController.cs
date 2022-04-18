@@ -37,6 +37,10 @@ namespace Food.Controllers
 
             _foodDB = new FoodDBOperations(_foodServiceGateway);
             _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
+            // TODO: replace this string with the user email when we can get it
+            logger.UserID = "placeholder";
+            logger.DefaultTimeOut = 5000;
 
 
 
@@ -45,12 +49,12 @@ namespace Food.Controllers
                 Console.WriteLine("GET " + barcode);
 
                 
-                foodItem = await _foodDB.GetScannedItemAsync(barcode);
+                foodItem = await _foodDB.GetScannedItemAsync(barcode, logger);
 
-                ingredients = await _foodDB.GetIngredientsListAsync(barcode);
+                ingredients = await _foodDB.GetIngredientsListAsync(barcode, logger);
 
                 int userID = 0; //TODO NEED THE ACTUAL USER ID;
-                List<FoodFlag> flags = await _accountDBOperations.GetAllAccountFlagsAsync(userID);
+                List<FoodFlag> flags = await _accountDBOperations.GetAllAccountFlagsAsync(userID, logger);
                
                 for( int i = 0; i < flags.Count; i++)
                 {
@@ -64,8 +68,8 @@ namespace Food.Controllers
                     }
                 }
                 
-                label = await _foodDB.GetNutritionLabelAsync(barcode);
-                List<(Nutrient, float)> nutrientListTuple = await _foodDB.GetNutrientListForUserDisplay(barcode);
+                label = await _foodDB.GetNutritionLabelAsync(barcode, logger);
+                List<(Nutrient, float)> nutrientListTuple = await _foodDB.GetNutrientListForUserDisplay(barcode, logger);
                 List<Nutrient> nutrientList = new();
                 for (int i = 0; i < nutrientListTuple.Count; i++)
                 {

@@ -1,11 +1,11 @@
 ﻿
-    using Microsoft.AspNetCore.Cors;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
-
-    using Console_Runner.FoodService;
-    namespace Food.Controllers
+using Console_Runner.Logging;
+using Console_Runner.FoodService;
+namespace Food.Controllers
 {
         [Route("api/[controller]")]
         [ApiController]
@@ -18,24 +18,28 @@
             public async Task<ActionResult<string>> GET()
             {
                 FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway);
+                LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
+                // TODO: replace this string with the user email when we can get it
+                logger.UserID = "placeholder";
+                logger.DefaultTimeOut = 5000;
                 string page = Request.QueryString.Value;
                 page = page.Substring(1);
-            try
-            {
-                Console.WriteLine("Page " + page);
-                var allIngredientList = await _foodDBOperations.GetNIngredients(5*int.Parse(page), 5);
-                Console.WriteLine("Length of ing list = " + allIngredientList.Count());
-                string jsonStr = "{";
-                jsonStr += FormatIngredientsJsonString(allIngredientList);
-                Console.WriteLine(jsonStr);
-                return jsonStr + "}";
+                try
+                {
+                    Console.WriteLine("Page " + page);
+                    var allIngredientList = await _foodDBOperations.GetNIngredients(5*int.Parse(page), 5, logger);
+                    Console.WriteLine("Length of ing list = " + allIngredientList.Count());
+                    string jsonStr = "{";
+                    jsonStr += FormatIngredientsJsonString(allIngredientList);
+                    Console.WriteLine(jsonStr);
+                    return jsonStr + "}";
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
                     return "Something went wrong getting the ingredients list to display on food flags page";
                 }
-        }
+            }
             public string FormatIngredientsJsonString(List<Ingredient> ingredientList)
             {
                 string strNameList = "\"IngredientName\": [";
@@ -50,7 +54,7 @@
                     strDescList += $"\"{ingredientList[i].IngredientDescription}\"";
                     strIngIDList += $"\"{ingredientList[i].IngredientID}\"";
 
-                if (i < ingredientList.Count - 1)
+                    if (i < ingredientList.Count - 1)
                     {
                         strNameList += ",";
                         strAltList += ",";
@@ -65,7 +69,6 @@
                         strIngIDList += "]";
                     }
                 }
-
                 return strNameList + ", " + strIngIDList;
             }
         }

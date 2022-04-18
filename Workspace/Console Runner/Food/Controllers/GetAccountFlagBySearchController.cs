@@ -1,7 +1,9 @@
-﻿using Console_Runner.AccountService;
-using Console_Runner.FoodService;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Console_Runner.AccountService;
+using Console_Runner.FoodService;
+using Console_Runner.Logging;
 
 namespace Food.Controllers
 {
@@ -22,6 +24,10 @@ namespace Food.Controllers
             int userID = 0;//TODO GET USER ID
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway);
+            LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
+            // TODO: replace this string with the user email when we can get it
+            logger.UserID = "placeholder";
+            logger.DefaultTimeOut = 5000;
             string input = Request.QueryString.Value;
             string[] inputarr = input.Split('?');
             string search = inputarr[1];
@@ -30,11 +36,11 @@ namespace Food.Controllers
             int numberOfItemsDisplayedAtOnce = 1;
             try
             {
-                var allFlags =  await _accountDBOperations.GetAllAccountFlagsAsync(userID);
+                var allFlags =  await _accountDBOperations.GetAllAccountFlagsAsync(userID, logger);
                 List<Ingredient> ingredients = new List<Ingredient>();
                 for(int i = 0; i < allFlags.Count; i++)
                 {
-                    ingredients.Add(await _foodDBOperations.GetIngredient(allFlags[i].IngredientID));
+                    ingredients.Add(await _foodDBOperations.GetIngredient(allFlags[i].IngredientID, logger));
                 }
 
                 ingredients = ingredients.Where(x => x.IngredientName.Contains(search)).OrderBy(x => x.IngredientName).Skip(numberOfItemsDisplayedAtOnce * int.Parse(page)).Take(numberOfItemsDisplayedAtOnce).ToList();

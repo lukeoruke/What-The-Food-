@@ -8,39 +8,43 @@ namespace Food.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountSearchIngredientsController : ControllerBase
+    public class GetNAccountFlagsController : ControllerBase
     {
         private const string UM_CATEGORY = "Data Store";
 
+        private readonly IAccountGateway _accountAccess = new EFAccountGateway();
+        private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
+        private readonly IFlagGateway _flagGateway = new EFFlagGateway();
         private readonly IFoodGateway _foodGateway = new EFFoodGateway();
         [HttpGet]
         public async Task<ActionResult<string>> GET()
         {
+            int userID = 0;//TODO GET USER ID
+            AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway);
-
+            string page = Request.QueryString.Value;
+            page = page.Substring(1);
+            int numberOfItemsDisplayedAtOnce = 2;
             try
             {
-                string input = Request.QueryString.Value;
-                Console.WriteLine("(accountSearchController)input: " + input);
-                string[] inputarr = input.Split('?');
-                string search = inputarr[1];
-
-                string page = inputarr[2];
-                int numberOfItemsDisplayedAtOnce = 1;
-                Console.WriteLine("GET " + search);
-                var allIngredientList = await _foodDBOperations.GetIngredientBySearchAsync(search, numberOfItemsDisplayedAtOnce * int.Parse(page)
+                var allFlags = await _accountDBOperations.GetNAccountFlags(userID, numberOfItemsDisplayedAtOnce * int.Parse(page)
                     , numberOfItemsDisplayedAtOnce);
-                Console.WriteLine("Length of ing list(search function) = " + allIngredientList.Count());
+                List<Ingredient> ingredients = new List<Ingredient>();
+                for(int i = 0; i < allFlags.Count; i++)
+                {
+                    ingredients.Add(await _foodDBOperations.GetIngredient(allFlags[i].IngredientID));
+                }
+
+
                 string jsonStr = "{";
-                
-                jsonStr += FormatIngredientsJsonString(allIngredientList);
-                Console.WriteLine(jsonStr);
+                jsonStr += FormatIngredientsJsonString(ingredients);
+
                 return jsonStr + "}";
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                return "Something went wrong getting the ingredients list to display on food flags page";
+                return "Something went wrong getting the ingredients from flag list";
             }
         }
         public string FormatIngredientsJsonString(List<Ingredient> ingredientList)
@@ -77,6 +81,8 @@ namespace Food.Controllers
         }
     }
 }
+
+
 
 
 

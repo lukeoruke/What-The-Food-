@@ -289,5 +289,10 @@ namespace Console_Runner.FoodService
         {
             throw new NotImplementedException();
         }
+
+        public Ingredient GetIngredient(int id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

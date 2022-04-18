@@ -7,7 +7,7 @@ namespace Food.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountAddFlagsController : ControllerBase
+    public class AccountRemoveFlagController : ControllerBase
     {
         private readonly IAccountGateway _accountAccess = new EFAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
@@ -27,9 +27,10 @@ namespace Food.Controllers
                     return;
                 }
 
-                for(int i = 0; i < ingsId.Length; i++)
+                for (int i = 0; i < ingsId.Length; i++)
                 {
-                    await _accountDBOperations.AddFlagToAccountAsync(userId, int.Parse(ingsId[i]));
+                    Console.WriteLine(ingsId[i]);
+                    await _accountDBOperations.RemoveFoodFlagAsync(userId, int.Parse(ingsId[i]));
                 }
             }
         }
@@ -37,6 +38,7 @@ namespace Food.Controllers
 
     }
 }
+
 
 
 

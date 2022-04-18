@@ -10,6 +10,11 @@ namespace Console_Runner.FoodService
             _foodItemAccess = foodItemAccess;
         }
 
+
+        public async Task<Ingredient> GetIngredient(int id)
+        {
+            return  _foodItemAccess.GetIngredient(id);
+        }
         public async Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take)
         {
             return await _foodItemAccess.GetIngredientBySearchAsync(search, skip, take);

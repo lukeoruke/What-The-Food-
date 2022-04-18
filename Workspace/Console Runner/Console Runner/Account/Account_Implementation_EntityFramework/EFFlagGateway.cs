@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,28 +47,26 @@ namespace Console_Runner.AccountService
                 return false;
             }
         }
-
-        public List<FoodFlag> GetAllAccountFlags(int userID, LogService? logService = null)
+        public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take)
         {
-            List<FoodFlag> flagList = new List<FoodFlag>();
-            foreach (var flag in _efContext.FoodFlags)
-            {
-                if (flag.UserID == userID)
-                {
-                    flagList.Add(flag);
-                }
-            }
+            List<FoodFlag> results =  await _efContext.FoodFlags.Where(x => x.UserID == userID).
+                OrderBy(x => x.IngredientID).Skip(skip).Take(take).ToListAsync();
+            return results;
+        }
+        public async Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID)
+        {
+            List<FoodFlag> results = await _efContext.FoodFlags.Where(x => x.UserID == userID).ToListAsync();
             if (logService?.UserID != null)
             {
                 _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
                     $"Retrieved all food flags for user {userID}");
             }
-            return flagList;
+            return results;
         }
 
         public async Task<bool> RemoveFoodFlagAsync(int userID, int ingredientID, LogService? logService = null)
         {
-            if (await AccountHasFlagAsync(userID, ingredientID))
+            try
             {
                 FoodFlag foodFlag = new(userID, ingredientID);
                 _efContext.FoodFlags.Remove(foodFlag);
@@ -78,8 +77,12 @@ namespace Console_Runner.AccountService
                         $"Removed food flag for user {userID} and ingredient {ingredientID}");
                 }
                 return true;
+            }catch(Exception ex)
+            {
+                throw new Exception("Remove flag failed: " + ex.ToString);
             }
-            return false;
+                
+
         }
     }
 }

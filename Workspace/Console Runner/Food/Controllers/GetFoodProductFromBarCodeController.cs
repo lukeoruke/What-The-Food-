@@ -1,4 +1,5 @@
-﻿using Console_Runner.FoodService;
+﻿using Console_Runner.AccountService;
+using Console_Runner.FoodService;
 using Console_Runner.Logging;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -15,13 +16,18 @@ namespace Food.Controllers
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();
         private  FoodDBOperations _foodDB;
         private IFormCollection formData;
+        private readonly IAccountGateway _accountAccess = new EFAccountGateway();
+        private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
+        private readonly IFlagGateway _flagGateway = new EFFlagGateway();
+        private AccountDBOperations _accountDBOperations;
         private string barcode;
-      
+        private List<Ingredient> flaggedIngredients = new();
+
 
         [HttpGet]
         public async Task<ActionResult<string>> GET()
         {
-            Console.WriteLine("This is the start of Get Req");
+
             barcode = Request.QueryString.Value;
             barcode = barcode.Substring(1);
             List<Ingredient> ingredients = new();
@@ -30,8 +36,7 @@ namespace Food.Controllers
 
 
             _foodDB = new FoodDBOperations(_foodServiceGateway);
-
-            
+            _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
 
 
 
@@ -43,6 +48,22 @@ namespace Food.Controllers
                 foodItem = await _foodDB.GetScannedItemAsync(barcode);
 
                 ingredients = await _foodDB.GetIngredientsListAsync(barcode);
+
+                int userID = 0; //TODO NEED THE ACTUAL USER ID;
+                List<FoodFlag> flags = await _accountDBOperations.GetAllAccountFlagsAsync(userID);
+               
+                for( int i = 0; i < flags.Count; i++)
+                {
+                    for(int j = 0; j < ingredients.Count; j++)
+                    {
+                        if(flags[i].IngredientID == ingredients[j].IngredientID)
+                        {
+                            flaggedIngredients.Add(ingredients[j]);
+                            Console.WriteLine(ingredients[j].IngredientName);
+                        }
+                    }
+                }
+                
                 label = await _foodDB.GetNutritionLabelAsync(barcode);
                 List<(Nutrient, float)> nutrientListTuple = await _foodDB.GetNutrientListForUserDisplay(barcode);
                 List<Nutrient> nutrientList = new();
@@ -89,14 +110,25 @@ namespace Food.Controllers
             string strNameList = "\"IngredientName\": [";
             string strAltList = "\"IngredientAlternateName\": [";
             string strDescList = "\"IngredientDescription\": [";
+            string flaggedItemList = "\"FlaggedItems\": [";
+            for(int i = 0; i < flaggedIngredients.Count; i++)
+            {
+                flaggedItemList += $"\"{flaggedIngredients[i].IngredientName}\"";
+                if (i < flaggedIngredients.Count - 1)
+                {
+                    flaggedItemList += ",";
+                }
+                else if (i == flaggedIngredients.Count - 1)
+                {
+                    flaggedItemList += "]";
+                }
+            }
 
             for (int i = 0; i < ingredientList.Count; i++)
             {
-
                 strNameList += $"\"{ingredientList[i].IngredientName}\"";
                 strAltList += $"\"{ingredientList[i].AlternateName}\"";
                 strDescList += $"\"{ingredientList[i].IngredientDescription}\"";
-
                 if (i < ingredientList.Count - 1)
                 {
                     strNameList += ",";
@@ -111,7 +143,7 @@ namespace Food.Controllers
                 }
             }
 
-            return strNameList + ", " + strAltList + ", " + strDescList;
+            return strNameList + ", " + strAltList + ", " + strDescList + ", " + flaggedItemList;
         }
     }
 }

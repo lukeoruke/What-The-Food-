@@ -4,6 +4,7 @@ namespace Console_Runner.FoodService
 {
     public interface IFoodGateway
     {
+        public Ingredient GetIngredient(int id);
         public Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take);
         public Task<List<Ingredient>> RetrieveNIngredientsAsync(int skip, int take);
         public Task<List<(Nutrient, float)>> RetrieveNutrientListByIDAsync(List<LabelNutrient> list);

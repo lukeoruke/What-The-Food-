@@ -551,15 +551,19 @@ namespace Console_Runner.AccountService
             return toReturn;
         }
 
-        public List<FoodFlag> GetAllAccountFlags(int userID, LogService? logService = null)
+        public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take)
         {
-            List<FoodFlag> toReturn = _flagService.GetAllAccountFlags(userID, logService);
-            if (logService?.UserID != null)
-            {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
-                                                   $"Successfully retrieved all food flags for user {userID}.");
-            }
-            return toReturn;
+            return await _flagService.GetNAccountFlags(userID, skip, take);
+        }
+
+        public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take, LogService? logService = null)
+        {
+            return await _flagService.GetNAccountFlags(userID, skip, take);
+        }
+
+        public async Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID, LogService? logService = null)
+        {
+            return await _flagService.GetAllAccountFlagsAsync(userID);
         }
 
 

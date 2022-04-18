@@ -15,15 +15,21 @@ namespace Console_Runner.FoodService
             _efContext = new ContextFoodDB();
         }
 
+        public Ingredient GetIngredient(int id)
+        {
+            return _efContext.Ingredients.Where(x => x.IngredientID == id).ToList().ElementAt(0);
+        }
         public async Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take)
         {
-            List<Ingredient> results = await _efContext.Ingredients.Where(x => x.IngredientName.Contains(search)).OrderBy(x => x.IngredientName).ToListAsync();
+            List<Ingredient> results = await _efContext.Ingredients.Where(x => x.IngredientName.Contains(search))
+                .OrderBy(x => x.IngredientName).Skip(skip).Take(take).ToListAsync();
             return results;
         }
 
         public async Task<List<Ingredient>>RetrieveNIngredientsAsync(int skip, int take)
         {
-            List<Ingredient> results = await _efContext.Ingredients.OrderBy(x => x.IngredientName).Skip(skip).Take(take).ToListAsync();
+            List<Ingredient> results = await _efContext.Ingredients.OrderBy(x => x.IngredientName)
+                .Skip(skip).Take(take).ToListAsync();
             return results;
         }
 
@@ -187,47 +193,23 @@ namespace Console_Runner.FoodService
         public async Task<List<Ingredient>> RetrieveIngredientListAsync(string barcode, LogService? logService = null)
         {
             List<Ingredient> ingredients = new List<Ingredient>();
-            var ListOfIngredients = _efContext.LabelIngredients.Where(r => r.Barcode == barcode).ToList();
+            var ListOfIngredients = await _efContext.LabelIngredients.Where(r => r.Barcode == barcode).ToListAsync();
             for(int i = 0; i < ListOfIngredients.Count(); i++)
             {
-                ingredients.Add(await _efContext.Ingredients.FindAsync(ListOfIngredients[0].IngredientID));
+                ingredients.Add(await _efContext.Ingredients.FindAsync(ListOfIngredients[i].IngredientID));
             }
-/*            foreach(LabelIngredient ings in ListOfIngredients)
-            {
-                ingredients.Add(await _efContext.Ingredients.FindAsync(ings.IngredientID));
-                if (logService?.UserID != null)
-                {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
-                            $"Retrieved ingredient with ID {ings.IngredientID}");
-                }
-            }
-            if (logService?.UserID != null)
-            {
-                _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
-                        $"Retrieved list of ingredients for nutrition label {barcode}");
-            }
+
             return ingredients;
         }
 
-        public async Task<NutritionLabel?> RetrieveNutritionLabelAsync(string barcode, LogService? logService = null)
+        public async Task<NutritionLabel?> RetrieveNutritionLabelAsync(string barcode)
         {
-            var toReturn = await _efContext.NutritionLabel.FindAsync(barcode);
-            if (logService?.UserID != null)
-            {
-                _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
-                        $"Retrieved nutrition label {barcode}");
-            }
-            return toReturn;
+            return await _efContext.NutritionLabel.FindAsync(barcode);
         }
 
-        public async Task<FoodItem?> RetrieveScannedFoodItemAsync(string barcode, LogService? logService = null)
+        public async Task<FoodItem?> RetrieveScannedFoodItemAsync(string barcode)
         {
             FoodItem? food = await _efContext.FoodItem.FindAsync(barcode);
-            if (logService?.UserID != null)
-            {
-                _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
-                        $"Retrieved food item {food?.ProductName ?? "undefined"}");
-            }
             return food;
         }
 

@@ -60,7 +60,17 @@ namespace Console_Runner.AccountService
             return accountFlags;
         }
 
-        public async Task<bool> RemoveFoodFlagAsync(int userID, int ingredientID, LogService? logService = null)
+        public Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> RemoveFoodFlagAsync(int userID, int ingredientID)
         {
             foreach (FoodFlag flag in _flagsListDB)
             {

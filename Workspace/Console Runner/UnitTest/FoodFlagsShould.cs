@@ -100,7 +100,42 @@ namespace Test.UM
             Assert.False((await um.GetAllAccountFlagsAsync(has3Flags)).Count == 4);
             Assert.False((await um.GetAllAccountFlagsAsync(has3Flags)).Count == 2);
             Assert.True((await um.GetAllAccountFlagsAsync(has1Flag)).Count == 1);
-        }//TODO IMPLEMENT THIS
+        }
+        [Fact]
+        public async void GetNFlagsSuccess()
+        {
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            Ingredient ingredient =
+               new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
+               "containing dissolved carbon dioxide gas, either artificially injected under " +
+               "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
+            await fm.AddIngredientAsync(ingredient);
+            Ingredient ingredient2 =
+               new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
+               "containing dissolved carbon dioxide gas, either artificially injected under " +
+               "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
+            await fm.AddIngredientAsync(ingredient);
+            Ingredient ingredient3 =
+               new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
+               "containing dissolved carbon dioxide gas, either artificially injected under " +
+               "pressure or occurring due to natural geological processes. Carbonation causes small bubbles to form, giving the water an effervescent quality.");
+            await fm.AddIngredientAsync(ingredient);
+            int someUser = 101012219;
+            await um.AddFlagToAccountAsync(someUser, ingredient.IngredientID);
+            await um.AddFlagToAccountAsync(someUser, ingredient2.IngredientID);
+            await um.AddFlagToAccountAsync(someUser, ingredient3.IngredientID);
+            Assert.True((await um.GetNAccountFlagsAsync(someUser, 0, 1)).Count == 1);
+
+            Assert.True((await um.GetNAccountFlagsAsync(someUser, 0, 2)).Count == 2);
+
+            Assert.True((await um.GetNAccountFlagsAsync(someUser, 0, 3)).Count == 3);
+
+            Assert.True((await um.GetNAccountFlagsAsync(someUser, 1, 2)).Count == 2);
+        }
+
+
+        //TODO IMPLEMENT THIS
 
 /*        [Fact]
         public void checkProductForFlags()

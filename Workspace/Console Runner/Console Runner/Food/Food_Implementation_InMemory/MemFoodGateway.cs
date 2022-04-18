@@ -98,6 +98,7 @@ namespace Console_Runner.FoodService
                     Random _random = new Random();
                     ingredient.IngredientID = _random.Next(1, 10000000);
                     _ingredientsList.Add(ingredient);
+
                     return true;
                 }
                 return false;//ingredient already existed

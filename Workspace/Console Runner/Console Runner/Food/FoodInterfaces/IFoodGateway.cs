@@ -4,8 +4,12 @@ namespace Console_Runner.FoodService
 {
     public interface IFoodGateway
     {
-        public Task<bool> AddLabelNutrientAsync(LabelNutrient labelNutrient, LogService? logService = null);
-        public Task<bool> AddLabelIngredientAsync(LabelIngredient labelIngredient, LogService? logService = null);
+        public Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take);
+        public Task<List<Ingredient>> RetrieveNIngredientsAsync(int skip, int take);
+        public Task<List<(Nutrient, float)>> RetrieveNutrientListByIDAsync(List<LabelNutrient> list);
+        public Task<List<LabelNutrient>> RetrieveLabelNutrientByBarcodeAsync(string barcode);
+        public Task<bool> AddLabelNutrientAsync(LabelNutrient labelNutrient);
+        public Task<bool> AddLabelIngredientAsync(LabelIngredient labelIngredient);
 
         /// <summary>
         /// Adds an object of type FoodItem to the DB

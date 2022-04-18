@@ -1,19 +1,33 @@
 ﻿using Console_Runner.Logging;
 
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 namespace Console_Runner.FoodService
 {
     public class EFFoodGateway : IFoodGateway
     {
         private readonly ContextFoodDB _efContext;
 
+
+
         public EFFoodGateway()
         {
             _efContext = new ContextFoodDB();
         }
 
-        //TODO: figure out how to get user id for log
-        //TODO: need to catch possible exceptions from EF and log them individually
-        public async Task<bool> AddLabelIngredientAsync(LabelIngredient labelIngredient, LogService? logService = null)
+        public async Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take)
+        {
+            List<Ingredient> results = await _efContext.Ingredients.Where(x => x.IngredientName.Contains(search)).OrderBy(x => x.IngredientName).ToListAsync();
+            return results;
+        }
+
+        public async Task<List<Ingredient>>RetrieveNIngredientsAsync(int skip, int take)
+        {
+            List<Ingredient> results = await _efContext.Ingredients.OrderBy(x => x.IngredientName).Skip(skip).Take(take).ToListAsync();
+            return results;
+        }
+
+        public async Task<bool> AddLabelIngredientAsync(LabelIngredient labelIngredient)
         {
             try
             {
@@ -173,8 +187,12 @@ namespace Console_Runner.FoodService
         public async Task<List<Ingredient>> RetrieveIngredientListAsync(string barcode, LogService? logService = null)
         {
             List<Ingredient> ingredients = new List<Ingredient>();
-            var ListOfIngredients = _efContext.LabelIngredients.Where(r => r.Barcode == barcode);
-            foreach(LabelIngredient ings in ListOfIngredients)
+            var ListOfIngredients = _efContext.LabelIngredients.Where(r => r.Barcode == barcode).ToList();
+            for(int i = 0; i < ListOfIngredients.Count(); i++)
+            {
+                ingredients.Add(await _efContext.Ingredients.FindAsync(ListOfIngredients[0].IngredientID));
+            }
+/*            foreach(LabelIngredient ings in ListOfIngredients)
             {
                 ingredients.Add(await _efContext.Ingredients.FindAsync(ings.IngredientID));
                 if (logService?.UserID != null)
@@ -211,6 +229,22 @@ namespace Console_Runner.FoodService
                         $"Retrieved food item {food?.ProductName ?? "undefined"}");
             }
             return food;
+        }
+
+
+        public async Task<List<LabelNutrient>> RetrieveLabelNutrientByBarcodeAsync(string barcode)
+        {
+            return _efContext.LabelNutrients.Where(r => r.Barcode == barcode).ToList();
+        }
+
+        public async Task<List<(Nutrient, float)>> RetrieveNutrientListByIDAsync(List<LabelNutrient> list)
+        {
+            List<(Nutrient?, float)> nutrientList = new();
+            for (int i = 0; i < list.Count; i++)
+            {
+                 nutrientList.Add((await _efContext.Nutrient.FindAsync(list[i].NutrientID), list[i].NutrientPercentage));
+            }
+            return nutrientList;
         }
     }
 }

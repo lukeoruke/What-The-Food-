@@ -1,0 +1,16 @@
+.rating {
+    display: flex;
+    justify-content: space-between;
+}
+
+.partition {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    padding-bottom: 25px;
+
+}
+
+#foodImage {
+    text-align: center;
+}

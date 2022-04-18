@@ -10,6 +10,7 @@ namespace Console_Runner.FoodService
         List<Ingredient> _ingredientsList = new();
         List<Nutrient> _vitaminList = new();
         List<LabelNutrient> _nutrientIdentifiersList = new();
+        List<Nutrient> _nutrientsList = new();
 
         public async Task<bool> AddLabelIngredientAsync(LabelIngredient labelIngredient, LogService? logService = null)
         {
@@ -241,6 +242,52 @@ namespace Console_Runner.FoodService
             }
 
         }
+        //TODO IMPLEMENT THIS
+        public async Task<List<(Nutrient, float)>> RetrieveNutrientListByIDAsync(List<LabelNutrient> list)
+        {
 
+            List<(Nutrient?, float)> nutrientList = new();
+            for (int i = 0; i < list.Count; i++)
+            {
+                for(int j = 0; j < _nutrientsList.Count; j++)
+                {
+                    if(list[i].NutrientID == _nutrientsList[j].NutrientID)
+                    {
+                        nutrientList.Add((_nutrientsList[j],list[i].NutrientPercentage));
+                    }
+                }
+            }
+            return nutrientList;
+        }
+        //TODO IMPLEMENT THIS
+        public async Task<List<LabelNutrient>> RetrieveLabelNutrientByBarcodeAsync(string barcode)
+        {
+            List<LabelNutrient> list = new();
+            for(int i = 0; i < _nutrientIdentifiersList.Count; i++)
+            {
+                if(_nutrientIdentifiersList[i].Barcode == barcode)
+                {
+                    list.Add(_nutrientIdentifiersList[i]);
+                }
+            }
+            return list;
+        }
+
+
+        //TODO IMPLEMENT THIS!!!
+        public Task<List<Ingredient>> RetrieveAllIngredientsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<List<Ingredient>> RetrieveNIngredientsAsync(int skip, int take)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

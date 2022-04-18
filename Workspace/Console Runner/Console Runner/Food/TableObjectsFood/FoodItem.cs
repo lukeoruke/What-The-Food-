@@ -8,7 +8,6 @@ public class FoodItem
     public string ProductName { get; set; }
     public string CompanyName { get; set; }
     public string ProductPic { get; set; }
-    public List<FoodUpdate> FoodUpdates { get; set; }
     //public string labelID { get; set; }
     public FoodItem()
     {
@@ -20,8 +19,11 @@ public class FoodItem
         ProductName = productName;
         CompanyName = companyName;
         ProductPic = pic;
-        FoodUpdates = new List<FoodUpdate>();
     }
    
-
+    public string FormatJsonString()
+    {
+        return $"\"Barcode\": \"{Barcode}\", \"ProductName\": \"{ProductName}\"," +
+            $" \"CompanyName\": \"{CompanyName}\", \"ProductPic\": \"{ProductPic}\"";
+    }
 }

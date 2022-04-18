@@ -10,8 +10,17 @@ namespace Console_Runner.FoodService
             _foodItemAccess = foodItemAccess;
         }
 
-        //TODO: how to get user id???
-        public async Task<bool> AddFoodItemAsync(FoodItem foodItem, LogService? logService = null)
+        public async Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take)
+        {
+            return await _foodItemAccess.GetIngredientBySearchAsync(search, skip, take);
+        }
+
+        public async Task<List<Ingredient>> GetNIngredients(int skip, int take)
+        {
+           return await _foodItemAccess.RetrieveNIngredientsAsync(skip, take);
+        }
+
+        public async Task<bool> AddFoodItemAsync(FoodItem foodItem)
         {
             try
             {
@@ -31,7 +40,16 @@ namespace Console_Runner.FoodService
             
         }
 
-        public async Task<bool> AddNutritionLabelAsync(NutritionLabel nutritionLabel, LogService? logService = null)
+        public async Task<List<(Nutrient, float)>> GetNutrientListForUserDisplay(string barcode)
+        {
+            
+            List<LabelNutrient> temp =  await _foodItemAccess.RetrieveLabelNutrientByBarcodeAsync(barcode);
+            List<(Nutrient, float)> nutrients = await _foodItemAccess.RetrieveNutrientListByIDAsync(temp);
+            return nutrients;
+
+        }
+
+    public async Task<bool> AddNutritionLabelAsync(NutritionLabel nutritionLabel)
         {
             var toReturn = await _foodItemAccess.AddNutritionLabelAsync(nutritionLabel);
             if(logService?.UserID != null)
@@ -127,7 +145,11 @@ namespace Console_Runner.FoodService
 
         public async Task<FoodItem> GetScannedItemAsync(string barcode, LogService? logService = null)
         {
-            FoodItem? foodItem = await _foodItemAccess.RetrieveScannedFoodItemAsync(barcode);
+            if(barcode == null)
+            {
+                throw (new Exception("provided barcode was null, this error is called from FoodDbOperations.GetScannedItemAsync() method "));
+            }
+            FoodItem?foodItem = await _foodItemAccess.RetrieveScannedFoodItemAsync(barcode);
             if(foodItem == null)
             {
                 throw (new Exception("No such product exists in the DB"));

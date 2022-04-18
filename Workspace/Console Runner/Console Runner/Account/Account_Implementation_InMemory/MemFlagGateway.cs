@@ -19,7 +19,7 @@ namespace Console_Runner.AccountService
                     if (logService?.UserID != null)
                     {
                         _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
-                            $"Retrieved food flag for user {userID} and ingredient {ingredientID} - exists? {toReturn}");
+                            $"Retrieved food flag for user {userID} and ingredient {ingredientID} - exists? {true}");
                     }
                     return true;
                 }
@@ -60,17 +60,17 @@ namespace Console_Runner.AccountService
             return accountFlags;
         }
 
-        public Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID)
+        public Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID, LogService? logService = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take)
+        public Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take, LogService? logService = null)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> RemoveFoodFlagAsync(int userID, int ingredientID)
+        public async Task<bool> RemoveFoodFlagAsync(int userID, int ingredientID, LogService? logService = null)
         {
             foreach (FoodFlag flag in _flagsListDB)
             {

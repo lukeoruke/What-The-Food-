@@ -202,7 +202,7 @@ namespace Console_Runner.AccountService
                             LogLevel = LogLevel.Info,
                             Category = Category.DataStore,
                             Timestamp = DateTime.Now,
-                            Message = $"Removed authorization for user {permissions.UserID} and resource {permissions.Permission}"
+                            Message = $"Removed authorization for user {permission.UserID} and resource {permission.Permission}"
                         });
                     }
                 }
@@ -229,7 +229,7 @@ namespace Console_Runner.AccountService
                 if (logService?.UserID != null)
                 {
                     _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
-                                                       $"Removed authorization for user {userID} and resource {permissions}");
+                                                       $"Removed authorization for user {userID} and resource {permission}");
                 }
                 return true;
             }

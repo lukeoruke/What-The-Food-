@@ -17,6 +17,7 @@ namespace Console_Runner.AccountService
         {
             _efContext = new ContextAccountDB();
         }
+
         public async Task<bool> AccountHasFlagAsync(int userID, int ingredientID, LogService? logService = null)
         {
             FoodFlag foodFlag = new(userID, ingredientID);
@@ -47,13 +48,20 @@ namespace Console_Runner.AccountService
                 return false;
             }
         }
-        public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take)
+
+        public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take, LogService? logService = null)
         {
             List<FoodFlag> results =  await _efContext.FoodFlags.Where(x => x.UserID == userID).
                 OrderBy(x => x.IngredientID).Skip(skip).Take(take).ToListAsync();
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
+                    $"Retrieved {take} food flags after {skip} associated with user {userID}");
+            }
             return results;
         }
-        public async Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID)
+
+        public async Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID, LogService? logService = null)
         {
             List<FoodFlag> results = await _efContext.FoodFlags.Where(x => x.UserID == userID).ToListAsync();
             if (logService?.UserID != null)
@@ -77,12 +85,16 @@ namespace Console_Runner.AccountService
                         $"Removed food flag for user {userID} and ingredient {ingredientID}");
                 }
                 return true;
-            }catch(Exception ex)
-            {
-                throw new Exception("Remove flag failed: " + ex.ToString);
             }
-                
-
+            catch(Exception ex)
+            {
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
+                        $"Cannot remove food flag for user {userID} and ingredient {ingredientID}. Unknown error: {ex.Message}");
+                }
+                throw new Exception("Remove flag failed: " + ex.ToString());
+            }
         }
     }
 }

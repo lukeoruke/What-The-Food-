@@ -43,7 +43,7 @@
 
         public override string ToString()
         {
-            return $"User: {UserIdentifier?.UserHash ?? "Unidentified"}\nLevel: {LogLevel}\nCategory: {Category}\nTimestamp: {Timestamp}\nMessage: {Message}";
+            return $"User: {UserIdentifier?.UserHash ?? "Unidentified", -20}\nLevel: {LogLevel, -10}\nCategory: {Category, -10}\nTimestamp: {Timestamp, -15}\nMessage: {Message}";
         }
     }
 }

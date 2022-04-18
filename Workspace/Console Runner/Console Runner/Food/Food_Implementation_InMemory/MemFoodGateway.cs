@@ -175,7 +175,7 @@ namespace Console_Runner.FoodService
                     if (logService?.UserID != null)
                     {
                         _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
-                                $"Retrieved food item {food?.ProductName ?? "undefined"}");
+                                $"Retrieved food item {fooditem?.ProductName ?? "undefined"}");
                     }
                     return fooditem;
                 }
@@ -243,7 +243,7 @@ namespace Console_Runner.FoodService
 
         }
         //TODO IMPLEMENT THIS
-        public async Task<List<(Nutrient, float)>> RetrieveNutrientListByIDAsync(List<LabelNutrient> list)
+        public async Task<List<(Nutrient, float)>> RetrieveNutrientListByIDAsync(List<LabelNutrient> list, LogService? logService = null)
         {
 
             List<(Nutrient?, float)> nutrientList = new();
@@ -257,10 +257,15 @@ namespace Console_Runner.FoodService
                     }
                 }
             }
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.DataStore, DateTime.Now,
+                        $"Retrieved list of nutrients by ID");
+            }
             return nutrientList;
         }
         //TODO IMPLEMENT THIS
-        public async Task<List<LabelNutrient>> RetrieveLabelNutrientByBarcodeAsync(string barcode)
+        public async Task<List<LabelNutrient>> RetrieveLabelNutrientByBarcodeAsync(string barcode, LogService? logService = null)
         {
             List<LabelNutrient> list = new();
             for(int i = 0; i < _nutrientIdentifiersList.Count; i++)
@@ -270,27 +275,32 @@ namespace Console_Runner.FoodService
                     list.Add(_nutrientIdentifiersList[i]);
                 }
             }
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.DataStore, DateTime.Now,
+                        $"Retrieved list of label-nutrient connections for label {barcode}");
+            }
             return list;
         }
 
 
         //TODO IMPLEMENT THIS!!!
-        public Task<List<Ingredient>> RetrieveAllIngredientsAsync()
+        public Task<List<Ingredient>> RetrieveAllIngredientsAsync(LogService? logService = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take)
+        public Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take, LogService? logService = null)
         {
             throw new NotImplementedException();
         }
 
-        public Task<List<Ingredient>> RetrieveNIngredientsAsync(int skip, int take)
+        public Task<List<Ingredient>> RetrieveNIngredientsAsync(int skip, int take, LogService? logService = null)
         {
             throw new NotImplementedException();
         }
 
-        public Ingredient GetIngredient(int id)
+        public Ingredient GetIngredient(int id, LogService? logService = null)
         {
             throw new NotImplementedException();
         }

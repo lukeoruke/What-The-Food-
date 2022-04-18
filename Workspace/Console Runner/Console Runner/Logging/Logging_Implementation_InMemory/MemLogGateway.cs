@@ -23,5 +23,13 @@
             Thread.Sleep(100);
             return true;
         }
+
+        public void PrintAllLogs()
+        {
+            foreach (var log in _logsDB)
+            {
+                Console.WriteLine(log);
+            }
+        }
     }
 }

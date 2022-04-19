@@ -4,23 +4,32 @@
  */
 using Microsoft.Extensions.DependencyInjection;
 using Console_Runner;
-using Console_Runner.AccountService;
+using Console_Runner.Logging;
+using Console_Runner.FoodService;
 
-/*
-IAccountGateway accountGateway = new EFAccountGateway();
-IAuthorizationGateway authorizationGateway = new EFAuthorizationGateway();
-IFlagGateway flagGateway = new EFFlagGateway();
-AccountDBOperations accountService = new AccountDBOperations(accountGateway, authorizationGateway, flagGateway);
-await accountService.UserSignUpAsync(new Account() { Email = "email@example.com", Password = "password", FName = "Guy", LName = "DudeBro"});
-*/
 
 [STAThread]
-static void Main()
+async static void Main()
 {
-    Console.Write("application starting...");
 }
 
 
+/*Console.WriteLine("Program running...");
+FoodDBOperations foodDBOperations = new FoodDBOperations(new EFFoodGateway());
+FoodItem food1 = new FoodItem("barcode", "monster", "who what", "link to pic");
+FoodItem food2 = new FoodItem("anotherbarcode", "choccy milk", "who what", "link to pic");
+FoodItem food3 = new FoodItem("athirdbarcode", "tea", "some dude", "link to pic");
+foodDBOperations.AddFoodItemAsync(food1).Wait();
+foodDBOperations.AddFoodItemAsync(food2).Wait();
+foodDBOperations.AddFoodItemAsync(food3).Wait();*/
+
+
+/*
+Console.WriteLine("Program running...");
+LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
+await logger.LogAsync("test", LogLevel.Info, Category.Business, DateTime.UtcNow, "this is a test message");
+await logger.LogAsync("test", LogLevel.Info, Category.Business, DateTime.UtcNow, "this is a second test message");
+ */
 /**
 IDataAccess dal = new DummyDaL();
 ILogger log = new Logging(dal);

@@ -1,0 +1,90 @@
+title Promote User to Administrator
+
+participant "Front End" as fe
+participant "Service Broker" as sb
+participant "UserServiceController" as uc
+participant "UserManagement" as um
+participant "EntityFrameworkPermissionGateway" as pdao
+participant "EntityFrameworkUserGateway" as udao
+participant "User Database (MariaDB)" as udb
+participant "LoggingService" as ls
+participant "EntityFrameworkLogGateway" as ldao
+participant "Logs Database" as ldb
+
+# begin
+note left of fe: Assume that before this sequence,\nthe user attempting this action is an\nadministrator, logged in, and on the\naccount management view.
+activate fe
+fe-->sb:HTTP PUT specifying promotion request, \nactor ID, and target ID
+# instantiation
+activate sb
+sb-->uc:HTTP PUT specifying promotion request, \nactor ID, and target ID
+activate uc
+uc->udao:UserAccess = new EntityFrameworkUserGateway()
+activate udao
+udao->udao:ctor
+udao-->uc:EntityFrameworkUserGateway instance
+deactivate udao
+uc->pdao:PermissionAccess = new EntityFrameworkPermissionGateway()
+activate pdao
+pdao->pdao:ctor
+pdao-->uc:EntityFrameworkPermissionGateway instance
+deactivate pdao
+uc->um:UM = new UserManagement(UserAccess, PermissionAccess)
+activate um
+um->um:ctor
+um-->uc:UserManagement instance
+deactivate um
+# auth actor
+uc-->um:UM.HasPermission(actorID, "createAdmin")
+activate um
+um-->pdao:PermissionAccess.HasPermission(accountID, "createAdmin")
+activate pdao
+pdao-->udb:SELECT FROM permissions JOIN users\nWHERE(accountID = ... AND resource = 'createAdmin')
+activate udb
+udb-->pdao: 1 tuple
+deactivate udb
+pdao-->um:true
+deactivate pdao
+um-->uc:true
+deactivate um
+# perform action
+uc-->um:UM.PromoteToAdmin(actorID, targetID)
+activate um
+um-->pdao:PermissionAccess.AddPermissions(ADMIN_PERMISSIONS)
+activate pdao
+note right of um: Where ADMIN_PERMISSIONS is an array defined as:\n{"enableAccount", "disableAccount", "deleteAccount", "createAdmin", "editOtherAccount"} 
+pdao-->udb:INSERT INTO permissions VALUES (...)
+activate udb
+udb-->pdao:5
+deactivate udb
+pdao-->um:true
+deactivate pdao
+um-->uc:true
+deactivate um
+uc-->sb:HTTP Status code 200
+deactivate uc
+sb->ldao:LogAccess = new EntityFrameworkLogGateway()
+activate ldao
+ldao->ldao:ctor
+ldao-->sb: EntityFrameworkLogGateway instance
+deactivate ldao
+sb->ls:LogService = new LoggingService(LogAccess)
+activate ls
+ls->ls:ctor
+ls-->sb:LoggingService instance
+deactivate ls
+sb-->ls:LogService.LogAccountPromote("Info", "Account Promotion", true, "Server", actorID, targetID)
+activate ls
+ls->ls:ToLog = new Log("Info", "Account Promotion", true, "Server", actorID, targetID)
+ls-->ldao:LogAccess.WriteLog(ToLog)
+activate ldao
+ldao-->ldb:INSERT INTO logs VALUES(...)
+activate ldb
+ldb-->ldao:1
+deactivate ldb
+ldao-->ls:true
+deactivate ldao
+ls-->sb:true
+deactivate ls
+sb-->fe:HTTP Status code 200
+deactivate sb

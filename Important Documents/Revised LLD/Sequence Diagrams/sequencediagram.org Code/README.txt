@@ -1,0 +1,1 @@
+Open the .txt files on sequencediagram.org to edit them and generate new versions.

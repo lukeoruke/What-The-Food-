@@ -1,0 +1,22 @@
+title UM Invalid Email
+
+actor "User" as us
+participant "Front-End" as fe
+participant "Service Broker" as sb
+participant "UserServiceController" as uc
+participant "UserManagement" as us
+participant "EntityFrameworkUserGateway" as udao
+participant "User Database (MariaDB)" as db
+participant "LoggingService" as ls
+participant "EntityFrameworkLogGateway" as ldao
+participant "Logs Database (MariaDB)" as ldb
+
+activate us
+activate fe
+fe-->sb:HTTP GET account creation view
+activate sb
+sb-->fe:Send account creation view
+deactivate sb
+fe-->us:Display account creation view
+us-->fe:User enters improperly constructed email address
+fe-->us:Display error message notifying of improper email address

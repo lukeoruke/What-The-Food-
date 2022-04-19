@@ -61,16 +61,19 @@ public class ContextFoodDB : DbContext
             table.Barcode,
             table.UserID
         });
-
+        builder.Entity<FoodUpdate>().HasKey(table => new
+        {
+            table.FoodItemId,
+            table.UpdateTime
+        });
     }
     public DbSet<Ingredient> Ingredients { get; set; } = null!;
-
     public DbSet<FoodItem> FoodItem { get; set; } = null!;
     public DbSet<LabelIngredient> LabelIngredients { get; set; } = null!;
     public DbSet<LabelNutrient> LabelNutrients { get; set; } = null!;
     public DbSet<Nutrient> Nutrient { get; set; } = null!;
     public DbSet<NutritionLabel> NutritionLabel { get; set; } = null!;
-
+    public DbSet<FoodUpdate> FoodUpdates { get; set; } = null!;
 
 
 

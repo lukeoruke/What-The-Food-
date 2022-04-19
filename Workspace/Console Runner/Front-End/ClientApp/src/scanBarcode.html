@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="styles/settingPage.css">
+    <script src="scripts/scanBarcode.js"></script>
 </head>
 <body>
     <h1></h1>
@@ -16,6 +17,15 @@
     <div id="setting">
         <span>Barcode Scan</span>
         <div class="box2">
+            <form class="form" onsubmit="getFoodObject(event)">
+                <section class="section">
+                    <label>barcode:</label>
+                    <label>
+                        <input class="input" type="text" id="barcode" name="barcode" placeholder="barcode"/>
+                    </label>
+                </section>
+                <input class="input" type="submit" value="Submit"/>
+            </form>
             <div style="position: relative; left: 440px; top: 100px; font-size: 20px;">Scan Barcode</div>
             <img style="position: relative; left: 380px; top: 100px; font-size: 20px;" src="images/barcode.png" alt="scan here" width="250" height="150">
             <label style="position: relative; color:blue; left: 180px; top: 120px; font-size: 14px;">Upload a Photo</label>

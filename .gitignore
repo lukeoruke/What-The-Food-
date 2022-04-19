@@ -7,3 +7,7 @@
 /.vs
 /Milestone 3/Workspace/Console Runner/Console Runner/obj
 /Milestone 3/Workspace/Console Runner/UnitTest/obj
+Workspace/Console Runner/Console Runner/Migrations/20220307221531_CreateCustomerDB.cs
+Workspace/Console Runner/Console Runner/Migrations/20220307221531_CreateCustomerDB.Designer.cs
+Workspace/Console Runner/Console Runner/Migrations/20220328213718_AccountDB.Designer.cs
+/Workspace/Console Runner/Console Runner/Migrations

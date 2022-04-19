@@ -69,7 +69,7 @@ namespace Food.Controllers
                 }
                 
                 label = await _foodDB.GetNutritionLabelAsync(barcode, logger);
-                List<(Nutrient, float)> nutrientListTuple = await _foodDB.GetNutrientListForUserDisplay(barcode, logger);
+                List<(Nutrient, float)> nutrientListTuple = await _foodDB.GetNutrientListForUserDisplayAsync(barcode, logger);
                 List<Nutrient> nutrientList = new();
                 for (int i = 0; i < nutrientListTuple.Count; i++)
                 {

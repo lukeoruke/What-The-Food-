@@ -27,7 +27,7 @@ namespace Food.Controllers
                 try
                 {
                     Console.WriteLine("Page " + page);
-                    var allIngredientList = await _foodDBOperations.GetNIngredients(5*int.Parse(page), 5, logger);
+                    var allIngredientList = await _foodDBOperations.GetNIngredientsAsync(5*int.Parse(page), 5, logger);
                     Console.WriteLine("Length of ing list = " + allIngredientList.Count());
                     string jsonStr = "{";
                     jsonStr += FormatIngredientsJsonString(allIngredientList);

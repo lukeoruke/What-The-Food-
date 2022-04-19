@@ -31,7 +31,7 @@ namespace Console_Runner.FoodService
             return ingList;
         }
 
-        public async Task<List<Ingredient>> GetNIngredients(int skip, int take, LogService? logService = null)
+        public async Task<List<Ingredient>> GetNIngredientsAsync(int skip, int take, LogService? logService = null)
         {
             List<Ingredient> ingList = await _foodItemAccess.RetrieveNIngredientsAsync(skip, take);
             if (logService?.UserID != null)
@@ -62,7 +62,7 @@ namespace Console_Runner.FoodService
             
         }
 
-        public async Task<List<(Nutrient, float)>> GetNutrientListForUserDisplay(string barcode, LogService? logService = null)
+        public async Task<List<(Nutrient, float)>> GetNutrientListForUserDisplayAsync(string barcode, LogService? logService = null)
         {
             List<LabelNutrient> temp =  await _foodItemAccess.RetrieveLabelNutrientByBarcodeAsync(barcode);
             List<(Nutrient, float)> nutrients = await _foodItemAccess.RetrieveNutrientListByIDAsync(temp);

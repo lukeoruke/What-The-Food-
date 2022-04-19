@@ -285,24 +285,52 @@ namespace Console_Runner.FoodService
 
 
         //TODO IMPLEMENT THIS!!!
-        public Task<List<Ingredient>> RetrieveAllIngredientsAsync(LogService? logService = null)
+        public async Task<List<Ingredient>> RetrieveAllIngredientsAsync(LogService? logService = null)
         {
-            throw new NotImplementedException();
+            return _ingredientsList;
         }
 
-        public Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take, LogService? logService = null)
+        public async Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take, LogService? logService = null)
         {
-            throw new NotImplementedException();
+            List<Ingredient> ingredientsMatchingSearch = new List<Ingredient>();
+            for(int i = 0; i < _ingredientsList.Count; i++)
+            {
+                if(_ingredientsList[i].IngredientName.Contains(search))
+                {
+                    ingredientsMatchingSearch.Add(_ingredientsList[i]);
+                }
+            }
+            List<Ingredient> subList = new();
+            for(int i = skip; i < ingredientsMatchingSearch.Count; i++)
+            {
+                if(take == 0)
+                {
+                    return subList;
+                }
+                subList.Add(ingredientsMatchingSearch[i]);
+                take--;
+            }
+           return subList;
         }
 
-        public Task<List<Ingredient>> RetrieveNIngredientsAsync(int skip, int take, LogService? logService = null)
+        public async Task<List<Ingredient>> RetrieveNIngredientsAsync(int skip, int take, LogService? logService = null)
         {
-            throw new NotImplementedException();
+            List<Ingredient> ingsList = new List<Ingredient>();
+            for (int i = skip; i < _ingredientsList.Count; i++)
+            {
+                if (take == 0)
+                {
+                    return ingsList;
+                }
+                ingsList.Add(_ingredientsList[i]);
+                take--;
+            }
+            return ingsList;
         }
 
         public Ingredient GetIngredient(int id, LogService? logService = null)
         {
-            throw new NotImplementedException();
+            return _ingredientsList.Where(r => r.IngredientID == id).ToList()[0];
         }
     }
 }

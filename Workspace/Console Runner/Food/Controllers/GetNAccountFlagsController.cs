@@ -33,7 +33,7 @@ namespace Food.Controllers
             int numberOfItemsDisplayedAtOnce = 2;
             try
             {
-                var allFlags = await _accountDBOperations.GetNAccountFlags(userID, numberOfItemsDisplayedAtOnce * int.Parse(page)
+                var allFlags = await _accountDBOperations.GetNAccountFlagsAsync(userID, numberOfItemsDisplayedAtOnce * int.Parse(page)
                     , numberOfItemsDisplayedAtOnce, logger);
                 List<Ingredient> ingredients = new List<Ingredient>();
                 for(int i = 0; i < allFlags.Count; i++)

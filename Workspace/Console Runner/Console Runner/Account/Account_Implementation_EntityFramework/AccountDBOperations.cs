@@ -551,9 +551,9 @@ namespace Console_Runner.AccountService
             return toReturn;
         }
 
-        public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take)
+        public async Task<List<FoodFlag>> GetNAccountFlagsAsync(int userID, int skip, int take)
         {
-            return await _flagService.GetNAccountFlags(userID, skip, take);
+            return await _flagService.GetNAccountFlagsAsync(userID, skip, take);
         }
 
         public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take, LogService? logService = null)
@@ -566,27 +566,6 @@ namespace Console_Runner.AccountService
             return await _flagService.GetAllAccountFlagsAsync(userID);
         }
 
-
-
-        /////////////////////////////////////////////////////////////////TODO THIS IS ON HOLD UNTIL SERVICE MANAGER IS COMPLETED.////////////////////////////////////////////////////////////////
-
-
-
-        /*        public List<Ingredient> CheckProductForFlags(string barcode, string email)
-                {
-                    FoodItem? food = GetScannedFoodItem(barcode);
-                    if (food == null) return new List<Ingredient>();
-                    List<Ingredient> ingredientList = GetIngredientList(food.Barcode);
-                    List<Ingredient> flaggedItems = new List<Ingredient>();
-                    for (int i = 0; i < ingredientList.Count; i++)
-                    {
-                        if (_flagGateway.AccountHasFlag(email, ingredientList[i].IngredientID))
-                        {
-                            flaggedItems.Add(ingredientList[i]);
-                        }
-                    }
-                    return flaggedItems;
-                }*/
 
 
     }

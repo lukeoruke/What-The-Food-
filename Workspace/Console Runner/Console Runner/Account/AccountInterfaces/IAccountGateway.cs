@@ -39,7 +39,7 @@ namespace Console_Runner.AccountService
         /// <returns>True if the operation was successful, false otherwise.</returns>
         public Task<bool> UpdateAccountAsync(Account acc, LogService? logService = null);
 
-        public Task<int> GetIDFromEmail(string email, LogService? logService = null);
+        public Task<int> GetIDFromEmailId(string email, LogService? logService = null);
 
         public int NumberOfAccounts(LogService? logService = null);
 

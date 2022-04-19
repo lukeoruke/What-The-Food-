@@ -235,7 +235,7 @@ namespace Console_Runner.AccountService
         //authenticates a users input password for login. True if pass matches, false otherwise
         public async Task<bool> AuthenticateUserPassAsync(string email, string userPass, LogService? logService = null)
         {
-            int userID = await _accountAccess.GetIDFromEmail(email, logService);
+            int userID = await _accountAccess.GetIDFromEmailId(email, logService);
             if (userID == -1)
             {
                 if (logService?.UserID != null)
@@ -266,7 +266,7 @@ namespace Console_Runner.AccountService
             
             if (await AuthenticateUserPassAsync(email, userPass))
             {
-                int ID = await _accountAccess.GetIDFromEmail(email, logService);
+                int ID = await _accountAccess.GetIDFromEmailId(email, logService);
                 Account acc = await GetUserAccountAsync(ID);
                 acc.IsActive = true;
                 if (logService?.UserID != null)
@@ -551,19 +551,19 @@ namespace Console_Runner.AccountService
             return toReturn;
         }
 
-        public async Task<List<FoodFlag>> GetNAccountFlagsAsync(int userID, int skip, int take)
+        public async Task<List<FoodFlag>> GetNAccountFlagsAsync(int userID, int skip, int take, LogService? logService = null)
         {
-            return await _flagService.GetNAccountFlagsAsync(userID, skip, take);
+            return await _flagService.GetNAccountFlagsAsync(userID, skip, take, logService);
         }
 
         public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take, LogService? logService = null)
         {
-            return await _flagService.GetNAccountFlags(userID, skip, take);
+            return await _flagService.GetNAccountFlagsAsync(userID, skip, take, logService);
         }
 
         public async Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID, LogService? logService = null)
         {
-            return await _flagService.GetAllAccountFlagsAsync(userID);
+            return await _flagService.GetAllAccountFlagsAsync(userID, logService);
         }
 
 

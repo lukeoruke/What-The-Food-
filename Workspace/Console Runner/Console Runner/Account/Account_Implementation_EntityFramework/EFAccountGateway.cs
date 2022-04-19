@@ -158,7 +158,7 @@ namespace Console_Runner.AccountService
             }
         }
 
-        public async Task<int> GetIDFromEmailId(string email, LogService? logService = null)
+        public async Task<int> GetIDFromEmailIdAsync(string email, LogService? logService = null)
         {
             var userEmail = _efContext.Accounts.Where(r => r.Email == email);
             List<Account> tempAcc = await userEmail.ToListAsync();

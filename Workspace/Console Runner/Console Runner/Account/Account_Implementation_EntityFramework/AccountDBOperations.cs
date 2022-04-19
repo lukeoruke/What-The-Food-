@@ -235,7 +235,7 @@ namespace Console_Runner.AccountService
         //authenticates a users input password for login. True if pass matches, false otherwise
         public async Task<bool> AuthenticateUserPassAsync(string email, string userPass, LogService? logService = null)
         {
-            int userID = await _accountAccess.GetIDFromEmailId(email, logService);
+            int userID = await _accountAccess.GetIDFromEmailIdAsync(email, logService);
             if (userID == -1)
             {
                 if (logService?.UserID != null)
@@ -266,7 +266,7 @@ namespace Console_Runner.AccountService
             
             if (await AuthenticateUserPassAsync(email, userPass))
             {
-                int ID = await _accountAccess.GetIDFromEmailId(email, logService);
+                int ID = await _accountAccess.GetIDFromEmailIdAsync(email, logService);
                 Account acc = await GetUserAccountAsync(ID);
                 acc.IsActive = true;
                 if (logService?.UserID != null)

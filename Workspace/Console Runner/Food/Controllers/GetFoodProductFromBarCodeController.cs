@@ -126,6 +126,7 @@ namespace Food.Controllers
                 {
                     flaggedItemList += "]";
                 }
+
             }
 
             for (int i = 0; i < ingredientList.Count; i++)
@@ -146,8 +147,15 @@ namespace Food.Controllers
                     strDescList += "]";
                 }
             }
-
-            return strNameList + ", " + strAltList + ", " + strDescList + ", " + flaggedItemList;
+            if (flaggedIngredients.Count == 0)
+            {
+                return strNameList + ", " + strAltList + ", " + strDescList;
+            }
+            else
+            {
+                return strNameList + ", " + strAltList + ", " + strDescList + ", " + flaggedItemList;
+            }
+            
         }
     }
 }

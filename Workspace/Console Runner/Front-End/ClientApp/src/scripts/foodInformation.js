@@ -11,5 +11,5 @@ function populateFoodInfo() {
     document.getElementById("info").innerText = foodInfo;
     document.getElementById("foodName").innerText = jsonConst.ProductName;
     document.getElementById("barcodeNumber").innerText = jsonConst.Barcode;
-    document.getElementById("flaggedItems").innerText = jsonConst.Barcode;
+    //document.getElementById("flaggedItems").innerText = jsonConst.Barcode;
 }

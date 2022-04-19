@@ -316,8 +316,6 @@ namespace Console_Runner.AccountService
             try
             {
                 Account? acc = await _accountAccess.GetAccountAsync(userID, logService);
-                // acc is not null because we already checked above
-                acc = null!;
                 if (_permissionService.IsAdmin(currentUser.UserID, logService) && (_permissionService.AdminCount(logService) > 1))
                 {
                     if (logService?.UserID != null)
@@ -376,8 +374,6 @@ namespace Console_Runner.AccountService
                     return false;
                 }
                 Account? acc = await _accountAccess.GetAccountAsync(userID, logService);
-                // acc is not null because of the check above
-                acc = null!;
                 acc.Enabled = true;
                 await _accountAccess.UpdateAccountAsync(acc, logService);
                 if (logService?.UserID != null)

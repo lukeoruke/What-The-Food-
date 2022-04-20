@@ -56,29 +56,25 @@ namespace Food.Controllers
         public string FormatIngredientsJsonString(List<Ingredient> ingredientList)
         {
             string strNameList = "\"IngredientName\": [";
-            string strAltList = "\"IngredientAlternateName\": [";
-            string strDescList = "\"IngredientDescription\": [";
+
             string strIngIDList = "\"IngredientID\": [";
             for (int i = 0; i < ingredientList.Count; i++)
             {
 
                 strNameList += $"\"{ingredientList[i].IngredientName}\"";
-                strAltList += $"\"{ingredientList[i].AlternateName}\"";
-                strDescList += $"\"{ingredientList[i].IngredientDescription}\"";
+
                 strIngIDList += $"\"{ingredientList[i].IngredientID}\"";
 
                 if (i < ingredientList.Count - 1)
                 {
                     strNameList += ",";
-                    strAltList += ",";
-                    strDescList += ",";
+
                     strIngIDList += ",";
                 }
                 else if (i == ingredientList.Count - 1)
                 {
                     strNameList += "]";
-                    strAltList += "]";
-                    strDescList += "]";
+
                     strIngIDList += "]";
                 }
             }

@@ -17,13 +17,25 @@ namespace Console_Runner.AccountService
             this._permissionService = permissionService;
             this._flagService = flagGateway;
         }
-
+        
+        /// <summary>
+        /// Computes the hash from provided information
+        /// </summary>
+        /// <param name="bytesToHash"></param>
+        /// <param name="salt"></param>
+        /// <param name="logService"></param>
+        /// <returns>a string representing the computed hash</returns>
         private string ComputeHash(byte[] bytesToHash, byte[] salt, LogService? logService = null)
         {
             var byteResult = new Rfc2898DeriveBytes(bytesToHash, salt, 10000);
             return Convert.ToBase64String(byteResult.GetBytes(24));
         }
 
+        /// <summary>
+        /// Generates a Salt using a cryptographic random number generator 
+        /// </summary>
+        /// <param name="logService"></param>
+        /// <returns></returns>
         private string GenerateSalt(LogService? logService = null)
         {
             var bytes = new byte[128 / 8];
@@ -32,6 +44,12 @@ namespace Console_Runner.AccountService
             return Convert.ToBase64String(bytes);
         }
 
+        /// <summary>
+        /// Takes in user information and persists that data to allow for future logins
+        /// </summary>
+        /// <param name="acc"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if login successful, false otherwise</returns>
         public async Task<bool> UserSignUpAsync(Account acc, LogService? logService = null)
         {
             try
@@ -65,10 +83,15 @@ namespace Console_Runner.AccountService
 
         }
 
-        /*
-		 * Delets a user corresponding to the email provided as arg
-		 * Takes in currentUser to validate user calling method has permission to do so
-		 */
+            /// <summary>
+            /// Deletes a user from the DB
+            /// </summary>
+            /// <param name="currentUser"></param>
+            /// <param name="userID"></param>
+            /// <param name="logService"></param>
+            /// <returns>true if successful false otherwise</returns>
+            /// <exception cref="InvalidOperationException"></exception>
+            /// <exception cref="UserNotAuthorizedException"></exception>
         public async Task<bool> UserDeleteAsync(Account currentUser, int userID, LogService? logService = null)
         {
             try
@@ -125,7 +148,11 @@ namespace Console_Runner.AccountService
             }
         }
 
-        //will return an account object from the DB given a PK from the argument field
+        /// <summary>
+        /// Retrieve an Account object from the database.
+        /// </summary>
+        /// <param name="UserID">UserID  to retrieve</param>
+        /// <returns>Account object with the provided AccountID assuming it exists, otherwise null if the account does not exist.</returns>
         public async Task<Account?> GetUserAccountAsync(int userID, LogService? logService = null)
         {
             try
@@ -157,7 +184,11 @@ namespace Console_Runner.AccountService
             }
         }
 
-        //will update a user's data from a given PK in the argument, fields being changed are given in the argument line as well, null input means no change
+        /// <summary>
+        /// Update an Account object in the database. Modify the account object, then pass it into this method. The corresponding object in the database will be updated accordingly.
+        /// </summary>
+        /// <param name="acc">The Account object with modified parameters</param>
+        /// <returns>True if the operation was successful, false otherwise.</returns>
         public async Task<bool> UserUpdateDataAsync(Account currentUser, int userID, string nFname, string nLname, string npassword, LogService? logService = null)
         {
             bool fNameChanged = false, lNameChanged = false, passwordChanged = false;
@@ -232,7 +263,13 @@ namespace Console_Runner.AccountService
         }
 
 
-        //authenticates a users input password for login. True if pass matches, false otherwise
+        /// <summary>
+        /// Takes in a users information and validates their credentials 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="userPass"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if the password matches false if it does not</returns>
         public async Task<bool> AuthenticateUserPassAsync(string email, string userPass, LogService? logService = null)
         {
             int userID = await _accountAccess.GetIDFromEmailIdAsync(email, logService);
@@ -260,7 +297,13 @@ namespace Console_Runner.AccountService
             return toReturn;
         }
 
-        //takes in username and password. If valid returns an account object for the user with specified data.
+        /// <summary>
+        /// Takes the users information to log them into the website
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="userPass"></param>
+        /// <param name="logService"></param>
+        /// <returns>an instance of the users account object if the operation was successful, null otherwise</returns>
         public async Task<Account> SignInAsync(string email, string userPass, LogService? logService = null)
         {
             
@@ -287,10 +330,15 @@ namespace Console_Runner.AccountService
             }
         }
 
-        /*
-		 * Disables the account with email of targetPK if exists
-		 * currentUser is taken in to validate the user calling this has permission to do so
-		 */
+        /// <summary>
+        /// Disables the account with userID of targetPK if exists
+        /// </summary>
+        /// <param name="currentUser"></param>
+        /// <param name="userID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if the operation was successful, false otherwise</returns>
+        /// <exception cref="UserNotAuthorizedException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public async Task<bool> DisableAccountAsync(Account currentUser, int userID, LogService? logService = null)
         {
             // cancel if acting user does not have permission to disable
@@ -345,11 +393,13 @@ namespace Console_Runner.AccountService
                 throw;
             }
         }
-        /*
-		 * Enables the targeted account. 
-		 * currentUser is used to validate that the person calling this method has permission to do so.
-		 * targetPK is the email of the user whos account is being activated
-		 */
+        /// <summary>
+        /// enables the target users account
+        /// </summary>
+        /// <param name="currentUser"></param>
+        /// <param name="userID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if successful</returns>
         public async Task<bool> EnableAccountAsync(Account currentUser, int userID, LogService? logService = null)
         {
             // cancel if acting user does not have permission
@@ -394,6 +444,12 @@ namespace Console_Runner.AccountService
             }
         }
 
+        /// <summary>
+        /// Checks if an account exists based on userID
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if the user exists false if they do not</returns>
         public async Task<bool> AccountExistsAsync(int userID, LogService? logService = null)
         {
             bool toReturn = await _accountAccess.AccountExistsAsync(userID, logService);
@@ -405,10 +461,14 @@ namespace Console_Runner.AccountService
             return toReturn;
         }
 
-        /*promotes the target user to admin
-		 * takes in currentUser to verify the current session is being handled by an admin
-		 * targetPK is the email(primary key) of the user being targeted
-		 */
+        /// <summary>
+        /// Promotes a user to admin
+        /// </summary>
+        /// <param name="currentUser">The user attempting to do the operation</param>
+        /// <param name="userID">the targeted user</param>
+        /// <param name="logService"></param>
+        /// <returns>true if successful false otherwise</returns>
+        /// <exception cref="ArgumentException"></exception>
         public async Task<bool> PromoteToAdmin(Account currentUser, int userID, LogService? logService = null)
         {
             try
@@ -452,6 +512,14 @@ namespace Console_Runner.AccountService
                 throw;
             }
         }
+        /// <summary>
+        /// Adds a permission to the specified user
+        /// </summary>
+        /// <param name="currentUser">The user preforming this operation</param>
+        /// <param name="userID">Target user of this operation</param>
+        /// <param name="PermissionToBeAdded"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if successful false otherwise</returns>
         public async Task<bool> addPermissionAsync(Account currentUser, int userID, string PermissionToBeAdded, LogService? logService = null)
         {
             if(IsAdmin(currentUser.UserID))
@@ -491,6 +559,13 @@ namespace Console_Runner.AccountService
             return false;
         }
         
+        /// <summary>
+        /// Checks if a user has a specific permission
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="permission"></param>
+        /// <param name="logService"></param>
+        /// <returns>True if they do false if they do not</returns>
         public async Task<bool> HasPermissionAsync(int userID, string permission, LogService? logService = null)
         {
             bool toReturn = await _permissionService.HasPermissionAsync(userID, permission, logService);
@@ -502,6 +577,12 @@ namespace Console_Runner.AccountService
             return toReturn;
         }
 
+        /// <summary>
+        /// Checks if an account has admin access
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if the user is an admin false if they are not</returns>
         public bool IsAdmin(int userID, LogService? logService = null)
         {
             bool toReturn = _permissionService.IsAdmin(userID, logService);
@@ -513,6 +594,13 @@ namespace Console_Runner.AccountService
             return toReturn;
         }
 
+        /// <summary>
+        /// Adds a Food Flag to the users account
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="IngredientID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if the opperation is successful, false otherwise</returns>
         public async Task<bool> AddFlagToAccountAsync(int userID, int IngredientID, LogService? logService = null)
         {
             FoodFlag foodFlag = new(userID, IngredientID);
@@ -524,7 +612,13 @@ namespace Console_Runner.AccountService
             }
             return toReturn;
         }
-
+        /// <summary>
+        /// Removes a food flag from a users account
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="IngredientID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if the opperation is successful, false otherwise</returns>
         public async Task<bool> RemoveFoodFlagAsync(int userID, int IngredientID, LogService? logService = null)
         {
             bool toReturn = await _flagService.RemoveFoodFlagAsync(userID, IngredientID, logService);
@@ -535,7 +629,13 @@ namespace Console_Runner.AccountService
             }
             return toReturn;
         }
-
+        /// <summary>
+        /// Checks if an account has a specific ingredient as a food flag
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="IngredientID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if the opperation is successful, false otherwise</returns>
         public async Task<bool> accountHasFlagAsync(int userID, int IngredientID, LogService? logService = null)
         {
             bool toReturn = await _flagService.AccountHasFlagAsync(userID, IngredientID, logService);
@@ -546,17 +646,24 @@ namespace Console_Runner.AccountService
             }
             return toReturn;
         }
-
+        /// <summary>
+        /// Gets N(take) flags that belong to the userID provided while skipping over first m(skip) results. 
+        /// </summary>
+        /// <param name="userID">The user whos ID's are being retrieved</param>
+        /// <param name="skip">The number of entries to skip before pulling</param>
+        /// <param name="take">The number of entries to return</param>
+        /// <returns>A list containing the food flags associated with the user</returns>
         public async Task<List<FoodFlag>> GetNAccountFlagsAsync(int userID, int skip, int take, LogService? logService = null)
         {
             return await _flagService.GetNAccountFlagsAsync(userID, skip, take, logService);
         }
 
-        public async Task<List<FoodFlag>> GetNAccountFlags(int userID, int skip, int take, LogService? logService = null)
-        {
-            return await _flagService.GetNAccountFlagsAsync(userID, skip, take, logService);
-        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userID">The user whos ID's are being retrieved</param>
+        /// <returns>A list of all flags associated with the users account</returns>
         public async Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID, LogService? logService = null)
         {
             return await _flagService.GetAllAccountFlagsAsync(userID, logService);

@@ -10,6 +10,12 @@ namespace Console_Runner.FoodService
             _foodItemAccess = foodItemAccess;
         }
 
+        /// <summary>
+        /// Gets an ingredient based on an ingredient ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="logService"></param>
+        /// <returns>the ingredient with the specified ingredientID</returns>
         public async Task<Ingredient> GetIngredient(int id, LogService? logService = null)
         {
             Ingredient ing = _foodItemAccess.GetIngredient(id);
@@ -20,6 +26,14 @@ namespace Console_Runner.FoodService
             }
             return ing;
         }
+        /// <summary>
+        /// Gets ingredients that match the search criteria
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <param name="logService"></param>
+        /// <returns>a list of all ingredients that meet the search criteria and fall within the skip and take params</returns>
         public async Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take, LogService? logService = null)
         {
             List<Ingredient> ingList = await _foodItemAccess.GetIngredientBySearchAsync(search, skip, take);
@@ -30,7 +44,13 @@ namespace Console_Runner.FoodService
             }
             return ingList;
         }
-
+        /// <summary>
+        /// Gets N ingredients at a time
+        /// </summary>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <param name="logService"></param>
+        /// <returns>Returns N ingredients, N being take</returns>
         public async Task<List<Ingredient>> GetNIngredientsAsync(int skip, int take, LogService? logService = null)
         {
             List<Ingredient> ingList = await _foodItemAccess.RetrieveNIngredientsAsync(skip, take);
@@ -41,7 +61,11 @@ namespace Console_Runner.FoodService
             }
             return ingList;
         }
-
+        /// <summary>
+        /// Adds an object of type FoodItem to the DB
+        /// </summary>
+        /// <param name="foodItem"></param>
+        /// <returns>True if successful, otherwise false</returns>
         public async Task<bool> AddFoodItemAsync(FoodItem foodItem, LogService? logService = null)
         {
             try
@@ -61,7 +85,12 @@ namespace Console_Runner.FoodService
             }
             
         }
-
+        /// <summary>
+        /// Gets the label nutrient list associated with a product from its barcode
+        /// </summary>
+        /// <param name="barcode"></param>
+        /// <param name="logService"></param>
+        /// <returns>a list of all labelNutrients associated with a specific product</returns>
         public async Task<List<(Nutrient, float)>> GetNutrientListForUserDisplayAsync(string barcode, LogService? logService = null)
         {
             List<LabelNutrient> temp =  await _foodItemAccess.RetrieveLabelNutrientByBarcodeAsync(barcode);
@@ -73,8 +102,12 @@ namespace Console_Runner.FoodService
             }
             return nutrients;
         }
-
-    public async Task<bool> AddNutritionLabelAsync(NutritionLabel nutritionLabel, LogService? logService = null)
+        /// <summary>
+        /// Adds a Nutrition Label to the DB
+        /// </summary>
+        /// <param name="nutritionLabel"></param>
+        /// <returns>True if successful, otherwise false</returns>
+        public async Task<bool> AddNutritionLabelAsync(NutritionLabel nutritionLabel, LogService? logService = null)
         {
             var toReturn = await _foodItemAccess.AddNutritionLabelAsync(nutritionLabel);
             if(logService?.UserID != null)
@@ -84,7 +117,11 @@ namespace Console_Runner.FoodService
             }
             return toReturn;
         }
-
+        /// <summary>
+        /// Adds a Nutrient to the DB
+        /// </summary>
+        /// <param name="nutrient"></param>
+        /// <returns><returns>True if successful, otherwise false</returns></returns>
         public async Task<bool> AddNutrientAsync(Nutrient nutrient, LogService? logService = null)
         {
             var toReturn = await _foodItemAccess.AddNutrientAsync(nutrient);
@@ -95,7 +132,11 @@ namespace Console_Runner.FoodService
             }
             return toReturn;
         }
-
+        /// <summary>
+        /// Adds an object of type FoodItem to the DB
+        /// </summary>
+        /// <param name="foodItem"></param>
+        /// <returns>True if successful, otherwise false</returns>
         public async Task<bool> AddNewProductAsync(FoodItem foodItem, NutritionLabel nutritionLabel, List<Ingredient> ingredientList, LogService? logService = null)
         {
             try
@@ -129,7 +170,11 @@ namespace Console_Runner.FoodService
                 return false;
             }
         }
-
+        /// <summary>
+        /// Gets the nutrition label associated with a provided barcode
+        /// </summary>
+        /// <param name="barcode">The barcode being searched</param>
+        /// <returns>The nutrition label associated with a provided barcode</returns>
         public async Task<NutritionLabel> GetNutritionLabelAsync(string barcode, LogService? logService = null)
         {
             var label = await _foodItemAccess.RetrieveNutritionLabelAsync(barcode);
@@ -144,7 +189,11 @@ namespace Console_Runner.FoodService
             }
             return label;
         }
-
+        /// <summary>
+        /// Adds an ingredient to the DB
+        /// </summary>
+        /// <param name="ingredient">The Ingredient being added</param>
+        /// <returns>True if the opperation was successful, false otherwise.</returns>
         public async Task<bool> AddIngredientAsync(Ingredient ingredient, LogService? logService = null)
         {
             var toReturn = await _foodItemAccess.AddIngredientAsync(ingredient);
@@ -155,7 +204,9 @@ namespace Console_Runner.FoodService
             }
             return toReturn;
         }
-
+        /// <summary></summary>
+        /// <param name="barcode"></param>
+        /// <returns>List containing all ingredeints in the food with the corosponding barcode</returns>
         public async Task<List<Ingredient>> GetIngredientsListAsync(string barcode, LogService? logService = null)
         {
             List<Ingredient> ingList = new List<Ingredient>();
@@ -167,7 +218,11 @@ namespace Console_Runner.FoodService
             }
             return ingList;
         }
-
+        /// <summary>
+        /// Gets a food object corosponding to the provided barcode
+        /// </summary>
+        /// <param name="barcode">the barcode being searched</param>
+        /// <returns>a food item corosponding to the provided barcode</returns>
         public async Task<FoodItem> GetScannedItemAsync(string barcode, LogService? logService = null)
         {
             if(barcode == null)

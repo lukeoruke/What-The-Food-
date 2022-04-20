@@ -38,11 +38,25 @@ namespace Console_Runner.AccountService
         /// <param name="acc">The Account object with modified parameters</param>
         /// <returns>True if the operation was successful, false otherwise.</returns>
         public Task<bool> UpdateAccountAsync(Account acc, LogService? logService = null);
-
+        /// <summary>
+        /// Gets a users ID from their email address
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="logService"></param>
+        /// <returns>the ID associated with a specifici email</returns>
         public Task<int> GetIDFromEmailIdAsync(string email, LogService? logService = null);
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logService"></param>
+        /// <returns>returns the number of accounts</returns>
         public int NumberOfAccounts(LogService? logService = null);
-
+        /// <summary>
+        /// Gets the salt associated with a user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="logService"></param>
+        /// <returns>The salt associated with a user</returns>
         public string getSalt(int userID, LogService? logService = null);
 
     }

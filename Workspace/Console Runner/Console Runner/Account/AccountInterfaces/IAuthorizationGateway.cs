@@ -79,7 +79,21 @@ namespace Console_Runner.AccountService
         /// <returns>True if the specified Account is an administrator, false otherwise.</returns>
         public bool IsAdmin(int userID, LogService? logService = null);
 
+        /// <summary>
+        /// Assigns the default permissions every account has
+        /// {"scanFood", "editOwnAccount", "leaveReview", "deleteOwnAccount", "historyAccess", "AMR", "foodFlag" });
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="logService"></param>
+        /// <returns></returns>
         public Task<bool> AssignDefaultUserPermissions(int userID, LogService? logService = null);
+        /// <summary>
+        /// Assigns the default permissions every admin account has
+        /// {"enableAccount", "disableAccount", "deleteAccount", "createAdmin", "editOtherAccount"});
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="logService"></param>
+        /// <returns></returns>
         public Task<bool> AssignDefaultAdminPermissions(int userID, LogService? logService = null);
 
     }

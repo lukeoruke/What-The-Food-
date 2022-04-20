@@ -17,7 +17,10 @@ namespace Console_Runner.AccountService
         {
             _efContext = new ContextAccountDB();
         }
-
+        /// <summary></summary>
+        /// <param name="userID">The user whos ID's are being retrieved</param>
+        /// <param name="ingredientID">The ingredients ID</param>
+        /// <returns>true if the user has a flag associated with the provided ingredient ID</returns>
         public async Task<bool> AccountHasFlagAsync(int userID, int ingredientID, LogService? logService = null)
         {
             FoodFlag foodFlag = new(userID, ingredientID);
@@ -29,7 +32,11 @@ namespace Console_Runner.AccountService
             }
             return toReturn;
         }
-
+        /// <summary>
+        /// adds a flag to the users account
+        /// </summary>
+        /// <param name="flag">The flag to be added</param>
+        /// <returns>true if successful false otherwise</returns>
         public async Task<bool> AddFlagAsync(FoodFlag flag, LogService? logService = null)
         {
             try
@@ -48,6 +55,13 @@ namespace Console_Runner.AccountService
                 return false;
             }
         }
+        /// <summary>
+        /// Gets N(take) flags that belong to the userID provided while skipping over first m(skip) results. 
+        /// </summary>
+        /// <param name="userID">The user whos ID's are being retrieved</param>
+        /// <param name="skip">The number of entries to skip before pulling</param>
+        /// <param name="take">The number of entries to return</param>
+        /// <returns>A list containing the food flags associated with the user</returns>
         public async Task<List<FoodFlag>> GetNAccountFlagsAsync(int userID, int skip, int take, LogService? logService = null)
         {
             List<FoodFlag> results =  await _efContext.FoodFlags.Where(x => x.UserID == userID).
@@ -59,7 +73,10 @@ namespace Console_Runner.AccountService
             }
             return results;
         }
-
+        /// <summary>
+        /// </summary>
+        /// <param name="userID">The user whos ID's are being retrieved</param>
+        /// <returns>A list of all flags associated with the users account</returns>
         public async Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID, LogService? logService = null)
         {
             List<FoodFlag> results = await _efContext.FoodFlags.Where(x => x.UserID == userID).ToListAsync();
@@ -70,7 +87,12 @@ namespace Console_Runner.AccountService
             }
             return results;
         }
-
+        /// <summary>
+        /// Removes a flag from the users account
+        /// </summary>
+        /// <param name="userID">The user whos ID's are being retrieved </param>
+        /// <param name="ingredientID">The ingredients ID</param>
+        /// <returns></returns>
         public async Task<bool> RemoveFoodFlagAsync(int userID, int ingredientID, LogService? logService = null)
         {
             try

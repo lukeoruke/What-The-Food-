@@ -27,7 +27,6 @@ namespace Console_Runner.AccountService
         /// <returns></returns>
         public Task<bool> RemoveFoodFlagAsync(int userID, int ingredientID, LogService? logService = null);
         /// <summary>
-        /// 
         /// </summary>
         /// <param name="userID">The user whos ID's are being retrieved</param>
         /// <returns>A list of all flags associated with the users account</returns>

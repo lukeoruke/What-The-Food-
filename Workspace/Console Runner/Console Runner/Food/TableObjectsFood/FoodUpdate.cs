@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Console_Runner.FoodService
 {
-    public class FoodUpdate
+    public abstract class FoodUpdate
     {
+        public int Id { get; set; }
         public FoodItem FoodItem { get; set; }
         public int FoodItemId { get; set; }
         public DateTime UpdateTime { get; set; }

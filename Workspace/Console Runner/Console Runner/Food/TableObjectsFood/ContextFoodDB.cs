@@ -1,5 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+
 namespace Console_Runner.FoodService;
 
 /*will run on startup, will configure the services to our database context
@@ -66,6 +70,44 @@ public class ContextFoodDB : DbContext
             table.FoodItemId,
             table.UpdateTime
         });
+        builder.Entity<FoodUpdate>().HasDiscriminator<string>("update_type")
+            .HasValue<FoodRecall>("foodrecall")
+            .HasValue<FoodIngredientChange>("ingredientchange");
+        builder.Entity<IngredientUpdateList>().HasKey(table => new
+        {
+            table.FoodIngredientChangeId
+        });
+        builder
+            .Entity<FoodRecall>()
+            .Property(foodRecall => foodRecall.Locations)
+            .HasConversion(
+                strList => JsonSerializer.Serialize(strList, new JsonSerializerOptions(JsonSerializerDefaults.General)),
+                jsonStr => JsonSerializer.Deserialize<List<string>>(jsonStr, new JsonSerializerOptions(JsonSerializerDefaults.General)),
+                new ValueComparer<List<string>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList())
+                );
+        builder
+            .Entity<FoodRecall>()
+            .Property(foodRecall => foodRecall.LotNumbers)
+            .HasConversion(
+                numList => JsonSerializer.Serialize(numList, new JsonSerializerOptions(JsonSerializerDefaults.General)),
+                jsonStr => JsonSerializer.Deserialize<List<int>>(jsonStr, new JsonSerializerOptions(JsonSerializerDefaults.General)),
+                new ValueComparer<List<int>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
+        builder
+            .Entity<FoodRecall>()
+            .Property(foodRecall => foodRecall.ExpirationDates)
+            .HasConversion(
+                dateList => JsonSerializer.Serialize(dateList, new JsonSerializerOptions(JsonSerializerDefaults.General)),
+                jsonStr => JsonSerializer.Deserialize<List<DateTime>>(jsonStr, new JsonSerializerOptions(JsonSerializerDefaults.General)),
+                new ValueComparer<List<DateTime>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
     }
     public DbSet<Ingredient> Ingredients { get; set; } = null!;
     public DbSet<FoodItem> FoodItem { get; set; } = null!;
@@ -74,8 +116,5 @@ public class ContextFoodDB : DbContext
     public DbSet<Nutrient> Nutrient { get; set; } = null!;
     public DbSet<NutritionLabel> NutritionLabel { get; set; } = null!;
     public DbSet<FoodUpdate> FoodUpdates { get; set; } = null!;
-
-
-
-
+    public DbSet<IngredientUpdateList> IngredientLists { get; set; } = null!;
 }

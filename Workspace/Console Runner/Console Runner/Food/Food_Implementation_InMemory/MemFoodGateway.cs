@@ -8,7 +8,6 @@ namespace Console_Runner.FoodService
         List<NutritionLabel> _nutritionLabelsList = new();
         List<LabelIngredient> _ingredientIdentifiersList = new();
         List<Ingredient> _ingredientsList = new();
-        List<Nutrient> _vitaminList = new();
         List<LabelNutrient> _nutrientIdentifiersList = new();
         List<Nutrient> _nutrientsList = new();
 
@@ -221,11 +220,11 @@ namespace Console_Runner.FoodService
         {
             try
             {
-                if(!_vitaminList.Contains(nutrient))
+                if(!_nutrientsList.Contains(nutrient))
                 {
                     Random random = new Random();
                     nutrient.NutrientID = random.Next(1,10000000);
-                    _vitaminList.Add(nutrient);
+                    _nutrientsList.Add(nutrient);
                     if (logService?.UserID != null)
                     {
                         _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,

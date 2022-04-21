@@ -10,10 +10,36 @@ namespace Console_Runner.FoodService
 {
     public interface IFoodUpdateGateway
     {
-        public Task<bool> AddFoodUpdateAsync(FoodUpdate foodUpdate, LogService? logger = null);
-        public Task<List<FoodUpdate>> GetFoodUpdatesByBarcodeAsync(string barcode, LogService? logger = null);
-        public Task<bool> UpdateFoodUpdateAsync(FoodUpdate foodUpdate, LogService? logger = null);
-        public Task<bool> RemoveFoodUpdate(FoodUpdate foodUpdate, LogService? logger = null);
-        public Task<bool> RemoveFoodUpdateByID(int updateID, LogService? logger = null);
+        /// <summary>
+        /// Add a FoodUpdate to the database.
+        /// </summary>
+        /// <param name="foodUpdate">The FoodUpdate object to add to the database.</param>
+        /// <param name="logService">The LogService to log actions with.</param>
+        /// <returns>True if the FoodUpdate was successfully added.</returns>
+        public Task<bool> AddAsync(FoodUpdate foodUpdate, LogService? logService = null);
+        
+        /// <summary>
+        /// Get all FoodUpdates that are associated with the given barcode from the database.
+        /// </summary>
+        /// <param name="barcode">The FoodItem barcode to get all associated FoodUpdates for.</param>
+        /// <param name="logService">The LogService to log actions with.</param>
+        /// <returns>A List of all FoodUpdates associated with barcode on the database.</returns>
+        public Task<List<FoodUpdate>> GetAllByBarcodeAsync(string barcode, LogService? logService = null);
+
+        /// <summary>
+        /// Update an existing FoodUpdate on the database with the same Id with the given FoodUpdate.
+        /// </summary>
+        /// <param name="foodUpdate">The FoodUpdate to update the one on the database with.</param>
+        /// <param name="logService">The LogService to log actions with.</param>
+        /// <returns>True if the corresponding FoodUpdate in the database was updated.</returns>
+        public Task<bool> UpdateAsync(FoodUpdate foodUpdate, LogService? logService = null);
+
+        /// <summary>
+        /// Remove the given FoodUpdate from the database if it exists.
+        /// </summary>
+        /// <param name="foodUpdate"></param>
+        /// <param name="logService">The LogService to log actions with.</param>
+        /// <returns>True if the corresponding FoodUpdate in the database was removed.</returns>
+        public Task<bool> RemoveAsync(FoodUpdate foodUpdate, LogService? logService = null);
     }
 }

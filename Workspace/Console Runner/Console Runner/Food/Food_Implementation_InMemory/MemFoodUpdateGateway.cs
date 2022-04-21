@@ -1,0 +1,57 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using Console_Runner.Logging;
+
+namespace Console_Runner.FoodService
+{
+    public class MemFoodUpdateGateway : IFoodUpdateGateway
+    {
+        /// <summary>
+        /// Add a FoodUpdate to the database.
+        /// </summary>
+        /// <param name="foodUpdate">The FoodUpdate object to add to the database.</param>
+        /// <param name="logService">The LogService to log actions with.</param>
+        /// <returns>True if the FoodUpdate was successfully added.</returns>
+        public Task<bool> AddAsync(FoodUpdate foodUpdate, LogService? logService = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Get all FoodUpdates that are associated with the given barcode from the database defined in ContextFoodDB.
+        /// </summary>
+        /// <param name="barcode">The FoodItem barcode to get all associated FoodUpdates for.</param>
+        /// <param name="logService">The LogService to log actions with.</param>
+        /// <returns>A List of all FoodUpdates associated with barcode on the database.</returns>
+        public Task<List<FoodUpdate>> GetAllByBarcodeAsync(string barcode, LogService? logService = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Remove the given FoodUpdate from the database if it exists.
+        /// </summary>
+        /// <param name="foodUpdate"></param>
+        /// <param name="logService">The LogService to log actions with.</param>
+        /// <returns>True if the corresponding FoodUpdate in the database was removed.</returns>
+        public Task<bool> RemoveAsync(FoodUpdate foodUpdate, LogService? logService = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Update an existing FoodUpdate on the database defined in ContextFoodDB with the same Id with the given FoodUpdate.
+        /// </summary>
+        /// <param name="foodUpdate">The FoodUpdate to update the one on the database with.</param>
+        /// <param name="logService">The LogService to log actions with.</param>
+        /// <returns>True if the corresponding FoodUpdate in the database was updated.</returns>
+        public Task<bool> UpdateAsync(FoodUpdate foodUpdate, LogService? logService = null)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

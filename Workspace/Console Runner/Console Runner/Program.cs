@@ -21,8 +21,14 @@ FoodItem food2 = new FoodItem("anotherbarcode", "choccy milk", "who what", "link
 FoodItem food3 = new FoodItem("athirdbarcode", "tea", "some dude", "link to pic");
 foodDBOperations.AddFoodItemAsync(food1).Wait();
 foodDBOperations.AddFoodItemAsync(food2).Wait();
-foodDBOperations.AddFoodItemAsync(food3).Wait();*/
-
+foodDBOperations.AddFoodItemAsync(food3).Wait();
+EFFoodUpdateGateway ug = new();
+FoodUpdate update1 = new FoodIngredientChange(food1, DateTime.Now, "testUpdate", new List<Ingredient> { new Ingredient("someing", "si", "???") }, new List<Ingredient>());
+await ug.AddAsync(update1);
+FoodUpdate returnedUpdate1 = (await ug.GetAllByBarcodeAsync(food1.Barcode))[0];
+Console.WriteLine($"returned update: ID {returnedUpdate1.Id} BARCODE {returnedUpdate1.FoodItemBarcode} MESSAGE {returnedUpdate1.Message}");
+returnedUpdate1.Message = "updated test message";
+await ug.UpdateAsync(returnedUpdate1);*/
 
 /*
 Console.WriteLine("Program running...");

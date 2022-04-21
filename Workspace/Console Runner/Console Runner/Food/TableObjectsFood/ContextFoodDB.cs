@@ -65,7 +65,7 @@ public class ContextFoodDB : DbContext
             table.Barcode,
             table.UserID
         });
-        builder.Entity<FoodUpdate>().HasKey(table => new
+        builder.Entity<FoodUpdate>().HasAlternateKey(table => new
         {
             table.FoodItemBarcode,
             table.UpdateTime
@@ -73,9 +73,10 @@ public class ContextFoodDB : DbContext
         builder.Entity<FoodUpdate>().HasDiscriminator<string>("update_type")
             .HasValue<FoodRecall>("foodrecall")
             .HasValue<FoodIngredientChange>("ingredientchange");
-        builder.Entity<IngredientUpdateList>().HasKey(table => new
+        builder.Entity<IngredientUpdate>().HasKey(table => new
         {
-            table.FoodIngredientChangeId
+            table.FoodIngredientChangeId,
+            table.IngredientId
         });
         builder
             .Entity<FoodRecall>()
@@ -116,5 +117,5 @@ public class ContextFoodDB : DbContext
     public DbSet<Nutrient> Nutrient { get; set; } = null!;
     public DbSet<NutritionLabel> NutritionLabel { get; set; } = null!;
     public DbSet<FoodUpdate> FoodUpdates { get; set; } = null!;
-    public DbSet<IngredientUpdateList> IngredientLists { get; set; } = null!;
+    public DbSet<IngredientUpdate> IngredientLists { get; set; } = null!;
 }

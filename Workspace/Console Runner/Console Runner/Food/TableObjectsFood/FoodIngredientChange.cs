@@ -8,8 +8,7 @@ namespace Console_Runner.FoodService
 {
     public class FoodIngredientChange : FoodUpdate
     {
-        public IngredientUpdateList AddedIngredients { get; set; }
-        public IngredientUpdateList RemovedIngredients { get; set; }
+        public List<IngredientUpdate> IngredientUpdates { get; set; }
 
         public FoodIngredientChange() : base(){
 
@@ -18,31 +17,35 @@ namespace Console_Runner.FoodService
         public FoodIngredientChange(FoodItem foodItem, DateTime updateTime, string message, List<Ingredient> addedIngredients, List<Ingredient> removedIngredients)
             : base(foodItem, updateTime, message)
         {
-            AddedIngredients = new IngredientUpdateList(addedIngredients);
-            RemovedIngredients = new IngredientUpdateList(removedIngredients);
+            IngredientUpdates = new();
+            IngredientUpdates.AddRange(addedIngredients.ConvertAll(ing => new IngredientUpdate(this, ing, true)));
+            IngredientUpdates.AddRange(removedIngredients.ConvertAll(ing => new IngredientUpdate(this, ing, false)));
         }
 
-        public FoodIngredientChange(FoodItem foodItem, DateTime updateTime, string message, IngredientUpdateList addedIngredients, IngredientUpdateList removedIngredients)
+        public FoodIngredientChange(FoodItem foodItem, DateTime updateTime, string message, List<IngredientUpdate> ingredientUpdates)
             : base(foodItem, updateTime, message)
         {
-            AddedIngredients = addedIngredients;
-            RemovedIngredients = removedIngredients;
+            IngredientUpdates = ingredientUpdates;
         }
     }
 
-    public class IngredientUpdateList
+    public class IngredientUpdate
     {
-        public List<Ingredient> Ingredients { get; set; }
+        public FoodIngredientChange FoodIngredientChange { get; set; }
         public int FoodIngredientChangeId { get; set; }
+        public Ingredient Ingredient { get; set; }
+        public int IngredientId { get; set; }
+        public bool IsAdded { get; set; }
 
-        public IngredientUpdateList()
+        public IngredientUpdate()
         {
-            Ingredients = new List<Ingredient>();
         }
 
-        public IngredientUpdateList(List<Ingredient> ingredients)
+        public IngredientUpdate(FoodIngredientChange foodIngredientChange, Ingredient ingredient, bool isAdded)
         {
-            Ingredients = ingredients;
+            FoodIngredientChange = foodIngredientChange;
+            Ingredient = ingredient;
+            IsAdded = isAdded;
         }
     }
 }

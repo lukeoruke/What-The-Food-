@@ -25,6 +25,7 @@ namespace Console_Runner.FoodService
         public async Task<bool> AddAsync(FoodUpdate foodUpdate, LogService? logService = null)
         {
             using ContextFoodDB contextFoodDB = new ContextFoodDB();
+            contextFoodDB.Entry(foodUpdate.FoodItem).State = EntityState.Unchanged;
             await contextFoodDB.AddAsync(foodUpdate);
             await contextFoodDB.SaveChangesAsync();
             if(logService?.UserID != null)
@@ -44,7 +45,7 @@ namespace Console_Runner.FoodService
         public async Task<List<FoodUpdate>> GetAllByBarcodeAsync(string barcode, LogService? logService = null)
         {
             using ContextFoodDB contextFoodDB = new ContextFoodDB();
-            List<FoodUpdate> foodUpdates = await contextFoodDB.FoodUpdates.Where(foodUpdate => foodUpdate.FoodItem.Barcode == barcode).ToListAsync();
+            List<FoodUpdate> foodUpdates = await contextFoodDB.FoodUpdates.Where(foodUpdate => foodUpdate.FoodItemBarcode == barcode).ToListAsync();
             if (logService?.UserID != null)
             {
                 _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Data, DateTime.Now,

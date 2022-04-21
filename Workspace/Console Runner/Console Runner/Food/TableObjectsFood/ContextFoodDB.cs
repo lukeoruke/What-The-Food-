@@ -67,7 +67,7 @@ public class ContextFoodDB : DbContext
         });
         builder.Entity<FoodUpdate>().HasKey(table => new
         {
-            table.FoodItemId,
+            table.FoodItemBarcode,
             table.UpdateTime
         });
         builder.Entity<FoodUpdate>().HasDiscriminator<string>("update_type")

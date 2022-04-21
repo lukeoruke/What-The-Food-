@@ -10,7 +10,7 @@ namespace Console_Runner.FoodService
     {
         public int Id { get; set; }
         public FoodItem FoodItem { get; set; }
-        public int FoodItemId { get; set; }
+        public string FoodItemBarcode { get; set; }
         public DateTime UpdateTime { get; set; }
         public string Message { get; set; }
 

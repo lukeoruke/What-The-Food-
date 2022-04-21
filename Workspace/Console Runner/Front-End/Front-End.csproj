@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Console Runner\Console Runner.csproj" />
+    <ProjectReference Include="..\ServiceManager\WebHostGateway\WebHostGateway.csproj" />
   </ItemGroup>
 
   <ItemGroup>

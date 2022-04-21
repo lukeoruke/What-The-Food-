@@ -27,12 +27,42 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Console Runner\Console Runner.csproj" />
-    <ProjectReference Include="..\ServiceManager\WebHostGateway\WebHostGateway.csproj" />
+    <None Include="wwwroot\.env.development.local" />
+    <None Include="Pages\addNewFlag.cshtml" />
+    <None Include="Pages\customAMR.cshtml" />
+    <None Include="Pages\foodAlternative.cshtml" />
+    <None Include="Pages\foodInformation.cshtml" />
+    <None Include="Pages\forgotPassword.cshtml" />
+    <None Include="Pages\history.cshtml" />
+    <None Include="Pages\index.cshtml" />
+    <None Include="Pages\login.cshtml" />
+    <None Include="Pages\scanBarcode.cshtml" />
+    <None Include="Pages\scanManual.cshtml" />
+    <None Include="wwwroot\images\apple.png" />
+    <None Include="wwwroot\images\barcode.png" />
+    <None Include="wwwroot\images\favicon.ico" />
+    <None Include="wwwroot\package-lock.json" />
+    <None Include="wwwroot\package.json" />
+    <None Include="wwwroot\scripts\addNewFlag.js" />
+    <None Include="wwwroot\scripts\aspnetcore-https.js" />
+    <None Include="wwwroot\scripts\foodInformation.js" />
+    <None Include="wwwroot\scripts\forgotPassword.js" />
+    <None Include="wwwroot\scripts\index.js" />
+    <None Include="wwwroot\scripts\login.js" />
+    <None Include="wwwroot\scripts\scanBarcode.js" />
+    <None Include="wwwroot\scripts\setupProxy.js" />
+    <None Include="wwwroot\scripts\signup.js" />
+    <None Include="Pages\settingPage.cshtml" />
+    <None Include="Pages\signup.cshtml" />
+    <None Include="wwwroot\styles\custom.css" />
+    <None Include="wwwroot\styles\foodInformation.css" />
+    <None Include="wwwroot\styles\index.css" />
+    <None Include="wwwroot\styles\login.css" />
+    <None Include="wwwroot\styles\settingPage.css" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <Folder Include="wwwroot\html\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
@@ -42,12 +72,12 @@
     </Exec>
     <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
     <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="" Command="npm install" />
   </Target>
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="" Command="npm install" />
 
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>

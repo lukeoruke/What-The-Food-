@@ -10,7 +10,7 @@ namespace Food.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountSearchIngredientsController : ControllerBase
+    public class FlagSearchIngredientsController : ControllerBase
     {
         private const string UM_CATEGORY = "Data Store";
 

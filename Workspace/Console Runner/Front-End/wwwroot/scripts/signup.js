@@ -32,12 +32,12 @@ async function sendSignup(e) {
     console.log(confirmPassword);
 
     // HTTP Get Request
-    /*await fetch('http://localhost:49200/api/AccountSignUp')
+    /*await fetch('http://localhost:49201/api/AccountSignUp')
         .then(response => console.log(response.text()))
         .then(data => console.log(data));*/
 
     // HTTP Post Request
-    await fetch('http://localhost:49200/api/AccountSignUp', {
+    await fetch('http://localhost:49201/api/AccountSignUp', {
         method: 'POST',
         body: formData,
     }).then(function (response) {

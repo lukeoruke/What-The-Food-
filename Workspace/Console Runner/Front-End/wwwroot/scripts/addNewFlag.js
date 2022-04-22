@@ -6,15 +6,14 @@ var search;
 var page = "0";
 var currentPage = "default";
 
+//Initalization of the page, creates the various check boxes and populates the information
 async function addFlagCheckBoxes() {
-    console.log(currentPage);
-    console.log("ADD FLAG CHECK BOXES FUNCTION STARTING");
-    await getIngs();
 
-    
+    await getIngs();
     displayIngs();
 }
 
+//Displays the page content with information recieved from a json that was kept in local storage
 function displayIngs() {
 
     var jsonData = localStorage.getItem('allIngredients');
@@ -26,10 +25,7 @@ function displayIngs() {
     getIDs = jsonConst.IngredientID;
 
 
-    console.log(jsonConst);
-
-    // create the necessary elements
-
+    //gets the names of each ingredient
     for (data in getNames) {
 
 
@@ -49,7 +45,7 @@ function displayIngs() {
         label.id = data * 100;
 
 
-        // add the label element to your div
+
         document.getElementById('container').appendChild(label);
         document.getElementById('container').innerHTML += "<br/>";
 
@@ -57,10 +53,10 @@ function displayIngs() {
     }
 }
 
-
+//gets the ingredients from the DB
 async function getIngs() {
 
-    await fetch('http://localhost:49200/api/GetNIngredients?' + page)
+    await fetch('http://localhost:49202/api/GetNIngredients?' + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 }
@@ -71,6 +67,7 @@ async function getUserFlagButtonPressed(e) {
     getUserFlags(e);
 }
 
+//retrieves the flags associated with our current user
 async function getUserFlags(e) {
     e.preventDefault();
    
@@ -85,31 +82,31 @@ async function getUserFlags(e) {
     var btn2 = document.getElementById("updateFlagsLabel");
     btn2.value = "Remove Flag";
 
-    //var btn3 = document.getElementById("searchType");
-    //btn3.onsubmit = function () { searchAccountFlags(e) };
+
     var btn4 = document.getElementById("searchTypeLabel");
     btn4.value = "Search Your Flags";
 
 
     deleteCurrentData(e);
-    await fetch('http://localhost:49200/api/GetNAccountFlags?' + page)
+    await fetch('http://localhost:49201/api/GetNAccountFlags?' + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
-    console.log("display user flags was clicked");
+
 
 
     displayIngs();
 
 }
 
+//Uses a user provided string as a search param to look through the users flags
 async function searchAccountFlags(e) {
     e.preventDefault();
     try {
         deleteCurrentData(e);
         currentPage = "searchFlags";
         let search = document.getElementById('search').value;
-        console.log(search);
-        await fetch('http://localhost:49200/api/GetAccountFlagBySearch?' + search + "?" + page)
+
+        await fetch('http://localhost:49201/api/GetAccountFlagBySearch?' + search + "?" + page)
             .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
             .then(data => console.log(data));
         console.log("made it to the otherside of searchAccountFlags");
@@ -122,6 +119,7 @@ async function searchAccountFlags(e) {
 
 }
 
+//uses a user provided string to search through ingredients
 async function searchIngs(e) {
     e.preventDefault();
     
@@ -130,7 +128,7 @@ async function searchIngs(e) {
     currentPage = "searchIngredients";
     let search = document.getElementById('search').value;
 
-    await fetch('http://localhost:49200/api/AccountSearchIngredients?' + search + "?" + page)
+    await fetch('http://localhost:49202/api/FlagSearchIngredients?' + search + "?" + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 
@@ -138,7 +136,7 @@ async function searchIngs(e) {
 }
 async function searchButtonPressed(e) {
     if (currentPage == "displayFlags") {
-        console.log("Go to searchAccountFlags");
+
         searchAccountFlags(e);
         return;
     }
@@ -156,7 +154,7 @@ async function searchButtonPressed(e) {
     await searchIngs(e);
 }
 
-
+//returns to the default state of the page
 async function returnToAddFlags() {
 
     page = "0";
@@ -167,6 +165,7 @@ async function returnToAddFlags() {
     displayIngs();
     return;
 }
+
 
 async function updateFlagsButtonPressed(e) {
     e.preventDefault();
@@ -184,10 +183,10 @@ async function updateFlagsButtonPressed(e) {
     }
 }
 
-
+//adds flag(s) to the db
 async function sendNewFlag(e) {
     e.preventDefault();
-    console.log("IN SENDFLAGUPDATE");
+
     const itemsToAdd = [];
     var counter = 0;
     for (data in checkBoxList) {
@@ -201,7 +200,7 @@ async function sendNewFlag(e) {
 
 
 
-    await fetch('http://localhost:49200/api/AccountAddFlags', {
+    await fetch('http://localhost:49201/api/AccountAddFlags', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -211,6 +210,7 @@ async function sendNewFlag(e) {
 
 }
 
+//removes flag(s) from the db
 async function removeFlag(e) {
     e.preventDefault();
 
@@ -224,7 +224,7 @@ async function removeFlag(e) {
         }
     }
 
-    await fetch('http://localhost:49200/api/AccountRemoveFlag?' + page, {
+    await fetch('http://localhost:49201/api/AccountRemoveFlag?' + page, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -239,7 +239,7 @@ async function removeFlag(e) {
 }
 
 
-
+//Deletes the current Data being displayed on the page
 function deleteCurrentData() {
 
     var parent = document.getElementById('container');
@@ -249,6 +249,7 @@ function deleteCurrentData() {
     checkBoxList = [];
 }
 
+//used to navigate forward through lists of ingredients or flags
 async function loadnextPage(e) {
     e.preventDefault();
     deleteCurrentData(e);
@@ -269,10 +270,10 @@ async function loadnextPage(e) {
     } else {
         displayIngs();
     }
-    console.log("page: " + page);
+
 
 }
-
+//used to navigate backwards through lists of ingredients or flags
 async function loadPreviousPage(e) {
     e.preventDefault();
     deleteCurrentData(e);
@@ -292,7 +293,7 @@ async function loadPreviousPage(e) {
     } else {
         displayIngs();
     }
-    console.log("page: " + page);
+
 
 }
 

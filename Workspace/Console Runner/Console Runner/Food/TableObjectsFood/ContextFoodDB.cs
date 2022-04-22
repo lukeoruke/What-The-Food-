@@ -117,5 +117,5 @@ public class ContextFoodDB : DbContext
     public DbSet<Nutrient> Nutrient { get; set; } = null!;
     public DbSet<NutritionLabel> NutritionLabel { get; set; } = null!;
     public DbSet<FoodUpdate> FoodUpdates { get; set; } = null!;
-    public DbSet<IngredientUpdate> IngredientLists { get; set; } = null!;
+    public DbSet<IngredientUpdate> IngredientUpdates { get; set; } = null!;
 }

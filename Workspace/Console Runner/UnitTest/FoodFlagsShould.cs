@@ -13,12 +13,13 @@ namespace Test.UM
         private readonly IAuthorizationGateway _permissionService = new MemAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new MemFlagGateway();
         private readonly IFoodGateway _foodGateway = new MemFoodGateway();
+        private readonly IFoodUpdateGateway _foodUpdateGateway = new MemFoodUpdateGateway();
         private Random _random = new Random();
         [Fact]
         public async void AddFoodFlagSuccess()
         {
 
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
             AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
@@ -37,7 +38,7 @@ namespace Test.UM
         [Fact]
         public async void RemoveFoodFlagSuccess()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
             AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
@@ -54,7 +55,7 @@ namespace Test.UM
         [Fact]
         public async void accountHasFlagSuccess()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
             AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
@@ -69,7 +70,7 @@ namespace Test.UM
         [Fact]
         public async void getAllAccountFlagsSuccess()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
             AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
@@ -104,7 +105,7 @@ namespace Test.UM
         [Fact]
         public async void GetNFlagsSuccess()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
             AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +

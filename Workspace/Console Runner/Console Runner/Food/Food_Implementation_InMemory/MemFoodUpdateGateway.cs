@@ -49,17 +49,17 @@ namespace Console_Runner.FoodService
             return updateList;
         }
 
+
         /// <summary>
-        /// Remove the FoodUpdate with the same Id, FoodItemBarcode, and UpdateTime as the given FoodUpdate from the database if it exists.
+        /// Remove the FoodUpdate with the given Id from the database if it exists.
         /// </summary>
-        /// <param name="foodUpdate"></param>
+        /// <param name="updateId">The database Id of the FoodUpdate to remove.</param>
         /// <param name="logService">The LogService to log actions with.</param>
         /// <returns>True if the corresponding FoodUpdate in the database was removed.</returns>
-        public async Task<bool> RemoveAsync(FoodUpdate foodUpdate, LogService? logService = null)
+        public async Task<bool> RemoveAsync(int updateId, LogService? logService = null)
         {
             Thread.Sleep(100);
-            _foodUpdateDB.RemoveAll(fu => fu.Id == foodUpdate.Id ||
-                                          (fu.FoodItemBarcode == foodUpdate.FoodItemBarcode && fu.UpdateTime == foodUpdate.UpdateTime));
+            _foodUpdateDB.RemoveAll(fu => fu.Id == updateId);
             return true;
         }
 

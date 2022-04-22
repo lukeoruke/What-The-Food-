@@ -75,21 +75,22 @@ namespace Console_Runner.FoodService
             return foodUpdates;
         }
 
+
         /// <summary>
-        /// Remove the FoodUpdate with the same Id, FoodItemBarcode, and UpdateTime as the given FoodUpdate from the database if it exists.
+        /// Remove the FoodUpdate with the given Id from the database if it exists.
         /// </summary>
-        /// <param name="foodUpdate"></param>
+        /// <param name="updateId">The database Id of the FoodUpdate to remove.</param>
         /// <param name="logService">The LogService to log actions with.</param>
         /// <returns>True if the corresponding FoodUpdate in the database was removed.</returns>
-        public async Task<bool> RemoveAsync(FoodUpdate foodUpdate, LogService? logService = null)
+        public async Task<bool> RemoveAsync(int updateId, LogService? logService = null)
         {
             using ContextFoodDB contextFoodDB = new ContextFoodDB();
-            contextFoodDB.Remove(foodUpdate);
+            contextFoodDB.Remove(new FoodUpdate() { Id = updateId });
             await contextFoodDB.SaveChangesAsync();
             if (logService?.UserID != null)
             {
                 _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Data, DateTime.Now,
-                        $"Deleted FoodUpdate {foodUpdate.Id} from the database.");
+                        $"Deleted FoodUpdate {updateId} from the database.");
             }
             return true;
         }

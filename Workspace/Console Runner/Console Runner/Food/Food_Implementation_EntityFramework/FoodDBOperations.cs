@@ -211,7 +211,7 @@ namespace Console_Runner.FoodService
             return updates;
         }
 
-        public async Task<bool> RemoveFoodUpdateByIdAsync(int id, LogService logService? = null)
+        public async Task<bool> RemoveFoodUpdateByIdAsync(int id, LogService? logService = null)
         {
             await _foodUpdateGateway.RemoveAsync(id, logService);
             if (logService?.UserID != null)

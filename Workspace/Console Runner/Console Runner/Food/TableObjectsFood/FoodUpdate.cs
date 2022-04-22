@@ -23,7 +23,7 @@ namespace Console_Runner.FoodService
         {
             FoodItem = foodItem;
             FoodItemBarcode = foodItem.Barcode;
-            UpdateTime = updateTime;
+            UpdateTime = updateTime.Date;
             Message = message;
         }
     }

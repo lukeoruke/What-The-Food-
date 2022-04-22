@@ -11,7 +11,7 @@ namespace Console_Runner.FoodService
     public interface IFoodUpdateGateway
     {
         /// <summary>
-        /// Add a FoodUpdate to the database.
+        /// Add a derived class of FoodUpdate to the database. Throws if attempting to add a FoodUpdate and not a derived type.
         /// </summary>
         /// <param name="foodUpdate">The FoodUpdate object to add to the database.</param>
         /// <param name="logService">The LogService to log actions with.</param>
@@ -35,7 +35,7 @@ namespace Console_Runner.FoodService
         public Task<bool> UpdateAsync(FoodUpdate foodUpdate, LogService? logService = null);
 
         /// <summary>
-        /// Remove the given FoodUpdate from the database if it exists.
+        /// Remove the FoodUpdate with the same Id, FoodItemBarcode, and UpdateTime as the given FoodUpdate from the database if it exists.
         /// </summary>
         /// <param name="foodUpdate"></param>
         /// <param name="logService">The LogService to log actions with.</param>

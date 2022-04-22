@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Console_Runner.FoodService
 {
-    public abstract class FoodUpdate
+    public class FoodUpdate
     {
         public int Id { get; set; }
         public FoodItem FoodItem { get; set; }
@@ -22,6 +22,7 @@ namespace Console_Runner.FoodService
         public FoodUpdate(FoodItem foodItem, DateTime updateTime, string message)
         {
             FoodItem = foodItem;
+            FoodItemBarcode = foodItem.Barcode;
             UpdateTime = updateTime;
             Message = message;
         }

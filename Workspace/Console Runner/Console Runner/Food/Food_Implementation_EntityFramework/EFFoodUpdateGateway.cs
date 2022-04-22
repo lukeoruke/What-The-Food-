@@ -24,6 +24,10 @@ namespace Console_Runner.FoodService
         /// <returns>True if the FoodUpdate was successfully added.</returns>
         public async Task<bool> AddAsync(FoodUpdate foodUpdate, LogService? logService = null)
         {
+            if(foodUpdate.GetType() == typeof(FoodUpdate))
+            {
+                throw new ArgumentException($"{nameof(foodUpdate)} is a FoodUpdate and not a derived type.");
+            }
             using ContextFoodDB contextFoodDB = new ContextFoodDB();
             contextFoodDB.Entry(foodUpdate.FoodItem).State = EntityState.Unchanged;
             await contextFoodDB.AddAsync(foodUpdate);
@@ -55,7 +59,7 @@ namespace Console_Runner.FoodService
         }
 
         /// <summary>
-        /// Remove the given FoodUpdate from the database defined in ContextFoodDB if it exists.
+        /// Remove the FoodUpdate with the same Id, FoodItemBarcode, and UpdateTime as the given FoodUpdate from the database if it exists.
         /// </summary>
         /// <param name="foodUpdate"></param>
         /// <param name="logService">The LogService to log actions with.</param>

@@ -27,6 +27,10 @@ namespace Console_Runner.FoodService
         public async Task<bool> AddAsync(FoodUpdate foodUpdate, LogService? logService = null)
         {
             Thread.Sleep(100);
+            if (foodUpdate.GetType() == typeof(FoodUpdate))
+            {
+                throw new ArgumentException($"{nameof(foodUpdate)} is a FoodUpdate and not a derived type.");
+            }
             foodUpdate.Id = _idCount++;
             _foodUpdateDB.Add(foodUpdate);
             return true;
@@ -46,7 +50,7 @@ namespace Console_Runner.FoodService
         }
 
         /// <summary>
-        /// Remove the given FoodUpdate from the database if it exists.
+        /// Remove the FoodUpdate with the same Id, FoodItemBarcode, and UpdateTime as the given FoodUpdate from the database if it exists.
         /// </summary>
         /// <param name="foodUpdate"></param>
         /// <param name="logService">The LogService to log actions with.</param>

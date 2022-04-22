@@ -49,7 +49,24 @@ namespace Console_Runner.FoodService
         public async Task<List<FoodUpdate>> GetAllByBarcodeAsync(string barcode, LogService? logService = null)
         {
             using ContextFoodDB contextFoodDB = new ContextFoodDB();
-            List<FoodUpdate> foodUpdates = await contextFoodDB.FoodUpdates.Where(foodUpdate => foodUpdate.FoodItemBarcode == barcode).ToListAsync();
+            List<FoodUpdate> foodUpdates = await contextFoodDB.FoodUpdates
+                                                              .Where(foodUpdate => foodUpdate.FoodItemBarcode == barcode)
+                                                              .Include(foodUpdate => foodUpdate.FoodItem)
+                                                              .ToListAsync();
+            foreach (FoodUpdate foodUpdate in foodUpdates)
+            {
+                switch (foodUpdate.GetType())
+                {
+                    // if foodupdate is a foodingredientchange, explicitly load its List<IngredientUpdate>
+                    case var fut when fut == typeof(FoodIngredientChange):
+                        await contextFoodDB.Entry((FoodIngredientChange)foodUpdate)
+                                           .Collection(fu => fu.IngredientUpdates)
+                                           .LoadAsync();
+                        break;
+                    default:
+                        break;
+                }
+            }
             if (logService?.UserID != null)
             {
                 _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Data, DateTime.Now,

@@ -65,11 +65,6 @@ public class ContextFoodDB : DbContext
             table.Barcode,
             table.UserID
         });
-        builder.Entity<FoodUpdate>().HasAlternateKey(table => new
-        {
-            table.FoodItemBarcode,
-            table.UpdateTime
-        });
         builder.Entity<FoodUpdate>().HasDiscriminator<string>("update_type")
             .HasValue<FoodRecall>("foodrecall")
             .HasValue<FoodIngredientChange>("ingredientchange");

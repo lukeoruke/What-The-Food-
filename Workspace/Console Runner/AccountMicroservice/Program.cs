@@ -36,4 +36,4 @@ app.UseCors(MyAllowSpecificOrigins);
 
 app.MapControllers();
 
-app.Run("http://localhost:49201");
+app.Run("https://localhost:49201");

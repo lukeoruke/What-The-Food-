@@ -28,12 +28,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
+app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.UseCors(MyAllowSpecificOrigins);
 
 app.MapControllers();
-app.UseDeveloperExceptionPage();
+
 app.Run("http://localhost:49201");

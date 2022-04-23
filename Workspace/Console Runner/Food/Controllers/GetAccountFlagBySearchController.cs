@@ -46,11 +46,11 @@ namespace Food.Controllers
                 ingredients = ingredients.Where(x => x.IngredientName.Contains(search)).OrderBy(x => x.IngredientName).Skip(numberOfItemsDisplayedAtOnce * int.Parse(page)).Take(numberOfItemsDisplayedAtOnce).ToList();
 
                 
-                Console.WriteLine("(SearchFlags)Length of ing list = " + ingredients.Count());
+
 
                 string jsonStr = "{";
                 jsonStr += FormatIngredientsJsonString(ingredients);
-                Console.WriteLine(jsonStr);
+
                 return jsonStr + "}";
             }
             catch (Exception ex)

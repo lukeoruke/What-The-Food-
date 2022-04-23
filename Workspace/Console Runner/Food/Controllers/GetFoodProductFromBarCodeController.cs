@@ -46,7 +46,7 @@ namespace Food.Controllers
 
             try
             {
-                Console.WriteLine("GET " + barcode);
+
 
                 
                 foodItem = await _foodDB.GetScannedItemAsync(barcode, logger);

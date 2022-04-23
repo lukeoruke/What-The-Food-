@@ -27,20 +27,20 @@ namespace Food.Controllers
             try
             {
                 string input = Request.QueryString.Value;
-                Console.WriteLine("(accountSearchController)input: " + input);
+
                 string[] inputarr = input.Split('?');
                 string search = inputarr[1];
 
                 string page = inputarr[2];
                 int numberOfItemsDisplayedAtOnce = 2;
-                Console.WriteLine("GET " + search);
+
                 var allIngredientList = await _foodDBOperations.GetIngredientBySearchAsync(search, numberOfItemsDisplayedAtOnce * int.Parse(page)
                     , numberOfItemsDisplayedAtOnce, logger);
-                Console.WriteLine("Length of ing list(search function) = " + allIngredientList.Count());
+
                 string jsonStr = "{";
                 
                 jsonStr += FormatIngredientsJsonString(allIngredientList);
-                Console.WriteLine(jsonStr);
+
                 return jsonStr + "}";
             }
             catch (Exception ex)

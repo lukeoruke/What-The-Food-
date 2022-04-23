@@ -39,6 +39,9 @@ async function sendSignup(e) {
     // HTTP Post Request
 <<<<<<< Updated upstream
     await fetch('http://localhost:49201/api/AccountSignUp', {
+=======
+    await fetch('https://47.151.16.249:49205/api/AccountSignUp', {
+>>>>>>> Stashed changes
         method: 'POST',
         body: formData,
     }).then(function (response) {

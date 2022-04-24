@@ -305,6 +305,24 @@ namespace Console_Runner.FoodService
             return food;
         }
         /// <summary>
+        /// Gets N FoodItems at a time
+        /// </summary>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <param name="logService"></param>
+        /// <returns>Returns N ingredients, N being take</returns>
+        public async Task<List<FoodItem>> RetrieveNFoodItemsAsync(int skip, int take, LogService? logService = null)
+        {
+            List<FoodItem> results = await _efContext.FoodItem.OrderBy(x => x.ProductName)
+                .Skip(skip).Take(take).ToListAsync();
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
+                        $"Retrieved list of {take} Food Items");
+            }
+            return results;
+        }
+        /// <summary>
         /// Gets the label nutrient list associated with a product from its barcode
         /// </summary>
         /// <param name="barcode"></param>

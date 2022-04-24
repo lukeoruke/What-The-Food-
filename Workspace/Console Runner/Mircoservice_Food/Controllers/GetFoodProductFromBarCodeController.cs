@@ -15,6 +15,7 @@ namespace Food.Controllers
     {
         private const string UM_CATEGORY = "Data Store";
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();
+        private readonly IFoodUpdateGateway _foodUpdateGateway = new EFFoodUpdateGateway();
         private  FoodDBOperations _foodDB;
         private IFormCollection formData;
         private readonly IAccountGateway _accountAccess = new EFAccountGateway();
@@ -36,7 +37,7 @@ namespace Food.Controllers
             NutritionLabel label;
 
 
-            _foodDB = new FoodDBOperations(_foodServiceGateway);
+            _foodDB = new FoodDBOperations(_foodServiceGateway, _foodUpdateGateway);
             _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it

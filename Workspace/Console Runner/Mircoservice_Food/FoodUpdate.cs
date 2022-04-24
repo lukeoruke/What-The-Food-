@@ -8,8 +8,9 @@ namespace Console_Runner.FoodService
 {
     public class FoodUpdate
     {
+        public int Id { get; set; }
         public FoodItem FoodItem { get; set; }
-        public int FoodItemId { get; set; }
+        public string FoodItemBarcode { get; set; }
         public DateTime UpdateTime { get; set; }
         public string Message { get; set; }
 
@@ -21,7 +22,8 @@ namespace Console_Runner.FoodService
         public FoodUpdate(FoodItem foodItem, DateTime updateTime, string message)
         {
             FoodItem = foodItem;
-            UpdateTime = updateTime;
+            FoodItemBarcode = foodItem.Barcode;
+            UpdateTime = updateTime.Date;
             Message = message;
         }
     }

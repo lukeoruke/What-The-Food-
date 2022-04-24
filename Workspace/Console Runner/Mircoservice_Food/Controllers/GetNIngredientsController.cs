@@ -15,10 +15,11 @@ namespace Food.Controllers
             private const string UM_CATEGORY = "Data Store";
 
             private readonly IFoodGateway _foodGateway = new EFFoodGateway();
+            private readonly IFoodUpdateGateway _foodUpdateGateway = new EFFoodUpdateGateway();
             [HttpGet]
             public async Task<ActionResult<string>> GET()
             {
-                FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway);
+                FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
                 LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
                 // TODO: replace this string with the user email when we can get it
                 logger.UserID = "placeholder";

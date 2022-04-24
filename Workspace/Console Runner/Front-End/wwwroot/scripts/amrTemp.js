@@ -6,16 +6,42 @@ var search;
 var page = "0";
 var currentPage = "default";
 
+
+function getData() {
+
+}
+
+async function checkGender() {
+
+}
+
+async function checkActivity() {
+
+}
+
+async function calculateAmr() {
+
+}
+
+async function updateAmr() {
+
+}
+
+async function clearAmr() {
+
+}
+
 //Initalization of the page, creates the various check boxes and populates the information
 async function addFlagCheckBoxes() {
-
+    /**
     await getIngs();
     displayIngs();
+    **/
 }
 
 //Displays the page content with information recieved from a json that was kept in local storage
 function displayIngs() {
-
+    /**
     var jsonData = localStorage.getItem('allIngredients');
     
 
@@ -51,24 +77,29 @@ function displayIngs() {
 
         checkBoxList[data] = checkbox;
     }
+    **/
 }
 
 //gets the ingredients from the DB
 async function getIngs() {
-
+    /**
     await fetch('https://localhost:49202/api/GetNIngredients?' + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
+    **/
 }
 
 async function getUserFlagButtonPressed(e) {
+    /**
     page = "0";
 
     getUserFlags(e);
+    **/
 }
 
 //retrieves the flags associated with our current user
 async function getUserFlags(e) {
+    /**
     e.preventDefault();
    
     currentPage = "displayFlags";
@@ -95,11 +126,13 @@ async function getUserFlags(e) {
 
 
     displayIngs();
+    **/
 
 }
 
 //Uses a user provided string as a search param to look through the users flags
 async function searchAccountFlags(e) {
+    /**
     e.preventDefault();
     try {
         deleteCurrentData(e);
@@ -116,11 +149,13 @@ async function searchAccountFlags(e) {
         console.log("searchAccountFlags: " + ex);
         throw ex;
     }
+    **/
 
 }
 
 //uses a user provided string to search through ingredients
 async function searchIngs(e) {
+    /**
     e.preventDefault();
     
 
@@ -133,8 +168,12 @@ async function searchIngs(e) {
         .then(data => console.log(data));
 
     displayIngs();
+    **/
 }
+
+//
 async function searchButtonPressed(e) {
+    /**
     if (currentPage == "displayFlags") {
 
         searchAccountFlags(e);
@@ -152,11 +191,12 @@ async function searchButtonPressed(e) {
     btn2.value = "Add Flags";
 
     await searchIngs(e);
+    **/
 }
 
 //returns to the default state of the page
 async function returnToAddFlags() {
-
+    /**
     page = "0";
     currentPage = "default";
     deleteCurrentData();
@@ -164,10 +204,12 @@ async function returnToAddFlags() {
     getIngs();
     displayIngs();
     return;
+    **/
 }
 
 
 async function updateFlagsButtonPressed(e) {
+    /**
     e.preventDefault();
     if (currentPage == "displayFlags") {
         removeFlag(e);
@@ -181,10 +223,12 @@ async function updateFlagsButtonPressed(e) {
 
         throw ("CurrentPage is not one of the values it is allowed to take.: Currently = " + currentPage);
     }
+    **/
 }
 
 //adds flag(s) to the db
 async function sendNewFlag(e) {
+    /**
     e.preventDefault();
 
     const itemsToAdd = [];
@@ -207,12 +251,12 @@ async function sendNewFlag(e) {
         },
         body: (itemsToAdd),
     })
-
+    **/
 }
 
 //removes flag(s) from the db
 async function removeFlag(e) {
-    e.preventDefault();
+    /**e.preventDefault();
 
     const itemsToRemove = [];
     var counter = 0;
@@ -235,23 +279,24 @@ async function removeFlag(e) {
 
     //returnToAddFlags();
     getUserFlagButtonPressed(e);
-
+    **/
 }
 
 
 //Deletes the current Data being displayed on the page
 function deleteCurrentData() {
-
+    /** 
     var parent = document.getElementById('container');
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
     checkBoxList = [];
+    */
 }
 
 //used to navigate forward through lists of ingredients or flags
 async function loadnextPage(e) {
-    e.preventDefault();
+    /**e.preventDefault();
     deleteCurrentData(e);
 
     var pageNumber = parseInt(page);
@@ -270,11 +315,12 @@ async function loadnextPage(e) {
     } else {
         displayIngs();
     }
-
+    **/
 
 }
 //used to navigate backwards through lists of ingredients or flags
 async function loadPreviousPage(e) {
+    /**
     e.preventDefault();
     deleteCurrentData(e);
 
@@ -294,6 +340,6 @@ async function loadPreviousPage(e) {
         displayIngs();
     }
 
-
+    **/
 }
 

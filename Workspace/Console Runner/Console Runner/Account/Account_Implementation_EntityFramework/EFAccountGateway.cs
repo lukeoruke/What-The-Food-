@@ -18,7 +18,12 @@ namespace Console_Runner.AccountService
         {
             _efContext = new ContextAccountDB();
         }
-
+        /// <summary>
+        /// Gets the salt associated with a user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="logService"></param>
+        /// <returns>The salt associated with a user</returns>
         public string getSalt(int userID, LogService? logService = null)
         {
             foreach(var account in _efContext.Accounts)
@@ -42,10 +47,10 @@ namespace Console_Runner.AccountService
         }
 
         /// <summary>
-        /// Checks if an account exists
+        /// Verify whether an Account object exists in the database with the provided ID.
         /// </summary>
-        /// <param name="userID">The ID of the account being checked</param>
-        /// <returns>true if account exists false otherwise</returns>
+        /// <param name="UserID">UserID to search for</param>
+        /// <returns>True if the searched account exists, false otherwise.</returns>
         public async Task<bool>AccountExistsAsync(int userID, LogService? logService = null)
         {
             var toReturn = await _efContext.Accounts.FindAsync(userID) != null;
@@ -56,7 +61,11 @@ namespace Console_Runner.AccountService
             }
             return toReturn;
         }
-
+        /// <summary>
+        /// Add an Account object to the database.
+        /// </summary>
+        /// <param name="acc"> Account object to add to the database</param>
+        /// <returns>True if the operation was successful, false otherwise.</returns>
         public async Task<bool> AddAccountAsync(Account acc, LogService? logService = null)
         {
             try
@@ -75,7 +84,11 @@ namespace Console_Runner.AccountService
                 return false;
             }
         }
-
+        /// <summary>
+        /// Retrieve an Account object from the database.
+        /// </summary>
+        /// <param name="UserID">UserID  to retrieve</param>
+        /// <returns>Account object with the provided AccountID assuming it exists, otherwise null if the account does not exist.</returns>
         public async Task<Account?> GetAccountAsync(int userID, LogService? logService = null)
         {
             foreach(var acc in _efContext.Accounts)
@@ -96,26 +109,12 @@ namespace Console_Runner.AccountService
                                                    $"Could not retrieve account {userID}");
             }
             throw new Exception("NO ACCOUNT WAS FOUND WITH USERID: " + userID.ToString());
-            /*
-
-                        try
-                        {
-                            Account? acc = await _efContext.Accounts.FindAsync(UserID);
-                            if (acc != null)
-                            {
-                                return acc;
-                            }
-                            else
-                            {
-                                throw new Exception("account not found exception");
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            throw new Exception("EN ERROR OCCURED DURING METHOD CALL");
-                        }*/
         }
-
+        /// <summary>
+        /// Remove an Account object from the database.
+        /// </summary>
+        /// <param name="acc">The Account object being removed from the database</param>
+        /// <returns>True if the operation was successful, false otherwise.</returns>
         public async Task<bool> RemoveAccountAsync(Account acc, LogService? logService = null)
         {
             try
@@ -137,7 +136,11 @@ namespace Console_Runner.AccountService
                 return false;
             }
         }
-
+        /// <summary>
+        /// Update an Account object in the database. Modify the account object, then pass it into this method. The corresponding object in the database will be updated accordingly.
+        /// </summary>
+        /// <param name="acc">The Account object with modified parameters</param>
+        /// <returns>True if the operation was successful, false otherwise.</returns>
         public async Task<bool> UpdateAccountAsync(Account acc, LogService? logService = null)
         {
             try
@@ -157,7 +160,12 @@ namespace Console_Runner.AccountService
                 return false;
             }
         }
-
+        /// <summary>
+        /// Gets a users ID from their email address
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="logService"></param>
+        /// <returns>the ID associated with a specifici email</returns>
         public async Task<int> GetIDFromEmailIdAsync(string email, LogService? logService = null)
         {
             var userEmail = _efContext.Accounts.Where(r => r.Email == email);
@@ -169,7 +177,11 @@ namespace Console_Runner.AccountService
             }
             return tempAcc[0].UserID;
         }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="logService"></param>
+        /// <returns>returns the number of accounts</returns>
         public int NumberOfAccounts(LogService? logService = null)
         {
             int counter = 0;

@@ -16,6 +16,12 @@ namespace Console_Runner.FoodService
             _efContext = new ContextFoodDB();
         }
 
+        /// <summary>
+        /// Gets an ingredient based on an ingredient ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="logService"></param>
+        /// <returns>the ingredient with the specified ingredientID</returns>
         public Ingredient GetIngredient(int id, LogService? logService = null)
         {
             Ingredient toReturn = _efContext.Ingredients.Where(x => x.IngredientID == id).ToList().ElementAt(0);
@@ -26,6 +32,14 @@ namespace Console_Runner.FoodService
             }
             return toReturn;
         }
+        /// <summary>
+        /// Gets ingredients that match the search criteria
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <param name="logService"></param>
+        /// <returns>a list of all ingredients that meet the search criteria and fall within the skip and take params</returns>
         public async Task<List<Ingredient>> GetIngredientBySearchAsync(string search, int skip, int take, LogService? logService = null)
         {
             List<Ingredient> results = await _efContext.Ingredients.Where(x => x.IngredientName.Contains(search))
@@ -37,7 +51,13 @@ namespace Console_Runner.FoodService
             }
             return results;
         }
-
+        /// <summary>
+        /// Gets N ingredients at a time
+        /// </summary>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <param name="logService"></param>
+        /// <returns>Returns N ingredients, N being take</returns>
         public async Task<List<Ingredient>>RetrieveNIngredientsAsync(int skip, int take, LogService? logService = null)
         {
             List<Ingredient> results = await _efContext.Ingredients.OrderBy(x => x.IngredientName)
@@ -49,7 +69,12 @@ namespace Console_Runner.FoodService
             }
             return results;
         }
-
+        /// <summary>
+        /// Adds a label ingredient to the db
+        /// </summary>
+        /// <param name="labelIngredient"></param>
+        /// <param name="logService"></param>
+        /// <returns></returns>
         public async Task<bool> AddLabelIngredientAsync(LabelIngredient labelIngredient, LogService? logService = null)
         {
             try
@@ -81,7 +106,12 @@ namespace Console_Runner.FoodService
             }
 
         }
-
+        /// <summary>
+        /// Adds a label nutrient to the DB
+        /// </summary>
+        /// <param name="labelNutrient"></param>
+        /// <param name="logService"></param>
+        /// <returns></returns>
         public async Task<bool> AddLabelNutrientAsync(LabelNutrient labelNutrient, LogService? logService = null)
         {
             try
@@ -111,7 +141,11 @@ namespace Console_Runner.FoodService
                 return false;
             }
         }
-
+        /// <summary>
+        /// Adds an object of type FoodItem to the DB
+        /// </summary>
+        /// <param name="foodItem"></param>
+        /// <returns>True if successful, otherwise false</returns>
         public async Task<bool> AddFoodItemAsync(FoodItem foodItem, LogService? logService = null)
         {
             try
@@ -130,7 +164,11 @@ namespace Console_Runner.FoodService
                 return false;
             }
         }
-
+        /// <summary>
+        /// Adds a Nutrition Label to the DB
+        /// </summary>
+        /// <param name="nutritionLabel"></param>
+        /// <returns>True if successful, otherwise false</returns>
         public async Task<bool> AddNutritionLabelAsync(NutritionLabel nutritionLabel, LogService? logService = null)
         {
             try
@@ -149,7 +187,11 @@ namespace Console_Runner.FoodService
                 return false;
             }
         }
-
+        /// <summary>
+        /// Adds a Nutrient to the DB
+        /// </summary>
+        /// <param name="nutrient"></param>
+        /// <returns><returns>True if successful, otherwise false</returns></returns>
         public async Task<bool> AddNutrientAsync(Nutrient nutrient, LogService? logService = null)
         {
             try
@@ -168,7 +210,11 @@ namespace Console_Runner.FoodService
                 return false;
             }
         }
-
+        /// <summary>
+        /// Adds an ingredient to the DB
+        /// </summary>
+        /// <param name="ingredient">The Ingredient being added</param>
+        /// <returns>True if the opperation was successful, false otherwise.</returns>
         public async Task<bool> AddIngredientAsync(Ingredient ingredient, LogService? logService = null)
         {
             try
@@ -187,7 +233,11 @@ namespace Console_Runner.FoodService
                 return false;
             }
         }
-
+        /// <summary>
+        /// Removes an Ingredient from the DB
+        /// </summary>
+        /// <param name="ingredient">The ingredient being removed</param>
+        /// <returns>True if the opperation was successful, false otherwise.</returns>
         public bool RemoveIngredient(Ingredient ingredient, LogService? logService = null)
         {
             try
@@ -206,7 +256,9 @@ namespace Console_Runner.FoodService
                 return false;
             }
         }
-
+        /// <summary></summary>
+        /// <param name="barcode"></param>
+        /// <returns>List containing all ingredeints in the food with the corosponding barcode</returns>
         public async Task<List<Ingredient>> RetrieveIngredientListAsync(string barcode, LogService? logService = null)
         {
             List<Ingredient> ingredients = new List<Ingredient>();
@@ -222,7 +274,11 @@ namespace Console_Runner.FoodService
             }
             return ingredients;
         }
-
+        /// <summary>
+        /// Gets the nutrition label associated with a provided barcode
+        /// </summary>
+        /// <param name="barcode">The barcode being searched</param>
+        /// <returns>The nutrition label associated with a provided barcode</returns>
         public async Task<NutritionLabel?> RetrieveNutritionLabelAsync(string barcode, LogService? logService = null)
         {
             NutritionLabel? nutritionLabel = await _efContext.NutritionLabel.FindAsync(barcode);
@@ -233,7 +289,11 @@ namespace Console_Runner.FoodService
             }
             return nutritionLabel;
         }
-
+        /// <summary>
+        /// Gets a food object corosponding to the provided barcode
+        /// </summary>
+        /// <param name="barcode">the barcode being searched</param>
+        /// <returns>a food item corosponding to the provided barcode</returns>
         public async Task<FoodItem?> RetrieveScannedFoodItemAsync(string barcode, LogService? logService = null)
         {
             FoodItem? food = await _efContext.FoodItem.FindAsync(barcode);
@@ -244,7 +304,12 @@ namespace Console_Runner.FoodService
             }
             return food;
         }
-
+        /// <summary>
+        /// Gets the label nutrient list associated with a product from its barcode
+        /// </summary>
+        /// <param name="barcode"></param>
+        /// <param name="logService"></param>
+        /// <returns>a list of all labelNutrients associated with a specific product</returns>
         public async Task<List<LabelNutrient>> RetrieveLabelNutrientByBarcodeAsync(string barcode, LogService? logService = null)
         {
             List<LabelNutrient> toReturn = _efContext.LabelNutrients.Where(r => r.Barcode == barcode).ToList();
@@ -255,7 +320,12 @@ namespace Console_Runner.FoodService
             }
             return toReturn;
         }
-
+        /// <summary>
+        /// Gets a nutrition list that is connected to a labelNutrient List
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="logService"></param>
+        /// <returns>a list of nutrient objects in the form (Nutrient, float)</returns>
         public async Task<List<(Nutrient, float)>> RetrieveNutrientListByIDAsync(List<LabelNutrient> list, LogService? logService = null)
         {
             List<(Nutrient?, float)> nutrientList = new();

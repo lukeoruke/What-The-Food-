@@ -41,7 +41,7 @@ namespace Food.Controllers
                     return "Something went wrong getting the ingredients list to display on food flags page";
                 }
             }
-            public string FormatIngredientsJsonString(List<Ingredient> ingredientList)
+            private string FormatIngredientsJsonString(List<Ingredient> ingredientList)
             {
                 string strNameList = "\"IngredientName\": [";
                 string strAltList = "\"IngredientAlternateName\": [";

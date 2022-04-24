@@ -28,7 +28,6 @@ namespace Food.Controllers
         [HttpGet]
         public async Task<ActionResult<string>> GET()
         {
-
             barcode = Request.QueryString.Value;
             barcode = barcode.Substring(1);
             List<Ingredient> ingredients = new();
@@ -43,15 +42,9 @@ namespace Food.Controllers
             logger.UserID = "placeholder";
             logger.DefaultTimeOut = 5000;
 
-
-
             try
             {
-                Console.WriteLine("GET " + barcode);
-
-                
                 foodItem = await _foodDB.GetScannedItemAsync(barcode, logger);
-
                 ingredients = await _foodDB.GetIngredientsListAsync(barcode, logger);
 
                 int userID = 0; //TODO NEED THE ACTUAL USER ID;
@@ -110,7 +103,7 @@ namespace Food.Controllers
         /// </summary>
         /// <param name="ingredientList"></param>
         /// <returns></returns>
-        public string FormatIngredientsJsonString(List<Ingredient> ingredientList)
+        private string FormatIngredientsJsonString(List<Ingredient> ingredientList)
         {
             string strNameList = "\"IngredientName\": [";
             string strAltList = "\"IngredientAlternateName\": [";

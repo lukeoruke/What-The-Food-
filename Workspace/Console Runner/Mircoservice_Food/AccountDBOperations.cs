@@ -11,11 +11,14 @@ namespace Console_Runner.AccountService
         private readonly IAccountGateway _accountAccess;
         private readonly IAuthorizationGateway _permissionService;
         private readonly IFlagGateway _flagService;
-        public AccountDBOperations(IAccountGateway accountAccess, IAuthorizationGateway permissionService, IFlagGateway flagGateway)
+        private readonly IAMRGateway _amrGateway;
+
+        public AccountDBOperations(IAccountGateway accountAccess, IAuthorizationGateway permissionService, IFlagGateway flagGateway, IAMRGateway aMRGateway)
         {
             this._accountAccess = accountAccess;
             this._permissionService = permissionService;
             this._flagService = flagGateway;
+            this._amrGateway = aMRGateway;
         }
         
         /// <summary>
@@ -667,6 +670,11 @@ namespace Console_Runner.AccountService
         public async Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID, LogService? logService = null)
         {
             return await _flagService.GetAllAccountFlagsAsync(userID, logService);
+        }
+
+        public async Task<AMR> GetAMRAsync(int userID, LogService? logService = null)
+        {
+            return await _amrGateway.GetAMRAsync(userID, logService);
         }
 
 

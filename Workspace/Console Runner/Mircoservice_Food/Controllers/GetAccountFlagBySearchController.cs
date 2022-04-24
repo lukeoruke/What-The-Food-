@@ -17,11 +17,12 @@ namespace Food.Controllers
         private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
         private readonly IFoodGateway _foodGateway = new EFFoodGateway();
+        private readonly IAMRGateway _amRGateway = new EFAMRGateway();
         [HttpGet]
         public async Task<ActionResult<string>> GET()
         {
             int userID = 0;//TODO GET USER ID
-            AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway);
             FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it

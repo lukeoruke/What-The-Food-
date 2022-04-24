@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styles/settingPage.css">
+</head>
+<body>
+    <h1></h1>
+    <p></p>
+    <a href="index.html"><img src="images/apple.png" alt="What The Food?!" width="200" height="200"></a>
+    <a href="scanBarcode.html"><button class="button">Scan</button></a>
+    <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
+    <a href="customAMR.html"><button class="button">Custom AMR</button></a>
+    <a href="history.html"><button class="button">History</button></a>
+    <a href="settingPage.html"><button class="button">Settings</button></a>
+    <div id="setting">
+
+        <span>Custom AMR</span>
+        <div class="box2">
+            <form action="">
+                <label style="position: relative; left: 20px; top: 16px; font-size: 16px;">First name:</label>
+                <input style="position: relative; left: 20px; top: 16px; font-size: 16px;"><br><br>
+                <label style="position: relative; left:20px; font-size: 16px;">Last name:</label>
+                <input style="position: relative; left:20px; font-size: 16px;"><br><br>
+                <label style="position: relative; left:20px; font-size: 16px;" for="Gender">Gender:</label>
+                <select style="position: relative; left:20px; font-size: 16px;" name="Gender" id="Gender">
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select><br><br>
+                <label style="position: relative; left:20px; font-size: 16px;">Weight(lbs):</label>
+                <input style="position: relative; left:20px; font-size: 16px;"><br><br>
+                <label style="position: relative; left:20px; font-size: 16px;">Height(in):</label>
+                <input style="position: relative; left:20px; font-size: 16px;"><br><br>
+                <label style="position: relative; left:20px; font-size: 16px;">Age:</label>
+                <input style="position: relative; left:20px; font-size: 16px;"><br><br>
+                <label style="position: relative; left:20px; font-size: 16px;" for="Activity">Activity:</label>
+                <select style="position: relative; left:20px; font-size: 16px;" name="Activity" id="Activity">
+                    <option value="Light">Light</option>
+                    <option value="Moderate">Moderate</option>
+                    <option value="Heavy">Heavy</option>
+                    <option value="ExtraHeavy">Extra Heavy</option>
+                </select><br><br>
+                <button style="position: relative; left: 600px; top: -200px" class="button button2" onclick="alert('Calculating AMR')">Calculate</button>
+                <button style="position: relative; left: 600px; top: -200px; " class="button button2" onclick="alert('Resting AMR')">Reset</button>
+            </form>
+           
+        </div>
+    </div>
+
+</body>
+</html>

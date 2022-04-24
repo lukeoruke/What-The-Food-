@@ -10,18 +10,15 @@ namespace Microservice.AccountLogin.Controllers
     //[EnableCors("MyAllowSpecificOrigins")] fts
     public class AccountLoginController : ControllerBase
     {
-
         private const string UM_CATEGORY = "Data Store";
         private readonly IAccountGateway _accountAccess = new EFAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
         
-
         [HttpGet]
         //place methods here
         public async Task<ActionResult<AccountLogin>> Get()
         {
-            
             var user = new AccountLogin();
             Console.WriteLine("asdkfhjaweklfhjasdfhlafhlakfha2");
             user.email = "something@testEmail.com";

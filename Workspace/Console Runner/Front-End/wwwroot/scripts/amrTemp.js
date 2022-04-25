@@ -1,6 +1,7 @@
 ﻿console.log("TOP OF FILE");
 
-async function sendAmrData() {
+async function sendAmrData(e) {
+    e.preventDefault();
     console.log('Sending AMR Info');
     let gender = document.getElementById('gender').value;
     let weight = document.getElementById('weight').value;
@@ -22,7 +23,7 @@ async function sendAmrData() {
     console.log(activity);
     
 
-    await fetch('http://localhost:49201/api/AddAMR', {
+    await fetch('http://localhost:49202/api/AddAMR', {
         method: 'POST',
         body: formData,
     }).then(function (response) {

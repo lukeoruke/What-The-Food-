@@ -16,13 +16,13 @@
             </select><br><br>
 
             <label style="position: relative; left:20px; font-size: 16px;" for="weight">Weight(lbs):</label>
-                <input style="position: relative; left:20px; font-size: 16px;" type="text" id="weight" name="weight" /><br><br>
+            <input style="position: relative; left:20px; font-size: 16px;" type="text" id="weight" name="weight" /><br><br>
 
             <label style="position: relative; left:20px; font-size: 16px;" for="height">Height(in):</label>
-                <input style="position: relative; left:20px; font-size: 16px;" type="text" id="height" name="height" /><br><br>
+            <input style="position: relative; left:20px; font-size: 16px;" type="text" id="height" name="height" /><br><br>
 
             <label style="position: relative; left:20px; font-size: 16px;" for="age">Age:</label>
-                <input style="position: relative; left:20px; font-size: 16px;" type="text" id="age" name="age" /><br><br>
+            <input style="position: relative; left:20px; font-size: 16px;" type="text" id="age" name="age" /><br><br>
 
             <label style="position: relative; left:20px; font-size: 16px;" for="activity">Activity:</label>
             <select style="position: relative; left:20px; font-size: 16px;" name="activity" id="activity">
@@ -32,16 +32,17 @@
                 <option value="Daily">Daily</option>
                 <option value="Heavy">Heavy</option>
             </select><br><br>
-
-            <form style="position: relative; left: 600px; top: -200px;" class="form" id="calculate" onsubmit="sendAmrData(event)"></form>
-                <input style="position: relative; left:20px;" id="calculate1" class="input" type="submit" value="Calculate" />
-
-            <form style="position: relative; left: 600px; top: -200px;" class="form" id="resetAmr" onsubmit=""></form>
-                <input style="position: relative; left:20px;" id="restAmr1" class="input" type="submit" value="Reset" /> <br><br>
-
         </header>
 
     </div>
+    <form style="position: relative; left: 20px; top: -10px;" class="form" id="calculate" onsubmit="sendAmrData(event)">
+        <input style="position: relative; left:20px;" id="calculate1" class="input" type="submit" value="Calculate" />
+    </form>
+    
+
+    <form style="position: relative; left: 600px; top: -200px;" class="form" id="resetAmr" onsubmit="resetButtonPressed(event)">
+        <input style="position: relative; left:20px;" id="restAmr1" class="input" type="submit" value="Reset" />
+    </form><br><br>
 
 </body>
 </html>

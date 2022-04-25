@@ -6,15 +6,14 @@ const APIHEALTH = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=s
 
 //Create a global variable which will store all News
 let array = [];
+//the level of which we want to display health realted news
+let healthFilterLevel = getHealthFilter();
 pickCategory();
 
 /**
  * Select the category of news that will be catered towards the user
  */
 async function pickCategory() {
-    //the level of which we want to display health realted news
-    var healthFilterLevel = 0;
-
     //if they have no personalization, display food news as default
     //else display personzalized news based on user preference
     if (healthFilterLevel == 0) {
@@ -176,11 +175,31 @@ async function getCategory(index) {
     }
 }
 /**
+ * Get the number of Health news to display
+ */
+async function getHealthFilter() {
+    //access the backend and increment
+    //if the value is set at 4 already, then we do not need to increment it no more
+    await fetch('http://localhost:49200/api/NewsController', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    console.log("GOT");
+}
+/**
  * Change user preference to have more Health News
  */
 async function incrementHealthFilter() {
     //access the backend and increment
     //if the value is set at 4 already, then we do not need to increment it no more
+    await fetch('http://localhost:49200/api/NewsIncrementController', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
     console.log("INCREMENTED");
 }
 /**
@@ -189,6 +208,12 @@ async function incrementHealthFilter() {
 async function decrementHealthFilter() {
     //access the backend and decrement
     //if the value is set at 0 already, then we do not need to increment it no more
+    await fetch('http://localhost:49200/api/NewsDecrementController', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
     console.log("DECREMENTED");
 }
 

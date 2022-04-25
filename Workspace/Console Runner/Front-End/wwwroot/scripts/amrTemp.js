@@ -1,13 +1,22 @@
 ﻿console.log("TOP OF FILE");
 
-function sendAmrData(e) {
+async function sendAmrData(e) {
     e.preventDefault();
     console.log('Sending AMR Info');
+
     var gender = document.getElementById('gender').value;
     var weight = document.getElementById('weight').value;
     var height = document.getElementById('height').value;
     var age = document.getElementById('age').value;
     var activity = document.getElementById('activity').value;
+
+    /**
+    let gender = document.getElementById('gender').value;
+    let weight = document.getElementById('weight').value;
+    let height = document.getElementById('height').value;
+    let age = document.getElementById('age').value;
+    let activity = document.getElementById('activity').value;
+    **/
 
     const formData = new FormData();
     formData.append('gender', gender);
@@ -22,8 +31,8 @@ function sendAmrData(e) {
     console.log(age);
     console.log(activity);
 
-
-    /**await fetch('http://localhost:49202/api/AddAMR', {
+    /**
+    await fetch('http://localhost:49202/api/AddAMR', {
         method: 'POST',
         body: formData,
     }).then(function (response) {

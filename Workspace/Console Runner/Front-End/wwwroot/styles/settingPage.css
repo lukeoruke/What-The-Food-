@@ -65,6 +65,7 @@
     height: 200px;
     width: 450px;
     background-color: pink;
+    overflow: auto;
 }
 
 .circle {

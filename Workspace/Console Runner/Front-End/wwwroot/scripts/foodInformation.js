@@ -1,4 +1,4 @@
-function populateFoodInfo() {
+﻿function populateFoodInfo() {
     var jsonData = localStorage.getItem('foodInfo');
     console.log(jsonData);
     const jsonConst = JSON.parse(jsonData);
@@ -6,7 +6,8 @@ function populateFoodInfo() {
     console.log(jsonConst.ProductName);
     var foodInfo = "";
     for (data in jsonConst) {
-        foodInfo += data + ": " + jsonConst[data] + "\n";
+        if (data != 'IngredientAlternateName' || data != 'IngredientDescription')
+            foodInfo += data + ": " + jsonConst[data] + "\n";
     }
     document.getElementById("info").innerText = foodInfo;
     document.getElementById("foodName").innerText = jsonConst.ProductName;

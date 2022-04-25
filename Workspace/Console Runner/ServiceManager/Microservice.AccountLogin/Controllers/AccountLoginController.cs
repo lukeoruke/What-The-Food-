@@ -7,9 +7,14 @@ namespace Microservice.AccountLogin.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[EnableCors("MyAllowSpecificOrigins")] fts
+
+
     public class AccountLoginController : ControllerBase
     {
+        /// <summary>
+        /// Establish Connection To Interfaces that all have access to database
+        /// </summary>
+
         static IAccountGateway accountGateway = new EFAccountGateway();
         static IPermissionGateway efPermissionGateway = new EFPermissionGateway();
         static PermissionService permService = new PermissionService(efPermissionGateway);
@@ -17,29 +22,29 @@ namespace Microservice.AccountLogin.Controllers
         static Logging logger = new Logging(logAccess);
         static UM um = new(accountGateway, permService, logger);
 
+        /// <summary>
+        /// HTTP Get Request for Account Login Microservice
+        /// </summary>
         [HttpGet]
-        //place methods here
         public async Task<ActionResult<AccountLogin>> Get()
         {
             var user = new AccountLogin();
-            Console.WriteLine("asdkfhjaweklfhjasdfhlafhlakfha2");
             user.email = "something@testEmail.com";
             return Ok(user);
         }
-
+        /// <summary>
+        /// HTTP Post Request for Account Login Microservice
+        /// </summary>
         [HttpPost]
         public void Post()
         {
-            Console.WriteLine("SUCCESSS!!!");
             Console.WriteLine("Received Post from LoginController");
             //Console.WriteLine(Request.Form("username"));
 
             IFormCollection formData = Request.Form;
 
-            Console.WriteLine(formData["email"]);
-            Console.WriteLine(formData["password"]);
-
-
+            //Console.WriteLine(formData["email"]);
+            //Console.WriteLine(formData["password"]);
 
             try
             {
@@ -58,5 +63,6 @@ namespace Microservice.AccountLogin.Controllers
                 Console.WriteLine(e.ToString());
             }
         }
+
     }
 }

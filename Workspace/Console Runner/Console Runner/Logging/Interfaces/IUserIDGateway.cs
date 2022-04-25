@@ -15,11 +15,18 @@ namespace Console_Runner.Logging
         /// <returns>The string representation of the hashed user ID if it is on the database, null otherwise.</returns>
         public Task<string?> GetUserHashAsync(string idToGet, CancellationToken cancellationToken = default);
         /// <summary>
+        /// Gets the UserIdentifier associated with the given user ID.
+        /// </summary>
+        /// <param name="idToGet">The identifier to get.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>The UserIdentifier associated with the given user ID if it is on the database, null otherwise.</returns>
+        public Task<UserIdentifier?> GetUserIdentifierAsync(string idToGet, CancellationToken cancellationToken = default);
+        /// <summary>
         /// Adds the given user ID to the database and generates its corresponding hash, if it does not already exist, and returns the corresponding hash.
         /// </summary>
         /// <param name="idToAdd">The user ID to add to the database</param>
         /// <returns>The hash corresponding to the user ID to add.</returns>
-        public Task<string> AddUserIdAsync(string idToAdd, CancellationToken cancellationToken = default);
+        public Task<UserIdentifier> AddUserIdAsync(string idToAdd, CancellationToken cancellationToken = default);
         /// <summary>
         /// Removes the given user ID and its corresponding hash from the database, if it exists on the database.
         /// </summary>

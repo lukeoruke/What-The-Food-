@@ -8,11 +8,12 @@
 
 </head>
 
-<body onload="AddFlagCheckBoxes()">
+
+<body onload="addFlagCheckBoxes()">
 
 
     <div class="main">
-        <img class="logo" src="images/apple.png" alt="What The Food?!">
+        <a href="index.html"><img src="images/apple.png" alt="What The Food?!" width="200" height="200"></a>
         <header class="header">
             <section class="section">
                 <label>Search:</label>
@@ -23,8 +24,8 @@
                     <label id="submitSearch"></label>
 
                 </label>
-                <form class="form" onsubmit="searchIngs(event); ">
-                    <input class="input" type="submit" value="search" />
+                <form id="searchType" class="form" onsubmit="searchButtonPressed(event); ">
+                    <input id="searchTypeLabel" class="input" type="submit" value="search" />
                 </form>
             </section>
             <div id="container"></div>
@@ -33,14 +34,17 @@
         </header>
 
     </div>
-    <form class="form" onsubmit="sendFlagUpdate(event); ">
-        <input class="input" type="submit" value="Update Flags" />
+    <form class="form" id="updateFlags" onsubmit="updateFlagsButtonPressed(event); ">
+        <input id="updateFlagsLabel" class="input" type="submit" value="Add Flags" />
     </form>
     <form class="form" onsubmit="loadnextPage(event); ">
         <input class="input" type="submit" value="Next Page" />
     </form>
     <form class="form" onsubmit="loadPreviousPage(event); ">
         <input class="input" type="submit" value="Previous Page" />
+    </form>
+    <form class="form" id="viewFlags" onsubmit="getUserFlagButtonPressed(event); ">
+        <input id="viewFlagsLabel" class="input" type="submit" value="Manage Existing Flags" />
     </form>
 </body>
 </html>

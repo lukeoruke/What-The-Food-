@@ -1,14 +1,14 @@
-﻿
+﻿using Console_Runner.Logging;
 
 namespace Console_Runner.AccountService
 {
 
     public interface IAMRGateway
     {
-        public Task<bool> AMRExistsAsync(int userID);
-        public Task<AMR?> GetAMRAsync(int userID);
-        public Task<bool> AddAMRAsync(AMR amrToAdd);
-        public Task<bool> RemoveAMRAsync(AMR amrToRemove);
-        public Task<bool> UpdateAMRAsync(AMR amrToUpdate);
+        public Task<bool> AMRExistsAsync(int userID, LogService? logService = null);
+        public Task<AMR?> GetAMRAsync(int userID, LogService? logService = null);
+        public Task<bool> AddAMRAsync(AMR amrToAdd, LogService? logService = null);
+        public Task<bool> RemoveAMRAsync(AMR amrToRemove, LogService? logService = null);
+        public Task<bool> UpdateAMRAsync(AMR amrToUpdate, LogService? logService = null);
     }
 }

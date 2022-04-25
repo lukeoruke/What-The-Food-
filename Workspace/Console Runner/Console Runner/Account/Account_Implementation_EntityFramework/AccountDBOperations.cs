@@ -1,7 +1,7 @@
-﻿
-
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
+
+using Console_Runner.Logging;
 
 namespace Console_Runner.AccountService
 {
@@ -17,14 +17,26 @@ namespace Console_Runner.AccountService
             this._permissionService = permissionService;
             this._flagService = flagGateway;
         }
-
-        public string ComputeHash(byte[] bytesToHash, byte[] salt)
+        
+        /// <summary>
+        /// Computes the hash from provided information
+        /// </summary>
+        /// <param name="bytesToHash"></param>
+        /// <param name="salt"></param>
+        /// <param name="logService"></param>
+        /// <returns>a string representing the computed hash</returns>
+        private string ComputeHash(byte[] bytesToHash, byte[] salt, LogService? logService = null)
         {
             var byteResult = new Rfc2898DeriveBytes(bytesToHash, salt, 10000);
             return Convert.ToBase64String(byteResult.GetBytes(24));
         }
 
-        public string GenerateSalt()
+        /// <summary>
+        /// Generates a Salt using a cryptographic random number generator 
+        /// </summary>
+        /// <param name="logService"></param>
+        /// <returns></returns>
+        private string GenerateSalt(LogService? logService = null)
         {
             var bytes = new byte[128 / 8];
             var rng = new RNGCryptoServiceProvider();
@@ -32,7 +44,13 @@ namespace Console_Runner.AccountService
             return Convert.ToBase64String(bytes);
         }
 
-        public async Task<bool> UserSignUpAsync(Account acc)
+        /// <summary>
+        /// Takes in user information and persists that data to allow for future logins
+        /// </summary>
+        /// <param name="acc"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if login successful, false otherwise</returns>
+        public async Task<bool> UserSignUpAsync(Account acc, LogService? logService = null)
         {
             try
             {
@@ -44,108 +62,160 @@ namespace Console_Runner.AccountService
 
                 //Need to validate users dont have duplicate Emails.
                 acc.IsActive = false;
-                await _accountAccess.AddAccountAsync(acc);
-                await _permissionService.AssignDefaultUserPermissions(acc.UserID);
-                
-                
-                //_logger.LogAccountCreation(UM_CATEGORY, "Signup page", true, "", acc.Email);
-                Console.WriteLine("UM operation was successful");
+                await _accountAccess.AddAccountAsync(acc, logService);
+                await _permissionService.AssignDefaultUserPermissions(acc.UserID, logService);
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                                                       $"User {acc.Email} successfully signed up.");
+                }
                 return true;
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
-                //_logger.LogAccountCreation(UM_CATEGORY, "test page", false, ex.Message, acc.Email);
-                return false;
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                       $"User {acc.Email} could not be signed up. Unknown error: {ex.Message}");
+                }
+                throw;
             }
 
         }
 
-        /*
-		 * Delets a user corosponding to the email provided as arg
-		 * Takes in currentUser to validate user calling method has permission to do so
-		 */
-        public async Task<bool> UserDeleteAsync(Account currentUser, int userID)
+            /// <summary>
+            /// Deletes a user from the DB
+            /// </summary>
+            /// <param name="currentUser"></param>
+            /// <param name="userID"></param>
+            /// <param name="logService"></param>
+            /// <returns>true if successful false otherwise</returns>
+            /// <exception cref="InvalidOperationException"></exception>
+            /// <exception cref="UserNotAuthorizedException"></exception>
+        public async Task<bool> UserDeleteAsync(Account currentUser, int userID, LogService? logService = null)
         {
             try
             {
-                if (! await _accountAccess.AccountExistsAsync(userID))
+                // cancel if the account to delete does not exist
+                if (! await _accountAccess.AccountExistsAsync(userID, logService))
                 {
-                    //Account didnt exist and therefore can not be deleted
-                    Console.WriteLine("Account didnt exist and therefore can not be deleted");
-                    throw new Exception("Acount doesnt exist error");
-                    return false;
+                    if (logService?.UserID != null)
+                    {
+                        _ = logService.LogWithSetUserAsync(LogLevel.Error, Category.Business, DateTime.Now,
+                                                           $"User {userID} could not be deleted. Account does not exist.");
+                    }
+                    throw new InvalidOperationException("Account to be deleted does not exist.");
                 }
-                
-
-                Account? acc = await _accountAccess.GetAccountAsync(userID);
-
-                if (!await _permissionService.HasPermissionAsync(currentUser.UserID, "createAdmin"))
+                Account? acc = await _accountAccess.GetAccountAsync(userID, logService);
+                // cancel if the current user does not have permission to delete this account
+                if (!await _permissionService.HasPermissionAsync(currentUser.UserID, "createAdmin", logService))
                 {
-             
-                    throw new Exception("Insufficient permissions");
-                    
+                    if (logService?.UserID != null)
+                    {
+                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                           $"User {userID} could not be deleted. User {currentUser.UserID} does not have authorization to delete.");
+                    }
+                    throw new UserNotAuthorizedException("User has insufficient permission.");
                 }
-                if(currentUser.UserID == userID &&  (_permissionService.AdminCount() == 1))
+                // cancel if this results in no admins
+                if(currentUser.UserID == userID &&  (_permissionService.AdminCount(logService) == 1))
                 {
-                    throw new Exception("This will result in no admins and can not be completed");
+                    if (logService?.UserID != null)
+                    {
+                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                           $"User {userID} could not be deleted. Deletion will result in no admins remaining.");
+                    }
+                    throw new InvalidOperationException("This operation will result in no admins and can not be completed.");
                 }
-                _permissionService.RemoveAllUserPermissions(acc.UserID);
-                await _accountAccess.RemoveAccountAsync(acc);
+                // checks done, proceed with deletion
+                _permissionService.RemoveAllUserPermissions(acc.UserID, logService);
+                await _accountAccess.RemoveAccountAsync(acc, logService);
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                                                       $"Deleted user {userID}.");
+                }
                 return true;
             }
             catch (Exception ex)
             {
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                                                       $"User {userID} could not be deleted. Unknown error: {ex.Message}");
+                }
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Retrieve an Account object from the database.
+        /// </summary>
+        /// <param name="UserID">UserID  to retrieve</param>
+        /// <returns>Account object with the provided AccountID assuming it exists, otherwise null if the account does not exist.</returns>
+        public async Task<Account?> GetUserAccountAsync(int userID, LogService? logService = null)
+        {
+            try
+            {
+                Account? toReturn = await _accountAccess.GetAccountAsync(userID, logService);
+                if (logService?.UserID != null)
+                {
+                    if (toReturn != null)
+                    {
+                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                            $"Retrieved user {userID} from the database.");
+                    }
+                    else
+                    {
+                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                            $"Could not retrieve user {userID} from the database. User does not exist.");
+                    }
+                }
+                return toReturn;
+            }
+            catch (Exception ex)
+            {
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Error, Category.Business, DateTime.Now,
+                                                       $"Could not retrieve user {userID}. Unknown error: {ex.Message}");
+                }
                 throw new Exception("Unknown error");
-
             }
         }
 
-        //will return an account object from the DB given a PK from the argument field
-        public async Task<Account> GetUserAccountAsync(int userID)
-        {
-            try
-            {
-
-                if (await _accountAccess.AccountExistsAsync(userID))
-                {
-                    return await _accountAccess.GetAccountAsync(userID);
-                }
-                else
-                {
-                    Console.WriteLine("User with userID " + userID + " does not exist"); 
-                    return null;
-                }
-            }
-            catch (Exception ex)
-            {
-                //_logger.LogGeneric(UM_CATEGORY, "test page", false, ex.Message, targetPK, "Failed to read.");
-                Console.WriteLine("An error occured when requesting the user account from the database.");
-                return null;
-            }
-        }
-
-        //will update a user's data from a given PK in the argument, fields being changed are given in the argument line as well, null input means no change
-        public async Task<bool> UserUpdateDataAsync(Account currentUser, int userID, string nFname, string nLname, string npassword)
+        /// <summary>
+        /// Update an Account object in the database. Modify the account object, then pass it into this method. The corresponding object in the database will be updated accordingly.
+        /// </summary>
+        /// <param name="acc">The Account object with modified parameters</param>
+        /// <returns>True if the operation was successful, false otherwise.</returns>
+        public async Task<bool> UserUpdateDataAsync(Account currentUser, int userID, string nFname, string nLname, string npassword, LogService? logService = null)
         {
             bool fNameChanged = false, lNameChanged = false, passwordChanged = false;
             string fTemp = "", lTemp = "", pTemp = "";
             if (currentUser.UserID != userID)
             {
-                if ((! await _permissionService.HasPermissionAsync(currentUser.UserID, "editOtherAccount")) || (!currentUser.IsActive))
+                if ((! await _permissionService.HasPermissionAsync(currentUser.UserID, "editOtherAccount", logService)) || (!currentUser.IsActive))
                 {
-                    Console.WriteLine("CurrentUser " + currentUser.UserID + " does not have permissions to edit account " + userID);
-                    //_logger.LogGeneric(UM_CATEGORY, "test page", false, "ADMIN ACCESS NEEDED", currentUser.Email, "ADMIN ACCESS NEEDED TO UPDATE USER DATA");
-                    return false;
+                    if (logService?.UserID != null)
+                    {
+                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                           $"User {userID} could not be updated. User {currentUser.UserID} does not have authorization to update.");
+                    }
+                    throw new UserNotAuthorizedException($"User {currentUser.UserID} not authorized to update user {userID}");
                 }
             }
             try
             {
-                Account? acc = await _accountAccess.GetAccountAsync(userID);
+                Account? acc = await _accountAccess.GetAccountAsync(userID, logService);
                 if (acc == null)
                 {
-                    Console.WriteLine("NULL ACCOUNT FOUND");
-                    return false;
+                    if (logService?.UserID != null)
+                    {
+                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                           $"User {userID} could not be updated. User does not exist.");
+                    }
+                    throw new ArgumentException($"User {userID} does not exist");
                 }
                 if (nFname != "")
                 {
@@ -165,258 +235,456 @@ namespace Console_Runner.AccountService
                     acc.Password = npassword;
                     passwordChanged = true;
                 }
-
+                acc.IsActive = false;
                 await _accountAccess.UpdateAccountAsync(acc);
 
-                if (fNameChanged)
+                /*if (fNameChanged)
                     //_logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, fTemp, nFname);
                 if (lNameChanged)
                    // _logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, lTemp, nLname);
                 if (passwordChanged)
-                   // _logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, pTemp, npassword);
-
-                acc.IsActive = false;
-                Console.WriteLine("UM operation was successful");
+                   // _logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, pTemp, npassword);*/
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                                                       $"User {userID} successfully updated.");
+                }
                 return true;
             }
             catch (Exception ex)
             {
-                // _logger.LogGeneric(UM_CATEGORY, "test page", false, ex.Message, targetPK, "Could not change user info");
-                Console.WriteLine("A failure occured when attempting to update the users(" + userID + ")");
-                return false;
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                                                       $"User {userID} could not be updated. Unknown error: {ex.Message}");
+                }
+                throw;
             }
         }
 
 
-        //authenticates a users input password for login. True if pass matches, false otherwise
-        public async Task<bool> AuthenticateUserPassAsync(string email, string userPass)
+        /// <summary>
+        /// Takes in a users information and validates their credentials 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="userPass"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if the password matches false if it does not</returns>
+        public async Task<bool> AuthenticateUserPassAsync(string email, string userPass, LogService? logService = null)
         {
-            int userID = await _accountAccess.GetIDFromEmail(email);
+            int userID = await _accountAccess.GetIDFromEmailIdAsync(email, logService);
             if (userID == -1)
             {
-                throw new Exception("no account exists");//REMOVE LATER BECAUSE OF SECURITY CONCERN
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                       $"Authentication for email address {email} failed. Email address does not exist.");
+                }
+                return false;
             }
-            string salt = _accountAccess.getSalt(userID);
+            string salt = _accountAccess.getSalt(userID, logService);
             byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
             byte[] passBytes = Encoding.ASCII.GetBytes(userPass);
             string hashedPass = ComputeHash(saltBytes, passBytes);
-            Account acc = await GetUserAccountAsync(userID);
-
-            return (acc != null && acc.Password == hashedPass);
+            Account? acc = await GetUserAccountAsync(userID);
+            bool toReturn = (acc != null && acc.Password == hashedPass);
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                                                   toReturn ? $"Authentication successful for email address {email}." :
+                                                   $"Authentication for email address {email} failed. Password does not match.");
+            }
+            return toReturn;
         }
-        //takes in username and password. If valid returns an account object for the user with specified data.
-        public async Task<Account> SignInAsync(string email, string userPass)
+
+        /// <summary>
+        /// Takes the users information to log them into the website
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="userPass"></param>
+        /// <param name="logService"></param>
+        /// <returns>an instance of the users account object if the operation was successful, null otherwise</returns>
+        public async Task<Account> SignInAsync(string email, string userPass, LogService? logService = null)
         {
             
             if (await AuthenticateUserPassAsync(email, userPass))
             {
-                //  _logger.LogLogin(UM_CATEGORY, "test page", true, "", user);
-                int ID = await _accountAccess.GetIDFromEmail(email);
+                int ID = await _accountAccess.GetIDFromEmailIdAsync(email, logService);
                 Account acc = await GetUserAccountAsync(ID);
                 acc.IsActive = true;
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.Business, DateTime.Now,
+                                                       $"User {acc.UserID} successfully signed in.");
+                }
                 return acc;
             }
             else
             {
-                //_logger.LogLogin(UM_CATEGORY, "test page", false, "Invalid Password", user);
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.Business, DateTime.Now,
+                                                       $"User failed to sign in. Authentication failed.");
+                }
                 return null;
             }
         }
 
-        /*
-		 * Disables the account with email of targetPK if exists
-		 * currentUser is taken in to validate the user calling this has permission to do so
-		 */
-        public async Task<bool> DisableAccountAsync(Account currentUser, int userID)
+        /// <summary>
+        /// Disables the account with userID of targetPK if exists
+        /// </summary>
+        /// <param name="currentUser"></param>
+        /// <param name="userID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if the operation was successful, false otherwise</returns>
+        /// <exception cref="UserNotAuthorizedException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        public async Task<bool> DisableAccountAsync(Account currentUser, int userID, LogService? logService = null)
         {
-            if (! await _permissionService.HasPermissionAsync(currentUser.UserID, "disableAccount") || !currentUser.IsActive)
+            // cancel if acting user does not have permission to disable
+            if (! await _permissionService.HasPermissionAsync(currentUser.UserID, "disableAccount", logService) || !currentUser.IsActive)
             {
-                //_logger.LogAccountDeactivation(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
-                throw new Exception("The account does not have required permissions to disable another account");
-                //return false;
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                       $"User {userID} could not be disabled. User {currentUser.UserID} does not have authorization to disable.");
+                }
+                throw new UserNotAuthorizedException("The account does not have required permissions to disable another account");
             }
-            if (! await _accountAccess.AccountExistsAsync(userID))
+            // cancel if target user does not exist
+            if (! await _accountAccess.AccountExistsAsync(userID, logService))
             {
-                throw new Exception("The account being requested for deletion does not exist");
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                       $"User {userID} could not be disabled. User {userID} does not exist.");
+                }
+                throw new ArgumentException("The account being requested for deletion does not exist");
             }
             try
             {
-                Account? acc = await _accountAccess.GetAccountAsync(userID);
-
-                if (_permissionService.IsAdmin(currentUser.UserID) && (_permissionService.AdminCount() > 1))
+                Account? acc = await _accountAccess.GetAccountAsync(userID, logService);
+                if (_permissionService.IsAdmin(currentUser.UserID, logService) && (_permissionService.AdminCount(logService) > 1))
                 {
-                    throw new Exception("Disabling this account would result in there being no admins.");
-                    //Console.WriteLine("Disabling this account would result in there being no admins.");
-                    //return false;
+                    if (logService?.UserID != null)
+                    {
+                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                           $"User {userID} could not be disabled. Disabling this user will result in no active admins.");
+                    }
+                    throw new ArgumentException("Disabling this account would result in there being no admins.");
                 }
                 acc.Enabled = false;
                 acc.IsActive = false;
-                await _accountAccess.UpdateAccountAsync(acc);
-                //_logger.LogAccountDeactivation(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
-
-
-                Console.WriteLine("UM operation was successful");
+                await _accountAccess.UpdateAccountAsync(acc, logService);
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                       $"User {userID} successfully disabled.");
+                }
                 return true;
             }
             catch (Exception ex)
             {
-               // _logger.LogAccountDeactivation(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, "No Target");
-
-                return false;
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                       $"User {userID} could not be disabled. Unknown error: {ex.Message}");
+                }
+                throw;
             }
         }
-        /*
-		 * Enables the targeted account. 
-		 * currentUser is used to validate that the person calling this method has permission to do so.
-		 * targetPK is the email of the user whos account is being activated
-		 */
-        public async Task<bool> EnableAccountAsync(Account currentUser, int userID)
+        /// <summary>
+        /// enables the target users account
+        /// </summary>
+        /// <param name="currentUser"></param>
+        /// <param name="userID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if successful</returns>
+        public async Task<bool> EnableAccountAsync(Account currentUser, int userID, LogService? logService = null)
         {
-            if (! await _permissionService.HasPermissionAsync(currentUser.UserID, "enableAccount") || !currentUser.IsActive)
+            // cancel if acting user does not have permission
+            if (! await _permissionService.HasPermissionAsync(currentUser.UserID, "enableAccount", logService) || !currentUser.IsActive)
             {
-                //_logger.LogAccountEnabling(UM_CATEGORY, "Console", false, "ADMIN ACCESS NEEDED", currentUser.Email, "No Target");
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                       $"User {userID} could not be enabled. User {userID} does not exist.");
+                }
                 return false;
             }
             try
             {
-                if (! await _accountAccess.AccountExistsAsync(userID))
+                if (! await _accountAccess.AccountExistsAsync(userID, logService))
                 {
+                    if (logService?.UserID != null)
+                    {
+                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                           $"User {userID} could not be enabled. User {currentUser.UserID} does not have authorization to enable.");
+                    }
                     return false;
                 }
-                Account? acc = await _accountAccess.GetAccountAsync(userID);
-
+                Account? acc = await _accountAccess.GetAccountAsync(userID, logService);
                 acc.Enabled = true;
-                await _accountAccess.UpdateAccountAsync(acc);
-                //_logger.LogAccountEnabling(UM_CATEGORY, "Console", true, "", currentUser.Email, targetPK);
-
-
-                Console.WriteLine("UM operation was successful");
+                await _accountAccess.UpdateAccountAsync(acc, logService);
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                       $"User {userID} successfully enabled.");
+                }
                 return true;
             }
             catch (Exception ex)
             {
-                //_logger.LogAccountEnabling(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, "No Target");
-                return false;
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Error, Category.Business, DateTime.Now,
+                                                       $"User {userID} could not be enabled. Unknown error: {ex.Message}");
+                }
+                throw;
             }
         }
 
-        public async Task<bool> AccountExistsAsync(int userID)
+        /// <summary>
+        /// Checks if an account exists based on userID
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if the user exists false if they do not</returns>
+        public async Task<bool> AccountExistsAsync(int userID, LogService? logService = null)
         {
-            return await _accountAccess.AccountExistsAsync(userID);
+            bool toReturn = await _accountAccess.AccountExistsAsync(userID, logService);
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                                                   $"Checked whether {userID} exists ({toReturn})");
+            }
+            return toReturn;
         }
 
-
-        /*promotes the target user to admin
-		 * takes in currentUser to verify the current session is being handled by an admin
-		 * targetPK is the email(primary key) of the user being targeted
-		 */
-
-        public async Task<bool> PromoteToAdmin(Account currentUser, int userID)
+        /// <summary>
+        /// Promotes a user to admin
+        /// </summary>
+        /// <param name="currentUser">The user attempting to do the operation</param>
+        /// <param name="userID">the targeted user</param>
+        /// <param name="logService"></param>
+        /// <returns>true if successful false otherwise</returns>
+        /// <exception cref="ArgumentException"></exception>
+        public async Task<bool> PromoteToAdmin(Account currentUser, int userID, LogService? logService = null)
         {
             try
             {
-                if (await _permissionService.HasPermissionAsync(currentUser.UserID, "createAdmin") && currentUser.IsActive)
+                if (await _permissionService.HasPermissionAsync(currentUser.UserID, "createAdmin", logService) && currentUser.IsActive)
                 {
-                    Account? acc = await _accountAccess.GetAccountAsync(userID);
+                    Account? acc = await _accountAccess.GetAccountAsync(userID, logService);
                     if (acc == null)
                     {
-                        Console.WriteLine("No such account exists");
-                        throw new Exception("The requested account does not exist");
+                        if (logService?.UserID != null)
+                        {
+                            _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                               $"User {userID} could not be promoted to admin. User {userID} does not exist.");
+                        }
+                        throw new ArgumentException("The requested account does not exist");
                         //return false;
                     }
-                    
-                    await _permissionService.AssignDefaultAdminPermissions(acc.UserID);
-                    await _accountAccess.UpdateAccountAsync(acc);
+                    await _permissionService.AssignDefaultAdminPermissions(acc.UserID, logService);
+                    await _accountAccess.UpdateAccountAsync(acc, logService);
+                    if (logService?.UserID != null)
+                    {
+                        _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.Business, DateTime.Now,
+                                                           $"User {userID} successfully promoted to admin.");
+                    }
                     return true;
                 }
-                //_logger.LogAccountPromote(UM_CATEGORY, "Console", false, "User is not admin and/or target account is not active", currentUser.Email, targetPK);
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                       $"User {userID} could not be promoted to admin. User {currentUser.UserID} does not have authorization to enable.");
+                }
                 return false;
             }
             catch (Exception ex)
             {
-                // _logger.LogAccountPromote(UM_CATEGORY, "Console", false, ex.Message, currentUser.Email, targetPK);
-                throw new Exception("An unexpected failure occured in the Promote to admin method");
-                //return false;
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                       $"User {userID} could not be enabled. Unknown error: {ex.Message}");
+                }
+                throw;
             }
         }
-        public async Task<bool> addPermissionAsync(Account currentUser, int userID, string PermissionToBeAdded)
+        /// <summary>
+        /// Adds a permission to the specified user
+        /// </summary>
+        /// <param name="currentUser">The user preforming this operation</param>
+        /// <param name="userID">Target user of this operation</param>
+        /// <param name="PermissionToBeAdded"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if successful false otherwise</returns>
+        public async Task<bool> addPermissionAsync(Account currentUser, int userID, string PermissionToBeAdded, LogService? logService = null)
         {
             if(IsAdmin(currentUser.UserID))
             {
-                if(await HasPermissionAsync(currentUser.UserID, PermissionToBeAdded))
+                if(await HasPermissionAsync(currentUser.UserID, PermissionToBeAdded, logService))
                 {
                     Authorization newPerm = new(PermissionToBeAdded);
                     newPerm.UserID = userID;
-                    await _permissionService.AddPermissionAsync(newPerm);
+                    await _permissionService.AddPermissionAsync(newPerm, logService);
+                    if (logService?.UserID != null)
+                    {
+                        _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                                                           $"Successfully added permission for user {userID} and resource {PermissionToBeAdded}.");
+                    }
                     return true;
-
                 }
                 else
                 {
-                    Console.WriteLine("Can not add a permission that the admin account does not have");
+                    if (logService?.UserID != null)
+                    {
+                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                           $"Cannot add permission for user {userID} and resource {PermissionToBeAdded}. " +
+                                                           $"User {currentUser.UserID} does not have the permission to be granted.");
+                    }
                 }
             }
             else
             {
-                Console.WriteLine("Requries Admin Access");
+                if (logService?.UserID != null)
+                {
+                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                       $"Cannot add permission for user {userID} and resource {PermissionToBeAdded}. " +
+                                                       $"User {currentUser.UserID} is not authorized to grant permissions.");
+                }
             }
 
             return false;
         }
         
-        public async Task<bool> HasPermissionAsync(int userID, string permission)
+        /// <summary>
+        /// Checks if a user has a specific permission
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="permission"></param>
+        /// <param name="logService"></param>
+        /// <returns>True if they do false if they do not</returns>
+        public async Task<bool> HasPermissionAsync(int userID, string permission, LogService? logService = null)
         {
-            return await _permissionService.HasPermissionAsync(userID, permission);
+            bool toReturn = await _permissionService.HasPermissionAsync(userID, permission, logService);
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                                                   $"Checked if user {userID} has permission for resource {permission} ({toReturn}).");
+            }
+            return toReturn;
         }
 
-        public bool IsAdmin(int userID)
+        /// <summary>
+        /// Checks if an account has admin access
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if the user is an admin false if they are not</returns>
+        public bool IsAdmin(int userID, LogService? logService = null)
         {
-            return _permissionService.IsAdmin(userID);
+            bool toReturn = _permissionService.IsAdmin(userID, logService);
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                                                   $"Checked if user {userID} is admin ({toReturn}).");
+            }
+            return toReturn;
         }
 
-        public async Task<bool> AddFlagToAccountAsync(int userID, int IngredientID)
+        /// <summary>
+        /// Adds a Food Flag to the users account
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="IngredientID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if the opperation is successful, false otherwise</returns>
+        public async Task<bool> AddFlagToAccountAsync(int userID, int IngredientID, LogService? logService = null)
         {
             FoodFlag foodFlag = new(userID, IngredientID);
-            return await _flagService.AddFlagAsync(foodFlag);
+            bool toReturn = await _flagService.AddFlagAsync(foodFlag, logService);
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                                                   $"Successfully created food flag between user {userID} and ingredient {IngredientID}.");
+            }
+            return toReturn;
         }
-
-        public async Task<bool> RemoveFoodFlagAsync(int userID, int IngredientID)
+        /// <summary>
+        /// Removes a food flag from a users account
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="IngredientID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if the opperation is successful, false otherwise</returns>
+        public async Task<bool> RemoveFoodFlagAsync(int userID, int IngredientID, LogService? logService = null)
         {
-            return await _flagService.RemoveFoodFlagAsync(userID, IngredientID);
+            bool toReturn = await _flagService.RemoveFoodFlagAsync(userID, IngredientID, logService);
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                                                   $"Successfully removed food flag between user {userID} and ingredient {IngredientID}.");
+            }
+            return toReturn;
         }
-
-        public async Task<bool> accountHasFlagAsync(int userID, int IngredientID)
+        /// <summary>
+        /// Checks if an account has a specific ingredient as a food flag
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="IngredientID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if the opperation is successful, false otherwise</returns>
+        public async Task<bool> accountHasFlagAsync(int userID, int IngredientID, LogService? logService = null)
         {
-            return await _flagService.AccountHasFlagAsync(userID, IngredientID);
+            bool toReturn = await _flagService.AccountHasFlagAsync(userID, IngredientID, logService);
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                                                   $"Checked for food flag between user {userID} and ingredient {IngredientID} ({toReturn}).");
+            }
+            return toReturn;
         }
-
-        public List<FoodFlag> GetAllAccountFlags(int userID)
+        /// <summary>
+        /// Gets N(take) flags that belong to the userID provided while skipping over first m(skip) results. 
+        /// </summary>
+        /// <param name="userID">The user whos ID's are being retrieved</param>
+        /// <param name="skip">The number of entries to skip before pulling</param>
+        /// <param name="take">The number of entries to return</param>
+        /// <returns>A list containing the food flags associated with the user</returns>
+        public async Task<List<FoodFlag>> GetNAccountFlagsAsync(int userID, int skip, int take, LogService? logService = null)
         {
-            return _flagService.GetAllAccountFlags(userID);
+            return await _flagService.GetNAccountFlagsAsync(userID, skip, take, logService);
         }
 
-    
 
-        /////////////////////////////////////////////////////////////////TODO THIS IS ON HOLD UNTIL SERVICE MANAGER IS COMPLETED.////////////////////////////////////////////////////////////////
-       
-        
-        
-        /*        public List<Ingredient> CheckProductForFlags(string barcode, string email)
-                {
-                    FoodItem? food = GetScannedFoodItem(barcode);
-                    if (food == null) return new List<Ingredient>();
-                    List<Ingredient> ingredientList = GetIngredientList(food.Barcode);
-                    List<Ingredient> flaggedItems = new List<Ingredient>();
-                    for (int i = 0; i < ingredientList.Count; i++)
-                    {
-                        if (_flagGateway.AccountHasFlag(email, ingredientList[i].IngredientID))
-                        {
-                            flaggedItems.Add(ingredientList[i]);
-                        }
-                    }
-                    return flaggedItems;
-                }*/
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userID">The user whos ID's are being retrieved</param>
+        /// <returns>A list of all flags associated with the users account</returns>
+        public async Task<List<FoodFlag>> GetAllAccountFlagsAsync(int userID, LogService? logService = null)
+        {
+            return await _flagService.GetAllAccountFlagsAsync(userID, logService);
+        }
 
 
+
+    }
+    public class UserNotAuthorizedException : Exception
+    {
+        public UserNotAuthorizedException()
+        {
+
+        }
+        public UserNotAuthorizedException(string message) : base(message)
+        {
+
+        }
+        public UserNotAuthorizedException(string message, Exception inner) : base(message, inner)
+        {
+
+        }
     }
 }

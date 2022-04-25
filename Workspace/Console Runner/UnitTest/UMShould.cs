@@ -28,7 +28,7 @@ namespace Test.UM
             Assert.True(acc.UserID == 0);
             Assert.True(await um.UserSignUpAsync(acc));
             
-            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmail(tester));
+            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmailIdAsync(tester));
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "scanFood"));
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "editOwnAccount"));
             Assert.True(await _permissionService.HasPermissionAsync(acc.UserID, "leaveReview"));
@@ -60,7 +60,7 @@ namespace Test.UM
             admin.FName = "fname";
             admin.LName = "lname";
             await um.UserSignUpAsync(admin);
-            admin = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmail(admin.Email));
+            admin = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmailIdAsync(admin.Email));
             admin.IsActive = true;
             Assert.True(await _permissionService.AssignDefaultAdminPermissions(admin.UserID));
 
@@ -73,7 +73,7 @@ namespace Test.UM
             acc.FName = "fname";
             acc.LName = "lname";
             await um.UserSignUpAsync(acc);
-            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmail(acc.Email));
+            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmailIdAsync(acc.Email));
             //Act
 
             //Assert
@@ -96,7 +96,7 @@ namespace Test.UM
             admin.LName = "lname";
             
             await um.UserSignUpAsync(admin);
-            admin = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmail(admin.Email));
+            admin = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmailIdAsync(admin.Email));
             await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
             admin.IsActive = true;
 
@@ -105,7 +105,7 @@ namespace Test.UM
             acc.Email = "updateUserSuccessEmail";
             acc.Password = "t";
             await um.UserSignUpAsync(acc);
-            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmail(acc.Email));
+            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmailIdAsync(acc.Email));
             string nName = "new name";
             string nlName = "new last name";
             string nPassword = "NewPassword";
@@ -129,7 +129,7 @@ namespace Test.UM
             admin.FName = "fname";
             admin.LName = "lname";
             await um.UserSignUpAsync(admin);
-            admin = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmail(admin.Email));
+            admin = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmailIdAsync(admin.Email));
             await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
 
 
@@ -140,7 +140,7 @@ namespace Test.UM
             acc.Password = "t";
             acc.Enabled = true;
             await um.UserSignUpAsync(acc);
-            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmail(acc.Email));
+            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmailIdAsync(acc.Email));
             Assert.True(acc.Enabled);
             //act
             Assert.True(await um.DisableAccountAsync(admin, acc.UserID));
@@ -163,7 +163,7 @@ namespace Test.UM
             admin.LName = "lname";
 
             Assert.True(await um.UserSignUpAsync(admin));
-            admin = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmail(admin.Email));
+            admin = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmailIdAsync(admin.Email));
             admin.IsActive = true;
             Assert.True(await _permissionService.AssignDefaultAdminPermissions(admin.UserID));
             Assert.True(admin.IsActive);
@@ -174,7 +174,7 @@ namespace Test.UM
             acc.FName = "fname";
             acc.LName = "lname";
             Assert.True(await um.UserSignUpAsync(acc));
-            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmail(acc.Email));
+            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmailIdAsync(acc.Email));
             acc.Enabled = false;
             Assert.True(acc.Enabled == false);
             //act
@@ -197,7 +197,7 @@ namespace Test.UM
             acc.Password = "t";
             acc.Enabled = false;
             await um.UserSignUpAsync(acc);
-            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmail(acc.Email));
+            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmailIdAsync(acc.Email));
             //act
             Account temp = await um.GetUserAccountAsync(acc.UserID);
 
@@ -214,7 +214,7 @@ namespace Test.UM
             acc.Email = "authenticatePasswordSuccess";
             acc.Password = "password!";
             await um.UserSignUpAsync(acc);
-            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmail(acc.Email));
+            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmailIdAsync(acc.Email));
 
             //Assert
             Assert.True(await um.AuthenticateUserPassAsync(acc.Email, "password!"));
@@ -230,7 +230,7 @@ namespace Test.UM
             acc.Email = "signInSuccess";
             acc.Password = "pass";
             await um.UserSignUpAsync(acc);
-            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmail(acc.Email));
+            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmailIdAsync(acc.Email));
             //act
             Assert.True(await um.SignInAsync(acc.Email, "pass") != null);
             //Assert
@@ -250,7 +250,7 @@ namespace Test.UM
 
             
             await um.UserSignUpAsync(admin);
-            admin = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmail(admin.Email));
+            admin = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmailIdAsync(admin.Email));
             await _permissionService.AssignDefaultAdminPermissions(admin.UserID);
             admin.IsActive = true;
 
@@ -260,7 +260,7 @@ namespace Test.UM
             acc.FName = "esfs";
             acc.LName = "asda";
             Assert.True(await um.UserSignUpAsync(acc));
-            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmail(acc.Email));
+            acc = await _accountAccess.GetAccountAsync(await _accountAccess.GetIDFromEmailIdAsync(acc.Email));
             
             //act
             Assert.True(await um.PromoteToAdmin(admin, acc.UserID));

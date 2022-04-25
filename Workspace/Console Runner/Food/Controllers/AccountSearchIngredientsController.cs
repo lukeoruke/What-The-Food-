@@ -1,7 +1,9 @@
-﻿using Console_Runner.AccountService;
-using Console_Runner.FoodService;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+
+using Console_Runner.FoodService;
+using Console_Runner.AccountService;
+using Console_Runner.Logging;
 
 namespace Food.Controllers
 {
@@ -17,21 +19,28 @@ namespace Food.Controllers
         public async Task<ActionResult<string>> GET()
         {
             FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway);
+            LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
+            // TODO: replace this string with the user email when we can get it
+            logger.UserID = "placeholder";
+            logger.DefaultTimeOut = 5000;
 
-            int skip = 0;
-            int take = 10;
             try
             {
-                string search = Request.QueryString.Value;
-                search = search.Substring(1);
+                string input = Request.QueryString.Value;
 
-                Console.WriteLine("GET " + search);
-                var allIngredientList = await _foodDBOperations.GetIngredientBySearchAsync(search, skip, take);
-                Console.WriteLine("Length of ing list(search function) = " + allIngredientList.Count());
+                string[] inputarr = input.Split('?');
+                string search = inputarr[1];
+
+                string page = inputarr[2];
+                int numberOfItemsDisplayedAtOnce = 2;
+
+                var allIngredientList = await _foodDBOperations.GetIngredientBySearchAsync(search, numberOfItemsDisplayedAtOnce * int.Parse(page)
+                    , numberOfItemsDisplayedAtOnce, logger);
+
                 string jsonStr = "{";
                 
                 jsonStr += FormatIngredientsJsonString(allIngredientList);
-                Console.WriteLine(jsonStr);
+
                 return jsonStr + "}";
             }
             catch (Exception ex)
@@ -43,29 +52,22 @@ namespace Food.Controllers
         public string FormatIngredientsJsonString(List<Ingredient> ingredientList)
         {
             string strNameList = "\"IngredientName\": [";
-            string strAltList = "\"IngredientAlternateName\": [";
-            string strDescList = "\"IngredientDescription\": [";
+
             string strIngIDList = "\"IngredientID\": [";
             for (int i = 0; i < ingredientList.Count; i++)
             {
-
                 strNameList += $"\"{ingredientList[i].IngredientName}\"";
-                strAltList += $"\"{ingredientList[i].AlternateName}\"";
-                strDescList += $"\"{ingredientList[i].IngredientDescription}\"";
                 strIngIDList += $"\"{ingredientList[i].IngredientID}\"";
 
                 if (i < ingredientList.Count - 1)
                 {
                     strNameList += ",";
-                    strAltList += ",";
-                    strDescList += ",";
+
                     strIngIDList += ",";
                 }
                 else if (i == ingredientList.Count - 1)
                 {
                     strNameList += "]";
-                    strAltList += "]";
-                    strDescList += "]";
                     strIngIDList += "]";
                 }
             }

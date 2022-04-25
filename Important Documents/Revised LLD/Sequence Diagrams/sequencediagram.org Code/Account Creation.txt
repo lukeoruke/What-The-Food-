@@ -1,0 +1,75 @@
+title UM Account Creation
+
+participant "Front-End" as fe
+participant "Service Broker" as sb
+participant "UserServiceController" as uc
+participant "UserManagement" as us
+participant "EntityFrameworkUserGateway" as udao
+participant "User Database (MariaDB)" as db
+participant "LoggingService" as ls
+participant "EntityFrameworkLogGateway" as ldao
+participant "Logs Database (MariaDB)" as ldb
+
+activate fe
+fe-->sb:HTTP GET account creation view
+activate sb
+sb-->fe:Send account creation view
+deactivate sb
+fe-->sb:HTTP POST new account information as JSON object
+activate sb
+sb-->uc:HTTP POST received JSON object
+# backend working here
+# instantiation/dependency injection first
+activate uc
+uc->udao: UserAccess = new EntityFrameworkUserGateway()
+activate udao
+udao->udao:ctor
+udao-->uc: EntityFrameworkUserGateway instance
+deactivate udao
+uc->us:UM = new UserManagement(UserAccess)
+activate us
+us->us:ctor
+us-->uc:UserManagement instance
+deactivate us
+# begin creating an account
+uc-->us:UM.CreateAccountAsync()
+activate us
+us-->udao:UserAccess.AddAccountAsync()
+activate udao
+udao-->db:INSERT INTO accounts \nVALUES (...)
+activate db
+db-->udao:1
+deactivate db
+udao-->us:true
+deactivate udao
+us-->uc:true
+deactivate us
+# account creation successful, begin logging process
+uc-->sb: HTTP Status Code 200
+deactivate uc
+sb->ldao:LogAccess = new EntityFrameworkLogGateway()
+activate ldao
+ldao->ldao:ctor
+ldao-->sb:EntityFrameworkLogGateway instance
+deactivate ldao
+sb->ls: LogService = new LoggingService(LogAccess)
+activate ls
+ls->ls:ctor
+ls->sb: LoggingService instance
+deactivate ls
+sb-->ls:LoggingService.LogAccountCreation("Info", "Account Creation", true, "Server", AccountID, "")
+activate ls
+ls->ls: ToLog = new Log("Info", "Account Creation", true, "Server", AccountID, "")
+ls-->ldao:EntityFrameworkLogGateway.WriteLog(ToLog)
+activate ldao
+ldao-->ldb:INSERT INTO logs\nVALUES (...)
+activate ldb
+ldb-->ldao:1
+deactivate ldb
+ldao-->ls:true
+deactivate ldao
+ls-->sb:true
+# logging complete, return success message to front-end
+deactivate ls
+sb-->fe: HTTP Status Code 200
+deactivate fe

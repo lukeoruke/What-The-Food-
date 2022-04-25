@@ -30,7 +30,7 @@ namespace Console_Runner.Logging
 
             builder.Entity<UserIdentifier>().HasKey(table => new
             {
-                table.UserId
+                table.UserHash
             });
         }
 

@@ -15,5 +15,21 @@
             _logsDB.Add(toLog);
             return true;
         }
+
+        public async Task<bool> WriteLogsAsync(List<Log> toSave, CancellationToken ct = default)
+        {
+            ct.ThrowIfCancellationRequested();
+            _logsDB.AddRange(toSave);
+            Thread.Sleep(100);
+            return true;
+        }
+
+        public void PrintAllLogs()
+        {
+            foreach (var log in _logsDB)
+            {
+                Console.WriteLine(log);
+            }
+        }
     }
 }

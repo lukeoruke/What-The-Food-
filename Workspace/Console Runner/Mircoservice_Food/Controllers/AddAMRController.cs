@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 
 using Console_Runner.Logging;
+using Microsoft.AspNetCore.Cors;
 
 namespace Mircoservice_Food.Controllers
 {
@@ -15,6 +16,8 @@ namespace Mircoservice_Food.Controllers
         private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
         private readonly IAMRGateway _amRGateway = new EFAMRGateway();
+
+        [EnableCors]
 
         [HttpPost]
         public async void Post()

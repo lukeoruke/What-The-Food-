@@ -2,6 +2,7 @@
 using Console_Runner.FoodService;
 using Console_Runner.Logging;
 using Microservice_Food;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Mircoservice_Food;
 using System.Text.Json;
@@ -30,6 +31,8 @@ namespace Food.Controllers
         /// HttpGet request for recieving a food product from a barcode
         /// </summary>
         /// <returns>a string formatted as a Json object</returns>
+        ///
+        [EnableCors]
         [HttpGet]
         public async Task<ActionResult<string>> GET()
         {

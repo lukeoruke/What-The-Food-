@@ -13,17 +13,17 @@ namespace Food.Controllers
         private NewsDBOperations _dbOperations;
         int userID = 0; //TODO: We need JWT Token
         [HttpPost]
-        public async Task<ActionResult<bool>> Get() //TODO: reserach
+        public async Task<ActionResult<bool>> Post() //TODO: reserach
         {
             try
             {
                 _dbOperations = new NewsDBOperations(efNews);
-                await _dbOperations.DecrementHealthNews(userID);
+                await _dbOperations.IncrementHealthNews(userID);
                 return true;
             }
             catch (Exception e)
             {
-                throw new Exception("ERROR: unable to call GET method in controller: " + e.Message);
+                throw new Exception("ERROR: unable to call POST method in Increment controller: " + e.Message);
 
             }
 

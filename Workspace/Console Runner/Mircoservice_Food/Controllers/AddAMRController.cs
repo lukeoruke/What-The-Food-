@@ -16,8 +16,8 @@ namespace Mircoservice_Food.Controllers
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
         private readonly IAMRGateway _amRGateway = new EFAMRGateway();
 
-        [HttpGet]
-        public async Task<ActionResult<string>> GET()
+        [HttpPost]
+        public async void Post()
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
@@ -26,7 +26,18 @@ namespace Mircoservice_Food.Controllers
             logger.DefaultTimeOut = 5000;
             int userId = 0;// NEED TO GET USER ID
             var AMR = _accountDBOperations.GetAMRAsync(userId, logger);
-            return JsonSerializer.Serialize(AMR);
+            JsonSerializer.Serialize(AMR);
+
+            IFormCollection formData = Request.Form;
+
+            Console.WriteLine(formData["gender"]);
+            Console.WriteLine(formData["weight"]);
+            Console.WriteLine(formData["age"]);
+            Console.WriteLine(formData["height"]);
+            Console.WriteLine(formData["activity"]);
+
+
+
 
         }
     }

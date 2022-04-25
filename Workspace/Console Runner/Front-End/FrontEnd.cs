@@ -1,4 +1,4 @@
-using Front_End;
+﻿using Front_End;
 
 public class FrontEnd
 {
@@ -40,7 +40,7 @@ public class FrontEnd
 
         app.MapFallbackToFile("index.html");
 
-        ServiceManager serviceManager = new ServiceManager();
+        //ServiceManager serviceManager = new ServiceManager();
 
         app.Run();
     }

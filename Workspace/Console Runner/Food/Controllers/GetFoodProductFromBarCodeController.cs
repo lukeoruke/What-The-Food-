@@ -109,6 +109,7 @@ namespace Food.Controllers
         /// </summary>
         /// <param name="ingredientList"></param>
         /// <returns></returns>
+        [NonAction]
         public string FormatIngredientsJsonString(List<Ingredient> ingredientList)
         {
             string strNameList = "\"IngredientName\": [";

@@ -53,6 +53,8 @@ namespace Food.Controllers
                 return "Something went wrong getting the ingredients from flag list";
             }
         }
+
+        [NonAction]
         public string FormatIngredientsJsonString(List<Ingredient> ingredientList)
         {
             string strNameList = "\"IngredientName\": [";

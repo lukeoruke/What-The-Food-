@@ -19,6 +19,9 @@ namespace Food.Executables
         private readonly string apiKey = "lpdKjKHTtT3zCxQebMkJgGkvxgWqmuD9OL2NqviF";
         private NutrientValues nutValues = new NutrientValues();
 
+        /// <summary>
+        /// Initilization of Class, formatting HttpClient obj
+        /// </summary>
         public ScanHelper()
         {
             client = new HttpClient();
@@ -27,49 +30,80 @@ namespace Food.Executables
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task<string> SearchAndAdd(string barcode)
+        /// <summary>
+        /// Takes in a barcode that doesn't exist within our database and Queries FDC,
+        /// returned values are then parsed and added to our DB
+        /// </summary>
+        /// <param name="barcode"></param>
+        /// <returns>A response whether the addition was successful or not.
+        ///          1: Success
+        ///          0: No items correspond to search
+        ///         -1: Error has occured               
+        /// </returns>
+        public async Task<int> SearchAndAdd(string barcode)
         {
-            FoodInfoJson queryResponse = await GET(barcode); //search barcode from FDC API
-
-            //new variable creation
-            FoodItem newFood;
-            NutritionLabel newLabel;
-            foreach(Food food in queryResponse.foods)   //for every response we get we parse and add to our DB
+            try
             {
-                //Reset reused varaibles
-                List<Nutrient> newNutrients = new List<Nutrient>();
-                nutValues.ClearValues();
+                FoodInfoJson queryResponse = await GET(barcode); //search barcode from FDC API
 
-                //make a new food object to be added to DB
-                newFood = new FoodItem(food.gtinUpc, food.subbrandName, food.brandName, "");
+                if (queryResponse.totalHits < 1)
+                {
+                    return 0;
+                }
+                
+                //new variable creation
+                FoodItem newFood;
+                NutritionLabel newLabel;
+                foreach (Food food in queryResponse.foods)   //for every response we get we parse and add to our DB
+                {
+                    //Reset reused varaibles
+                    List<Nutrient> newNutrients = new List<Nutrient>();
+                    nutValues.ClearValues();
 
-                //for this food item go through all nutrients and note what they are and what their values are
-                foreach (FoodNutrient nutrient in food.foodNutrients) {
-                    newNutrients.Add(new Nutrient(nutrient.nutrientName));
-                    nutValues.AddNutrientValue(nutrient.nutrientName, (float)nutrient.value);
+                    //make a new food object to be added to DB
+                    newFood = new FoodItem(food.gtinUpc, food.subbrandName, food.brandName, "");
+
+                    //for this food item go through all nutrients and note what they are and what their values are
+                    foreach (FoodNutrient nutrient in food.foodNutrients)
+                    {
+                        newNutrients.Add(new Nutrient(nutrient.nutrientName));
+                        nutValues.AddNutrientValue(nutrient.nutrientName, (float)nutrient.value);
+                    }
+
+                    //create new nutritionLabel obj from values
+                    newLabel = new NutritionLabel(nutValues.calories, 1, food.servingSize, nutValues.totalFat,
+                                               nutValues.saturatedFat, nutValues.transFat, nutValues.cholestrol,
+                                               nutValues.sodium, nutValues.carbs, nutValues.dietaryFiber, nutValues.totalSugars,
+                                               0, nutValues.protein, nutValues.additionalNutrients, food.gtinUpc);
+
+                    //create new List<Ingredients> obj from values
+                    List<Ingredient> newIngredients = StringToIngredients(food.ingredients);
+
+                    //Add new food, ingredients, and label to DB
+                    //await _foodDB.AddNewProductAsync(newFood, newLabel, newIngredients);
+                    Console.WriteLine(newFood.FormatJsonString());
+                    Console.WriteLine(newLabel.FormatJsonString());
+                    foreach (Ingredient i in newIngredients)
+                    {
+                        Console.WriteLine(i.FormatIngredientsJsonString());
+                    }
                 }
 
-                //create new nutritionLabel obj from values
-                newLabel = new NutritionLabel(nutValues.calories, 1, food.servingSize, nutValues.totalFat,
-                                           nutValues.saturatedFat, nutValues.transFat, nutValues.cholestrol,
-                                           nutValues.sodium, nutValues.carbs, nutValues.dietaryFiber, nutValues.totalSugars,
-                                           0, nutValues.protein, nutValues.additionalNutrients, food.gtinUpc);
-
-                //create new List<Ingredients> obj from values
-                List<Ingredient> newIngredients = StringToIngredients(food.ingredients);
-
-                //Add new food, ingredients, and label to DB
-                //await _foodDB.AddNewProductAsync(newFood, newLabel, newIngredients);
-                Console.WriteLine(newFood.FormatJsonString());
-                Console.WriteLine(newLabel.FormatJsonString());
-                foreach (Ingredient i in newIngredients) {
-                    Console.WriteLine(i.FormatIngredientsJsonString());
-                }
+                return 1;
             }
-
-            return "good";
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return -1;
+            }
         }
 
+        /// <summary>
+        /// Takes in a string value (a barcode) and queries the FDC API, parses the response and returnes an obj 
+        /// that holds the values of the returned foods
+        /// </summary>
+        /// <param name="barcode"></param>
+        /// <returns></returns>
         private async Task<FoodInfoJson> GET(string barcode)
         {
             try
@@ -89,6 +123,12 @@ namespace Food.Executables
 
         }
         
+        /// <summary>
+        /// Takes in a string of ingredients returned from the FDC API and parses them into individual Ingredient 
+        /// objects
+        /// </summary>
+        /// <param name="str"></param>
+        /// <returns>A list of Ingredients from the parsed string</returns>
         public List<Ingredient> StringToIngredients(string str)
         {
             List<Ingredient> ingredients = new List<Ingredient>();
@@ -131,10 +171,10 @@ namespace Food.Executables
         }
 
         /// <summary>
-        /// Formats a json file to a string
+        /// Formats a json file to a string, to be sent to front end
         /// </summary>
         /// <param name="ingredientList"></param>
-        /// <returns></returns>
+        /// <returns>string value representing the parsed Json data</returns>
         public string FormatIngredientsJsonString(List<Ingredient> ingredientList)
         {
             string strNameList = "\"IngredientName\": [";
@@ -166,6 +206,10 @@ namespace Food.Executables
         }
     }
 
+
+    /// <summary>
+    /// A helper class that will denote the numerical values of a returned food product and store them for later
+    /// </summary>
     public class NutrientValues
     {
         public int calories { get; set; }
@@ -179,8 +223,11 @@ namespace Food.Executables
         public int totalSugars { set; get; }
         public int addedSugar { set; get; }
         public int protein { set; get; }
-        public List<(Nutrient, float)> additionalNutrients { get; set; }
+        public List<(Nutrient, float)> additionalNutrients { get; set; }    //Any aditional nutrients that are returned
 
+        /// <summary>
+        /// Base constructor, will initialize all values to 0, and create an empty list for additionalNutrients
+        /// </summary>
         public NutrientValues()
         {
             calories = totalFat = saturatedFat = transFat = cholestrol = sodium = 
@@ -188,6 +235,9 @@ namespace Food.Executables
             additionalNutrients = new List<(Nutrient, float)>();
         }
 
+        /// <summary>
+        /// Will clear all the held values back to 0, and empty list for additionalNutrients
+        /// </summary>
         public void ClearValues()
         {
             calories = totalFat = saturatedFat = transFat = cholestrol = sodium =
@@ -195,6 +245,12 @@ namespace Food.Executables
             additionalNutrients = new List<(Nutrient, float)>();
         }
 
+        /// <summary>
+        /// Will take in a nutrient parsed from FDC API as a string and its amount value, and assign it to its appropriate
+        /// value for the object. 
+        /// </summary>
+        /// <param name="nut"></param>
+        /// <param name="val"></param>
         public void AddNutrientValue(string nut, float val)
         {
             if(nut.ToLower().Contains("energy"))
@@ -243,10 +299,17 @@ namespace Food.Executables
             }
         }
     }
+
+    //********************************************************************************************//
+    //Below are classes that are used to take the Json response from FDC API and turn them into objects to be parsed
+
+    /// <summary>
+    /// An class object that will be passed as a parameter for deserializing the returned Json from FDC API
+    /// </summary>
     public class FoodInfoJson
     {
-        public int totalHits { set; get; }
-        public List<Food> foods { get; set; }
+        public int totalHits { set; get; }  //amount of results from the Query
+        public List<Food> foods { get; set; }//list of food objects from the Query
 
         override public string ToString()
         {
@@ -259,6 +322,9 @@ namespace Food.Executables
         }
     }
 
+    /// <summary>
+    /// A class object that holds the values for a food product returned from the FDC API
+    /// </summary>
     public class Food
     {
         public string lowercasedescription {get; set;}
@@ -289,6 +355,9 @@ namespace Food.Executables
 
     }
 
+    /// <summary>
+    /// A class object that holds the values for a nutrient 
+    /// </summary>
     public class FoodNutrient
     {
         public string nutrientName { get; set; }

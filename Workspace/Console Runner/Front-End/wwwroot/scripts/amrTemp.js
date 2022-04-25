@@ -6,7 +6,7 @@ function getAMRData() {
 }
 
 async function sendAmrData() {
-    console.log('Attempting to login...');
+    console.log('Sending AMR Info');
     let gender = document.getElementById('gender').value;
     let weight = document.getElementById('weight').value;
     let height = document.getElementById('height').value;

@@ -9,14 +9,15 @@ namespace Console_Runner.AccountService
         //User ID getter and setter
         //Using Auto Incrementer, research on that
         //[System.ComponentModel.DataAnnotations.Key]
-        public int UserID{ get; set; }
-        
+        public int UserID { get; set; }
+
         public string Email { get; set; }
         public string Password { get; set; }
         //User's first name
         public string FName { get; set; }
         //User's last name
         public string LName { get; set; }
+        public int NewsBias {get; set;}
 
         public bool IsActive { get; set; }
 

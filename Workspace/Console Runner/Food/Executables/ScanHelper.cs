@@ -42,6 +42,8 @@ namespace Food.Executables
         /// </returns>
         public async Task<int> SearchAndAdd(string barcode)
         {
+            _foodDB = new FoodDBOperations(_foodServiceGateway);    //dependency injection
+
             try
             {
                 FoodInfoJson queryResponse = await GET(barcode); //search barcode from FDC API
@@ -80,7 +82,7 @@ namespace Food.Executables
                     List<Ingredient> newIngredients = StringToIngredients(food.ingredients);
 
                     //Add new food, ingredients, and label to DB
-                    //await _foodDB.AddNewProductAsync(newFood, newLabel, newIngredients);
+                    await _foodDB.AddNewProductAsync(newFood, newLabel, newIngredients);
                     Console.WriteLine(newFood.FormatJsonString());
                     Console.WriteLine(newLabel.FormatJsonString());
                     foreach (Ingredient i in newIngredients)

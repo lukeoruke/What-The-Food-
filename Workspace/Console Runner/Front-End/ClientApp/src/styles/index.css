@@ -48,7 +48,7 @@
     font-size: 25px;
 }
 
-.newsScroll {
+.news-scroll {
     margin:auto;
     height: 450px;
     width: 950px;
@@ -57,13 +57,13 @@
     overflow-y: auto;
 }
 
-.newsBox {
+.news-box {
     height: 150px;
     width: 950px;
     border: 1px solid black;
     overflow: hidden;
 }
-.imageBox  {
+.image-box  {
     height: 150px;
     width: 200px;
     object-fit:fill;
@@ -75,7 +75,7 @@
 img {
     aspect-ratio: auto 200 / 200;
     height: 150px;
-    width: 200px;
+    width: 190px;
 }
 .center{
   margin-left: auto;
@@ -83,7 +83,7 @@ img {
   width: 100%;
   height: 100%;
 }
-.headlineBox {
+.headline-box {
     display: inline-block;
     height: 50px;
     width: 728px;
@@ -94,12 +94,12 @@ img {
     word-wrap: break-word;
     position:relative;
 }
-.textBox {
+.text-box {
     display: inline-block;
-    height: 110px;
+    height: 150px;
     width: 728px;
     overflow: auto;
-    font-size: 15px;
+    font-size: 13px;
     position: relative;
-    bottom: 20px;
+    bottom: 45px;
 }

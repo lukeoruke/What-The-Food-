@@ -1,106 +1,194 @@
-﻿//implement API
-//const API = 'https://newsapi.org/v2/top-headlines?country=us&category=health&apiKey=5ad1255abe2a4621b94e10301d1b19cf'
+﻿/**
+ * Define API from NY Times that will be used
+ */
+const APIFOOD = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=section_name:(%22Food%22)&sort=newest&api-key=TK2GSBMDBO2kHDUABQFh4tlpE0Bu8cuf'
+const APIHEALTH = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=section_name:(%22Health%22)&sort=newest&api-key=TK2GSBMDBO2kHDUABQFh4tlpE0Bu8cuf'
 
+//Create a global variable which will store all News
+let array = [];
+pickCategory();
 
-//news one
-//fetch(API)
-//    .then((data) => {
-//        return data.json();
-//    }).then((completedata) => {
-//        let data1 = "";
-//        console.log(completedata);
-//        completedata.articles.map((values) => {
-//            data1 = `<div class = "newsBox">
-//                <div class = "imageBox">
-//                    <img src = ${values.urlToImage} class ="center">
-//                </div>
-//                    <h1 class = "headlineBox">${values.title}</h1>
-//                    <p class = "textBox">${values.description}</p>
-//                </div>`
-//        });
-//        document.getElementById("cards").innerHTML = data1;
-//    }).catch((err) => {
-//        console.log("ERROR:"+ err);
-//    })
+/**
+ * Select the category of news that will be catered towards the user
+ */
+async function pickCategory() {
+    //the level of which we want to display health realted news
+    var healthFilterLevel = 0;
 
-
-//const API = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=section_name:(%22Food%22)&sort=newest&api-key=TK2GSBMDBO2kHDUABQFh4tlpE0Bu8cuf'
-//Version 1
-//let news = document.getElementById("news");
-
-//fetch(API)
-//    .then(response => response.json())
-//    .then(data => {
-//        console.log(data);
-//        data.response.docs.map(article => {
-//            console.log(article.headline.main);
-//            let a = document.createElement("a");
-//            a.setAttribute('href', article.web_url);
-//            console.log(a);
-//            a.innerHTML = article.headline.main;
-//            news.appendChild(a);
-//        })
-//        console.log(news);
-//    })
-
-//Version 2
-
-let counter = 0;
-fetch(API)
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        data.response.docs.slice(0, 5).map(article => {
-            console.log(article.headline.main);
-            let a = document.createElement("a");
-            a.setAttribute('href', article.web_url);
-            //console.log(article.web_url);
-            a.innerHTML = article.headline.main;
-            console.log(a);
-
-
-            let p = document.createElement("p");
-            p.innerHTML = article.lead_paragraph;
-
-            let img = document.getElementById("imgID" + counter).src =
-                ("https://static01.nyt.com/" + article.multimedia[0].url);
-            //img.setAttribute('src', ("https://static01.nyt.com/" + article.multimedia[0].url));
-            console.log(img);
-            //q.innerHTML = "https://static01.nyt.com/images" + article.multimedia[0].url;
-            //console.log(article.multimedia[0].url);
-            //console.log(q);
-
-            let headlineText = document.getElementById("headlineText" + counter);
-            let text = document.getElementById("text" + counter);
-            headlineText.appendChild(a);
-            text.appendChild(p);
-            //image.append(q);
-            counter++;
-            console.log(counter);
+    //if they have no personalization, display food news as default
+    //else display personzalized news based on user preference
+    if (healthFilterLevel == 0) {
+        await storeFoodNews(0);
+    }
+    else {
+        await storeHealthNews(healthFilterLevel);
+        await storeFoodNews(healthFilterLevel)
+    }
+    //display news to homepage accordingly
+    displayNews();
+}
+/**
+ * Store food related news from API into array
+ * @param {Number} displayAmnt The number of Food Articles that will be displayed
+ */
+async function storeFoodNews(displayAmnt) {
+    //make a promise through fetch on APIFOOD, appply await as well
+    await fetch(APIFOOD)
+        .then(response => response.json())
+        .then(data => {
+            for (; displayAmnt < 5; displayAmnt++) {
+                array.push(data.response.docs[displayAmnt]);
+            }
         });
-    })
-    //.then(data => {
-    //    console.log(data);
-    //    data.response.docs.slice(0, 5).map(article => {
+}
+/**
+ * Store health related news from API into array
+ * @param {Number} displayAmnt The number of Food Articles that will be displayed
+ */
+async function storeHealthNews(displayAmnt) {
+    //fetch returns a promise that resolves into a response object
+    //which in this case is a JSON
+    await fetch(APIHEALTH)
+        .then(response => response.json())
+        .then(data => {
+            for (let x = 0; x < displayAmnt; x++) {
+                array.push(data.response.docs[x]);
+            }
+        });
+}
+/**
+ *  Populates and assigns news relative to html position
+ */
+async function displayNews() {
+    for (let index = 0; index < 5; index++) {
+        //create an anchor element to create hyperlinked html
+        let a = document.createElement("a");
+        //href specifies the url of the page
+        a.setAttribute('href', array[index].web_url);
+        //manipulates the title of html/url
+        a.innerText = array[index].headline.main;
 
+        //p stores a paragraph from document which is a JSON
+        let p = document.createElement("p");
+        //assign p to have the lead paragraph from JSON object
+        p.innerHTML = array[index].lead_paragraph;
 
-    //        let p = document.createElement("p");
-    //        p.innerHTML = article.lead_paragraph;
+        //store the image of article into assigned location specified in html
+        document.getElementById("imgID" + index).src =
+            ("https://static01.nyt.com/" + array[index].multimedia[0].url);
 
+        //display title and text in proper position by ID in html
+        let headlineText = document.getElementById("headlineText" + index);
+        let text = document.getElementById("text" + index);
 
+        //append the hyperlink a made earlier
+        headlineText.appendChild(a);
+        //append the text paragraph p made earlier
+        text.appendChild(p);
+    }
+}
 
-    //        let text = document.getElementById("text" + counter);
-    //        text.appendChild(a);
+//async function test() {
+//    console.log("ran in test");
+//    console.log(array[0]);
+//    for (let x = 0; x < 5; x++) {
+//        console.log(array[x].headline);
+//        console.log("INDEX" + x + ": " + array[x].section_name);
+//    }
+//}
+//async function getFoodNews() {
+//    let counter = 0;
+//    fetch(APIFOOD)
+//        .then(response => response.json())
+//        .then(data => {
+//            console.log(data);
+//            data.response.docs.slice(0, 5).map(article => {
+//                console.log(article.headline.main);
+//                console.log(article.section_name);
+//                //a stand for hyperlink
+//                let a = document.createElement("a");
+//                //href specifies the url of the page
+//                a.setAttribute('href', article.web_url);
+//                //manipulates the title of html/url
+//                //used to use innerHTML but has risks
+//                a.innerText = article.headline.main;
+//                a.title = "ALKKJFALDKFJ";
+//                console.log(a.title);
+//                console.log(a);
 
-    //        text.appendChild(p);
-    //        counter++;
-    //        console.log(counter);
-    //    });
-    //})
+//                //p stand for paragraph
+//                let p = document.createElement("p");
+//                p.innerHTML = article.lead_paragraph;
 
+//                let img = document.getElementById("imgID" + counter).src =
+//                    ("https://static01.nyt.com/" + article.multimedia[0].url);
+//                console.log(img);
 
+//                let headlineText = document.getElementById("headlineText" + counter);
+//                let text = document.getElementById("text" + counter);
 
-//https://static01.nyt.com/images
+//                headlineText.appendChild(a);
+//                text.appendChild(p);
 
-//https://static01.nyt.com/images
+//                counter++;
+//                console.log(headlineText);
+//                console.log(counter);
+//                array.push(article.section_name);
+//            });
+//        })
+//}
+
+/**
+ * Personalize news depending on the article that is selected by user
+ */
+headlineText0.addEventListener("click", () => {
+    getCategory(0)
+});
+
+headlineText1.addEventListener("click", () => {
+    getCategory(1)
+});
+headlineText2.addEventListener("click", () => {
+    getCategory(2)
+});
+
+headlineText3.addEventListener("click", () => {
+    getCategory(3)
+});
+headlineText4.addEventListener("click", () => {
+    getCategory(4)
+});
+
+/**
+ * Get the category of article clicked by user
+ * @param {Number} index The index of article relative to homepage
+ */
+async function getCategory(index) {
+    var category = array[index].section_name;;
+    console.log(category);
+    if (category == "Food") {
+        console.log("this is a food");
+        decrementHealthFilter();
+    }
+    if (category == "Health") {
+        console.log("This is Health");
+        incrementHealthFilter();
+    }
+}
+/**
+ * Change user preference to have more Health News
+ */
+async function incrementHealthFilter() {
+    //access the backend and increment
+    //if the value is set at 4 already, then we do not need to increment it no more
+    console.log("INCREMENTED");
+}
+/**
+ * Change user preference to have less Health News
+ */
+async function decrementHealthFilter() {
+    //access the backend and decrement
+    //if the value is set at 0 already, then we do not need to increment it no more
+    console.log("DECREMENTED");
+}
 

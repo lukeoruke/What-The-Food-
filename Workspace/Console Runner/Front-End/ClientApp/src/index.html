@@ -3,9 +3,9 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" href="styles/index.css">
-
 </head>
 <body>
+    <!-- Create overall strucutre of webpage including category buttons  -->
     <a href="index.html"><img src="images/apple.png" alt="What The Food?!" width="200" height="200"></a>
     <a href="scanBarcode.html"><button class="button">Scan</button></a>
     <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
@@ -13,65 +13,72 @@
     <a href="history.html"><button class="button">History</button></a>
     <a href="settingPage.html"><button class="button">Settings</button></a>
     <div id="setting">
+        <!-- Create structure in which news will be displayed  -->
         <span>Homepage</span>
-        <div class="newsScroll">
-            <div class="newsBox">
-                <div class="imageBox">
+        <div class="news-scroll">
+            <!-- News 1  -->
+            <div class="news-box">
+                <div class="image-box">
                     <img id="imgID0" />
                 </div>
-                <div class="headlineBox">
+                <div class="headline-box">
                     <div id="headlineText0"></div>
                 </div>
-                <div class="textBox">
+                <div class="text-box">
                     <div id="text0"></div>
                 </div>
             </div>
-            <div class="newsBox">
-                <div class="imageBox">
+            <!-- News 2 -->
+            <div class="news-box">
+                <div class="image-box">
                     <img id="imgID1" />
                 </div>
-                <div class="headlineBox">
+                <div class="headline-box">
                     <div id="headlineText1"></div>
                 </div>
-                <div class="textBox">
+                <div class="text-box">
                     <div id="text1"></div>
                 </div>
             </div>
-            <div class="newsBox">
-                <div class="imageBox">
+            <!-- News 3  -->
+            <div class="news-box">
+                <div class="image-box">
                     <img id="imgID2" />
                 </div>
-                <div class="headlineBox">
+                <div class="headline-box">
                     <div id="headlineText2"></div>
                 </div>
-                <div class="textBox">
+                <div class="text-box">
                     <div id="text2"></div>
                 </div>
             </div>
-            <div class="newsBox">
-                <div class="imageBox">
+            <!-- News 4  -->
+            <div class="news-box">
+                <div class="image-box">
                     <img id="imgID3" />
                 </div>
-                <div class="headlineBox">
+                <div class="headline-box">
                     <div id="headlineText3"></div>
                 </div>
-                <div class="textBox">
+                <div class="text-box">
                     <div id="text3"></div>
                 </div>
             </div>
-            <div class="newsBox">
-                <div class="imageBox">
+            <!-- News 5  -->
+            <div class="news-box">
+                <div class="image-box">
                     <img id="imgID4" />
                 </div>
-                <div class="headlineBox">
+                <div class="headline-box">
                     <div id="headlineText4"></div>
                 </div>
-                <div class="textBox">
+                <div class="text-box">
                     <div id="text4"></div>
                 </div>
             </div>
         </div>
     </div>
 </body>
+<!-- runs the script which will display all news, including adjusting their preferences-->
 <script src="scripts/index.js"></script>
 </html>

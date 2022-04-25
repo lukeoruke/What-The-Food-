@@ -1,4 +1,4 @@
-async function scrapeRatings() {
+﻿async function scrapeRatings() {
     console.log('Attempting to get product rating...');
     let foodName = document.getElementById('foodName').innerText;
     const formData = new FormData();
@@ -8,7 +8,7 @@ async function scrapeRatings() {
 
 
     // HTTP Post Request
-    await fetch('http://localhost:49200/api/GetProductRatings', {
+    await fetch('http://localhost:49200/api/GetProductRating', {
         method: 'POST',
         body: formData,
     }).then(function (response) {
@@ -26,7 +26,7 @@ async function getProductRating(e) {
 
     let rating;
     // HTTP Get Request
-    await fetch('http://localhost:49200/api/GetProductRatings')
+    await fetch('http://localhost:49200/api/GetProductRating')
         .then(async function (response) {
             rating = JSON.stringify(await response.json())
             const jsonConst = JSON.parse(rating);

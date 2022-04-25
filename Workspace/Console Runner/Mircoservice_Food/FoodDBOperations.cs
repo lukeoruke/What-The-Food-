@@ -88,6 +88,23 @@ namespace Console_Runner.FoodService
             
         }
         /// <summary>
+        /// Gets (take) FoodItems from the database starting from the index (skip). FoodItems are sorted by id.
+        /// </summary>
+        /// <param name="skip">The number of FoodItems to skip.</param>
+        /// <param name="take">The number of FoodItems to take.</param>
+        /// <param name="logService">The log service object to invoke LogWithSetUserAsync with.</param>
+        /// <returns>A List of FoodItems.</returns>
+        public async Task<List<FoodItem>> GetNFoodItemsAsync(int skip, int take, LogService? logService = null)
+        {
+            List<FoodItem> foods = await _foodItemAccess.RetrieveNFoodItemsAsync(skip, take, logService);
+            if(logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Data, DateTime.Now,
+                        $"Retrieved {take} FoodItems after {skip} from database");
+            }
+            return foods;
+        }
+        /// <summary>
         /// Gets the label nutrient list associated with a product from its barcode
         /// </summary>
         /// <param name="barcode"></param>

@@ -25,18 +25,45 @@ namespace Mircoservice_Food.Controllers
             logger.UserID = "placeholder";
             logger.DefaultTimeOut = 5000;
             int userId = 0;// NEED TO GET USER ID
-            var AMR = _accountDBOperations.GetAMRAsync(userId, logger);
-            JsonSerializer.Serialize(AMR);
+            
+            
 
             IFormCollection formData = Request.Form;
 
             Console.WriteLine(formData["gender"]);
             Console.WriteLine(formData["weight"]);
-            Console.WriteLine(formData["age"]);
             Console.WriteLine(formData["height"]);
+            Console.WriteLine(formData["age"]);
             Console.WriteLine(formData["activity"]);
 
+            int amrWeight = Convert.ToInt32(formData["weight"]);
+            float amrHeight = float.Parse(formData["height"], System.Globalization.CultureInfo.InvariantCulture);
+            int amrAge = Convert.ToInt32(formData["age"]);
 
+            ActivityLevel userActivity = ActivityLevel.None;
+            switch (formData["activity"])
+            {
+                case "None":
+                    userActivity = ActivityLevel.None;
+                    break;
+                case "Light":
+                    userActivity = ActivityLevel.Light;
+                    break;
+                case "Moderate":
+                    userActivity = ActivityLevel.Moderate;
+                    break;
+                case "Daily":
+                    userActivity = ActivityLevel.Daily;
+                    break;
+                case "Heavy":
+                    userActivity = ActivityLevel.Heavy;
+                    break;
+            }
+
+
+            var AMR = _accountDBOperations.AddAMRAsync(userId, formData["gender"] == "Male", amrWeight , amrHeight, amrAge, userActivity); ;
+
+            
 
 
         }

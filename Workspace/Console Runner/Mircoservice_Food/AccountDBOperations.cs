@@ -661,6 +661,11 @@ namespace Console_Runner.AccountService
             return await _flagService.GetNAccountFlagsAsync(userID, skip, take, logService);
         }
 
+        public async Task<bool> AddAMRAsync(int userID, bool isMale, int weight, float height, int age, ActivityLevel activity)
+        {
+            await _amrGateway.AddAMRAsync(new AMR(isMale, weight, height, age, activity) { UserID = userID });
+            return true;
+        }
 
         /// <summary>
         /// 
@@ -680,6 +685,10 @@ namespace Console_Runner.AccountService
 
 
     }
+
+
+
+
     public class UserNotAuthorizedException : Exception
     {
         public UserNotAuthorizedException()

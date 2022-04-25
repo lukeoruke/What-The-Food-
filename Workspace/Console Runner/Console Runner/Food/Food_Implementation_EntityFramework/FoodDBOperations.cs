@@ -113,7 +113,8 @@ namespace Console_Runner.FoodService
             FoodItem?foodItem = await _foodItemAccess.RetrieveScannedFoodItemAsync(barcode);
             if(foodItem == null)
             {
-                throw (new Exception("No such product exists in the DB"));
+                //throw (new Exception("No such product exists in the DB"));
+                return null;
             }
             return foodItem;
         }

@@ -1,6 +1,7 @@
 ﻿using Console_Runner.FoodService;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using Food.Executables;
 
 namespace Food.Controllers
 
@@ -10,6 +11,7 @@ namespace Food.Controllers
     [ApiController]
     public class GetFoodProductFromBarCodeController : ControllerBase
     {
+        private ScanHelper FDC = new ScanHelper();
         private const string UM_CATEGORY = "Data Store";
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();
         private  FoodDBOperations _foodDB;
@@ -27,19 +29,21 @@ namespace Food.Controllers
             FoodItem foodItem;
             NutritionLabel label;
 
-
             _foodDB = new FoodDBOperations(_foodServiceGateway);
-
-            
-
-
 
             try
             {
                 Console.WriteLine("GET " + barcode);
 
+
+                foodItem = null; //await _foodDB.GetScannedItemAsync(barcode);
+                if(foodItem == null)    //if the food item doesn't exist in our DB, add it to the DB
+                {
+                    var response = await FDC.SearchAndAdd(barcode);
+                    Console.WriteLine("Returning get from wrapper " + response);
+                }
                 
-                foodItem = await _foodDB.GetScannedItemAsync(barcode);
+                //Fetch information from the DB of a given barcode
 
                 ingredients = await _foodDB.GetIngredientsListAsync(barcode);
                 label = await _foodDB.GetNutritionLabelAsync(barcode);
@@ -56,7 +60,7 @@ namespace Food.Controllers
                 
                 //nutrientList = _foodDB.get
                 string labelStr = label.FormatJsonString();
-                string ingredientsStr = FormatIngredientsJsonString(ingredients);
+                string ingredientsStr = FDC.FormatIngredientsJsonString(ingredients);
 
                 jsonStr += foodItemStr + ", " + labelStr + ", " + ingredientsStr + "}";
 
@@ -76,41 +80,6 @@ namespace Food.Controllers
         public async void Post()
         {
  
-        }
-
-        /// <summary>
-        /// MAY NEED TO MOVE TO A HELPER CLASS
-        /// </summary>
-        /// <param name="ingredientList"></param>
-        /// <returns></returns>
-        public string FormatIngredientsJsonString(List<Ingredient> ingredientList)
-        {
-            string strNameList = "\"IngredientName\": [";
-            string strAltList = "\"IngredientAlternateName\": [";
-            string strDescList = "\"IngredientDescription\": [";
-
-            for (int i = 0; i < ingredientList.Count; i++)
-            {
-
-                strNameList += $"\"{ingredientList[i].IngredientName}\"";
-                strAltList += $"\"{ingredientList[i].AlternateName}\"";
-                strDescList += $"\"{ingredientList[i].IngredientDescription}\"";
-
-                if (i < ingredientList.Count - 1)
-                {
-                    strNameList += ",";
-                    strAltList += ",";
-                    strDescList += ",";
-                }
-                else if (i == ingredientList.Count - 1)
-                {
-                    strNameList += "]";
-                    strAltList += "]";
-                    strDescList += "]";
-                }
-            }
-
-            return strNameList + ", " + strAltList + ", " + strDescList;
         }
     }
 }

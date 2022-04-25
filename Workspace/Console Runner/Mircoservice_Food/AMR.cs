@@ -5,6 +5,7 @@ namespace Console_Runner.AccountService
 {
 	/// <summary>
 	/// Enum that reflects the five levels of activity used in calculating AMR according to https://www.verywellfit.com/how-many-calories-do-i-need-each-day-2506873.
+	/// kg and cm conversions are referenced to https://www.metric-conversions.org/weight/pounds-to-kilograms.htm
 	/// </summary>
 	public enum ActivityLevel
 	{
@@ -29,11 +30,15 @@ namespace Console_Runner.AccountService
 				_ => 1.0f
 			};
 		}
-		public static float BMR_WEIGHT_MULTIPLIER = 10;
-		public static float BMR_HEIGHT_MULTIPLIER = 6.25f;
-		public static float BMR_AGE_MULTIPLIER = -5;
-		public static int BMR_FEMALE_ADDEND = -161;
-		public static int BMR_MALE_ADDEND = 5;
+		public static float BMR_MALE_ADD = 66.47f;
+		public static float MALE_BMR_WEIGHT_MULTIPLIER = 13.75f;
+		public static float MALE_BMR_HEIGHT_MULTIPLIER = 5.003f;
+		public static float MALE_BMR_AGE_MULTIPLIER = -6.755f;
+
+		public static float BMR_FEMALE_ADD = 65.51f;
+		public static float FEMALE_BMR_WEIGHT_MULTIPLIER = 9.563f;
+		public static float FEMALE_BMR_HEIGHT_MULTIPLIER = 1.850f;
+		public static float FEMALE_BMR_AGE_MULTIPLIER = -4.676f;
 	}
 
 	public class AMR
@@ -151,11 +156,25 @@ namespace Console_Runner.AccountService
 			if (IsCustomAMR) { return _customAMR; }
 			else
 			{
+				float bmr = 0;
+				if (IsMale == true)
+				{
+					float mbmr = (Constants.BMR_MALE_ADD + (Constants.MALE_BMR_WEIGHT_MULTIPLIER*Weight)+(Constants.MALE_BMR_HEIGHT_MULTIPLIER*Height)
+						-(Constants.MALE_BMR_AGE_MULTIPLIER * Age)); 
+					bmr = mbmr;
+				}
+                else
+                {
+					float fbmr = (Constants.BMR_FEMALE_ADD + (Constants.FEMALE_BMR_WEIGHT_MULTIPLIER * (Weight)) + (Constants.FEMALE_BMR_HEIGHT_MULTIPLIER * Height)
+						- (Constants.FEMALE_BMR_AGE_MULTIPLIER * Age));
+					bmr = fbmr;
+				}
+				
 				// equation for male and female are the same without the addend
-				float bmrWithoutAddend = (Constants.BMR_WEIGHT_MULTIPLIER * Weight) + (Constants.BMR_HEIGHT_MULTIPLIER * Height)
-								+ (Constants.BMR_AGE_MULTIPLIER * Age);
+				//float bmrWithoutAddend = (Constants.BMR_WEIGHT_MULTIPLIER * Weight) + (Constants.BMR_HEIGHT_MULTIPLIER * Height)
+				//				+ (Constants.BMR_AGE_MULTIPLIER * Age);
 				// add the addend corresponding to whether the associated user is biologically male or female
-				float bmr = bmrWithoutAddend + (IsMale ? Constants.BMR_MALE_ADDEND : Constants.BMR_FEMALE_ADDEND);
+				//float bmr = bmrWithoutAddend + (IsMale ? Constants.BMR_MALE_ADDEND : Constants.BMR_FEMALE_ADDEND);
 				// multiply by factor corresponding to activity level and return that product
 				return bmr * Constants.GetActivityLevelMultiplier(Activity);
 			}

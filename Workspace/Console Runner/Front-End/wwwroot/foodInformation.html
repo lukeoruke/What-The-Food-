@@ -5,8 +5,9 @@
     <link rel="stylesheet" href="styles/settingPage.css">
     <link rel="stylesheet" href="styles/foodInformation.css">
     <script src="scripts/foodInformation.js"></script>
+    <script src="scripts/getProductRating.js"></script>
 </head>
-<body onload="populateFoodInfo()">
+<body onload="populateFoodInfo();scrapeRatings()">
 <a href="index.html"><img src="images/apple.png" alt="What The Food?!" width="200" height="200"></a>
 <a href="scanBarcode.html"><button class="button">Scan</button></a>
 <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
@@ -27,8 +28,9 @@
                     <img src="images/apple.png" alt="What The Food?!" width="200" height="200">
                 </div>
                 <div class="partition2">
+                    <button onclick="getProductRating(event)">Get Rating</button>
                     <div class="rating">
-                        <span>Rating:★★★★☆</span>
+                        <span id="rating">Rating:</span>
                         <span>Reviews</span>
                     </div>
                     <div class="box3">

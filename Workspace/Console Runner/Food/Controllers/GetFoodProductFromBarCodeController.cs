@@ -72,7 +72,7 @@ namespace Food.Controllers
                 //Fetch information from the DB of a given barcode
                 ingredients = await _foodDB.GetIngredientsListAsync(barcode);
                 label = await _foodDB.GetNutritionLabelAsync(barcode);
-                List<(Nutrient, float)> nutrientListTuple = await _foodDB.GetNutrientListForUserDisplay(barcode);
+                List<(Nutrient, float)> nutrientListTuple = await _foodDB.GetNutrientListForUserDisplayAsync(barcode);
                 List<Nutrient> nutrientList = new();
                 for (int i = 0; i < nutrientListTuple.Count; i++)
                 {

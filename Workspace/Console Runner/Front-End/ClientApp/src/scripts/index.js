@@ -63,7 +63,7 @@ async function displayNews() {
         //create an anchor element to create hyperlinked html
         let a = document.createElement("a");
         //href specifies the url of the page
-        a.setAttribute('href', array[index].web_url);
+        await a.setAttribute('href', array[index].web_url);
         //manipulates the title of html/url
         a.innerText = array[index].headline.main;
 
@@ -180,7 +180,7 @@ async function getCategory(index) {
 async function getHealthFilter() {
     //access the backend and increment
     //if the value is set at 4 already, then we do not need to increment it no more
-    await fetch('http://localhost:49200/api/NewsController', {
+    await fetch('http://localhost:49200/api/News', {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -194,7 +194,7 @@ async function getHealthFilter() {
 async function incrementHealthFilter() {
     //access the backend and increment
     //if the value is set at 4 already, then we do not need to increment it no more
-    await fetch('http://localhost:49200/api/NewsIncrementController', {
+    await fetch('http://localhost:49200/api/NewsIncrement', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -208,7 +208,7 @@ async function incrementHealthFilter() {
 async function decrementHealthFilter() {
     //access the backend and decrement
     //if the value is set at 0 already, then we do not need to increment it no more
-    await fetch('http://localhost:49200/api/NewsDecrementController', {
+    await fetch('http://localhost:49200/api/NewsDecrement', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

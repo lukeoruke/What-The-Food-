@@ -10,14 +10,25 @@ namespace Food.Controllers
     public class NewsController : Controller
     {
         private readonly IAccountNews efNews = new EFNews();
-        private readonly NewsDBOperations _dbOperations = new NewsDBOperations(efNews);
-
-        [HttpPost]
-        public async Task<ActionResult <int>> Get() //TODO: reserach
+        private NewsDBOperations _dbOperations;
+        int userID = 0; //TODO: We need JWT Token
+        [HttpGet]
+        public async Task<ActionResult<int>> Get() //TODO: reserach
         {
+            try
+            {
+                _dbOperations = new NewsDBOperations(efNews);
+                return await _dbOperations.GetHealthBias(userID);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("ERROR: unable to call GET method in newscontroller: " + e.Message);
 
-            //gets user input from JS
-            IFormCollection formData = Request.Form;
+            }
+
+
         }
+        
     }
+
 }

@@ -21,14 +21,17 @@ FoodItem food2 = new FoodItem("anotherbarcode", "choccy milk", "who what", "link
 FoodItem food3 = new FoodItem("athirdbarcode", "tea", "some dude", "link to pic");
 foodDBOperations.AddFoodItemAsync(food1).Wait();
 foodDBOperations.AddFoodItemAsync(food2).Wait();
-foodDBOperations.AddFoodItemAsync(food3).Wait();*/
+foodDBOperations.AddFoodItemAsync(food3).Wait();
+await foodDBOperations.AddFoodUpdateAsync(new FoodIngredientChange(food1, DateTime.Now, "ing change for monster", new[] { new Ingredient("some ing", "whatt", "iunno") }, new[] { new Ingredient("removed ign", "????", "fuck") }));
+await foodDBOperations.AddFoodUpdateAsync(new FoodRecall(food1, DateTime.Now, "recall baybee", "sermonella", new[] { "location" }, new[] { 10 }, new[] { DateTime.Parse("2020-01-03") }));
+await foodDBOperations.AddFoodUpdateAsync(new FoodRecall(food2, DateTime.Now, "recall baybee", "norovirus!", new[] { "otherlocation" }, new int[0], new[] { DateTime.Parse("2020-01-23") }));
+*/
 
-/*
-Console.WriteLine("Program running...");
+/*Console.WriteLine("Program running...");
 LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
 await logger.LogAsync("test", LogLevel.Info, Category.Business, DateTime.UtcNow, "this is a test message");
-await logger.LogAsync("test", LogLevel.Info, Category.Business, DateTime.UtcNow, "this is a second test message");
- */
+await logger.LogAsync("test", LogLevel.Info, Category.Business, DateTime.UtcNow, "this is a second test message");*/
+
 /**
 IDataAccess dal = new DummyDaL();
 ILogger log = new Logging(dal);

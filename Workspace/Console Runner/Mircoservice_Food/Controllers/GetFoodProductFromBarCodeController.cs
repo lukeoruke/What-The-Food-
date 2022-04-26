@@ -64,23 +64,26 @@ namespace Food.Controllers
                 if (foodItem == null)    //if the food item doesn't exist in our DB, attempt to add it to the DB
                 {
                     int response = await FDC.SearchAndAdd(barcode); //call to ScanHelper.cs
-                    Console.WriteLine("Returning get from wrapper " + response);
+                    //Console.WriteLine("Returning get from wrapper " + response);
 
                     if (response == 1)
                     {
                         foodItem = await _foodDB.GetScannedItemAsync(barcode);
-
+                        Console.WriteLine("1");
                         if (foodItem == null)
                         {
+                            Console.WriteLine("Food added to DB, no corresponding barcode");
                             return "No Corresponding UPC";
                         }
                     }
                     else if (response == 0)
                     {
+                        Console.WriteLine("0");
                         return "Invalid Input";
                     }
                     else if (response == -1)
                     {
+                        Console.WriteLine("-1");
                         return "An Error With The Scan Has Occured";
                     }
                 }
@@ -97,7 +100,7 @@ namespace Food.Controllers
                         if(flags[i].IngredientID == ingredients[j].IngredientID)
                         {
                             flaggedIngredients.Add(ingredients[j]);
-                            Console.WriteLine(ingredients[j].IngredientName);
+                            //Console.WriteLine(ingredients[j].IngredientName);
                         }
                     }
                 }

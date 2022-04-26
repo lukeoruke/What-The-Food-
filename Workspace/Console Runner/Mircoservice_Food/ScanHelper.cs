@@ -96,13 +96,13 @@ namespace Microservice_Food
 
                     //Add new food, ingredients, and label to DB
                     await _foodDB.AddNewProductAsync(newFood, newLabel, newIngredients);
-                    /*
+                    /* 
                     Console.WriteLine(newFood.FormatJsonString());
                     Console.WriteLine(newLabel.FormatJsonString());
                     foreach (Ingredient i in newIngredients)
                     {
                         Console.WriteLine(i.FormatIngredientsJsonString());
-                    }
+                    } 
                     */
                 }
 
@@ -152,26 +152,26 @@ namespace Microservice_Food
             List<Ingredient> ingredients = new List<Ingredient>();
 
             string temp = "";
-            Boolean inParentheses = false;
+            int openParentheses = 0;
 
             //get all ingredients from the string value
             while (str.Length > 0)   //this loop ensures that we properly get all food ingredients without cutting off too early
             {
-                if (str[0] == '(')
+                if (str[0] == '(' || str[0] == '[')
                 {
-                    inParentheses = true;
+                    openParentheses++;
                     temp += str[0];
                     str = str.Substring(1);
                 }
-                else if (str[0] == ')')
+                else if (str[0] == ')' || str[0] == ']')
                 {
-                    inParentheses = false;
+                    openParentheses--;
                     temp += str[0];
                     str = str.Substring(1);
                 }
-                else if (str[0] == ',' && inParentheses == false)
+                else if (str[0] == ',' && openParentheses == 0)
                 {
-                    ingredients.Add(new Ingredient(temp, "", ""));
+                    ingredients.Add(new Ingredient(temp.Trim(), "", ""));
                     str = str.Substring(1);
                     temp = "";
                 }

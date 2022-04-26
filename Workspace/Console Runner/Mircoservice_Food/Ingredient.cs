@@ -31,9 +31,9 @@ public class Ingredient
         string strAlt = "\"IngredientAlternateName\": [";
         string strDesc = "\"IngredientDescription\": [";
 
-        strName += $"\"{IngredientName}\"";
-        strAlt += $"\"{AlternateName}\"";
-        strDesc += $"\"{IngredientDescription}\"";
+        strName += $"\"{IngredientName}\"]";
+        strAlt += $"\"{AlternateName}\"]";
+        strDesc += $"\"{IngredientDescription}\"]";
 
         return strName + ", " + strAlt + ", " + strDesc;
     }

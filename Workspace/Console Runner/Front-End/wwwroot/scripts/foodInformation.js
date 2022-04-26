@@ -6,7 +6,7 @@
     console.log(jsonConst.ProductName);
     var foodInfo = "";
     for (data in jsonConst) {
-        if (data != 'IngredientAlternateName' || data != 'IngredientDescription')
+        if (data != 'IngredientAlternateName' && data != 'IngredientDescription')
             foodInfo += data + ": " + jsonConst[data] + "\n";
     }
     document.getElementById("info").innerText = foodInfo;

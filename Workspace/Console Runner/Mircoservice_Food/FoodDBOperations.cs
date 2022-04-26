@@ -141,6 +141,7 @@ namespace Console_Runner.FoodService
         {
             try
             {
+                Console.WriteLine("ADDIGN TO DB");
                 await _foodItemAccess.AddFoodItemAsync(foodItem);
                 nutritionLabel.Barcode = foodItem.Barcode;
                 await _foodItemAccess.AddNutritionLabelAsync(nutritionLabel);
@@ -164,9 +165,11 @@ namespace Console_Runner.FoodService
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.Data, DateTime.Now,
                             $"Added product \"{foodItem.ProductName}\"");
                 }
+                Console.WriteLine("ADDED TO DB");
                 return true;
             }catch (Exception ex)
             {
+                Console.WriteLine(ex);
                 return false;
             }
         }

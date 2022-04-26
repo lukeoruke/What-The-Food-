@@ -1,5 +1,4 @@
-﻿var tryingNextPage = false;
-var page = 0;
+﻿var page = 0;
 var getFoodFailed = false;
 
 
@@ -14,13 +13,14 @@ function displayFoods(foodList) {
 
     //gets the names of each ingredient
     for (data in foodList) {
-        var item = document.createElement("a");
+        var itemDiv = document.createElement("div");
+        var anchor = document.createElement("a");
         // TODO: modify to whatthefood for deployment?
-        item.href = "http://localhost:49202/api/GetUpdatesFromBarcode?barcode=" + foodList[data].Barcode;
+        anchor.href = "http://localhost:49202/api/GetUpdatesFromBarcode?barcode=" + foodList[data].Barcode;
         var name = document.createTextNode(foodList[data].ProductName);
-        item.appendChild(name);
-        item.appendChild(document.createElement("br"));
-        document.getElementById('container').appendChild(item);
+        anchor.appendChild(name);
+        itemDiv.appendChild(anchor);
+        document.getElementById('container').appendChild(itemDiv);
     }
 }
 
@@ -45,7 +45,6 @@ function processUpdateList(jsonData) {
 //used to navigate forward through lists of ingredients or flags
 async function loadNextPage(e) {
     e.preventDefault();
-    tryingNextPage = true;
     page++;
     const foods = await getFoods();
     if (getFoodFailed) {
@@ -59,13 +58,12 @@ async function loadNextPage(e) {
 
 function undoNextPage() {
     page--;
-    alert("Could not reach the desired page.");
+    pageAlert("Could not reach the desired page.");
 }
 
 //used to navigate backwards through lists of ingredients or flags
 async function loadPreviousPage(e) {
     e.preventDefault();
-    tryingNextPage = false;
     if (page > 0) {
         page--;
         var foods = await getFoods();
@@ -78,13 +76,13 @@ async function loadPreviousPage(e) {
         }
     }
     else {
-        alert("There are no more previous pages.");
+        pageAlert("There are no more previous pages.");
     }
 }
 
 function undoPreviousPage() {
     page++;
-    alert("Could not reach the desired page.");
+    pageAlert("Could not reach the desired page.");
 }
 
 //Deletes the current Data being displayed on the page
@@ -94,4 +92,12 @@ function deleteCurrentData() {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
+}
+
+function pageAlert(message) {
+    document.getElementById('pageAlert').innerHTML = message;
+}
+
+function getUpdates(barcode) {
+
 }

@@ -30,19 +30,23 @@ namespace Mircoservice_Food.Controllers
             int userId = 0;// NEED TO GET USER ID
             
             
-
+            //Request formData from the JS file
             IFormCollection formData = Request.Form;
 
+            //Displays
             Console.WriteLine(formData["gender"]);
             Console.WriteLine(formData["weight"]);
             Console.WriteLine(formData["height"]);
             Console.WriteLine(formData["age"]);
             Console.WriteLine(formData["activity"]);
 
+            //Converts the data variable to a either an int or float
             int amrWeight = Convert.ToInt32(formData["weight"]);
             float amrHeight = float.Parse(formData["height"], System.Globalization.CultureInfo.InvariantCulture);
             int amrAge = Convert.ToInt32(formData["age"]);
 
+
+            //switch cases to check what activity was selected and then declares
             ActivityLevel userActivity = ActivityLevel.None;
             switch (formData["activity"])
             {

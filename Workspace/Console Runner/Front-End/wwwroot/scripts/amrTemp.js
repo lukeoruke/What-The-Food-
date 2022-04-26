@@ -68,10 +68,12 @@ async function activityCheck(activity) {
 
 }
 
+
+/// Enum that reflects the five levels of activity used in calculating AMR according to https://www.verywellfit.com/how-many-calories-do-i-need-each-day-2506873.
+/// kg and cm conversions are referenced to https://www.metric-conversions.org/weight/pounds-to-kilograms.htm
+
 async function calculate(gender, weight, height, age, activity) {
-
     
-
     //converts to float
 
     var userWeight = parseFloat(weight) / 2.2; //coverts lb to kg

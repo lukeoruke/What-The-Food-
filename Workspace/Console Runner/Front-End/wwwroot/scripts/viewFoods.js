@@ -14,7 +14,8 @@ function displayFoods(foodList) {
     //gets the names of each ingredient
     for (data in foodList) {
         var itemDiv = document.createElement("div");
-        itemDiv.id = foodList[data].Barcode;
+        itemDiv.id = foodList[data].Barcode.toString();
+        itemDiv.classList.add('foodItemEntry');
         var text = document.createElement("p");
         text.setAttribute("onclick", `getAndDisplayUpdates('${foodList[data].Barcode}');`);
         var name = document.createTextNode(foodList[data].ProductName);

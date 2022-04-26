@@ -31,7 +31,7 @@ namespace Microservice_Food
         /// </summary>
         public ScanHelper()
         {
-            client = new HttpClient();
+            client = new HttpClient();  //will ddos system, don't create a new instance for each obj. Use pooled instance. It is an implicit dependency
             client.BaseAddress = new Uri(url);
             client.DefaultRequestHeaders.Add("apiKey", apiKey);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -75,8 +75,6 @@ namespace Microservice_Food
                     nutValues.ClearValues();
 
                     //make a new food object to be added to DB
-                    Console.WriteLine(food.subbrandName);
-                    Console.WriteLine(food.lowercaseDescription);
                     if (food.subbrandName == null)
                         newFood = new FoodItem(food.gtinUpc, food.lowercaseDescription, food.brandName, "");
                     else

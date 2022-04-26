@@ -1,4 +1,4 @@
-﻿using Console_Runner.AccountService;
+using Console_Runner.AccountService;
 using Console_Runner.FoodService;
 using Console_Runner.Logging;
 using Microservice_Food;
@@ -26,6 +26,7 @@ namespace Food.Controllers
         private AccountDBOperations _accountDBOperations;
         private string barcode;
         private List<Ingredient> flaggedIngredients = new();
+        private readonly IAMRGateway _amrGateway = new EFAMRGateway();
 
         /// <summary>
         /// HttpGet request for recieving a food product from a barcode
@@ -48,7 +49,8 @@ namespace Food.Controllers
 
             _foodDB = new FoodDBOperations(_foodServiceGateway); //dependency injection
 
-            _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            _foodDB = new FoodDBOperations(_foodServiceGateway);
+            _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amrGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
             logger.UserID = "placeholder";

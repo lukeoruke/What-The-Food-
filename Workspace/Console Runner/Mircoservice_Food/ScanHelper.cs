@@ -56,7 +56,6 @@ namespace Microservice_Food
             logger.UserID = "placeholder";
             logger.DefaultTimeOut = 5000;
 
-
             try
             {
                 FoodInfoJson queryResponse = await GET(barcode); //search barcode from FDC API
@@ -76,7 +75,12 @@ namespace Microservice_Food
                     nutValues.ClearValues();
 
                     //make a new food object to be added to DB
-                    newFood = new FoodItem(food.gtinUpc, food.subbrandName, food.brandName, "");
+                    Console.WriteLine(food.subbrandName);
+                    Console.WriteLine(food.lowercaseDescription);
+                    if (food.subbrandName == null)
+                        newFood = new FoodItem(food.gtinUpc, food.lowercaseDescription, food.brandName, "");
+                    else
+                        newFood = new FoodItem(food.gtinUpc, food.subbrandName, food.brandName, "");
 
                     //for this food item go through all nutrients and note what they are and what their values are
                     foreach (FoodNutrient nutrient in food.foodNutrients)
@@ -93,9 +97,8 @@ namespace Microservice_Food
 
                     //create new List<Ingredients> obj from values
                     List<Ingredient> newIngredients = StringToIngredients(food.ingredients);
-
                     //Add new food, ingredients, and label to DB
-                    await _foodDB.AddNewProductAsync(newFood, newLabel, newIngredients);
+                    await _foodDB.AddNewProductAsync(newFood, newLabel, newIngredients, logger);
                     /* 
                     Console.WriteLine(newFood.FormatJsonString());
                     Console.WriteLine(newLabel.FormatJsonString());
@@ -110,7 +113,7 @@ namespace Microservice_Food
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine(ex.Message);
                 return -1;
             }
         }
@@ -344,7 +347,7 @@ namespace Microservice_Food
     /// </summary>
     public class Food
     {
-        public string lowercasedescription { get; set; }
+        public string lowercaseDescription { get; set; }
         public string gtinUpc { get; set; }
         public string brandOwner { get; set; }
         public string brandName { get; set; }
@@ -356,7 +359,7 @@ namespace Microservice_Food
 
         override public string ToString()
         {
-            string str = lowercasedescription + " " +
+            string str = lowercaseDescription + " " +
                     gtinUpc + " " +
                     brandOwner + " " +
                     brandName + " " +

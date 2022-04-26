@@ -1,20 +1,19 @@
-﻿console.log("TOP OF FILE");
-var tryingNextPage = false;
+﻿var tryingNextPage = false;
 var page = 0;
 var getFoodFailed = false;
 
 
+async function pageLoad() {
+    const data = await getFoods();
+    displayFoods(data);
+}
+
 //Displays the page content with information recieved from a json that was kept in local storage
-function displayFoods() {
-    // TODO: modify to stop using localStorage
-    console.log(page);
-    var foodList = JSON.parse(localStorage.getItem('foodList'));
+function displayFoods(foodList) {
     deleteCurrentData();
 
     //gets the names of each ingredient
     for (data in foodList) {
-        console.log("inside displayFoods loop");
-        console.log(foodList[data].ProductName);
         var item = document.createElement("a");
         // TODO: modify to whatthefood for deployment?
         item.href = "http://localhost:49202/api/GetUpdatesFromBarcode?barcode=" + foodList[data].Barcode;
@@ -27,21 +26,17 @@ function displayFoods() {
 
 //gets the ingredients from the DB
 async function getFoods() {
-    console.log('getFoods page:' + page.toString());
-    await fetch('http://localhost:49202/api/ViewFoodItems?' + new URLSearchParams({
+    const response = await fetch('http://localhost:49202/api/ViewFoodItems?' + new URLSearchParams({
         pageno: page
-    }))
-        .then(response => { return response.json(); })
-        .then(async data => {
-            if (await data === undefined || data.length === 0) {
-                console.log('getfoodfailed');
-                console.log(JSON);
-                getFoodFailed = true;
-            }
-            else {
-                localStorage.setItem('foodList', JSON.stringify(data));
-            }
-        });
+    }));
+    const data = await response.json();
+    if (data === undefined || data.length === 0) {
+        getFoodFailed = true;
+        return Promise.resolve(null);
+    }
+    else {
+        return Promise.resolve(data);
+    }
 }
 
 function processUpdateList(jsonData) {
@@ -52,21 +47,19 @@ async function loadNextPage(e) {
     e.preventDefault();
     tryingNextPage = true;
     page++;
-    await getFoods();
+    const foods = await getFoods();
     if (getFoodFailed) {
         undoNextPage();
         getFoodFailed = false;
     }
     else {
-        displayFoods();
+        displayFoods(foods);
     }
 }
 
 function undoNextPage() {
-    console.log("page was" + page);
     page--;
     alert("Could not reach the desired page.");
-    console.log("page is now" + page);
 }
 
 //used to navigate backwards through lists of ingredients or flags
@@ -75,13 +68,13 @@ async function loadPreviousPage(e) {
     tryingNextPage = false;
     if (page > 0) {
         page--;
-        await getFoods();
+        var foods = await getFoods();
         if (getFoodFailed) {
             undoPreviousPage();
             getFoodFailed = false;
         }
         else {
-            displayFoods();
+            displayFoods(foods);
         }
     }
     else {

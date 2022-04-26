@@ -27,7 +27,7 @@ namespace Food.Controllers
             logger.DefaultTimeOut = 5000;
             try
             {
-                var foodList = await _foodDBOperations.GetNFoodItemsAsync(5*pageno, 5, logger);
+                var foodList = await _foodDBOperations.GetNFoodItemsAsync(1*pageno, 1, logger);
                 return JsonSerializer.Serialize(foodList);
             }
             catch (Exception ex)

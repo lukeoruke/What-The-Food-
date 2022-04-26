@@ -4,7 +4,7 @@ namespace Food.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GetProductRating : ControllerBase
+    public class GetProductRatingController : ControllerBase
     {
         static string productName = "";
 
@@ -18,7 +18,7 @@ namespace Food.Controllers
             char halfStar = '⯪';
             char emptyStar = '☆';
             double rating = Math.Round(double.Parse(totalRatings[0]) * 2) / 2;
-            starRating = new string(star, (int) rating);
+            starRating = new string(star, (int)rating);
 
             if (rating % 1 != 0)
             {
@@ -29,17 +29,14 @@ namespace Food.Controllers
             {
                 starRating += new string(emptyStar, 5 - starRating.Length);
             }
-            try {
-                string jsonStr = "{\"starRating\":\"" + starRating + "\", " + "\"rating\":\"" + totalRatings[0] +  "\", " + "\"ratingCount\":\"" + totalRatings[1] + "\"}";
-                Console.WriteLine(jsonStr);
 
-                return jsonStr;
-            } catch (Exception e)
-            {
-                return "bye";
-            }
+            string jsonStr = "{\"starRating\":\"" + starRating + "\", " + "\"rating\":\"" + totalRatings[0] + "\", " + "\"ratingCount\":\"" + totalRatings[1] + "\"}";
+            Console.WriteLine(jsonStr);
+
+            return jsonStr;
         }
 
+        // Scrape ratings from external sites and average them
         [NonAction]
         public async Task<string[]> Scrape()
         {
@@ -77,25 +74,24 @@ namespace Food.Controllers
             }
         }
 
+        // Function to get ratings of product from Amazon
         [NonAction]
         public async Task<string[]> getAmazonRatings(String productName, HttpClient client)
         {
             string[] ratings = new string[2];
-            // Call asynchronous network methods in a try/catch block to handle exceptions.
+            // Call asynchronous network methods in a try/catch block to handle exceptions
             try
             {
+                // Connect to external site
                 String url = "http://www.amazon.com/s?k=" + productName;
                 string responseBody = await client.GetStringAsync(url);
 
+                // Get product from search
                 int index = responseBody.IndexOf("data-component-type=\"s-search-result\"");
-
                 String asin = responseBody.Substring(index - 76, 10);
 
-
-                Console.WriteLine(asin);
-
+                // Get reviews from product
                 url = "https://www.amazon.com/gp/customer-reviews/widgets/average-customer-review/popover/ref=dpx_acr_pop_?&asin=" + asin;
-
                 responseBody = await client.GetStringAsync(url);
 
                 // Get product rating
@@ -121,8 +117,6 @@ namespace Food.Controllers
                 index = ratingCount.IndexOf(" ");
                 ratingCount = ratingCount.Substring(0, index);
                 ratings[1] = ratingCount;
-
-
             }
             catch (HttpRequestException e)
             {

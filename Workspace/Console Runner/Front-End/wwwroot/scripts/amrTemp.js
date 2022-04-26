@@ -4,20 +4,20 @@ async function sendAmrData(e) {
     e.preventDefault();
     console.log('Sending AMR Info');
 
-    /**
+    
     var gender = document.getElementById('gender').value;
     var weight = document.getElementById('weight').value;
     var height = document.getElementById('height').value;
     var age = document.getElementById('age').value;
     var activity = document.getElementById('activity').value;
-    **/
     
+    /**
     let gender = document.getElementById('gender').value;
     let weight = document.getElementById('weight').value;
     let height = document.getElementById('height').value;
     let age = document.getElementById('age').value;
     let activity = document.getElementById('activity').value;
-    
+    **/
 
     const formData = new FormData();
     formData.append('gender', gender);
@@ -32,15 +32,15 @@ async function sendAmrData(e) {
     console.log(age);
     console.log(activity);
 
-    
+    /**
     await fetch('http://localhost:49202/api/AddAMR', {
         method: 'POST',
         body: formData,
     }).then(function (response) {
         console.log(response.status); // returns 200;
     });
-
-    //calculate(gender, weight, height, age, activity);
+    **/
+    calculate(gender, weight, height, age, activity);
 }
 
 //function checks to see what activity was selecte and returns float value
@@ -73,6 +73,7 @@ async function calculate(gender, weight, height, age, activity) {
     
 
     //converts to float
+
     var userWeight = parseFloat(weight) / 2.2; //coverts lb to kg
     var userHeight = parseFloat(height) * 2.54; //converts inches to centimeters
     var userAge = parseFloat(age);
@@ -99,7 +100,7 @@ async function calculate(gender, weight, height, age, activity) {
     console.log("-------------------------");
     console.log('User AMR Value Calculated');
     console.log(amr.toFixed(2));
-    
+
 
 }
 

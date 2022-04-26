@@ -14,12 +14,12 @@ function displayFoods(foodList) {
     //gets the names of each ingredient
     for (data in foodList) {
         var itemDiv = document.createElement("div");
-        var anchor = document.createElement("a");
-        // TODO: modify to whatthefood for deployment?
-        anchor.href = "http://localhost:49202/api/GetUpdatesFromBarcode?barcode=" + foodList[data].Barcode;
+        itemDiv.id = foodList[data].Barcode;
+        var text = document.createElement("p");
+        text.setAttribute("onclick", `getAndDisplayUpdates('${foodList[data].Barcode}');`);
         var name = document.createTextNode(foodList[data].ProductName);
-        anchor.appendChild(name);
-        itemDiv.appendChild(anchor);
+        text.appendChild(name);
+        itemDiv.appendChild(text);
         document.getElementById('container').appendChild(itemDiv);
     }
 }
@@ -98,6 +98,17 @@ function pageAlert(message) {
     document.getElementById('pageAlert').innerHTML = message;
 }
 
-function getUpdates(barcode) {
-
+async function getAndDisplayUpdates(clickedDivId) {
+    const fetchData = await fetch("http://localhost:49202/api/GetUpdatesFromBarcode?" + new URLSearchParams({
+        barcode: clickedDivId
+    }));
+    const dataAsObject = await fetchData.json();
+    const message = document.createElement('p');
+    if (data === undefined || data.length === 0) {
+        message.innerHTML = 'No updates are available for this food item.';
+    }
+    else {
+        message.innerHTML = JSON.stringify(dataAsObject);
+    }
+    document.getElementById(clickedDivId).appendChild(message);
 }

@@ -9,7 +9,7 @@
 </head>
 
 
-<body onload="getFoods().then(displayFoods());">
+<body onload="getFoods(); displayFoods();">
     <div class="main">
         <a href="index.html"><img src="images/apple.png" alt="What The Food?!" width="200" height="200"></a>
         <header class="header">
@@ -20,16 +20,13 @@
                     <label id="submitSearch"></label>
 
                 </label>
-                <form id="searchType" class="form" onsubmit="searchButtonPressed(event); ">
-                    <input id="searchTypeLabel" class="input" type="submit" value="search" />
-                </form>
             </section>
             <div id="container"></div>
 
         </header>
 
     </div>
-    <form class="form" onsubmit="loadnextPage(event);">
+    <form class="form" onsubmit="loadNextPage(event);">
         <input class="input" type="submit" value="Next Page" />
     </form>
     <form class="form" onsubmit="loadPreviousPage(event);">

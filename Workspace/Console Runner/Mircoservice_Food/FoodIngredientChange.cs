@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Console_Runner.FoodService
@@ -31,10 +32,14 @@ namespace Console_Runner.FoodService
 
     public class IngredientUpdate
     {
+        [JsonIgnore]
         public FoodIngredientChange FoodIngredientChange { get; set; }
+        [JsonIgnore]
         public int FoodIngredientChangeId { get; set; }
+        [JsonIgnore]
         public Ingredient Ingredient { get; set; }
         public int IngredientId { get; set; }
+        public string IngredientName { get; set; }
         public bool IsAdded { get; set; }
 
         public IngredientUpdate()
@@ -45,6 +50,7 @@ namespace Console_Runner.FoodService
         {
             FoodIngredientChange = foodIngredientChange;
             Ingredient = ingredient;
+            IngredientName = ingredient.IngredientName;
             IsAdded = isAdded;
         }
     }

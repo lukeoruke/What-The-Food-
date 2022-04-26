@@ -22,8 +22,14 @@ namespace Food.Controllers
 
             await logService.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Info, Category.Business, DateTime.Now,
                 $"Received request from {logService.UserID} to get all updates for food item {barcode}.");
+
+            // JsonSerializer.Serialize only encodes base type properties, so...
             List<FoodUpdate> updates = await foodService.GetAllUpdatesForBarcodeAsync(barcode, logService);
-            return JsonSerializer.Serialize(updates);
+            updates.ForEach(update => Console.WriteLine(JsonSerializer.Serialize(update, update.GetType())));
+            List<string> jsonList = updates.ConvertAll<string>(update => $"{{ \"UpdateType\" :\"{update.GetType().Name}\",\"UpdateInfo\" :" + JsonSerializer.Serialize(update, update.GetType()) + " }");
+            string finalString = "[ " + string.Join(",", jsonList) + " ]";
+            Console.WriteLine(finalString);
+            return finalString;
         }
     }
 }

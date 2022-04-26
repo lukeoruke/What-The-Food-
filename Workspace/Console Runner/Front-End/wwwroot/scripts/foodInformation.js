@@ -10,7 +10,7 @@
             foodInfo += data + ": " + jsonConst[data] + "\n";
     }
     document.getElementById("info").innerText = foodInfo;
-    document.getElementById("foodName").innerText = jsonConst.ProductName;
+    document.getElementById("foodName").innerText = jsonConst.ProductName + jsonConst.CompanyName;
     document.getElementById("barcodeNumber").innerText = jsonConst.Barcode;
     //document.getElementById("flaggedItems").innerText = jsonConst.Barcode;
 }

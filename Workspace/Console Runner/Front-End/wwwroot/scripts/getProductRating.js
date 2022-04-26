@@ -1,11 +1,10 @@
-﻿async function scrapeRatings() {
+﻿// Function to send foodName to the back-end
+async function postFoodName() {
     console.log('Attempting to get product rating...');
     let foodName = document.getElementById('foodName').innerText;
     const formData = new FormData();
     formData.append('foodName', foodName);
-    //JSON.stringify(formData);
     console.log(foodName);
-
 
     // HTTP Post Request
     await fetch('http://47.151.24.23:49202/api/GetProductRating', {
@@ -16,13 +15,9 @@
     });
 }
 
+// Function to receive the productRating from the back-end
 async function getProductRating(e) {
     e.preventDefault();
-
-    // HTTP Get Request
-    await fetch('http://47.151.24.23:49202/api/GetFoodProductFromBarCode?' + '1111')
-        .then(async response => console.log(JSON.stringify(await response.json())))
-        .then(data => console.log(data));
 
     let rating;
     // HTTP Get Request
@@ -31,14 +26,8 @@ async function getProductRating(e) {
             rating = JSON.stringify(await response.json())
             const jsonConst = JSON.parse(rating);
             console.log(jsonConst);
-            console.log(jsonConst.starRating);
-            console.log(jsonConst.rating);
-            console.log(jsonConst.ratingCount);
             rating = 'Rating: ' + jsonConst.starRating + ' (' + jsonConst.rating + ') ' + jsonConst.ratingCount + ' ratings';
+            console.log(jsonConst.ratingCount);
             document.getElementById("rating").innerText = rating;
-
         });
-
-
-
 }

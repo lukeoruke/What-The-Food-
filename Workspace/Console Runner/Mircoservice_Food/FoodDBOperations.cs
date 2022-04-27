@@ -271,6 +271,10 @@ namespace Console_Runner.FoodService
         /// <returns>True if the FoodUpdate was successfully added to the database.</returns>
         public async Task<bool> AddFoodUpdateAsync(FoodUpdate foodUpdate, LogService? logService = null)
         {
+            if (foodUpdate.GetType() == typeof(FoodUpdate))
+            {
+                throw new ArgumentException($"{nameof(foodUpdate)} is a FoodUpdate and not a derived type.");
+            }
             await _foodUpdateGateway.AddAsync(foodUpdate, logService);
             if (logService?.UserID != null)
             {

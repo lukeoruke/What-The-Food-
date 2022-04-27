@@ -8,7 +8,7 @@ const APIHEALTH = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=s
 let array = [];
 //the level of which we want to display health realted news
 let healthFilterLevel = getHealthFilter();
-await pickCategory();
+pickCategory();
 
 /**
  * Select the category of news that will be catered towards the user

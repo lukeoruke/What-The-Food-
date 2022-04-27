@@ -7,13 +7,13 @@ const APIHEALTH = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=s
 //Create a global variable which will store all News
 let array = [];
 //the level of which we want to display health realted news
-let healthFilterLevel = 0;
-getHealthFilter();
-pickCategory();
+healthFilterLevel = 0;
+getHealthFilter().then(pickCategory);
 /**
  * Select the category of news that will be catered towards the user
  */
 async function pickCategory() {
+    console.log('inside pickCategory, healthFilterlevel is: ' + healthFilterLevel);
     //if they have no personalization, display food news as default
     //else display personzalized news based on user preference
     if (healthFilterLevel == 0 ) {
@@ -191,8 +191,7 @@ async function getHealthFilter() {
     //get response body as text
     const data = await response.text();
     healthFilterLevel = data;
-    console.log();
-    console.log("GOT " + data);
+    console.log("healthFilterLevel is now " + healthFilterLevel);
 }
 /**
  * Change user preference to have more Health News

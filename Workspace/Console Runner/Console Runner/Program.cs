@@ -14,7 +14,7 @@ async static void Main()
 }
 
 
-/*Console.WriteLine("Program running...");
+Console.WriteLine("Program running...");
 LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
 logger.DefaultTimeOut = 5000;
 logger.UserID = "user";
@@ -25,10 +25,10 @@ FoodItem food3 = new FoodItem("athirdbarcode", "tea", "some dude", "link to pic"
 foodDBOperations.AddFoodItemAsync(food1, logger).Wait();
 foodDBOperations.AddFoodItemAsync(food2, logger).Wait();
 foodDBOperations.AddFoodItemAsync(food3, logger).Wait();
-await foodDBOperations.AddFoodUpdateAsync(new FoodIngredientChange(food1, DateTime.Now, "ing change for monster", new[] { new Ingredient("some ing", "whatt", "iunno") }, new[] { new Ingredient("removed ign", "????", "fuck") }), logger);
+await foodDBOperations.AddFoodUpdateAsync(new FoodIngredientChange(food1, DateTime.Now, "ing change for monster", new[] { new Ingredient("some ing", "whatt", "iunno") }, new[] { new Ingredient("removed ign", "????", "bad word") }), logger);
 await foodDBOperations.AddFoodUpdateAsync(new FoodRecall(food1, DateTime.Now, "sermonella", new[] { "location" }, new[] { 10 }, new[] { DateTime.Parse("2020-01-03") }), logger);
 await foodDBOperations.AddFoodUpdateAsync(new FoodRecall(food2, DateTime.Now, "norovirus!", new[] { "otherlocation" }, new int[0], new[] { DateTime.Parse("2020-01-23") }), logger);
-*/
+
 
 /*Console.WriteLine("Program running...");
 LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);

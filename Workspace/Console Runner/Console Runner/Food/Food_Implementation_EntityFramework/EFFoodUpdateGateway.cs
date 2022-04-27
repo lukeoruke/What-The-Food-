@@ -35,7 +35,7 @@ namespace Console_Runner.FoodService
             if(logService?.UserID != null)
             {
                 _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Data, DateTime.Now,
-                        $"Created {foodUpdate.GetType} FoodUpdate for FoodItem {foodUpdate.FoodItem.Barcode} to database.");
+                        $"Created {foodUpdate.GetType().Name} FoodUpdate for FoodItem {foodUpdate.FoodItem.Barcode} to database.");
             }
             return true;
         }

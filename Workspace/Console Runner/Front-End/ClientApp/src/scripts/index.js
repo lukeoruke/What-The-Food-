@@ -7,9 +7,9 @@ const APIHEALTH = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=s
 //Create a global variable which will store all News
 let array = [];
 //the level of which we want to display health realted news
-let healthFilterLevel = getHealthFilter();
+let healthFilterLevel = 0;
+getHealthFilter();
 pickCategory();
-
 /**
  * Select the category of news that will be catered towards the user
  */
@@ -142,20 +142,25 @@ async function displayNews() {
  */
 headlineText0.addEventListener("click", () => {
     getCategory(0)
+    alert();
 });
 
 headlineText1.addEventListener("click", () => {
     getCategory(1)
+    alert();
 });
 headlineText2.addEventListener("click", () => {
     getCategory(2)
+    alert();
 });
 
 headlineText3.addEventListener("click", () => {
     getCategory(3)
+    alert();
 });
 headlineText4.addEventListener("click", () => {
     getCategory(4)
+    alert();
 });
 
 /**
@@ -180,14 +185,14 @@ async function getCategory(index) {
 async function getHealthFilter() {
     //access the backend and increment
     //if the value is set at 4 already, then we do not need to increment it no more
-    let data = await fetch('http://localhost:49200/api/News', {
-        method: 'GET',
+    const response = await fetch('http://localhost:49200/api/News', {
+        method: 'GET'
     })
-    console.log(data.redirected);
-    if (data.redirected == false) {
-        console.log("ran here");
-        return 0;
-    }
+    //get response body as text
+    const data = await response.text();
+    healthFilterLevel = data;
+    console.log();
+    console.log("GOT " + data);
 }
 /**
  * Change user preference to have more Health News
@@ -197,9 +202,6 @@ async function incrementHealthFilter() {
     //if the value is set at 4 already, then we do not need to increment it no more
     let data = await fetch('http://localhost:49200/api/NewsIncrement', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        }
     })
     console.log("INCREMENTED");
 }

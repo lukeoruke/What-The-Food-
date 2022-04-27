@@ -23,6 +23,7 @@ namespace Food.Controllers
             catch (Exception e)
             {
                 throw new Exception("ERROR: unable to call GET method in newscontroller: " + e.Message);
+                return 0;
 
             }
 

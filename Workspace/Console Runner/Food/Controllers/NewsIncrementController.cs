@@ -17,7 +17,6 @@ namespace Food.Controllers
         {
             try
             {
-                Console.WriteLine("Ran in Increment Controller");
                 _dbOperations = new NewsDBOperations(efNews);
                 await _dbOperations.IncrementHealthNews(userID);
                 return true;

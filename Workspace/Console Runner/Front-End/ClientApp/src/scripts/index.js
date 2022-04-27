@@ -21,7 +21,7 @@ async function pickCategory() {
     }
     else {
         await storeHealthNews(healthFilterLevel);
-        await storeFoodNews(healthFilterLevel)
+        await storeFoodNews(healthFilterLevel);
     }
     //display news to homepage accordingly
     displayNews();
@@ -67,6 +67,8 @@ async function displayNews() {
         //manipulates the title of html/url
         a.innerText = array[index].headline.main;
         a.title = array[index].section_name;
+        //make tab open on new page
+        a.target = "_blank";
         //p stores a paragraph from document which is a JSON
         let p = document.createElement("p");
         //assign p to have the lead paragraph from JSON object
@@ -142,25 +144,20 @@ async function displayNews() {
  */
 headlineText0.addEventListener("click", () => {
     getCategory(0)
-    alert();
 });
 
 headlineText1.addEventListener("click", () => {
     getCategory(1)
-    alert();
 });
 headlineText2.addEventListener("click", () => {
     getCategory(2)
-    alert();
 });
 
 headlineText3.addEventListener("click", () => {
     getCategory(3)
-    alert();
 });
 headlineText4.addEventListener("click", () => {
     getCategory(4)
-    alert();
 });
 
 /**
@@ -169,13 +166,10 @@ headlineText4.addEventListener("click", () => {
  */
 async function getCategory(index) {
     var category = array[index].section_name;;
-    console.log(category);
     if (category == "Food") {
-        console.log("this is a food");
         decrementHealthFilter();
     }
     if (category == "Health") {
-        console.log("This is Health");
         incrementHealthFilter();
     }
 }
@@ -199,10 +193,9 @@ async function getHealthFilter() {
 async function incrementHealthFilter() {
     //access the backend and increment
     //if the value is set at 4 already, then we do not need to increment it no more
-    let data = await fetch('http://localhost:49200/api/NewsIncrement', {
-        method: 'POST',
+    await fetch('http://localhost:49200/api/NewsIncrement', {
+        method: 'POST'
     })
-    console.log("INCREMENTED");
 }
 /**
  * Change user preference to have less Health News
@@ -211,8 +204,7 @@ async function decrementHealthFilter() {
     //access the backend and decrement
     //if the value is set at 0 already, then we do not need to increment it no more
     await fetch('http://localhost:49200/api/NewsDecrement', {
-        method: 'POST',
+        method: 'POST'
     })
-    console.log("DECREMENTED");
 }
 

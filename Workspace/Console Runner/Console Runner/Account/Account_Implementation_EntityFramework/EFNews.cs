@@ -22,27 +22,30 @@ namespace Console_Runner.AccountService
             try
             {
                 //Find and assign instance of userID within database
-                Account temp = _efContext.Accounts.Where(a => a.UserID == userID).FirstOrDefault();
-                if (temp == null)
+                Account acc = _efContext.Accounts.Where(a => a.UserID == userID).FirstOrDefault();
+                Console.WriteLine("NEWS BIAS AT " + acc.NewsBias + "\n");
+                Console.Write("Ran in decrement Bias \n");
+                if (acc == null)
                 {
                     throw new Exception("ERROR: temp is null in decrementBias from EFNews");
                 }
-                if (temp.NewsBias >= 0)
+                if (acc.NewsBias > 1)
                 {
-                    temp.NewsBias = temp.NewsBias - 1;
-                    _efContext.Update(temp.NewsBias);
-                    _efContext.Accounts.Update(temp);
+                    acc.NewsBias = acc.NewsBias - 1;
+                    Console.Write("Bias after decrement value: " + acc.NewsBias +"\n"); ;
+                    _efContext.Accounts.Update(acc);
                     await _efContext.SaveChangesAsync(); //await so that all changes can be made before saving
                     return true;
                 }
                 else
                 {
+                    Console.WriteLine("Did not update because it is at min \n");
                     return false;
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("ERROR IN EFNEWS Decrement" +e.Message);
                 return false;
             }
 
@@ -53,27 +56,30 @@ namespace Console_Runner.AccountService
             try
             {
                 //Find and assign instance of userID within database
-                Account temp = _efContext.Accounts.Where(a => a.UserID == userID).FirstOrDefault();
-                if(temp == null)
+                Account acc = _efContext.Accounts.Where(a => a.UserID == userID).FirstOrDefault();
+                Console.WriteLine("NEWS BIAS AT " + acc.NewsBias + "\n");
+                Console.Write("Ran in increment Bias \n");
+                if (acc == null)
                 {
                     throw new Exception("ERROR: temp is null in incrementBias from EFNews");
                 }
-                if (temp.NewsBias <= 4)
+                if (acc.NewsBias < 4)
                 {
-                    temp.NewsBias = temp.NewsBias + 1;
-                    _efContext.Update(temp.NewsBias);
-                    _efContext.Accounts.Update(temp);
+                    acc.NewsBias = acc.NewsBias + 1;
+                    Console.Write("Bias after increment value: " + acc.NewsBias +"\n");;
+                    _efContext.Accounts.Update(acc);
                     await _efContext.SaveChangesAsync(); //await so that all changes can be made before saving
                     return true;
                 }
                 else
                 {
+                    Console.WriteLine("Did not update because it is at max \n");
                     return false;
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine("ERROR IN EFNEWS Increment:"+ e.Message);
                 return false;
             }
 

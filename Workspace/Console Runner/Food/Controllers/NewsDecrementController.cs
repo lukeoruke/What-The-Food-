@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Food.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class NewsDecrementController : Controller
     {
         private readonly IAccountNews efNews = new EFNews();
@@ -15,6 +17,7 @@ namespace Food.Controllers
         {
             try
             {
+                Console.WriteLine("ran in decrement controller");
                 _dbOperations = new NewsDBOperations(efNews);
                 await _dbOperations.DecrementHealthNews(userID);
                 return true;

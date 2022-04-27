@@ -16,7 +16,7 @@ namespace Console_Runner.FoodService
         {
         }
 
-        public FoodRecall(FoodItem foodItem, DateTime updateTime, string message, 
+        public FoodRecall(FoodItem foodItem, DateOnly updateTime, string message,
             IEnumerable<string> locations, IEnumerable<int> lotNumbers, IEnumerable<DateTime> expirationDates) : base(foodItem, updateTime, message)
         {
             if(locations.Count() > 0 || lotNumbers.Count() > 0 || expirationDates.Count() > 0)

@@ -15,7 +15,7 @@ namespace Console_Runner.FoodService
         public FoodItem FoodItem { get; set; }
         [JsonIgnore]
         public string FoodItemBarcode { get; set; }
-        public DateTime UpdateTime { get; set; }
+        public DateOnly UpdateTime { get; set; }
         public string Message { get; set; }
 
         public FoodUpdate()
@@ -23,11 +23,11 @@ namespace Console_Runner.FoodService
 
         }
 
-        public FoodUpdate(FoodItem foodItem, DateTime updateTime, string message)
+        public FoodUpdate(FoodItem foodItem, DateOnly updateTime, string message)
         {
             FoodItem = foodItem;
             FoodItemBarcode = foodItem.Barcode;
-            UpdateTime = updateTime.Date;
+            UpdateTime = updateTime;
             Message = message;
         }
     }

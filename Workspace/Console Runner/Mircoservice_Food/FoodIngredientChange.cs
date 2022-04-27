@@ -15,7 +15,7 @@ namespace Console_Runner.FoodService
 
         }
 
-        public FoodIngredientChange(FoodItem foodItem, DateTime updateTime, string message, IEnumerable<Ingredient> addedIngredients, IEnumerable<Ingredient> removedIngredients)
+        public FoodIngredientChange(FoodItem foodItem, DateOnly updateTime, string message, IEnumerable<Ingredient> addedIngredients, IEnumerable<Ingredient> removedIngredients)
             : base(foodItem, updateTime, message)
         {
             IngredientUpdates = new();
@@ -23,7 +23,7 @@ namespace Console_Runner.FoodService
             IngredientUpdates.AddRange(removedIngredients.ToList().ConvertAll(ing => new IngredientUpdate(this, ing, false)));
         }
 
-        public FoodIngredientChange(FoodItem foodItem, DateTime updateTime, string message, IEnumerable<IngredientUpdate> ingredientUpdates)
+        public FoodIngredientChange(FoodItem foodItem, DateOnly updateTime, string message, IEnumerable<IngredientUpdate> ingredientUpdates)
             : base(foodItem, updateTime, message)
         {
             IngredientUpdates = ingredientUpdates.ToList();

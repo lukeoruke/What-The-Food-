@@ -1,8 +1,7 @@
-﻿using Console_Runner.AccountService;
-using Console_Runner.FoodService;
-using Console_Runner.Logging;
+﻿using Console_Runner.FoodService;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using Food.Executables;
 
 namespace Food.Controllers
 
@@ -12,28 +11,36 @@ namespace Food.Controllers
     [ApiController]
     public class GetFoodProductFromBarCodeController : ControllerBase
     {
+        private ScanHelper FDC = new ScanHelper();
         private const string UM_CATEGORY = "Data Store";
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();
         private readonly IFoodUpdateGateway _foodUpdateGateway = new EFFoodUpdateGateway();
         private FoodDBOperations _foodDB;
         private IFormCollection formData;
-        private readonly IAccountGateway _accountAccess = new EFAccountGateway();
-        private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
-        private readonly IFlagGateway _flagGateway = new EFFlagGateway();
-        private AccountDBOperations _accountDBOperations;
         private string barcode;
-        private List<Ingredient> flaggedIngredients = new();
-
-
+      
+        /// <summary>
+        /// HttpGet request for recieving a food product from a barcode
+        /// </summary>
+        /// <returns>a string formatted as a Json object</returns>
         [HttpGet]
         public async Task<ActionResult<string>> GET()
         {
+<<<<<<< HEAD
+=======
+            Console.WriteLine("This is the start of Get Req");
+            //get request info and format it
+>>>>>>> News-Branch-Final
             barcode = Request.QueryString.Value;
             barcode = barcode.Substring(1);
-            List<Ingredient> ingredients = new();
+
+
+            //creation of foodDB objs
+            List<Ingredient> ingredients = new(); //ASK MATT ABOUT THIS
             FoodItem foodItem;
             NutritionLabel label;
 
+<<<<<<< HEAD
 
             _foodDB = new FoodDBOperations(_foodServiceGateway, _foodUpdateGateway);
             _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
@@ -51,19 +58,45 @@ namespace Food.Controllers
                 List<FoodFlag> flags = await _accountDBOperations.GetAllAccountFlagsAsync(userID, logger);
                
                 for( int i = 0; i < flags.Count; i++)
+=======
+            _foodDB = new FoodDBOperations(_foodServiceGateway); //dependency injection
+
+            try
+            {
+                Console.WriteLine("GET " + barcode);
+
+                //try to get the food item from our own DB
+                foodItem = await _foodDB.GetScannedItemAsync(barcode);
+
+                if(foodItem == null)    //if the food item doesn't exist in our DB, attempt to add it to the DB
+>>>>>>> News-Branch-Final
                 {
-                    for(int j = 0; j < ingredients.Count; j++)
+                    int response = await FDC.SearchAndAdd(barcode); //call to ScanHelper.cs
+                    Console.WriteLine("Returning get from wrapper " + response);
+
+                    if (response == 1)
                     {
-                        if(flags[i].IngredientID == ingredients[j].IngredientID)
+                        foodItem = await _foodDB.GetScannedItemAsync(barcode);
+
+                        if (foodItem == null)
                         {
-                            flaggedIngredients.Add(ingredients[j]);
-                            Console.WriteLine(ingredients[j].IngredientName);
+                            return "No Corresponding UPC";
                         }
+                    }
+                    else if (response == 0)
+                    {
+                        return "Invalid Input";
+                    }
+                    else if (response == -1)
+                    {
+                        return "An Error With The Scan Has Occured";
                     }
                 }
                 
-                label = await _foodDB.GetNutritionLabelAsync(barcode, logger);
-                List<(Nutrient, float)> nutrientListTuple = await _foodDB.GetNutrientListForUserDisplayAsync(barcode, logger);
+                //Fetch information from the DB of a given barcode
+                ingredients = await _foodDB.GetIngredientsListAsync(barcode);
+                label = await _foodDB.GetNutritionLabelAsync(barcode);
+                List<(Nutrient, float)> nutrientListTuple = await _foodDB.GetNutrientListForUserDisplayAsync(barcode);
                 List<Nutrient> nutrientList = new();
                 for (int i = 0; i < nutrientListTuple.Count; i++)
                 {
@@ -71,30 +104,29 @@ namespace Food.Controllers
                     nutrientList.Add(nutrientListTuple[i].Item1);
                 }
 
+                //Begin formatting Json string response
                 string jsonStr = "{";
                 string foodItemStr = foodItem.FormatJsonString();
                 
-                //nutrientList = _foodDB.get
+                //nutrientList = _foodDB.get ASK MATT ABOUT THIS
                 string labelStr = label.FormatJsonString();
-                string ingredientsStr = FormatIngredientsJsonString(ingredients);
+                string ingredientsStr = FDC.FormatIngredientsJsonString(ingredients);
 
                 jsonStr += foodItemStr + ", " + labelStr + ", " + ingredientsStr + "}";
 
-
-
                 return jsonStr;
+
             }catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 return "BIG OL FAIL";
             }
-
-            //return await _foodDB.GetScannedItemAsync(barcode); unsure if we will need this later
         }
 
         [HttpPost]
         public async void Post()
         {
+<<<<<<< HEAD
  
         }
 
@@ -150,6 +182,8 @@ namespace Food.Controllers
                 return strNameList + ", " + strAltList + ", " + strDescList + ", " + flaggedItemList;
             }
             
+=======
+>>>>>>> News-Branch-Final
         }
     }
 }

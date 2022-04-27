@@ -1,4 +1,4 @@
-﻿console.log("TOP OF FILE");
+﻿
 var checkBoxList = [];
 var getIDs = [];
 var searching = false;
@@ -6,14 +6,25 @@ var search;
 var page = "0";
 var currentPage = "default";
 
+<<<<<<< HEAD:Workspace/Console Runner/Front-End/wwwroot/scripts/addNewFlag.js
 //Initalization of the page, creates the various check boxes and populates the information
 async function addFlagCheckBoxes() {
+=======
+//inital function call to set up the page
+async function addFlagCheckBoxes() {
+
+    await getIngs();
+>>>>>>> News-Branch-Final:Workspace/Console Runner/Front-End/ClientApp/src/scripts/addNewFlag.js
 
     await getIngs();
     displayIngs();
 }
 
+<<<<<<< HEAD:Workspace/Console Runner/Front-End/wwwroot/scripts/addNewFlag.js
 //Displays the page content with information recieved from a json that was kept in local storage
+=======
+//displays whatever the current ingredient names saved in localstorage are
+>>>>>>> News-Branch-Final:Workspace/Console Runner/Front-End/ClientApp/src/scripts/addNewFlag.js
 function displayIngs() {
 
     var jsonData = localStorage.getItem('allIngredients');
@@ -25,7 +36,14 @@ function displayIngs() {
     getIDs = jsonConst.IngredientID;
 
 
+<<<<<<< HEAD:Workspace/Console Runner/Front-End/wwwroot/scripts/addNewFlag.js
     //gets the names of each ingredient
+=======
+ 
+
+
+
+>>>>>>> News-Branch-Final:Workspace/Console Runner/Front-End/ClientApp/src/scripts/addNewFlag.js
     for (data in getNames) {
 
 
@@ -53,7 +71,11 @@ function displayIngs() {
     }
 }
 
+<<<<<<< HEAD:Workspace/Console Runner/Front-End/wwwroot/scripts/addNewFlag.js
 //gets the ingredients from the DB
+=======
+//Gets ingredients from the DB 
+>>>>>>> News-Branch-Final:Workspace/Console Runner/Front-End/ClientApp/src/scripts/addNewFlag.js
 async function getIngs() {
 
     await fetch('http://47.151.24.23:49202/api/GetNIngredients?' + page)
@@ -67,7 +89,11 @@ async function getUserFlagButtonPressed(e) {
     getUserFlags(e);
 }
 
+<<<<<<< HEAD:Workspace/Console Runner/Front-End/wwwroot/scripts/addNewFlag.js
 //retrieves the flags associated with our current user
+=======
+//gets user flags from the DB
+>>>>>>> News-Branch-Final:Workspace/Console Runner/Front-End/ClientApp/src/scripts/addNewFlag.js
 async function getUserFlags(e) {
     e.preventDefault();
    
@@ -97,8 +123,12 @@ async function getUserFlags(e) {
     displayIngs();
 
 }
+<<<<<<< HEAD:Workspace/Console Runner/Front-End/wwwroot/scripts/addNewFlag.js
 
 //Uses a user provided string as a search param to look through the users flags
+=======
+//searchs for a specific flag associated with an account
+>>>>>>> News-Branch-Final:Workspace/Console Runner/Front-End/ClientApp/src/scripts/addNewFlag.js
 async function searchAccountFlags(e) {
     e.preventDefault();
     try {
@@ -106,10 +136,14 @@ async function searchAccountFlags(e) {
         currentPage = "searchFlags";
         let search = document.getElementById('search').value;
 
+<<<<<<< HEAD:Workspace/Console Runner/Front-End/wwwroot/scripts/addNewFlag.js
         await fetch('http://47.151.24.23:49202/api/GetAccountFlagBySearch?' + search + "?" + page)
+=======
+        await fetch('http://localhost:49200/api/GetAccountFlagBySearch?' + search + "?" + page)
+>>>>>>> News-Branch-Final:Workspace/Console Runner/Front-End/ClientApp/src/scripts/addNewFlag.js
             .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
             .then(data => console.log(data));
-        console.log("made it to the otherside of searchAccountFlags");
+
 
         displayIngs();
     } catch (ex) {
@@ -118,8 +152,12 @@ async function searchAccountFlags(e) {
     }
 
 }
+<<<<<<< HEAD:Workspace/Console Runner/Front-End/wwwroot/scripts/addNewFlag.js
 
 //uses a user provided string to search through ingredients
+=======
+//searches for a specifc ingredient by name
+>>>>>>> News-Branch-Final:Workspace/Console Runner/Front-End/ClientApp/src/scripts/addNewFlag.js
 async function searchIngs(e) {
     e.preventDefault();
     
@@ -183,7 +221,11 @@ async function updateFlagsButtonPressed(e) {
     }
 }
 
+<<<<<<< HEAD:Workspace/Console Runner/Front-End/wwwroot/scripts/addNewFlag.js
 //adds flag(s) to the db
+=======
+//adds a new flag to the db
+>>>>>>> News-Branch-Final:Workspace/Console Runner/Front-End/ClientApp/src/scripts/addNewFlag.js
 async function sendNewFlag(e) {
     e.preventDefault();
 
@@ -210,8 +252,12 @@ async function sendNewFlag(e) {
     })
 
 }
+<<<<<<< HEAD:Workspace/Console Runner/Front-End/wwwroot/scripts/addNewFlag.js
 
 //removes flag(s) from the db
+=======
+//remvoes a flag from the db
+>>>>>>> News-Branch-Final:Workspace/Console Runner/Front-End/ClientApp/src/scripts/addNewFlag.js
 async function removeFlag(e) {
     e.preventDefault();
 
@@ -241,7 +287,11 @@ async function removeFlag(e) {
 }
 
 
+<<<<<<< HEAD:Workspace/Console Runner/Front-End/wwwroot/scripts/addNewFlag.js
 //Deletes the current Data being displayed on the page
+=======
+//removes the currently displayed data from the page
+>>>>>>> News-Branch-Final:Workspace/Console Runner/Front-End/ClientApp/src/scripts/addNewFlag.js
 function deleteCurrentData() {
 
     var parent = document.getElementById('container');

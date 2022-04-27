@@ -35,7 +35,7 @@ namespace Food.Controllers
 
                 for (int i = 0; i < ingsId.Length; i++)
                 {
-                    Console.WriteLine(ingsId[i]);
+
                     await _accountDBOperations.RemoveFoodFlagAsync(userId, int.Parse(ingsId[i]), logger);
                 }
             }

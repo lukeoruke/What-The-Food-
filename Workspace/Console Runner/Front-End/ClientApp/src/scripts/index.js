@@ -8,14 +8,18 @@ const APIHEALTH = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=s
 let array = [];
 //the level of which we want to display health realted news
 let healthFilterLevel = 0;
-getHealthFilter();
-pickCategory();
+getHealthFilter().then(pickCategory());
+
+console.log(healthFilterLevel);
+
 /**
  * Select the category of news that will be catered towards the user
  */
 async function pickCategory() {
     //if they have no personalization, display food news as default
     //else display personzalized news based on user preference
+
+    console.log(healthFilterLevel + " RAN HERE");
     if (healthFilterLevel == 0 ) {
         await storeFoodNews(0);
     }
@@ -190,7 +194,7 @@ async function getHealthFilter() {
     })
     //get response body as text
     const data = await response.text();
-    healthFilterLevel = data;
+    healthFilterLevel = await data;
     console.log();
     console.log("GOT " + data);
 }

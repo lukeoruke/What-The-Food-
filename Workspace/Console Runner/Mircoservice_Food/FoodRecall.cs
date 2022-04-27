@@ -16,12 +16,11 @@ namespace Console_Runner.FoodService
         {
         }
 
-        public FoodRecall(FoodItem foodItem, DateTime updateTime, string message,
-            string reason, IEnumerable<string> locations, IEnumerable<int> lotNumbers, IEnumerable<DateTime> expirationDates) : base(foodItem, updateTime, message)
+        public FoodRecall(FoodItem foodItem, DateTime updateTime, string message, 
+            IEnumerable<string> locations, IEnumerable<int> lotNumbers, IEnumerable<DateTime> expirationDates) : base(foodItem, updateTime, message)
         {
             if(locations.Count() > 0 || lotNumbers.Count() > 0 || expirationDates.Count() > 0)
             {
-                Reason = reason;
                 Locations = locations.ToList();
                 LotNumbers = lotNumbers.ToList();
                 ExpirationDates = expirationDates.ToList();

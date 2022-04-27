@@ -17,7 +17,12 @@ namespace Console_Runner.AccountService
         {
             _efContext = new ContextAccountDB();
         }
-        public async Task<bool> DecrementBias(int userID) //Look up async and task
+        /// <summary>
+        /// Decrements the bias by accessing account's attribute
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>return true if bias is decremented properly</returns>
+        public async Task<bool> DecrementBias(int userID)
         {
             try
             {
@@ -25,11 +30,14 @@ namespace Console_Runner.AccountService
                 Account acc = _efContext.Accounts.Where(a => a.UserID == userID).FirstOrDefault();
                 Console.WriteLine("NEWS BIAS AT " + acc.NewsBias + "\n");
                 Console.Write("Ran in decrement Bias \n");
+                //if account is null throw an exception
                 if (acc == null)
                 {
-                    throw new Exception("ERROR: temp is null in decrementBias from EFNews");
+                    throw new Exception("ERROR: account is null in decrementBias from EFNews");
                 }
-                if (acc.NewsBias > 1)
+                //make sure we only decrement until 1 so that we can at least display 1 health news
+                var healthNewsMin = 1;
+                if (acc.NewsBias > healthNewsMin)
                 {
                     acc.NewsBias = acc.NewsBias - 1;
                     Console.Write("Bias after decrement value: " + acc.NewsBias +"\n"); ;
@@ -50,7 +58,11 @@ namespace Console_Runner.AccountService
             }
 
         }
-
+        /// <summary>
+        /// Increments the bias by accessing account's attribute
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>return true if bias is incremented properly</returns>
         public async Task<bool> IncrementBias(int userID)
         {
             try
@@ -59,11 +71,14 @@ namespace Console_Runner.AccountService
                 Account acc = _efContext.Accounts.Where(a => a.UserID == userID).FirstOrDefault();
                 Console.WriteLine("NEWS BIAS AT " + acc.NewsBias + "\n");
                 Console.Write("Ran in increment Bias \n");
+                //if account is null throw an exception
                 if (acc == null)
                 {
-                    throw new Exception("ERROR: temp is null in incrementBias from EFNews");
+                    throw new Exception("ERROR: account is null in incrementBias from EFNews");
                 }
-                if (acc.NewsBias < 4)
+                var healthNewsMax = 4;
+                //Only incrememt news bias if it is not greater than 4 because we want to display at most 4 
+                if (acc.NewsBias < healthNewsMax)
                 {
                     acc.NewsBias = acc.NewsBias + 1;
                     Console.Write("Bias after increment value: " + acc.NewsBias +"\n");;
@@ -84,22 +99,27 @@ namespace Console_Runner.AccountService
             }
 
         }
-
+        /// <summary>
+        /// return the bias by accessing account's attribute
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns>returns the number of bias/health news that should be displayed</returns>
         public async Task<int> GetBias(int userID)
         {
             try
             {
                 //Find and assign instance of userID within database
                 Account temp = _efContext.Accounts.Where(a => a.UserID == userID).FirstOrDefault();
+                //if account is null throw an exception
                 if (temp == null)
                 {
-                    throw new Exception("ERROR: temp is null in incrementBias from EFNews");
+                    throw new Exception("ERROR: account is null in GetBias from EFNews");
                 }
                 return temp.NewsBias;
             }
             catch (Exception e)
             {
-                throw new Exception("ERROR: temp is null in getBias from EFNews: " + e.Message);
+                throw new Exception("ERROR: Failed in getBias from EFNews: " + e.Message);
             }
 
         }

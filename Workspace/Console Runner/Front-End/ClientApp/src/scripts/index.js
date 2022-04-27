@@ -13,7 +13,6 @@ getHealthFilter().then(pickCategory);
  * Select the category of news that will be catered towards the user
  */
 async function pickCategory() {
-    console.log('inside pickCategory, healthFilterlevel is: ' + healthFilterLevel);
     //if they have no personalization, display food news as default
     //else display personzalized news based on user preference
     if (healthFilterLevel == 0 ) {
@@ -89,56 +88,6 @@ async function displayNews() {
     }
 }
 
-//async function test() {
-//    console.log("ran in test");
-//    console.log(array[0]);
-//    for (let x = 0; x < 5; x++) {
-//        console.log(array[x].headline);
-//        console.log("INDEX" + x + ": " + array[x].section_name);
-//    }
-//}
-//async function getFoodNews() {
-//    let counter = 0;
-//    fetch(APIFOOD)
-//        .then(response => response.json())
-//        .then(data => {
-//            console.log(data);
-//            data.response.docs.slice(0, 5).map(article => {
-//                console.log(article.headline.main);
-//                console.log(article.section_name);
-//                //a stand for hyperlink
-//                let a = document.createElement("a");
-//                //href specifies the url of the page
-//                a.setAttribute('href', article.web_url);
-//                //manipulates the title of html/url
-//                //used to use innerHTML but has risks
-//                a.innerText = article.headline.main;
-//                a.title = "ALKKJFALDKFJ";
-//                console.log(a.title);
-//                console.log(a);
-
-//                //p stand for paragraph
-//                let p = document.createElement("p");
-//                p.innerHTML = article.lead_paragraph;
-
-//                let img = document.getElementById("imgID" + counter).src =
-//                    ("https://static01.nyt.com/" + article.multimedia[0].url);
-//                console.log(img);
-
-//                let headlineText = document.getElementById("headlineText" + counter);
-//                let text = document.getElementById("text" + counter);
-
-//                headlineText.appendChild(a);
-//                text.appendChild(p);
-
-//                counter++;
-//                console.log(headlineText);
-//                console.log(counter);
-//                array.push(article.section_name);
-//            });
-//        })
-//}
-
 /**
  * Personalize news depending on the article that is selected by user
  */
@@ -165,6 +114,7 @@ headlineText4.addEventListener("click", () => {
  * @param {Number} index The index of article relative to homepage
  */
 async function getCategory(index) {
+    //get the category/type of news that is being currently displayed
     var category = array[index].section_name;;
     if (category == "Food") {
         decrementHealthFilter();
@@ -185,14 +135,12 @@ async function getHealthFilter() {
     //get response body as text
     const data = await response.text();
     healthFilterLevel = data;
-    console.log("healthFilterLevel is now " + healthFilterLevel);
 }
 /**
  * Change user preference to have more Health News
  */
 async function incrementHealthFilter() {
     //access the backend and increment
-    //if the value is set at 4 already, then we do not need to increment it no more
     await fetch('http://localhost:49200/api/NewsIncrement', {
         method: 'POST'
     })
@@ -202,7 +150,6 @@ async function incrementHealthFilter() {
  */
 async function decrementHealthFilter() {
     //access the backend and decrement
-    //if the value is set at 0 already, then we do not need to increment it no more
     await fetch('http://localhost:49200/api/NewsDecrement', {
         method: 'POST'
     })

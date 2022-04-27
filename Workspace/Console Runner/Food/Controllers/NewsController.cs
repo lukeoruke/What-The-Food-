@@ -11,9 +11,14 @@ namespace Food.Controllers
     {
         private readonly IAccountNews efNews = new EFNews();
         private NewsDBOperations _dbOperations;
-        int userID = 1; //TODO: We need JWT Token
+        int userID = 1; //TODO: Needs JWT Token
         [HttpGet]
-        public async Task<ActionResult<int>> Get() //TODO: reserach
+        /// <summary>
+        /// Gets the Number of Health News that should be displayed
+        /// </summary>
+        /// <returns>Returns number of health news to display</returns>
+        /// <exception cref="Exception">Throw if get call is unreachable</exception>
+        public async Task<ActionResult<int>> Get()
         {
             try
             {
@@ -23,7 +28,6 @@ namespace Food.Controllers
             catch (Exception e)
             {
                 throw new Exception("ERROR: unable to call GET method in newscontroller: " + e.Message);
-                return 0;
 
             }
 

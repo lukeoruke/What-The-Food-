@@ -13,11 +13,16 @@ namespace Food.Controllers
         private NewsDBOperations _dbOperations;
         int userID = 1; //TODO: We need JWT Token
         [HttpPost]
-        public async Task<ActionResult<bool>> Post() //TODO: reserach
+
+        /// <summary>
+        /// Decrement the Number of Health News that should be displayed
+        /// </summary>
+        /// <returns>Returns true is filter is Decrement</returns>
+        /// <exception cref="Exception">Throw if post call is unreachable</exception>
+        public async Task<ActionResult<bool>> Post()
         {
             try
             {
-                Console.WriteLine("ran in decrement controller");
                 _dbOperations = new NewsDBOperations(efNews);
                 await _dbOperations.DecrementHealthNews(userID);
                 return true;

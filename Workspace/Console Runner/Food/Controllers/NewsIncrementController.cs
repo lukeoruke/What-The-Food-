@@ -13,7 +13,12 @@ namespace Food.Controllers
         private NewsDBOperations _dbOperations;
         int userID = 1; //TODO: We need JWT Token
         [HttpPost]
-        public async Task<ActionResult<bool>> Post() //TODO: reserach
+        /// <summary>
+        /// Increment the Number of Health News that should be displayed
+        /// </summary>
+        /// <returns>Returns true is filter is incremented</returns>
+        /// <exception cref="Exception">Throw if post call is unreachable</exception>
+        public async Task<ActionResult<bool>> Post()
         {
             try
             {

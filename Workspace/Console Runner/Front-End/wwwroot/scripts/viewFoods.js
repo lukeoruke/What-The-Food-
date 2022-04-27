@@ -16,11 +16,14 @@ function displayFoods(foodList) {
         var itemDiv = document.createElement("div");
         itemDiv.id = foodList[data].Barcode.toString();
         itemDiv.classList.add('foodItemEntry');
-        var text = document.createElement("p");
+        var text = document.createElement("a");
+        text.href = "#";
+        var textAsHeader = document.createElement("h1");
+        textAsHeader.appendChild(text);
         text.setAttribute("onclick", `getAndDisplayUpdates('${foodList[data].Barcode}');`);
         var name = document.createTextNode(foodList[data].ProductName);
         text.appendChild(name);
-        itemDiv.appendChild(text);
+        itemDiv.appendChild(textAsHeader);
         document.getElementById('container').appendChild(itemDiv);
     }
 }
@@ -100,16 +103,109 @@ function pageAlert(message) {
 }
 
 async function getAndDisplayUpdates(clickedDivId) {
-    const fetchData = await fetch("http://localhost:49202/api/GetUpdatesFromBarcode?" + new URLSearchParams({
-        barcode: clickedDivId
-    }));
-    const dataAsObject = await fetchData.json();
-    const message = document.createElement('p');
-    if (data === undefined || data.length === 0) {
-        message.innerHTML = 'No updates are available for this food item.';
+    let clickedDiv = document.getElementById(clickedDivId);
+    if (clickedDiv.childElementCount > 1) {
+        while (clickedDiv.childElementCount > 1) {
+            clickedDiv.removeChild(clickedDiv.lastChild);
+        }
     }
     else {
-        message.innerHTML = JSON.stringify(dataAsObject);
+        const fetchData = await fetch("http://localhost:49202/api/GetUpdatesFromBarcode?" + new URLSearchParams({
+            barcode: clickedDivId
+        }));
+        const dataAsObject = await fetchData.json();
+        let message = document.createElement('h2');
+        if (dataAsObject === undefined || dataAsObject.length === 0) {
+            message.innerHTML = 'No updates are available for this food item.';
+        }
+        else {
+            message = convertUpdateListToHtml(dataAsObject);
+        }
+        clickedDiv.appendChild(message);
     }
-    document.getElementById(clickedDivId).appendChild(message);
+}
+
+function convertUpdateListToHtml(updateList) {
+    let updateListAsHtml = document.createElement("div");
+    updateList.forEach(update => {
+        // date and reason are common across all food update types
+        let updateHeader = document.createElement("div");
+        /*updateHeader.style.outline = "red";
+        updateHeader.style.outlineWidth = "1";*/
+        // add update date
+        let updateDate = document.createElement("h2");
+        updateDate.innerHTML = `Update on ${getDateOnly(update.UpdateInfo.UpdateTime)}:`;
+        updateHeader.appendChild(updateDate);
+        // add update message
+        let updateMessage = document.createElement("h2");
+        updateMessage.innerHTML = update.UpdateInfo.Message;
+        updateHeader.appendChild(updateMessage);
+
+        if (update.UpdateType === "FoodIngredientChange") {
+            console.log(`update type is FoodIngredientChange: ${update.UpdateType}`);
+            console.log(update.UpdateInfo.IngredientUpdates);
+
+            let addIngHeader = document.createElement("h3");
+            addIngHeader.innerHTML = "Added Ingredients:";
+            let addedIngredients = update.UpdateInfo.IngredientUpdates.filter(ing => ing.IsAdded);
+            let addIngList = getHtmlListOrErrorMessage(addedIngredients, ing => ing.IngredientName);
+
+            let remIngHeader = document.createElement("h3");
+            remIngHeader.innerHTML = "Removed Ingredients:";
+            let removedIngredients = update.UpdateInfo.IngredientUpdates.filter(ing => !ing.IsAdded);
+            let remIngList = getHtmlListOrErrorMessage(removedIngredients, ing => ing.IngredientName);
+
+            updateHeader.appendChild(addIngHeader);
+            updateHeader.appendChild(addIngList);
+            updateHeader.appendChild(remIngHeader);
+            updateHeader.appendChild(remIngList);
+        }
+        else if (update.UpdateType === "FoodRecall") {
+            let locationHeader = document.createElement("h3");
+            locationHeader.innerHTML = "Locations:";
+            let locationList = getHtmlListOrErrorMessage(update.UpdateInfo.Locations);
+            updateHeader.appendChild(locationHeader);
+            updateHeader.appendChild(locationList);
+
+            let lotNumberHeader = document.createElement("h3");
+            lotNumberHeader.innerHTML = "Lot Numbers:";
+            let lotNumberList = getHtmlListOrErrorMessage(update.UpdateInfo.LotNumbers);
+            updateHeader.appendChild(lotNumberHeader);
+            updateHeader.appendChild(lotNumberList);
+
+            let expDateHeader = document.createElement("h3");
+            expDateHeader.innerHTML = "Expiration Dates:";
+            let expDateList = getHtmlListOrErrorMessage(update.UpdateInfo.ExpirationDates, exp => getDateOnly(exp));
+            updateHeader.appendChild(expDateHeader);
+            updateHeader.appendChild(expDateList);
+        }
+        updateListAsHtml.appendChild(updateHeader);
+    });
+    return updateListAsHtml;
+}
+
+function getDateOnly(dateTimeString) {
+    return dateTimeString.split('T')[0];
+}
+
+
+function getHtmlListOrErrorMessage(elementList, propertyMapping = (obj => obj)) {
+    console.log('elementList: ' + elementList);
+    elementList.forEach(el => console.log(el));
+    if (elementList === undefined || elementList.length == 0) {
+        listHead = document.createElement("p");
+        listHead.innerHTML = "None found.";
+        return listHead;
+    }
+    else {
+        let listHead = document.createElement("ul");
+        propertyList = elementList.map(el => {
+            let listItem = document.createElement("li");
+            console.log('appending ' + propertyMapping(el).toString());
+            listItem.innerHTML = propertyMapping(el).toString();
+            return listItem;
+        });
+        propertyList.forEach(property => listHead.appendChild(property));
+        return listHead;
+    }
 }

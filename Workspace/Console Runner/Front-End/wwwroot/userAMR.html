@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="scripts/amrTemp.js"></script>
+</head>
+<body>
+    <div class="main">
+        <a href="index.html"><img src="images/orange.png" alt="What The Food?!" width="200" height="200"></a>
+        <header>
+            <label style="position: relative; left: 20px; top: 16px; font-size: 16px;" for="gender">Gender:</label>
+            <select style="position: relative; left: 20px; top: 16px; font-size: 16px;" name="gender" id="gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select><br><br>
+
+            <label style="position: relative; left:20px; font-size: 16px;" for="weight">Weight(lbs):</label>
+            <input pattern="\d*" title="Numbers only please" style="position: relative; left:20px; font-size: 16px;" type="text" id="weight" name="weight" required /><br><br>
+
+            <label style="position: relative; left:20px; font-size: 16px;" for="height">Height(in):</label>
+            <input pattern="\d*" title="Numbers only please" style="position: relative; left:20px; font-size: 16px;" type="text" id="height" name="height" required /><br><br>
+
+            <label style="position: relative; left:20px; font-size: 16px;" for="age">Age:</label>
+            <input pattern="\d*" title="Numbers only please" style="position: relative; left:20px; font-size: 16px;" type="text" id="age" name="age" required /><br><br>
+
+            <label style="position: relative; left:20px; font-size: 16px;" for="activity">Activity:</label>
+            <select style="position: relative; left:20px; font-size: 16px;" name="activity" id="activity">
+                <option value="None">None</option>
+                <option value="Light">Light</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Daily">Daily</option>
+                <option value="Heavy">Heavy</option>
+            </select><br><br>
+        </header>
+
+    </div>
+    <form style="position: relative; top: -10px;" class="form" id="calculate" onsubmit="sendAmrData(event)">
+        <input style="position: relative; left:20px;" id="calculate1" class="input" type="submit" value="Calculate" />
+    </form>
+
+
+    <form style="position: relative; top: -10px;" class="form" id="resetAmr" onsubmit="">
+        <input style="position: relative; left:20px;" id="restAmr1" class="input" type="submit" value="Reset" />
+    </form><br><br>
+
+</body>
+</html>

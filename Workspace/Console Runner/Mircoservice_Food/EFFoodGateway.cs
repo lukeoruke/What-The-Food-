@@ -159,8 +159,10 @@ namespace Console_Runner.FoodService
                 }
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.InnerException.Message);
                 return false;
             }
         }

@@ -56,7 +56,7 @@ function displayIngs() {
 //gets the ingredients from the DB
 async function getIngs() {
 
-    await fetch('https://localhost:49202/api/GetNIngredients?' + page)
+    await fetch('http://47.151.24.23:49202/api/GetNIngredients?' + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 }
@@ -88,7 +88,7 @@ async function getUserFlags(e) {
 
 
     deleteCurrentData(e);
-    await fetch('http://localhost:49202/api/GetNAccountFlags?' + page)
+    await fetch('http://47.151.24.23:49202/api/GetNAccountFlags?' + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 
@@ -106,7 +106,7 @@ async function searchAccountFlags(e) {
         currentPage = "searchFlags";
         let search = document.getElementById('search').value;
 
-        await fetch('http://localhost:49202/api/GetAccountFlagBySearch?' + search + "?" + page)
+        await fetch('http://47.151.24.23:49202/api/GetAccountFlagBySearch?' + search + "?" + page)
             .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
             .then(data => console.log(data));
         console.log("made it to the otherside of searchAccountFlags");
@@ -128,7 +128,7 @@ async function searchIngs(e) {
     currentPage = "searchIngredients";
     let search = document.getElementById('search').value;
 
-    await fetch('http://localhost:49202/api/FlagSearchIngredients?' + search + "?" + page)
+    await fetch('http://47.151.24.23:49202/api/FlagSearchIngredients?' + search + "?" + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 
@@ -200,10 +200,11 @@ async function sendNewFlag(e) {
 
 
 
-    await fetch('http://localhost:49202/api/AccountAddFlags', {
+    await fetch('http://47.151.24.23:49202/api/AccountAddFlags', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Access-Control-Origin': '*',
         },
         body: (itemsToAdd),
     })
@@ -224,10 +225,11 @@ async function removeFlag(e) {
         }
     }
 
-    await fetch('http://localhost:49202/api/AccountRemoveFlag?' + page, {
+    await fetch('http://47.151.24.23:49202/api/AccountRemoveFlag?' + page, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Access-Control-Origin': '*',
         },
         body: (itemsToRemove),
     })

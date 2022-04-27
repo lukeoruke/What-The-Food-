@@ -3,11 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Console_Runner.AccountService
 {
-	/// <summary>
-	/// Enum that reflects the five levels of activity used in calculating AMR according to https://www.verywellfit.com/how-many-calories-do-i-need-each-day-2506873.
-	/// </summary>
+	
+	//Enum that reflects the five levels of activity used in calculating AMR according to https://www.verywellfit.com/how-many-calories-do-i-need-each-day-2506873.
+	//kg and cm conversions are referenced to https://www.metric-conversions.org/weight/pounds-to-kilograms.htm
 	public enum ActivityLevel
 	{
+		//Activities are declared
 		None,
 		Light,
 		Moderate,
@@ -17,6 +18,7 @@ namespace Console_Runner.AccountService
 
 	static class Constants
 	{
+		//Switch case to check which activity level was selected
 		public static float GetActivityLevelMultiplier(ActivityLevel level)
 		{
 			return level switch
@@ -29,11 +31,18 @@ namespace Console_Runner.AccountService
 				_ => 1.0f
 			};
 		}
-		public static float BMR_WEIGHT_MULTIPLIER = 10;
-		public static float BMR_HEIGHT_MULTIPLIER = 6.25f;
-		public static float BMR_AGE_MULTIPLIER = -5;
-		public static int BMR_FEMALE_ADDEND = -161;
-		public static int BMR_MALE_ADDEND = 5;
+
+		//Values in the equation are declared
+		//Calculations will vary off of gender
+		public static float BMR_MALE_ADD = 66.47f;
+		public static float MALE_BMR_WEIGHT_MULTIPLIER = 13.75f;
+		public static float MALE_BMR_HEIGHT_MULTIPLIER = 5.003f;
+		public static float MALE_BMR_AGE_MULTIPLIER = -6.755f;
+
+		public static float BMR_FEMALE_ADD = 65.51f;
+		public static float FEMALE_BMR_WEIGHT_MULTIPLIER = 9.563f;
+		public static float FEMALE_BMR_HEIGHT_MULTIPLIER = 1.850f;
+		public static float FEMALE_BMR_AGE_MULTIPLIER = -4.676f;
 	}
 
 	public class AMR
@@ -47,8 +56,8 @@ namespace Console_Runner.AccountService
 		[ForeignKey("UserID")]
 		public int UserID { get; set; }
 		public bool IsMale { get; set; }
-		// weight, height, and age must be non-negative values.
-		// assume properties are measured in metric units - kg, cm, etc.
+		//weight, height, and age must be non-negative values.
+		//assume properties are measured in metric units - kg, cm, etc.
 
 		public int Weight
 		{
@@ -76,7 +85,7 @@ namespace Console_Runner.AccountService
 		}
 		public ActivityLevel Activity { get; set; }
 		public bool IsCustomAMR { get; set; }
-		// CustomAMR should only be accessible if IsCustomAMR is true
+		//CustomAMR should only be accessible if IsCustomAMR is true
 		public float CustomAMR
 		{
 			get
@@ -89,21 +98,20 @@ namespace Console_Runner.AccountService
 			}
 		}
 
-		// Constructors
+		//Constructors
 		public AMR()
 		{
 
 		}
 
-		/// <summary>
-		/// Constructor for non-custom AMRs.
-		/// </summary>
-		/// <param name="acct"></param>
-		/// <param name="isMale"></param>
-		/// <param name="weight"></param>
-		/// <param name="height"></param>
-		/// <param name="age"></param>
-		/// <param name="activity"></param>
+
+		//Constructor for non-custom AMRs.
+		//<param name="acct"></param>
+		//<param name="isMale"></param>
+		//<param name="weight"></param>
+		//<param name="height"></param>
+		//<param name="age"></param>
+		//<param name="activity"></param>
 		public AMR(bool isMale, int weight, float height, int age, ActivityLevel activity)
 		{
 			IsMale = isMale;
@@ -115,15 +123,14 @@ namespace Console_Runner.AccountService
 			CustomAMR = 0;
 		}
 
-		/// <summary>
-		/// Constructor for custom AMRs.
-		/// </summary>
-		/// <param name="isMale"></param>
-		/// <param name="weight"></param>
-		/// <param name="height"></param>
-		/// <param name="age"></param>
-		/// <param name="activity"></param>
-		/// <param name="customAMR"></param>
+
+		//Constructor for custom AMRs.
+		//<param name="isMale"></param>
+		//<param name="weight"></param>
+		//<param name="height"></param>
+		//<param name="age"></param>
+		//<param name="activity"></param>
+		//<param name="customAMR"></param>
 		public AMR(bool isMale, int weight, float height, int age, ActivityLevel activity, float customAMR)
 		{
 
@@ -138,25 +145,30 @@ namespace Console_Runner.AccountService
 
 		// methods
 
-		/// <summary>
-		/// <para>Calculates active metabolic rate (AMR) from this object's properties using the Harris-Benedict equation.
-		/// Refer to:
-		/// https://doi.org/10.1093/ajcn/51.2.241
-		/// to see the equation.
-		/// </para>
-		/// </summary>
-		/// <returns>A double representing the AMR calculated from the properties in this class.</returns>
+
+		//Calculates the AMR based off of https://www.verywellfit.com/how-many-calories-do-i-need-each-day-2506873.
+		//A double representing the AMR calculated from the properties in this class.
 		public float CalculateAMR()
 		{
 			if (IsCustomAMR) { return _customAMR; }
 			else
 			{
-				// equation for male and female are the same without the addend
-				float bmrWithoutAddend = (Constants.BMR_WEIGHT_MULTIPLIER * Weight) + (Constants.BMR_HEIGHT_MULTIPLIER * Height)
-								+ (Constants.BMR_AGE_MULTIPLIER * Age);
-				// add the addend corresponding to whether the associated user is biologically male or female
-				float bmr = bmrWithoutAddend + (IsMale ? Constants.BMR_MALE_ADDEND : Constants.BMR_FEMALE_ADDEND);
-				// multiply by factor corresponding to activity level and return that product
+				float bmr = 0;
+				if (IsMale == true)
+				{
+					//Calculations if the user is male
+					float mbmr = (Constants.BMR_MALE_ADD + (Constants.MALE_BMR_WEIGHT_MULTIPLIER*Weight)+(Constants.MALE_BMR_HEIGHT_MULTIPLIER*Height)
+						-(Constants.MALE_BMR_AGE_MULTIPLIER * Age)); 
+					bmr = mbmr;
+				}
+                else
+                {
+					//Calculations if the user is female
+					float fbmr = (Constants.BMR_FEMALE_ADD + (Constants.FEMALE_BMR_WEIGHT_MULTIPLIER * (Weight)) + (Constants.FEMALE_BMR_HEIGHT_MULTIPLIER * Height)
+						- (Constants.FEMALE_BMR_AGE_MULTIPLIER * Age));
+					bmr = fbmr;
+				}
+
 				return bmr * Constants.GetActivityLevelMultiplier(Activity);
 			}
 		}

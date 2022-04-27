@@ -11,7 +11,7 @@ namespace Food.Controllers
     {
         private readonly IAccountNews efNews = new EFNews();
         private NewsDBOperations _dbOperations;
-        int userID = 0; //TODO: We need JWT Token
+        int userID = 1; //TODO: We need JWT Token
         [HttpGet]
         public async Task<ActionResult<int>> Get() //TODO: reserach
         {

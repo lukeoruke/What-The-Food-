@@ -8,7 +8,7 @@ const APIHEALTH = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=s
 let array = [];
 //the level of which we want to display health realted news
 let healthFilterLevel = getHealthFilter();
-pickCategory();
+await pickCategory();
 
 /**
  * Select the category of news that will be catered towards the user
@@ -16,7 +16,7 @@ pickCategory();
 async function pickCategory() {
     //if they have no personalization, display food news as default
     //else display personzalized news based on user preference
-    if (healthFilterLevel == 0) {
+    if (healthFilterLevel == 0 ) {
         await storeFoodNews(0);
     }
     else {
@@ -180,13 +180,14 @@ async function getCategory(index) {
 async function getHealthFilter() {
     //access the backend and increment
     //if the value is set at 4 already, then we do not need to increment it no more
-    await fetch('http://localhost:49200/api/News', {
+    let data = await fetch('http://localhost:49200/api/News', {
         method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
     })
-    console.log("GOT");
+    console.log(data.redirected);
+    if (data.redirected == false) {
+        console.log("ran here");
+        return 0;
+    }
 }
 /**
  * Change user preference to have more Health News
@@ -194,7 +195,7 @@ async function getHealthFilter() {
 async function incrementHealthFilter() {
     //access the backend and increment
     //if the value is set at 4 already, then we do not need to increment it no more
-    await fetch('http://localhost:49200/api/NewsIncrement', {
+    let data = await fetch('http://localhost:49200/api/NewsIncrement', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

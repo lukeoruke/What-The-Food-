@@ -11,12 +11,13 @@ namespace Food.Controllers
     {
         private readonly IAccountNews efNews = new EFNews();
         private NewsDBOperations _dbOperations;
-        int userID = 0; //TODO: We need JWT Token
+        int userID = 1; //TODO: We need JWT Token
         [HttpPost]
         public async Task<ActionResult<bool>> Post() //TODO: reserach
         {
             try
             {
+                Console.WriteLine("Ran in Increment Controller");
                 _dbOperations = new NewsDBOperations(efNews);
                 await _dbOperations.IncrementHealthNews(userID);
                 return true;

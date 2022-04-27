@@ -6,13 +6,26 @@ using Microsoft.Extensions.DependencyInjection;
 using Console_Runner;
 using Console_Runner.Logging;
 using Console_Runner.FoodService;
-
+using Console_Runner.AccountService;
 
 [STAThread]
 async static void Main()
 {
 }
 
+AccountDBOperations accdbops = new(new EFAccountGateway(), new EFAuthorizationGateway(), new EFFlagGateway());
+
+await accdbops.UserSignUpAsync(new Account()
+{
+    Email = "email",
+    Password ="password",
+    FName = "a",
+    LName = "b",
+    NewsBias = 1,
+    IsActive = true,
+    Enabled = true,
+    salt = "what"
+});
 
 /*Console.WriteLine("Program running...");
 FoodDBOperations foodDBOperations = new FoodDBOperations(new EFFoodGateway());

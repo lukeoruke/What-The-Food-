@@ -38,6 +38,7 @@ namespace Console_Runner.FoodService
         public int FoodIngredientChangeId { get; set; }
         [JsonIgnore]
         public Ingredient Ingredient { get; set; }
+        [JsonIgnore]
         public int IngredientId { get; set; }
         public string IngredientName { get; set; }
         public bool IsAdded { get; set; }

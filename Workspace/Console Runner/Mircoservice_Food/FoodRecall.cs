@@ -11,7 +11,6 @@ namespace Console_Runner.FoodService
         public List<string> Locations { get; set; }
         public List<int> LotNumbers { get; set; }
         public List<DateTime> ExpirationDates { get; set; }
-        public string Reason { get; set; }
 
         public FoodRecall() : base()
         {

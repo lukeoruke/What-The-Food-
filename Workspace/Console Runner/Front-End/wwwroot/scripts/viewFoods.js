@@ -30,7 +30,7 @@ function displayFoods(foodList) {
 
 //gets the ingredients from the DB
 async function getFoods() {
-    const response = await fetch('http://localhost:49202/api/ViewFoodItems?' + new URLSearchParams({
+    const response = await fetch('https://localhost:49202/api/ViewFoodItems?' + new URLSearchParams({
         pageno: page
     }));
     const data = await response.json();
@@ -110,7 +110,7 @@ async function getAndDisplayUpdates(clickedDivId) {
         }
     }
     else {
-        const fetchData = await fetch("http://localhost:49202/api/GetUpdatesFromBarcode?" + new URLSearchParams({
+        const fetchData = await fetch("https://localhost:49202/api/GetUpdatesFromBarcode?" + new URLSearchParams({
             barcode: clickedDivId
         }));
         const dataAsObject = await fetchData.json();
@@ -142,9 +142,6 @@ function convertUpdateListToHtml(updateList) {
         updateHeader.appendChild(updateMessage);
 
         if (update.UpdateType === "FoodIngredientChange") {
-            console.log(`update type is FoodIngredientChange: ${update.UpdateType}`);
-            console.log(update.UpdateInfo.IngredientUpdates);
-
             let addIngHeader = document.createElement("h3");
             addIngHeader.innerHTML = "Added Ingredients:";
             let addedIngredients = update.UpdateInfo.IngredientUpdates.filter(ing => ing.IsAdded);
@@ -190,8 +187,6 @@ function getDateOnly(dateTimeString) {
 
 
 function getHtmlListOrErrorMessage(elementList, propertyMapping = (obj => obj)) {
-    console.log('elementList: ' + elementList);
-    elementList.forEach(el => console.log(el));
     if (elementList === undefined || elementList.length == 0) {
         listHead = document.createElement("p");
         listHead.innerHTML = "None found.";
@@ -201,7 +196,6 @@ function getHtmlListOrErrorMessage(elementList, propertyMapping = (obj => obj)) 
         let listHead = document.createElement("ul");
         propertyList = elementList.map(el => {
             let listItem = document.createElement("li");
-            console.log('appending ' + propertyMapping(el).toString());
             listItem.innerHTML = propertyMapping(el).toString();
             return listItem;
         });

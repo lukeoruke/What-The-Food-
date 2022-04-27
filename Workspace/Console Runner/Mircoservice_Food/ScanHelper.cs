@@ -13,12 +13,14 @@ namespace Microservice_Food
         //dependency injection food DB
         private const string UM_CATEGORY = "Data Store";
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();
+        private readonly IFoodUpdateGateway _foodUpdateGateway = new EFFoodUpdateGateway();
         private FoodDBOperations _foodDB;
         private IFormCollection formData;
         //dependency injection account and logging DB
         private readonly IAccountGateway _accountAccess = new EFAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
+        private readonly IAMRGateway _amrGateway = new EFAMRGateway();
         private AccountDBOperations _accountDBOperations;
 
         private readonly HttpClient client;
@@ -49,8 +51,8 @@ namespace Microservice_Food
         /// </returns>
         public async Task<int> SearchAndAdd(string barcode)
         {
-            _foodDB = new FoodDBOperations(_foodServiceGateway);    //dependency injection
-            _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            _foodDB = new FoodDBOperations(_foodServiceGateway, _foodUpdateGateway);    //dependency injection
+            _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amrGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
             logger.UserID = "placeholder";

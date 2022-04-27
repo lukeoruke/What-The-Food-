@@ -66,7 +66,7 @@ async function displayNews() {
         await a.setAttribute('href', array[index].web_url);
         //manipulates the title of html/url
         a.innerText = array[index].headline.main;
-
+        a.title = array[index].section_name;
         //p stores a paragraph from document which is a JSON
         let p = document.createElement("p");
         //assign p to have the lead paragraph from JSON object
@@ -213,9 +213,6 @@ async function decrementHealthFilter() {
     //if the value is set at 0 already, then we do not need to increment it no more
     await fetch('http://localhost:49200/api/NewsDecrement', {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        }
     })
     console.log("DECREMENTED");
 }

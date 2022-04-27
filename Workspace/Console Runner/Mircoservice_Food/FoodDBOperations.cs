@@ -262,7 +262,13 @@ namespace Console_Runner.FoodService
             }
             return foodItem;
         }
-
+        
+        /// <summary>
+        /// Add a subtype of FoodUpdate to the database. Throws if attempting to add a FoodUpdate and not a subtype.
+        /// </summary>
+        /// <param name="foodUpdate">The FoodUpdate to add to the database.</param>
+        /// <param name="logService">The LogService to invoke LogWithSetUserAsync with.</param>
+        /// <returns>True if the FoodUpdate was successfully added to the database.</returns>
         public async Task<bool> AddFoodUpdateAsync(FoodUpdate foodUpdate, LogService? logService = null)
         {
             await _foodUpdateGateway.AddAsync(foodUpdate, logService);
@@ -274,6 +280,12 @@ namespace Console_Runner.FoodService
             return true;
         }
 
+        /// <summary>
+        /// Gets all FoodUpdates for a given barcode belonging to a FoodItem.
+        /// </summary>
+        /// <param name="barcode">The barcode of the FoodItem to get FoodUpdates for.</param>
+        /// <param name="logService">The LogService to invoke LogWithSetUserAsync with.</param>
+        /// <returns>A List of all FoodUpdates associated with the given barcode.</returns>
         public async Task<List<FoodUpdate>> GetAllUpdatesForBarcodeAsync(string barcode, LogService? logService = null)
         {
             List<FoodUpdate> updates = await _foodUpdateGateway.GetAllByBarcodeAsync(barcode, logService);
@@ -285,6 +297,12 @@ namespace Console_Runner.FoodService
             return updates;
         }
 
+        /// <summary>
+        /// Removes the FoodUpdate with the given id from the database if it exists.
+        /// </summary>
+        /// <param name="id">The id of the FoodUpdate to remove from the database.</param>
+        /// <param name="logService">The LogService to invoke LogWithSetUserAsync with.</param>
+        /// <returns>True if the corresponding FoodUpdate was removed from the database.</returns>
         public async Task<bool> RemoveFoodUpdateByIdAsync(int id, LogService? logService = null)
         {
             await _foodUpdateGateway.RemoveAsync(id, logService);

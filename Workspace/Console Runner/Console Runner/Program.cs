@@ -23,8 +23,8 @@ foodDBOperations.AddFoodItemAsync(food1).Wait();
 foodDBOperations.AddFoodItemAsync(food2).Wait();
 foodDBOperations.AddFoodItemAsync(food3).Wait();
 await foodDBOperations.AddFoodUpdateAsync(new FoodIngredientChange(food1, DateTime.Now, "ing change for monster", new[] { new Ingredient("some ing", "whatt", "iunno") }, new[] { new Ingredient("removed ign", "????", "fuck") }));
-await foodDBOperations.AddFoodUpdateAsync(new FoodRecall(food1, DateTime.Now, "recall baybee", "sermonella", new[] { "location" }, new[] { 10 }, new[] { DateTime.Parse("2020-01-03") }));
-await foodDBOperations.AddFoodUpdateAsync(new FoodRecall(food2, DateTime.Now, "recall baybee", "norovirus!", new[] { "otherlocation" }, new int[0], new[] { DateTime.Parse("2020-01-23") }));
+await foodDBOperations.AddFoodUpdateAsync(new FoodRecall(food1, DateTime.Now, "sermonella", new[] { "location" }, new[] { 10 }, new[] { DateTime.Parse("2020-01-03") }));
+await foodDBOperations.AddFoodUpdateAsync(new FoodRecall(food2, DateTime.Now, "norovirus!", new[] { "otherlocation" }, new int[0], new[] { DateTime.Parse("2020-01-23") }));
 */
 
 /*Console.WriteLine("Program running...");

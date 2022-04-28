@@ -1,8 +1,8 @@
 ﻿/**
  * Define API from NY Times that will be used
  */
-//const APIFOOD = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=section_name:(%22Food%22)&sort=newest&api-key=TK2GSBMDBO2kHDUABQFh4tlpE0Bu8cuf'
-//const APIHEALTH = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=section_name:(%22Health%22)&sort=newest&api-key=TK2GSBMDBO2kHDUABQFh4tlpE0Bu8cuf'
+const APIFOOD = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=section_name:(%22Food%22)&sort=newest&api-key=TK2GSBMDBO2kHDUABQFh4tlpE0Bu8cuf'
+const APIHEALTH = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=section_name:(%22Health%22)&sort=newest&api-key=TK2GSBMDBO2kHDUABQFh4tlpE0Bu8cuf'
 
 //Create a global variable which will store all News
 let array = [];
@@ -129,7 +129,7 @@ async function getCategory(index) {
 async function getHealthFilter() {
     //access the backend and increment
     //if the value is set at 4 already, then we do not need to increment it no more
-    const response = await fetch('http://localhost:49200/api/News', {
+    const response = await fetch('http://47.151.24.23:49202/api/News', {
         method: 'GET'
     })
     //get response body as text
@@ -141,7 +141,7 @@ async function getHealthFilter() {
  */
 async function incrementHealthFilter() {
     //access the backend and increment
-    await fetch('http://localhost:49200/api/NewsIncrement', {
+    await fetch('http://47.151.24.23:49202/api/NewsIncrement', {
         method: 'POST'
     })
 }
@@ -150,7 +150,7 @@ async function incrementHealthFilter() {
  */
 async function decrementHealthFilter() {
     //access the backend and decrement
-    await fetch('http://localhost:49200/api/NewsDecrement', {
+    await fetch('http://47.151.24.23:49202/api/NewsDecrement', {
         method: 'POST'
     })
 }

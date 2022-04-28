@@ -27,7 +27,7 @@ namespace Console_Runner.FoodService
             Ingredient toReturn = _efContext.Ingredients.Where(x => x.IngredientID == id).ToList().ElementAt(0);
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.DataStore, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                         $"Retrieved ingredient {id}");
             }
             return toReturn;
@@ -46,7 +46,7 @@ namespace Console_Runner.FoodService
                 .OrderBy(x => x.IngredientName).Skip(skip).Take(take).ToListAsync();
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.DataStore, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                         $"Retrieved list of {take} ingredients by name \"{search}\"");
             }
             return results;
@@ -64,7 +64,7 @@ namespace Console_Runner.FoodService
                 .Skip(skip).Take(take).ToListAsync();
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.DataStore, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                         $"Retrieved list of {take} ingredients");
             }
             return results;
@@ -84,7 +84,7 @@ namespace Console_Runner.FoodService
                     await _efContext.LabelIngredients.AddAsync(labelIngredient);
                     if(logService?.UserID != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                 $"Created label-ingredient connection between barcode {labelIngredient.Barcode} and ingredient {labelIngredient.IngredientID}");
                     }
                     return true;
@@ -93,7 +93,7 @@ namespace Console_Runner.FoodService
                 {
                     if (logService?.UserID != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.DataStore, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                                 $"Label-ingredient connection between barcode {labelIngredient.Barcode} and ingredient {labelIngredient.IngredientID} already exists");
                     }
                     return false;
@@ -121,7 +121,7 @@ namespace Console_Runner.FoodService
                     await _efContext.LabelNutrients.AddAsync(labelNutrient);
                     if (logService?.UserID != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                 $"Created label-nutrient connection between barcode {labelNutrient.Barcode} and nutrient {labelNutrient.NutrientID}");
                     }
                     return true;
@@ -130,7 +130,7 @@ namespace Console_Runner.FoodService
                 {
                     if (logService?.UserID != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.DataStore, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                                 $"Label-nutrient connection between barcode {labelNutrient.Barcode} and nutrient {labelNutrient.NutrientID} already exists");
                     }
                     return false;
@@ -154,7 +154,7 @@ namespace Console_Runner.FoodService
                 await _efContext.SaveChangesAsync();
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                             $"Created food item \"{foodItem.ProductName}\"");
                 }
                 return true;
@@ -177,7 +177,7 @@ namespace Console_Runner.FoodService
                 await _efContext.SaveChangesAsync();
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                             $"Created nutrition label for food item {nutritionLabel.Barcode}");
                 }
                 return true;
@@ -200,7 +200,7 @@ namespace Console_Runner.FoodService
                 await _efContext.SaveChangesAsync();
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                             $"Created nutrient {nutrient.Name}");
                 }
                 return true;
@@ -223,7 +223,7 @@ namespace Console_Runner.FoodService
                 await _efContext.SaveChangesAsync();
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                             $"Created ingredient {ingredient.IngredientName}");
                 }
                 return true;
@@ -246,7 +246,7 @@ namespace Console_Runner.FoodService
                 _efContext.SaveChanges();
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.DataStore, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                             $"Removed ingredient {ingredient.IngredientName}");
                 }
                 return true;
@@ -269,7 +269,7 @@ namespace Console_Runner.FoodService
             }
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.DataStore, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                         $"Retrieved list of ingredients for label {barcode}");
             }
             return ingredients;
@@ -284,7 +284,7 @@ namespace Console_Runner.FoodService
             NutritionLabel? nutritionLabel = await _efContext.NutritionLabel.FindAsync(barcode);
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.DataStore, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                         $"Retrieved nutrition label by barcode {barcode}");
             }
             return nutritionLabel;
@@ -299,7 +299,7 @@ namespace Console_Runner.FoodService
             FoodItem? food = await _efContext.FoodItem.FindAsync(barcode);
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.DataStore, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                         $"Retrieved food item by barcode {barcode}");
             }
             return food;
@@ -315,7 +315,7 @@ namespace Console_Runner.FoodService
             List<LabelNutrient> toReturn = _efContext.LabelNutrients.Where(r => r.Barcode == barcode).ToList();
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.DataStore, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                         $"Retrieved list of label-nutrient connections for label {barcode}");
             }
             return toReturn;
@@ -335,10 +335,16 @@ namespace Console_Runner.FoodService
             }
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.DataStore, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                         $"Retrieved list of nutrients by ID");
             }
             return nutrientList;
+        }
+
+        //TODO: what the fuck?
+        public Task<List<FoodItem>> RetrieveNFoodItemsAsync(int skip, int take, LogService? logService = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

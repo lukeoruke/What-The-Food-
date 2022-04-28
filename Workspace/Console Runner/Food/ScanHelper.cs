@@ -42,7 +42,7 @@ namespace Food.Executables
         /// </returns>
         public async Task<int> SearchAndAdd(string barcode)
         {
-            _foodDB = new FoodDBOperations(_foodServiceGateway);    //dependency injection
+            //_foodDB = new FoodDBOperations(_foodServiceGateway);    //dependency injection
 
             try
             {

@@ -42,7 +42,7 @@ await foodDBOperations.AddFoodUpdateAsync(new FoodIngredientChange(food1, DateTi
 await foodDBOperations.AddFoodUpdateAsync(new FoodRecall(food1, DateTime.Now, "sermonella", new[] { "location" }, new[] { 10 }, new[] { DateTime.Parse("2020-01-03") }), logger);
 await foodDBOperations.AddFoodUpdateAsync(new FoodRecall(food2, DateTime.Now, "norovirus!", new[] { "otherlocation" }, new int[0], new[] { DateTime.Parse("2020-01-23") }), logger);
 */
-
+/*
 Console.WriteLine("Program running...");
 LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
 logger.DefaultTimeOut = 5000;
@@ -76,7 +76,7 @@ FoodRecall update3 = new FoodRecall(food2,
 await foodDBOperations.AddFoodUpdateAsync(update1, logger);
 await foodDBOperations.AddFoodUpdateAsync(update2, logger);
 await foodDBOperations.AddFoodUpdateAsync(update3, logger);
-
+*/
 
 /*Console.WriteLine("Program running...");
 LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);

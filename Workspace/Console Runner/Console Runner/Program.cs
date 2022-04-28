@@ -43,15 +43,15 @@ await foodDBOperations.AddFoodUpdateAsync(new FoodRecall(food1, DateTime.Now, "s
 await foodDBOperations.AddFoodUpdateAsync(new FoodRecall(food2, DateTime.Now, "norovirus!", new[] { "otherlocation" }, new int[0], new[] { DateTime.Parse("2020-01-23") }), logger);
 */
 
-/*Console.WriteLine("Program running...");
+Console.WriteLine("Program running...");
 LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
 logger.DefaultTimeOut = 5000;
 logger.UserID = "user";
 FoodDBOperations foodDBOperations = new FoodDBOperations(new EFFoodGateway(), new EFFoodUpdateGateway());
-FoodItem food1 = await foodDBOperations.GetScannedItemAsync(__barcode here__, logger);
+FoodItem food1 = await foodDBOperations.GetScannedItemAsync("034000245659", logger);
 List<Ingredient> ingredients1 = await foodDBOperations.GetIngredientsListAsync(food1.Barcode);
-FoodItem food2 = await foodDBOperations.GetScannedItemAsync(__another barcode__, logger);
-List<Ingredient> ingredients2 = await foodDBOperations.GetIngredientsListAsync(food2.Barcode);
+FoodItem food2 = await foodDBOperations.GetScannedItemAsync("008077102207", logger);
+List <Ingredient> ingredients2 = await foodDBOperations.GetIngredientsListAsync(food2.Barcode);
 
 FoodIngredientChange update1 = new FoodIngredientChange(food1,
                                                         DateTime.Now,
@@ -66,16 +66,16 @@ FoodRecall update2 = new FoodRecall(food1,
                                     new int[0],
                                     new[] { DateTime.Parse("2020-01-03") });
 
-FoodRecall update3 = new FoodRecall(food2, 
-                                    DateTime.Now, 
-                                    "norovirus!", 
-                                    new[] { "otherlocation" }, 
-                                    new[] { 4823334 }, 
+FoodRecall update3 = new FoodRecall(food2,
+                                    DateTime.Now,
+                                    "norovirus!",
+                                    new[] { "otherlocation" },
+                                    new[] { 4823334 },
                                     new[] { DateTime.Parse("2020-01-23") });
 
 await foodDBOperations.AddFoodUpdateAsync(update1, logger);
 await foodDBOperations.AddFoodUpdateAsync(update2, logger);
-await foodDBOperations.AddFoodUpdateAsync(update3, logger);*/
+await foodDBOperations.AddFoodUpdateAsync(update3, logger);
 
 
 /*Console.WriteLine("Program running...");

@@ -16,7 +16,7 @@ namespace Console_Runner.Migrations.ContextFoodDBMigrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.3")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Console_Runner.FoodService.FoodItem", b =>
@@ -43,11 +43,9 @@ namespace Console_Runner.Migrations.ContextFoodDBMigrations
 
             modelBuilder.Entity("Console_Runner.FoodService.FoodUpdate", b =>
                 {
-                    b.Property<int>("FoodItemId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdateTime")
-                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("FoodItemBarcode")
                         .IsRequired()
@@ -57,11 +55,20 @@ namespace Console_Runner.Migrations.ContextFoodDBMigrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("FoodItemId", "UpdateTime");
+                    b.Property<DateTime>("UpdateTime")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("update_type")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("FoodItemBarcode");
 
                     b.ToTable("FoodUpdates");
+
+                    b.HasDiscriminator<string>("update_type").HasValue("FoodUpdate");
                 });
 
             modelBuilder.Entity("Console_Runner.FoodService.Ingredient", b =>
@@ -85,6 +92,28 @@ namespace Console_Runner.Migrations.ContextFoodDBMigrations
                     b.HasKey("IngredientID");
 
                     b.ToTable("Ingredients");
+                });
+
+            modelBuilder.Entity("Console_Runner.FoodService.IngredientUpdate", b =>
+                {
+                    b.Property<int>("FoodIngredientChangeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IngredientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("IngredientName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<bool>("IsAdded")
+                        .HasColumnType("tinyint(1)");
+
+                    b.HasKey("FoodIngredientChangeId", "IngredientId");
+
+                    b.HasIndex("IngredientId");
+
+                    b.ToTable("IngredientUpdates");
                 });
 
             modelBuilder.Entity("Console_Runner.FoodService.LabelIngredient", b =>
@@ -201,6 +230,32 @@ namespace Console_Runner.Migrations.ContextFoodDBMigrations
                     b.ToTable("Review");
                 });
 
+            modelBuilder.Entity("Console_Runner.FoodService.FoodIngredientChange", b =>
+                {
+                    b.HasBaseType("Console_Runner.FoodService.FoodUpdate");
+
+                    b.HasDiscriminator().HasValue("ingredientchange");
+                });
+
+            modelBuilder.Entity("Console_Runner.FoodService.FoodRecall", b =>
+                {
+                    b.HasBaseType("Console_Runner.FoodService.FoodUpdate");
+
+                    b.Property<string>("ExpirationDates")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Locations")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("LotNumbers")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasDiscriminator().HasValue("foodrecall");
+                });
+
             modelBuilder.Entity("Console_Runner.FoodService.FoodUpdate", b =>
                 {
                     b.HasOne("Console_Runner.FoodService.FoodItem", "FoodItem")
@@ -210,6 +265,30 @@ namespace Console_Runner.Migrations.ContextFoodDBMigrations
                         .IsRequired();
 
                     b.Navigation("FoodItem");
+                });
+
+            modelBuilder.Entity("Console_Runner.FoodService.IngredientUpdate", b =>
+                {
+                    b.HasOne("Console_Runner.FoodService.FoodIngredientChange", "FoodIngredientChange")
+                        .WithMany("IngredientUpdates")
+                        .HasForeignKey("FoodIngredientChangeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Console_Runner.FoodService.Ingredient", "Ingredient")
+                        .WithMany()
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FoodIngredientChange");
+
+                    b.Navigation("Ingredient");
+                });
+
+            modelBuilder.Entity("Console_Runner.FoodService.FoodIngredientChange", b =>
+                {
+                    b.Navigation("IngredientUpdates");
                 });
 #pragma warning restore 612, 618
         }

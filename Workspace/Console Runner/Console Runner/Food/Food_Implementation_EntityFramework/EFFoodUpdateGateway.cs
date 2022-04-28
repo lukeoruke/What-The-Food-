@@ -29,8 +29,8 @@ namespace Console_Runner.FoodService
                 throw new ArgumentException($"{nameof(foodUpdate)} is a FoodUpdate and not a derived type.");
             }
             using ContextFoodDB contextFoodDB = new ContextFoodDB();
-            contextFoodDB.Entry(foodUpdate.FoodItem).State = EntityState.Unchanged;
             await contextFoodDB.AddAsync(foodUpdate);
+            contextFoodDB.Entry(foodUpdate.FoodItem).State = EntityState.Detached;
             await contextFoodDB.SaveChangesAsync();
             if(logService?.UserID != null)
             {

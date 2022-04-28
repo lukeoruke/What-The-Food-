@@ -39,7 +39,7 @@ function displayFoods(foodList) {
  * Fetch a page of food items from the backend.
  */
 async function getFoods() {
-    const response = await fetch('https://localhost:49202/api/ViewFoodItems?' + new URLSearchParams({
+    const response = await fetch('http://47.151.24.23:49202/api/ViewFoodItems?' + new URLSearchParams({
         pageno: page
     }));
     const data = await response.json();
@@ -128,7 +128,7 @@ async function getAndDisplayUpdates(clickedDivId) {
     // the div is not showing updates yet - get and display its updates
     else {
         // fetch updates from the backend and parse the json into an object
-        const fetchData = await fetch("https://localhost:49202/api/GetUpdatesFromBarcode?" + new URLSearchParams({
+        const fetchData = await fetch("http://47.151.24.23:49202/api/GetUpdatesFromBarcode?" + new URLSearchParams({
             barcode: clickedDivId
         }));
         const dataAsObject = await fetchData.json();

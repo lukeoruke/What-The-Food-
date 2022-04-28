@@ -24,6 +24,12 @@ describe("News", function () {
         it("should be able to store health news", function () {
             expect(news.storeHealthNews(bias)).toBeTruthy();
         });
+        it("should be able to store health news", function () {
+            expect(news.storeHealthNews(bias)).toBeTruthy();
+        });
+        it("should be able to display news", function () {
+            expect(news.displayNews()).toBeTruthy();
+        });
 
 
     });

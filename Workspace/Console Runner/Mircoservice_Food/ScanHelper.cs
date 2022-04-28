@@ -10,6 +10,7 @@ namespace Microservice_Food
 {
     public class ScanHelper
     {
+        private readonly IAMRGateway _amRGateway = new EFAMRGateway();
         //dependency injection food DB
         private const string UM_CATEGORY = "Data Store";
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();

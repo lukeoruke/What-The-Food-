@@ -670,17 +670,19 @@ namespace Console_Runner.AccountService
             return await _flagService.GetAllAccountFlagsAsync(userID, logService);
         }
 
-        public async Task<List<History>> AddHistoryToAccountAsync(int userID, string barcode, LogService? logService = null) 
-        {
-            History history = new(userID, barcode);
-            bool toReturn = await 
-            if (logService?.UserID != null)
-            {
-                _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
-                                                   $"Successfully created food flag between user {userID} and barcode {barcode}.");
-            }
-            return toReturn;
-        }
+        //TODO: Work on adding history
+        //public static async Task<List<History>> AddHistoryToAccountAsync(int userID, string barcode, LogService? logService = null) 
+        //{
+        //    History history = new(userID, barcode);
+        //    //bool toReturn = await; 
+        //    if (logService?.UserID != null)
+        //    {
+        //        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+        //                                           $"Successfully created food flag between user {userID} and barcode {barcode}.");
+        //    }
+            
+        //    //return toReturn;
+        //}
 
     }
     public class UserNotAuthorizedException : Exception

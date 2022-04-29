@@ -3,7 +3,6 @@
 <head>
     <link rel="stylesheet" href="styles/index.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="scripts/graph.js"></script>
     <script src="scripts/scanBarcode.js"></script>
 </head>
 <body>
@@ -15,25 +14,13 @@
     <a href="calorieFrameOfReference.html"><button class="button">Calorie Frame of Reference</button></a>
     <a href="settingPage.html"><button class="button">Settings</button></a>
 
-    
-    <canvas id="testGraph" height="50" width="50"></canvas>
-    <input id="pushValue" type="number" class="form-control mb-3">
-    <button id = "push" class="btn btn-dark btn-sm w-100">Push Value</button>
-    
-    <script>let barGraph = new Chart(GRAPH, {
-            type: 'bar',
-            data: {
-                datasets: [{
-                    data: [20, 10],
-                }],
-                labels: ['a', 'b']
-            }
-            })
 
-        console.log(GRAPH);
-        const push = document.getElementById('push');
-        push.addEventListener('click', populateBarGraph);
-    </script>
+    <canvas id="myChart" height="50" width="50"></canvas>
+    <input id="pushValue" type="number" class="form-control mb-3">
+    <button id="push" class="btn btn-dark btn-sm w-100">Push Value</button>
+
+    <script src="scripts/graph.js"></script>
+    
 
 </body>
 </html>

@@ -19,6 +19,7 @@ namespace Test.UM
         {
             EFNews nm = new EFNews();
             Account acc = new Account();
+            acc.UserID = 2;
             Assert.True(await nm.IncrementBias(acc.UserID));
             Console.WriteLine("Succesfully incremented");
         }
@@ -27,14 +28,16 @@ namespace Test.UM
         {
             EFNews nm = new EFNews();
             Account acc = new Account();
+            acc.UserID = 2;
             Assert.True(await nm.DecrementBias(acc.UserID));
-            Console.WriteLine("Succesfully incremented");
+            Console.WriteLine("Succesfully decremented");
         }
         [Fact]
         public async void GettHealthBiasSuccess()
         {
             EFNews nm = new EFNews();
             Account acc = new Account();
+            acc.UserID = 2;
             Assert.NotEqual(-1,await nm.GetBias(acc.UserID));
             Console.WriteLine("Succesfully retrived bias");
         }

@@ -30,7 +30,7 @@ async function pickCategory() {
  * @param {Number} displayAmnt The number of Food Articles that will be displayed
  */
 async function storeFoodNews(displayAmnt) {
-    //make a promise through fetch on APIFOOD, appply await as well
+    //make a promise through fetch on APIFOOD, apply await as well
     await fetch(APIFOOD)
         .then(response => response.json())
         .then(data => {
@@ -127,7 +127,7 @@ async function getCategory(index) {
  * Get the number of Health news to display
  */
 async function getHealthFilter() {
-    //access the backend and increment
+    //access the backend
     //if the value is set at 4 already, then we do not need to increment it no more
     const response = await fetch('http://localhost:49200/api/News', {
         method: 'GET'

@@ -22,8 +22,12 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="wwwroot\unit test\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="wwwroot\unit test\**" />
+    <EmbeddedResource Remove="wwwroot\unit test\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="wwwroot\unit test\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
@@ -33,13 +37,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\unit test\jasmine\lib\jasmine-4.1.0\boot0.js" />
-    <None Include="wwwroot\unit test\jasmine\lib\jasmine-4.1.0\boot1.js" />
-    <None Include="wwwroot\unit test\jasmine\lib\jasmine-4.1.0\jasmine-html.js" />
-    <None Include="wwwroot\unit test\jasmine\lib\jasmine-4.1.0\jasmine.js" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

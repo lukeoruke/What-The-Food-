@@ -1,29 +1,51 @@
-﻿/**
- * Render graph from chart.js
- */
+﻿
+//Nutrition label from food objects will go into list, which will then be
+//populated into the graph
+var names = ['item1'], calories = [15], servings = [10], servingSize = [5],
+totalFat = [12], saturatedFat = [], transFat = [], cholesterol = [], sodium = [],
+totalCarb = [], fiber = [], totalSugar = [], addedSugar = [], protein = [];
 
-//Create array that will store all graph data objects
-let labelObjects = [];
-
+//Create dictionary that will store all graph data objects
+var labelObjects = {
+    'names': names,
+    'calories': calories,
+    'servings':servings,
+    'servingSize':servingSize,
+    'totalFat':totalFat,
+    'saturatedFat':saturatedFat,
+    'transFat':transFat,
+    'cholesterol':cholesterol,
+    'sodium':sodium,
+    'totalCarb':totalCarb,
+    'fiber':fiber,
+    'totalSugar':totalSugar,
+    'addedSugar':addedSugar,
+    'protein': protein
+};
 const GRAPH = document.getElementById('myChart');
 const barGraph = new Chart(GRAPH, {
     type: 'bar',
     data: {
         datasets: [{
-            data: [15, 15, 15],
+            data: labelObjects['calories'],
         }],
-        labels: ['item1', 'item2', 'item3']
+        labels: labelObjects['names']
     }
 })
 
-const servings = [3, 2, 6]
-const servingSize = [4, 6, 2]
+
+
 const push = document.getElementById('push');
 const select = document.getElementById('labelItems');
 var labelItems = document.getElementById("labelItems");
 labelItems.addEventListener("change", function () {
-    console.log(labelItems.value)
-    populateBarGraph(servingSize);
+    
+    for (var key in labelObjects)
+        if (key === labelItems.value) {
+            populateBarGraph(labelObjects[key]);
+            barGraph.update();
+        }
+
 });
 var selectionLabels = []
 for (i = 0; i < labelItems.length; i++) {
@@ -42,7 +64,6 @@ function populateBarGraph(data) {
     //barGraph.data.datasets[0].data.push(pushValue.value);
     //barGraph.data.labels.push(pushLabel.value);
     //console.log(barGraph.data.datasets[0].data);
-    barGraph.update();
 }
 
 

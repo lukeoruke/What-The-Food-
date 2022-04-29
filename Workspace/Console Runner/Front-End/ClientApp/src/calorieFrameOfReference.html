@@ -1,10 +1,24 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title></title>
+    <link rel="stylesheet" href="styles/index.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts/graph.js"></script>
+    <script src="scripts/scanBarcode.js"></script>
 </head>
 <body>
+    <a href="index.html"><img src="images/apple.png" alt="What The Food?!" width="200" height="200"></a>
+    <a href="scanBarcode.html"><button class="button">Scan</button></a>
+    <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
+    <a href="customAMR.html"><button class="button">Custom AMR</button></a>
+    <a href="history.html"><button class="button">History</button></a>
+    <a href="calorieFrameOfReference.html"><button class="button">Calorie Frame of Reference</button></a>
+    <a href="settingPage.html"><button class="button">Settings</button></a>
 
+    
+    <canvas id="testGraph" height="50" width="50"></canvas>
+    <input id="pushValue" type="number" class="form-control mb-3">
+    <button id = "push" class="btn btn-dark btn-sm w-100">Push Value</button>
+    
 </body>
 </html>

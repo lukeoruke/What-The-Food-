@@ -1,71 +1,39 @@
 ﻿
 //Nutrition label from food objects will go into list, which will then be
 //populated into the graph
-var names = ['item1'], calories = [15], servings = [10], servingSize = [5],
-totalFat = [12], saturatedFat = [], transFat = [], cholesterol = [], sodium = [],
+var names = [], calories = [], servings = [], servingSize = [],
+totalFat = [], saturatedFat = [], transFat = [], cholesterol = [], sodium = [],
 totalCarb = [], fiber = [], totalSugar = [], addedSugar = [], protein = [];
 
-//Create dictionary that will store all graph data objects
+//Create dictionary that will store all graph data objects from JSON
 var labelObjects = {
-    'names': names,
-    'calories': calories,
-    'servings':servings,
-    'servingSize':servingSize,
-    'totalFat':totalFat,
-    'saturatedFat':saturatedFat,
-    'transFat':transFat,
-    'cholesterol':cholesterol,
-    'sodium':sodium,
-    'totalCarb':totalCarb,
-    'fiber':fiber,
-    'totalSugar':totalSugar,
-    'addedSugar':addedSugar,
-    'protein': protein
+    'ProductName': names,
+    'Calories': calories,
+    'Servings':servings,
+    'ServingSize':servingSize,
+    'TotalFat':totalFat,
+    'SaturatedFat':saturatedFat,
+    'TransFat':transFat,
+    'Cholesterol':cholesterol,
+    'Sodium':sodium,
+    'TotalCarbohydrate':totalCarb,
+    'DietaryFiber':fiber,
+    'TotalSugar':totalSugar,
+    'AddedSugar':addedSugar,
+    'Protein': protein
 };
 const GRAPH = document.getElementById('myChart');
 const barGraph = new Chart(GRAPH, {
     type: 'bar',
     data: {
         datasets: [{
-            data: labelObjects['calories'],
+            data: labelObjects['Calories'],
         }],
-        labels: labelObjects['names']
+        labels: labelObjects['ProductName']
     }
 })
 
-
-
 const push = document.getElementById('push');
-const select = document.getElementById('labelItems');
-var labelItems = document.getElementById("labelItems");
-labelItems.addEventListener("change", function () {
-    
-    for (var key in labelObjects)
-        if (key === labelItems.value) {
-            populateBarGraph(labelObjects[key]);
-            barGraph.update();
-        }
-
-});
-var selectionLabels = []
-for (i = 0; i < labelItems.length; i++) {
-    selectionLabels.push(labelItems[i].value);
-}
-
-
-
-
-
-function populateBarGraph(data) {
-    barGraph.data.datasets[0].data = data
-
-    //const pushValue = document.getElementById('pushValue');
-    //const pushLabel = document.getElementById('pushLabel');
-    //barGraph.data.datasets[0].data.push(pushValue.value);
-    //barGraph.data.labels.push(pushLabel.value);
-    //console.log(barGraph.data.datasets[0].data);
-}
-
 
 
 async function getFoodObject(e) {
@@ -91,6 +59,37 @@ async function getFoodObject(e) {
         console.log(response.status); // returns 200;
     });
 }
+
+function populateDictionary() {
+    var jsonData = localStorage.getItem('foodInfo');
+    console.log(jsonData);
+    const jsonConst = JSON.parse(jsonData);
+    console.log(jsonConst);
+    console.log(jsonConst.ProductName);
+    
+
+}
+
+var labelItems = document.getElementById("labelItems");
+labelItems.addEventListener("change", function () {
+    for (var key in labelObjects)
+        if (key === labelItems.value) {
+            populateBarGraph(labelObjects[key]);
+            barGraph.update();
+        }
+});
+
+function populateBarGraph(data) {
+    barGraph.data.datasets[0].data = data
+
+    //const pushValue = document.getElementById('pushValue');
+    //const pushLabel = document.getElementById('pushLabel');
+    //barGraph.data.datasets[0].data.push(pushValue.value);
+    //barGraph.data.labels.push(pushLabel.value);
+    //console.log(barGraph.data.datasets[0].data);
+}
+
+
 
 async function getHistory(e) {
     e.preventDefault();

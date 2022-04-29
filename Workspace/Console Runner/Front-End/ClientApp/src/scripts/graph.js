@@ -2,33 +2,50 @@
  * Render graph from chart.js
  */
 
-//const GRAPH = document.getElementById("testGraph");
-
-
 //Create array that will store all graph data objects
-let graphs = [];
+let labelObjects = [];
 
 const GRAPH = document.getElementById('myChart');
 const barGraph = new Chart(GRAPH, {
     type: 'bar',
     data: {
         datasets: [{
-            data: [20, 10],
+            data: [15, 15, 15],
         }],
-        labels: ['a', 'b', 'c', 'd']
+        labels: ['item1', 'item2', 'item3']
     }
 })
 
-
+const servings = [3, 2, 6]
+const servingSize = [4, 6, 2]
 const push = document.getElementById('push');
-push.addEventListener('click', populateBarGraph);
+const select = document.getElementById('labelItems');
+var labelItems = document.getElementById("labelItems");
+labelItems.addEventListener("change", function () {
+    console.log(labelItems.value)
+    populateBarGraph(servingSize);
+});
+var selectionLabels = []
+for (i = 0; i < labelItems.length; i++) {
+    selectionLabels.push(labelItems[i].value);
+}
 
-function populateBarGraph() {
-    const pushValue = document.getElementById('pushValue');
-    barGraph.data.datasets[0].data.push(pushValue.value);
-    console.log(barGraph.data.datasets[0].data);
+
+
+
+
+function populateBarGraph(data) {
+    barGraph.data.datasets[0].data = data
+
+    //const pushValue = document.getElementById('pushValue');
+    //const pushLabel = document.getElementById('pushLabel');
+    //barGraph.data.datasets[0].data.push(pushValue.value);
+    //barGraph.data.labels.push(pushLabel.value);
+    //console.log(barGraph.data.datasets[0].data);
     barGraph.update();
 }
+
+
 
 async function getFoodObject(e) {
     e.preventDefault();

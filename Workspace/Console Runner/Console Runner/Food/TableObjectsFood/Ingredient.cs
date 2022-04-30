@@ -31,10 +31,15 @@ public class Ingredient
         string strAlt = "\"IngredientAlternateName\": [";
         string strDesc = "\"IngredientDescription\": [";
 
-        strName += $"\"{IngredientName}\"]";
-        strAlt += $"\"{AlternateName}\"]";
-        strDesc += $"\"{IngredientDescription}\"]";
+        strName += $"\"{IngredientName}\" ]";
+        strAlt += $"\"{AlternateName}\" ]";
+        strDesc += $"\"{IngredientDescription}\" ]";
 
+        if (IngredientName == null && AlternateName == null && IngredientDescription == null) {
+            strName += "]";
+            strAlt += "]";
+            strDesc += "]";
+        }
         return strName + ", " + strAlt + ", " + strDesc;
     }
 }

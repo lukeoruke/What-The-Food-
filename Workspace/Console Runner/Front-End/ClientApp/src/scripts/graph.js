@@ -34,13 +34,13 @@ const barGraph = new Chart(GRAPH, {
 })
 
 const push = document.getElementById('push');
-
+push.addEventListener('click', getFoodObject);
 
 async function getFoodObject(e) {
     e.preventDefault();
 
     console.log('Attempting to Scan...');
-    let barcode = document.getElementById('barcode').value;
+    let barcode = document.getElementById('pushValue').value;
     const formData = new FormData();
     formData.append('barcode', barcode);
     //JSON.stringify(formData);
@@ -49,7 +49,8 @@ async function getFoodObject(e) {
     // HTTP Get Request
     await fetch('http://localhost:49200/api/GetFoodProductFromBarCode?' + barcode)
         .then(async response => localStorage.setItem('foodInfo', JSON.stringify(await response.json())))
-        .then(data => console.log(data));
+        .then(data => console.log(data))
+        .then(populateDictionary())
     
     // HTTP Post Request
     await fetch('http://localhost:49200/api/GetFoodProductFromBarCode', {
@@ -59,7 +60,7 @@ async function getFoodObject(e) {
         console.log(response.status); // returns 200;
     });
 }
-
+    
 function populateDictionary() {
     var jsonData = localStorage.getItem('foodInfo');
     console.log(jsonData);

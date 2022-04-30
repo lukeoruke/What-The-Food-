@@ -87,9 +87,9 @@ namespace Food.Controllers
                 //nutrientList = _foodDB.get ASK MATT ABOUT THIS
                 string labelStr = label.FormatJsonString();
                 string ingredientsStr = FDC.FormatIngredientsJsonString(ingredients);
-
                 jsonStr += foodItemStr + ", " + labelStr + ", " + ingredientsStr + "}";
-
+                Console.WriteLine("printing string");
+                Console.WriteLine(jsonStr);
                 return jsonStr;
 
             }catch (Exception ex)

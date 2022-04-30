@@ -223,6 +223,13 @@ namespace Microservice_Food
                 }
             }
 
+            if (ingredientList.Count == 0)
+            {
+                strNameList += "]";
+                strAltList += "]";
+                strDescList += "]";
+            }
+
             return strNameList + ", " + strAltList + ", " + strDescList;
         }
     }

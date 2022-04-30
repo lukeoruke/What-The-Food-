@@ -1,4 +1,4 @@
-﻿/// <reference path="C:\Users\Luke\Documents\GitHub\What-The-Food-\Workspace\Console Runner\Front-End\wwwroot\unit test\jasmine\News.js" />
+﻿/// <reference path="C:\Users\Gabe\Source\Repos\lukeoruke\What-The-Food-\Workspace\Console Runner\UnitTest\unit test\jasmine\News.js" />
 
 describe("News", function () {
     var news;

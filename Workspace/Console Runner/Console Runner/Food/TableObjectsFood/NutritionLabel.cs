@@ -253,11 +253,17 @@ public class NutritionLabel
                 listNut += ",";
                 listNutAmt += ",";
             }
-            else if(i == _nutrients.Count - 1)
+            else if (i == _nutrients.Count - 1)
             {
                 listNut += "]";
                 listNutAmt += "]";
             }
+        }
+
+        if (_nutrients.Count == 0)
+        {
+            listNut += "]";
+            listNutAmt += "]";
         }
 
         str += listNut + ", " + listNutAmt;

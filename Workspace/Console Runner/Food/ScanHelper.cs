@@ -83,12 +83,8 @@ namespace Food.Executables
 
                     //Add new food, ingredients, and label to DB
                     await _foodDB.AddNewProductAsync(newFood, newLabel, newIngredients);
-                    Console.WriteLine(newFood.FormatJsonString());
-                    Console.WriteLine(newLabel.FormatJsonString());
-                    foreach (Ingredient i in newIngredients)
-                    {
-                        Console.WriteLine(i.FormatIngredientsJsonString());
-                    }
+                    
+                    
                 }
 
                 return 1;
@@ -141,7 +137,7 @@ namespace Food.Executables
             //get all ingredients from the string value
             while(str.Length > 0)   //this loop ensures that we properly get all food ingredients without cutting off too early
             {
-                Console.WriteLine("str Length: " + str.Length);
+                
                 if (str[0] == '(')
                 {
                     inParentheses = true;
@@ -182,14 +178,12 @@ namespace Food.Executables
             string strNameList = "\"IngredientName\": [";
             string strAltList = "\"IngredientAlternateName\": [";
             string strDescList = "\"IngredientDescription\": [";
-
+            
             for (int i = 0; i < ingredientList.Count; i++)
             {
-
                 strNameList += $"\"{ingredientList[i].IngredientName}\"";
                 strAltList += $"\"{ingredientList[i].AlternateName}\"";
                 strDescList += $"\"{ingredientList[i].IngredientDescription}\"";
-
                 if (i < ingredientList.Count - 1)
                 {
                     strNameList += ",";
@@ -202,8 +196,14 @@ namespace Food.Executables
                     strAltList += "]";
                     strDescList += "]";
                 }
+                
             }
-
+                if (ingredientList.Count == 0)
+                {
+                    strNameList += "]";
+                    strAltList += "]";
+                    strDescList += "]";
+                }
             return strNameList + ", " + strAltList + ", " + strDescList;
         }
     }

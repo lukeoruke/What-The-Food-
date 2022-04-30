@@ -27,15 +27,30 @@ const barGraph = new Chart(GRAPH, {
     type: 'bar',
     data: {
         datasets: [{
-            data: labelObjects['Calories'],
+            label: Object.keys(labelObjects)[1],
+            data: labelObjects.Calories,
+            backgroundColor: 'rgb(255, 99, 132)',
+            borderColor: 'rgb(255, 99, 132)',
         }],
-        labels: labelObjects['ProductName']
+        labels: labelObjects.ProductName
+    },
+    options: {
+        plugins: {
+            legend: {
+                display: true,
+                labels: {
+                    color: 'rgb(255, 99, 132)',
+                },
+                title: {
+                    text: 'Calories'
+                }
+            }
+        }
     }
 })
 
 const push = document.getElementById('push');
 push.addEventListener('click', getFoodObject);
-
 async function getFoodObject(e) {
     e.preventDefault();
 
@@ -51,6 +66,8 @@ async function getFoodObject(e) {
         .then(async response => localStorage.setItem('foodInfo', JSON.stringify(await response.json())))
         .then(data => console.log(data))
         .then(populateDictionary())
+        .then(localStorage.clear())
+        
     
     // HTTP Post Request
     await fetch('http://localhost:49200/api/GetFoodProductFromBarCode', {
@@ -63,31 +80,40 @@ async function getFoodObject(e) {
     
 function populateDictionary() {
     var jsonData = localStorage.getItem('foodInfo');
-    console.log(jsonData);
     const jsonConst = JSON.parse(jsonData);
     console.log(jsonConst);
-    console.log(jsonConst.ProductName);
+    labelObjects.ProductName.push(jsonConst.ProductName);
+    labelObjects.Calories.push(jsonConst.Calories);
+    labelObjects.Servings.push(jsonConst.Servings);
+    labelObjects.ServingSize.push(jsonConst.ServingSize);
+    labelObjects.TotalFat.push(jsonConst.TotalFat);
+    labelObjects.SaturatedFat.push(jsonConst.SaturatedFat);
+    labelObjects.TransFat.push(jsonConst.TransFat);
+    labelObjects.Cholesterol.push(jsonConst.Cholesterol);
+    labelObjects.Sodium.push(jsonConst.Sodium);
+    labelObjects.TotalCarbohydrate.push(jsonConst.TotalCarbohydrate);
+    labelObjects.DietaryFiber.push(jsonConst.DietaryFiber);
+    labelObjects.TotalSugar.push(jsonConst.TotalSugars);
+    labelObjects.AddedSugar.push(jsonConst.AddedSugar);
+    labelObjects.Protein.push(jsonConst.Protein);
+    
+    barGraph.update();
+ };
     
 
-}
 
 var labelItems = document.getElementById("labelItems");
 labelItems.addEventListener("change", function () {
     for (var key in labelObjects)
         if (key === labelItems.value) {
             populateBarGraph(labelObjects[key]);
+            barGraph.data.datasets[0].label = key;
             barGraph.update();
         }
 });
 
 function populateBarGraph(data) {
-    barGraph.data.datasets[0].data = data
-
-    //const pushValue = document.getElementById('pushValue');
-    //const pushLabel = document.getElementById('pushLabel');
-    //barGraph.data.datasets[0].data.push(pushValue.value);
-    //barGraph.data.labels.push(pushLabel.value);
-    //console.log(barGraph.data.datasets[0].data);
+    barGraph.data.datasets[0].data = data;
 }
 
 

@@ -65,17 +65,7 @@ async function getFoodObject(e) {
     await fetch('http://47.151.24.23:49202/api/GetFoodProductFromBarCode?' + barcode)
         .then(async response => localStorage.setItem('foodInfo', JSON.stringify(await response.json())))
         .then(data => console.log(data))
-        .then(populateDictionary())
-        .then(localStorage.clear())
-        
-    
-    // HTTP Post Request
-    await fetch('http://47.151.24.23:49202/api/GetFoodProductFromBarCode', {
-        method: 'POST',
-        body: formData,
-    }).then(function (response) {
-        console.log(response.status); // returns 200;
-    });
+        .then(populateDictionary)
 }
     
 function populateDictionary() {
@@ -96,8 +86,8 @@ function populateDictionary() {
     labelObjects.TotalSugar.push(jsonConst.TotalSugars);
     labelObjects.AddedSugar.push(jsonConst.AddedSugar);
     labelObjects.Protein.push(jsonConst.Protein);
-    
     barGraph.update();
+    localStorage.clear();
  };
     
 

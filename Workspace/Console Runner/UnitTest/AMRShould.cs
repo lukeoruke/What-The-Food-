@@ -11,11 +11,12 @@ namespace Test.UM
         private readonly IAccountGateway _accountAccess = new MemAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new MemAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new MemFlagGateway();
+        private readonly IAMRGateway aMRGateway = new MemAMRGateway();
+
         [Fact]
         public void InstantiateProperly()
         {
             // Arrange
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
             Account testUser = new Account() { Email = "testaccount@example.com", FName = "test", LName = "account", IsActive = true, Password = "password" , UserID = 12305921};
             Account anotherTestUser = new Account() { Email = "othertestaccount@example.com", FName = "othertest", LName = "account", IsActive = true, Password = "password" , UserID = 128402};
 

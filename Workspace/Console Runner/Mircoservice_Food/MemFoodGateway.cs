@@ -327,6 +327,21 @@ namespace Console_Runner.FoodService
             return ingsList;
         }
 
+        public async Task<List<FoodItem>> RetrieveNFoodItemsAsync(int skip, int take, LogService? logService = null)
+        {
+            List<FoodItem> foodList = new();
+            for (int i = skip; i < _foodsList.Count; i++)
+            {
+                if (take == 0)
+                {
+                    return foodList;
+                }
+                foodList.Add(_foodsList[i]);
+                take--;
+            }
+            return foodList;
+        }
+
         public Ingredient GetIngredient(int id, LogService? logService = null)
         {
             return _ingredientsList.Where(r => r.IngredientID == id).ToList()[0];

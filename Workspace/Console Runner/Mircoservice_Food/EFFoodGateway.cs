@@ -159,10 +159,8 @@ namespace Console_Runner.FoodService
                 }
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
-                Console.WriteLine(ex.InnerException.Message);
                 return false;
             }
         }
@@ -341,6 +339,12 @@ namespace Console_Runner.FoodService
                         $"Retrieved list of nutrients by ID");
             }
             return nutrientList;
+        }
+
+        //TODO: what the fuck?
+        public Task<List<FoodItem>> RetrieveNFoodItemsAsync(int skip, int take, LogService? logService = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

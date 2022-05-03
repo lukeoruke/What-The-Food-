@@ -11,11 +11,14 @@ namespace Console_Runner.AccountService
         private readonly IAccountGateway _accountAccess;
         private readonly IAuthorizationGateway _permissionService;
         private readonly IFlagGateway _flagService;
-        public AccountDBOperations(IAccountGateway accountAccess, IAuthorizationGateway permissionService, IFlagGateway flagGateway)
+        private readonly IAMRGateway _amrGateway;
+
+        public AccountDBOperations(IAccountGateway accountAccess, IAuthorizationGateway permissionService, IFlagGateway flagGateway, IAMRGateway aMRGateway)
         {
             this._accountAccess = accountAccess;
             this._permissionService = permissionService;
             this._flagService = flagGateway;
+            this._amrGateway = aMRGateway;
         }
         
         /// <summary>
@@ -658,6 +661,11 @@ namespace Console_Runner.AccountService
             return await _flagService.GetNAccountFlagsAsync(userID, skip, take, logService);
         }
 
+        public async Task<bool> AddAMRAsync(int userID, bool isMale, int weight, float height, int age, ActivityLevel activity)
+        {
+            await _amrGateway.AddAMRAsync(new AMR(isMale, weight, height, age, activity) { UserID = userID });
+            return true;
+        }
 
         /// <summary>
         /// 
@@ -669,9 +677,18 @@ namespace Console_Runner.AccountService
             return await _flagService.GetAllAccountFlagsAsync(userID, logService);
         }
 
+        public async Task<AMR> GetAMRAsync(int userID, LogService? logService = null)
+        {
+            return await _amrGateway.GetAMRAsync(userID, logService);
+        }
+
 
 
     }
+
+
+
+
     public class UserNotAuthorizedException : Exception
     {
         public UserNotAuthorizedException()

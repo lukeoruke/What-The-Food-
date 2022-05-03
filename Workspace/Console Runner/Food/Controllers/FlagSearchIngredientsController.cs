@@ -15,10 +15,11 @@ namespace Food.Controllers
         private const string UM_CATEGORY = "Data Store";
 
         private readonly IFoodGateway _foodGateway = new EFFoodGateway();
+        private readonly IFoodUpdateGateway _foodUpdateGateway = new EFFoodUpdateGateway();
         [HttpGet]
         public async Task<ActionResult<string>> GET()
         {
-            FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway);
+            FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
             logger.UserID = "placeholder";
@@ -27,20 +28,20 @@ namespace Food.Controllers
             try
             {
                 string input = Request.QueryString.Value;
-                Console.WriteLine("(accountSearchController)input: " + input);
+
                 string[] inputarr = input.Split('?');
                 string search = inputarr[1];
 
                 string page = inputarr[2];
                 int numberOfItemsDisplayedAtOnce = 2;
-                Console.WriteLine("GET " + search);
+
                 var allIngredientList = await _foodDBOperations.GetIngredientBySearchAsync(search, numberOfItemsDisplayedAtOnce * int.Parse(page)
                     , numberOfItemsDisplayedAtOnce, logger);
-                Console.WriteLine("Length of ing list(search function) = " + allIngredientList.Count());
+
                 string jsonStr = "{";
                 
                 jsonStr += FormatIngredientsJsonString(allIngredientList);
-                Console.WriteLine(jsonStr);
+
                 return jsonStr + "}";
             }
             catch (Exception ex)
@@ -49,7 +50,7 @@ namespace Food.Controllers
                 return "Something went wrong getting the ingredients list to display on food flags page";
             }
         }
-        public string FormatIngredientsJsonString(List<Ingredient> ingredientList)
+        private string FormatIngredientsJsonString(List<Ingredient> ingredientList)
         {
             string strNameList = "\"IngredientName\": [";
 

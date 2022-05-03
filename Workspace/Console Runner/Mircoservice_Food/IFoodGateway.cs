@@ -85,6 +85,15 @@ namespace Console_Runner.FoodService
         /// <param name="barcode">the barcode being searched</param>
         /// <returns>a food item corosponding to the provided barcode</returns>
         public Task<FoodItem?> RetrieveScannedFoodItemAsync(string barcode, LogService? logService = null);
+
+        /// <summary>
+        /// Gets N FoodItems at a time
+        /// </summary>
+        /// <param name="skip"></param>
+        /// <param name="take"></param>
+        /// <param name="logService"></param>
+        /// <returns>Returns N ingredients, N being take</returns>
+        public Task<List<FoodItem>> RetrieveNFoodItemsAsync(int skip, int take, LogService? logService = null);
         /// <summary>
         /// Gets the nutrition label associated with a provided barcode
         /// </summary>

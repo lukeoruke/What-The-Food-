@@ -262,6 +262,12 @@ public class NutritionLabel
             }
         }
 
+        if (_nutrients.Count == 0)
+        {
+            listNut += "]";
+            listNutAmt += "]";
+        }
+
         str += listNut + ", " + listNutAmt;
 
 

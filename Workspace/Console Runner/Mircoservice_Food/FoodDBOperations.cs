@@ -5,9 +5,11 @@ namespace Console_Runner.FoodService
     public class FoodDBOperations
     {
         private readonly IFoodGateway _foodItemAccess;
-        public FoodDBOperations(IFoodGateway foodItemAccess)
+        private readonly IFoodUpdateGateway _foodUpdateGateway;
+        public FoodDBOperations(IFoodGateway foodItemAccess, IFoodUpdateGateway foodUpdateAccess)
         {
             _foodItemAccess = foodItemAccess;
+            _foodUpdateGateway = foodUpdateAccess;
         }
 
         /// <summary>
@@ -84,6 +86,23 @@ namespace Console_Runner.FoodService
                 return false;
             }
             
+        }
+        /// <summary>
+        /// Gets (take) FoodItems from the database starting from the index (skip). FoodItems are sorted by id.
+        /// </summary>
+        /// <param name="skip">The number of FoodItems to skip.</param>
+        /// <param name="take">The number of FoodItems to take.</param>
+        /// <param name="logService">The log service object to invoke LogWithSetUserAsync with.</param>
+        /// <returns>A List of FoodItems.</returns>
+        public async Task<List<FoodItem>> GetNFoodItemsAsync(int skip, int take, LogService? logService = null)
+        {
+            List<FoodItem> foods = await _foodItemAccess.RetrieveNFoodItemsAsync(skip, take, logService);
+            if(logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Data, DateTime.Now,
+                        $"Retrieved {take} FoodItems after {skip} from database");
+            }
+            return foods;
         }
         /// <summary>
         /// Gets the label nutrient list associated with a product from its barcode
@@ -242,6 +261,61 @@ namespace Console_Runner.FoodService
                         $"Retrieved food item \"{foodItem.ProductName}\"");
             }
             return foodItem;
+        }
+        
+        /// <summary>
+        /// Add a subtype of FoodUpdate to the database. Throws if attempting to add a FoodUpdate and not a subtype.
+        /// </summary>
+        /// <param name="foodUpdate">The FoodUpdate to add to the database.</param>
+        /// <param name="logService">The LogService to invoke LogWithSetUserAsync with.</param>
+        /// <returns>True if the FoodUpdate was successfully added to the database.</returns>
+        public async Task<bool> AddFoodUpdateAsync(FoodUpdate foodUpdate, LogService? logService = null)
+        {
+            if (foodUpdate.GetType() == typeof(FoodUpdate))
+            {
+                throw new ArgumentException($"{nameof(foodUpdate)} is a FoodUpdate and not a derived type.");
+            }
+            await _foodUpdateGateway.AddAsync(foodUpdate, logService);
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Data, DateTime.Now,
+                        $"Adding FoodUpdate for FoodItem {foodUpdate.FoodItem.Barcode} to database through gateway");
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Gets all FoodUpdates for a given barcode belonging to a FoodItem.
+        /// </summary>
+        /// <param name="barcode">The barcode of the FoodItem to get FoodUpdates for.</param>
+        /// <param name="logService">The LogService to invoke LogWithSetUserAsync with.</param>
+        /// <returns>A List of all FoodUpdates associated with the given barcode.</returns>
+        public async Task<List<FoodUpdate>> GetAllUpdatesForBarcodeAsync(string barcode, LogService? logService = null)
+        {
+            List<FoodUpdate> updates = await _foodUpdateGateway.GetAllByBarcodeAsync(barcode, logService);
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Data, DateTime.Now,
+                        $"Retrieving all FoodUpdates for FoodItem {barcode} from database through gateway");
+            }
+            return updates;
+        }
+
+        /// <summary>
+        /// Removes the FoodUpdate with the given id from the database if it exists.
+        /// </summary>
+        /// <param name="id">The id of the FoodUpdate to remove from the database.</param>
+        /// <param name="logService">The LogService to invoke LogWithSetUserAsync with.</param>
+        /// <returns>True if the corresponding FoodUpdate was removed from the database.</returns>
+        public async Task<bool> RemoveFoodUpdateByIdAsync(int id, LogService? logService = null)
+        {
+            await _foodUpdateGateway.RemoveAsync(id, logService);
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Data, DateTime.Now,
+                        $"Removed FoodUpdate {id} from database through gateway");
+            }
+            return true;
         }
     }
 }

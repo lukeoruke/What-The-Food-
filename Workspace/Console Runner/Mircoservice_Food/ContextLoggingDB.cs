@@ -27,7 +27,18 @@ namespace Console_Runner.Logging
             {
                 table.LogId
             });
-
+            builder.Entity<Log>()
+                .Property(log => log.Category)
+                .HasConversion(
+                    cat => cat.ToString(),
+                    cat => (Category)Enum.Parse(typeof(Category), cat)
+                );
+            builder.Entity<Log>()
+                .Property(log => log.LogLevel)
+                .HasConversion(
+                    loglev => loglev.ToString(),
+                    loglev => (LogLevel)Enum.Parse(typeof(LogLevel), loglev)
+                );
             builder.Entity<UserIdentifier>().HasKey(table => new
             {
                 table.UserHash

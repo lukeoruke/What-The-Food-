@@ -5,10 +5,11 @@ namespace Food.Executables
     public class TempName
     {
         private IFoodGateway _foodGateway = new EFFoodGateway();
+        private IFoodUpdateGateway _foodUpdateGateway = new EFFoodUpdateGateway();
         FoodDBOperations fm;
         public TempName()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
         }
 
         public FoodItem makeFoodItem(string barcode, string prodName, string compName, string pic)

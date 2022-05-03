@@ -10,15 +10,18 @@ namespace Microservice_Food
 {
     public class ScanHelper
     {
+        private readonly IAMRGateway _amRGateway = new EFAMRGateway();
         //dependency injection food DB
         private const string UM_CATEGORY = "Data Store";
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();
+        private readonly IFoodUpdateGateway _foodUpdateGateway = new EFFoodUpdateGateway();
         private FoodDBOperations _foodDB;
         private IFormCollection formData;
         //dependency injection account and logging DB
         private readonly IAccountGateway _accountAccess = new EFAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
+        private readonly IAMRGateway _amrGateway = new EFAMRGateway();
         private AccountDBOperations _accountDBOperations;
 
         private readonly HttpClient client;
@@ -31,7 +34,7 @@ namespace Microservice_Food
         /// </summary>
         public ScanHelper()
         {
-            client = new HttpClient();
+            client = new HttpClient();  //will ddos system, don't create a new instance for each obj. Use pooled instance. It is an implicit dependency
             client.BaseAddress = new Uri(url);
             client.DefaultRequestHeaders.Add("apiKey", apiKey);
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -49,8 +52,8 @@ namespace Microservice_Food
         /// </returns>
         public async Task<int> SearchAndAdd(string barcode)
         {
-            _foodDB = new FoodDBOperations(_foodServiceGateway);    //dependency injection
-            _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            _foodDB = new FoodDBOperations(_foodServiceGateway, _foodUpdateGateway);    //dependency injection
+            _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amrGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
             logger.UserID = "placeholder";
@@ -75,8 +78,6 @@ namespace Microservice_Food
                     nutValues.ClearValues();
 
                     //make a new food object to be added to DB
-                    Console.WriteLine(food.subbrandName);
-                    Console.WriteLine(food.lowercaseDescription);
                     if (food.subbrandName == null)
                         newFood = new FoodItem(food.gtinUpc, food.lowercaseDescription, food.brandName, "");
                     else
@@ -220,6 +221,13 @@ namespace Microservice_Food
                     strAltList += "]";
                     strDescList += "]";
                 }
+            }
+
+            if (ingredientList.Count == 0)
+            {
+                strNameList += "]";
+                strAltList += "]";
+                strDescList += "]";
             }
 
             return strNameList + ", " + strAltList + ", " + strDescList;

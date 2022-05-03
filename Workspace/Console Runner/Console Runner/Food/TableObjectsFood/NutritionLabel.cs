@@ -1,6 +1,4 @@
-﻿
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Console_Runner.FoodService;
@@ -247,19 +245,25 @@ public class NutritionLabel
 
         for (int i = 0; i < _nutrients.Count; i++)
         {
-            listNut += $"\"{_nutrients[i].Item2}\"";
-            listNutAmt += $"\"{_nutrients[i].Item1}\"";
+            listNut += $"\"{_nutrients[i].Item1.Name}\"";
+            listNutAmt += $"\"{_nutrients[i].Item2}\"";
 
             if (i < _nutrients.Count - 1)
             {
                 listNut += ",";
                 listNutAmt += ",";
             }
-            else if(i == _nutrients.Count - 1)
+            else if (i == _nutrients.Count - 1)
             {
                 listNut += "]";
                 listNutAmt += "]";
             }
+        }
+
+        if (_nutrients.Count == 0)
+        {
+            listNut += "]";
+            listNutAmt += "]";
         }
 
         str += listNut + ", " + listNutAmt;

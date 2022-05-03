@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using Console_Runner.AccountService;
+using Console_Runner.AccountService.Authentication;
+
 namespace Microservice.AccountLogin.Controllers
 {
     [Route("api/[controller]")]
@@ -14,16 +16,19 @@ namespace Microservice.AccountLogin.Controllers
         private readonly IAccountGateway _accountAccess = new EFAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
-        
-        [HttpGet]
-        //place methods here
-        public async Task<ActionResult<AccountLogin>> Get()
-        {
-            var user = new AccountLogin();
-            Console.WriteLine("asdkfhjaweklfhjasdfhlafhlakfha2");
-            user.email = "something@testEmail.com";
-            return Ok(user);
-        }
+        private readonly IAuthenticationService _JWTAuthenticationService = new JWTAuthenticationService();
+        private Account? account;
+
+        /*        [HttpGet]
+                //place methods here
+                //THIS IS DEAD CODE?????? I THINK????? ASK TYLER
+                public async Task<ActionResult<AccountLogin>> Get()
+                {
+                    var user = new AccountLogin();
+                    Console.WriteLine("asdkfhjaweklfhjasdfhlafhlakfha2");
+                    user.email = "something@testEmail.com";
+                    return Ok(user);
+                }*/
 
         [HttpPost]
         public async void Post()
@@ -39,14 +44,14 @@ namespace Microservice.AccountLogin.Controllers
             Console.WriteLine(formData["email"]);
             Console.WriteLine(formData["password"]);
 
-
             try
             {
                
 
-                Account? account = await _accountDBOperations.SignInAsync(formData["email"].ToString(), formData["password"].ToString());
+                account = await _accountDBOperations.SignInAsync(formData["email"].ToString(), formData["password"].ToString());
                 if (account != null)
                 {
+                    
                     Console.WriteLine(account.ToString());
                 }
                 
@@ -56,6 +61,12 @@ namespace Microservice.AccountLogin.Controllers
             {
                 Console.WriteLine(e.ToString());
             }
+        }
+
+        [HttpGet]
+        public string GET()
+        {
+             return _JWTAuthenticationService.GenerateToken(account.Email);
         }
     }
 }

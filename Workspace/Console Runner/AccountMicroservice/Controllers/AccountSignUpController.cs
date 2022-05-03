@@ -15,14 +15,14 @@ namespace Microservice.AccountLogin.Controllers
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
         
 
-        [HttpGet]
+   /*     [HttpGet]
         //place methods here
         public async Task<ActionResult<AccountSignup>> Get()
         {
             var user = new AccountSignup();
 
             return Ok(user);
-        }
+        }*/
 
         [HttpPost]
         public async void Post()
@@ -38,8 +38,6 @@ namespace Microservice.AccountLogin.Controllers
 
             Console.WriteLine(formData["email"]);
             Console.WriteLine(formData["password"]);
-
-
 
             try
             {

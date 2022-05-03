@@ -16,9 +16,9 @@ namespace Console_Runner.AccountService.Authentication
         private readonly string _key;
 
 
-        public JWTAuthenticationService(string configuration)
+        public JWTAuthenticationService()
         {
-            _key = configuration;
+            //_key = configuration;
         }
 
 

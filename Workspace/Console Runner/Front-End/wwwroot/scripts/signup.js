@@ -36,13 +36,14 @@ async function sendSignup(e) {
         .then(response => console.log(response.text()))
         .then(data => console.log(data));*/
 
+    console.log("this is right above the fetch");
     // HTTP Post Request
-    await fetch('http://localhost:49201/api/AccountSignUp', {
+    await fetch('http://localhost:49202/api/AccountSignUp', {
         method: 'POST',
         body: formData,
     }).then(function (response) {
         console.log(response.status); // returns 200;
     });
-
+    console.log("this is right UNDER the fetch");
     alert('Successfully sent sign up request!');
 }

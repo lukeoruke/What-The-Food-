@@ -13,19 +13,24 @@ async function sendLogin(e) {
     console.log(password);
 
 
-
+    var postResponse;
     // HTTP Post Request\
-    if (await fetch('http://localhost:49201/api/AccountLogin', {
+    await fetch('http://localhost:49202/api/AccountLogin', {
         method: 'POST',
         body: formData,
     }).then(function (response) {
-        console.log(response.status); // returns 200;
-    }).response == 200) {
+        postResponse = response.status; // returns 200;
+    });
+
+    if (postResponse == 200) {
         // HTTP Get Request
-        await fetch('http://localhost:49201/api/AccountLogin')
+        await fetch('http://localhost:49202/api/AccountLogin')
             .then(response => console.log(response.text()))
             .then(data => console.log(data));
+        console.log("DID WE GET A 200 response????");
     }
+
+
         
 
 

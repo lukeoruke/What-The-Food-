@@ -16,8 +16,10 @@ namespace Microservice.AccountLogin.Controllers
         private readonly IAccountGateway _accountAccess = new EFAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
-        private readonly IAuthenticationService _JWTAuthenticationService = new JWTAuthenticationService();
-        private Account? account;
+        private readonly IAuthenticationService _JWTAuthenticationService = new JWTAuthenticationService("TESTDATAHERE");
+        private readonly IAMRGateway _aMRGateway = new EFAMRGateway();
+        private Account? account = new Account();
+
 
         /*        [HttpGet]
                 //place methods here
@@ -34,7 +36,7 @@ namespace Microservice.AccountLogin.Controllers
         public async void Post()
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations
-                (_accountAccess, _permissionService, _flagGateway);
+                (_accountAccess, _permissionService, _flagGateway, _aMRGateway);
             Console.WriteLine("SUCCESSS!!!");
             Console.WriteLine("Received Post from LoginController");
             //Console.WriteLine(Request.Form("username"));
@@ -52,7 +54,7 @@ namespace Microservice.AccountLogin.Controllers
                 if (account != null)
                 {
                     
-                    Console.WriteLine(account.ToString());
+                    Console.WriteLine("ACCOUNT HAD SOME DATA " + account.ToString());
                 }
                 
                 
@@ -66,7 +68,10 @@ namespace Microservice.AccountLogin.Controllers
         [HttpGet]
         public string GET()
         {
-             return _JWTAuthenticationService.GenerateToken(account.Email);
+            string jwtToken = _JWTAuthenticationService.GenerateToken(account.Email);
+            Console.WriteLine("TOKEN BELLOW VVVV");
+            Console.WriteLine(jwtToken);
+            return jwtToken;
         }
     }
 }

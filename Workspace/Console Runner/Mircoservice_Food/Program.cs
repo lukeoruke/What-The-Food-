@@ -28,7 +28,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseCors(MyAllowSpecificOrigins);
 
@@ -36,4 +36,4 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run("http://192.168.68.66:49202");
+app.Run("http://localhost:49202");

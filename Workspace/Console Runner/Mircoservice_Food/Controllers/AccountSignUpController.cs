@@ -13,27 +13,20 @@ namespace Microservice.AccountLogin.Controllers
         private readonly IAccountGateway _accountAccess = new EFAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
-        
+        private readonly IAMRGateway _aMRGateway = new EFAMRGateway();
 
-   /*     [HttpGet]
-        //place methods here
-        public async Task<ActionResult<AccountSignup>> Get()
-        {
-            var user = new AccountSignup();
-
-            return Ok(user);
-        }*/
 
         [HttpPost]
         public async void Post()
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations
-                (_accountAccess, _permissionService, _flagGateway);
+                (_accountAccess, _permissionService, _flagGateway, _aMRGateway);
  
             Console.WriteLine("SUCCESSS!!!");
             Console.WriteLine("Received Post from LoginController");
             //Console.WriteLine(Request.Form("username"));
             Console.WriteLine("Above read form data");
+
             IFormCollection formData = Request.Form;
             Console.WriteLine("UNDER read form data");
 

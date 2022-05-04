@@ -16,7 +16,11 @@ namespace Food.Controllers
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
         private readonly IAMRGateway _amRGateway = new EFAMRGateway();
         private readonly IActiveSessionTrackerGateway _EFActiveSessionTrackerGateway = new EFActiveSessionTrackerGateway();
+        private int userId;
+
+
         [HttpPost]
+        [Route("api/controller/addFlagToAccount")]
         public async void Post()
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
@@ -24,18 +28,18 @@ namespace Food.Controllers
             // TODO: replace this string with the user email when we can get it
             logger.UserID = "placeholder";
             logger.DefaultTimeOut = 5000;
-            int userId = 0;// NEED TO GET USER ID
+            
             using (var reader = new StreamReader(Request.Body))
             {
                 var body = await reader.ReadToEndAsync();
-
+                
                 var ingsId = body.Split(",");
                 if (ingsId[0] == "" || ingsId[0] == null)
                 {
                     return;
                 }
 
-                for(int i = 0; i < ingsId.Length; i++)
+                for(int i = 0; i < ingsId.Length-1; i++)
                 {
                     await _accountDBOperations.AddFlagToAccountAsync(userId, int.Parse(ingsId[i]), logger);
                 }

@@ -14,13 +14,13 @@ namespace Microservice.AccountLogin.Controllers
         private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
         private readonly IAMRGateway _aMRGateway = new EFAMRGateway();
-
+        private readonly IActiveSessionTrackerGateway _EFActiveSessionTrackerGateway = new EFActiveSessionTrackerGateway();
 
         [HttpPost]
         public async void Post()
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations
-                (_accountAccess, _permissionService, _flagGateway, _aMRGateway);
+                (_accountAccess, _permissionService, _flagGateway, _aMRGateway, _EFActiveSessionTrackerGateway);
  
             Console.WriteLine("SUCCESSS!!!");
             Console.WriteLine("Received Post from LoginController");

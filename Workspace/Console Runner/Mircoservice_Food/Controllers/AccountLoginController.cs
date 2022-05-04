@@ -22,17 +22,6 @@ namespace Microservice.AccountLogin.Controllers
         private Account? account = new Account();
 
 
-        /*        [HttpGet]
-                //place methods here
-                //THIS IS DEAD CODE?????? I THINK????? ASK TYLER
-                public async Task<ActionResult<AccountLogin>> Get()
-                {
-                    var user = new AccountLogin();
-                    Console.WriteLine("asdkfhjaweklfhjasdfhlafhlakfha2");
-                    user.email = "something@testEmail.com";
-                    return Ok(user);
-                }*/
-
         [HttpPost]
         public async void Post()
         {

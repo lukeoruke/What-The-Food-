@@ -9,7 +9,7 @@ namespace Food.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountAddFlagsController : ControllerBase
+    public class AccountAddFlagsControllerOld : ControllerBase
     {
         private readonly IAccountGateway _accountAccess = new EFAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();

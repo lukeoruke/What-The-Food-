@@ -28,7 +28,7 @@ async function sendLogin(e) {
         
         var jsonData = localStorage.getItem('JWT');
         var obj = JSON.parse(jsonData);
-        obj= JSON.stringify(obj.token);
+        obj = JSON.stringify(obj.token);
     }
 
 

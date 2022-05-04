@@ -61,7 +61,7 @@ namespace Console_Runner.AccountService
             });
             builder.Entity<ActiveSessionTracker>().HasKey(table => new
             {
-                table.timeStamp
+                table.jwt
             });
         }
         public DbSet<Account> Accounts { get; set; } = null!;

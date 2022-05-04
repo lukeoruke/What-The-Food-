@@ -26,9 +26,8 @@ async function sendLogin(e) {
         // HTTP Get Request
         await fetch('http://localhost:49202/api/AccountLogin').then(async response => localStorage.setItem('JWT', JSON.stringify(await response.json()))).then(data => console.log(data));
         
-        var jsonData = localStorage.getItem('JWT');
-        var obj = JSON.parse(jsonData);
-        obj = JSON.stringify(obj.token);
+        var jsonData = JSON.parse(localStorage.getItem('JWT'));
+        var JWT = JSON.stringify(jsonData.token);
     }
 
 

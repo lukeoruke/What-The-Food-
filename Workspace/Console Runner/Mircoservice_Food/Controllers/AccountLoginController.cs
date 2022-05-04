@@ -22,6 +22,8 @@ namespace Microservice.AccountLogin.Controllers
         private Account? account = new Account();
 
 
+
+
         [HttpPost]
         public async void Post()
         {
@@ -38,12 +40,16 @@ namespace Microservice.AccountLogin.Controllers
 
             try
             {
+               
+
                 account = await _accountDBOperations.SignInAsync(formData["email"].ToString(), formData["password"].ToString());
                 if (account != null)
                 {
                     
                     Console.WriteLine("ACCOUNT HAD SOME DATA " + account.ToString());
                 }
+                
+                
             }
             catch (FileNotFoundException e)
             {

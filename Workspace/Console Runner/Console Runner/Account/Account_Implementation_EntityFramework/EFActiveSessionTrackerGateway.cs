@@ -1,6 +1,4 @@
-﻿using Console_Runner.AccountService;
-
-namespace Console_Runner.AccountService
+﻿namespace Console_Runner.AccountService
 {
     public class EFActiveSessionTrackerGateway : IActiveSessionTrackerGateway
     {

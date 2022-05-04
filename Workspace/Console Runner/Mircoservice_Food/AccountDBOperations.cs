@@ -685,7 +685,7 @@ namespace Console_Runner.AccountService
         }
 
 
-        public async Task<bool> startSessionAsync(int userID, string jwt)
+        public async Task<bool> StartSessionAsync(int userID, string jwt)
         {
             return await _activeSessionTrackerGateway.StartSessionAsync(userID, jwt);
         }

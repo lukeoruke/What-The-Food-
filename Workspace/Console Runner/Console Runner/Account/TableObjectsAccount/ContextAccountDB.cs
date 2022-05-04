@@ -61,6 +61,7 @@ namespace Console_Runner.AccountService
             });
             builder.Entity<ActiveSessionTracker>().HasKey(table => new
             {
+
                 table.jwt
             });
         }

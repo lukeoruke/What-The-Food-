@@ -20,7 +20,7 @@ namespace Food.Controllers
 
 
         [HttpPost]
-        [Route("api/controller/addFlagToAccount")]
+
         public async void Post()
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
@@ -28,7 +28,17 @@ namespace Food.Controllers
             // TODO: replace this string with the user email when we can get it
             logger.UserID = "placeholder";
             logger.DefaultTimeOut = 5000;
-            
+            try
+            {
+                string input = Request.QueryString.Value;
+                string[] inputarr = input.Split('?');
+                string JWT = inputarr[1];
+                userId = await _accountDBOperations.getActiveUserAsync(JWT);
+            }
+            catch
+            {
+                Console.WriteLine("A problem occured in the accountAddFlagController while attempting to get the active user");
+            }
             using (var reader = new StreamReader(Request.Body))
             {
                 var body = await reader.ReadToEndAsync();
@@ -39,7 +49,7 @@ namespace Food.Controllers
                     return;
                 }
 
-                for(int i = 0; i < ingsId.Length-1; i++)
+                for(int i = 0; i < ingsId.Length; i++)
                 {
                     await _accountDBOperations.AddFlagToAccountAsync(userId, int.Parse(ingsId[i]), logger);
                 }

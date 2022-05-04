@@ -1,11 +1,13 @@
-﻿namespace Console_Runner.AccountService
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Console_Runner.AccountService
 {
     public class ActiveSessionTracker
     {
-
-        public int UserID;
-        public string jwt;
-        public string timeStamp;
+        [ForeignKey("UserID")]
+        public int UserID { get; set; }
+        public string jwt { get; set; }
+        public string timeStamp { get; set; }
         public ActiveSessionTracker()
         {
 

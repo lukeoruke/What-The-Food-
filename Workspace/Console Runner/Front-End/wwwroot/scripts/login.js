@@ -18,17 +18,9 @@ async function sendLogin(e) {
     await fetch('http://localhost:49202/api/AccountLogin', {
         method: 'POST',
         body: formData,
-    }).then(function (response) {
-        postResponse = response.status; // returns 200;
-    });
+    }).then(async response => localStorage.setItem('JWT', JSON.stringify(await response.json()))).then(data => console.log(data));
 
-    if (postResponse == 200) {
-        // HTTP Get Request
-        await fetch('http://localhost:49202/api/AccountLogin').then(async response => localStorage.setItem('JWT', JSON.stringify(await response.json()))).then(data => console.log(data));
-        
-        var jsonData = JSON.parse(localStorage.getItem('JWT'));
-        var JWT = JSON.stringify(jsonData.token);
-    }
+
 
 
         

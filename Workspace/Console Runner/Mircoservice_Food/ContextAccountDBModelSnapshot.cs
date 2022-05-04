@@ -15,7 +15,7 @@ namespace Console_Runner.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.3")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             modelBuilder.Entity("Console_Runner.AccountService.Account", b =>
@@ -42,6 +42,9 @@ namespace Console_Runner.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<int>("NewsBias")
+                        .HasColumnType("int");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -53,6 +56,16 @@ namespace Console_Runner.Migrations
                     b.HasKey("UserID");
 
                     b.ToTable("Accounts");
+                });
+
+            modelBuilder.Entity("Console_Runner.AccountService.ActiveSessionTracker", b =>
+                {
+                    b.Property<string>("jwt")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("jwt");
+
+                    b.ToTable("ActiveSessionTracker");
                 });
 
             modelBuilder.Entity("Console_Runner.AccountService.AMR", b =>

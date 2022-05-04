@@ -19,13 +19,13 @@ namespace Microservice.AccountLogin.Controllers
         private readonly IAuthenticationService _JWTAuthenticationService = new JWTAuthenticationService("TESTDATAHERE");
         private readonly IAMRGateway _aMRGateway = new EFAMRGateway();
         private readonly IActiveSessionTrackerGateway _EFActiveSessionTrackerGateway = new EFActiveSessionTrackerGateway();
-        private Account? account = new Account();
+        private Account? account;
 
 
 
 
         [HttpPost]
-        public async void Post()
+        public async Task<string> Post()
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations
                 (_accountAccess, _permissionService, _flagGateway, _aMRGateway, _EFActiveSessionTrackerGateway);
@@ -45,27 +45,22 @@ namespace Microservice.AccountLogin.Controllers
                 account = await _accountDBOperations.SignInAsync(formData["email"].ToString(), formData["password"].ToString());
                 if (account != null)
                 {
-                    
+                    string jwtToken = _JWTAuthenticationService.GenerateToken(account.Email);
+                    Console.WriteLine("validToken VVV");
+                    Console.WriteLine(_JWTAuthenticationService.ValidateToken(jwtToken));
+                    string json = "{" + "\"token\": " + $"\"{jwtToken}\"" + "}";
+                    await _accountDBOperations.StartSessionAsync(account.UserID, jwtToken);
+                    return json;
                     Console.WriteLine("ACCOUNT HAD SOME DATA " + account.ToString());
                 }
-                
+                return null;
                 
             }
             catch (FileNotFoundException e)
             {
                 Console.WriteLine(e.ToString());
+                return null;
             }
-        }
-
-        [HttpGet]
-        public string GET()
-        {
-            string jwtToken = _JWTAuthenticationService.GenerateToken(account.Email);
-            Console.WriteLine("validToken VVV");
-            Console.WriteLine(_JWTAuthenticationService.ValidateToken(jwtToken));
-            string json = "{"+"\"token\": " + $"\"{jwtToken}\"" +"}";
-            _EFActiveSessionTrackerGateway.StartSessionAsync(account.UserID, jwtToken);
-            return json;
         }
     }
 }

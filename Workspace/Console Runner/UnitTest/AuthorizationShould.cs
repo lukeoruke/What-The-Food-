@@ -1,4 +1,5 @@
 ﻿
+using Console_Runner.Account.Account_Implementation_InMemory;
 using Console_Runner.AccountService;
 using Xunit;
 namespace Test.UM
@@ -9,13 +10,15 @@ namespace Test.UM
         private readonly IAccountGateway _accountAccess = new MemAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new MemAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new MemFlagGateway();
+        private readonly IAMRGateway _aMRGateway = new MemAMRGateway();
+        private readonly IActiveSessionTrackerGateway _activeSessionTrackerGateway = new MemActiveSessionTracker();
 
         [Fact]
         public void InstantiateProperly()
         {
 
             // Arrange
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
             int id = 91929821;
             string testPerm = "scanFood";
 
@@ -35,7 +38,7 @@ namespace Test.UM
         public void SetPropertiesProperly()
         {
             // Arrange
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
             int testID = 12312;
             string testResource = "scanFood";
             int AdminID = 446546;
@@ -67,7 +70,7 @@ namespace Test.UM
         public async void SetDefaultPermissionsProperly()
         {
             // Arrange
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
             string tester = "SetDefaultPermissionsProperly";
             Account acc = new Account();
             acc.Email = tester;
@@ -99,7 +102,7 @@ namespace Test.UM
         public async void SetAdminPermissionsProperly()
         {
             // Arrange
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
             string tester = "SetAdminPermissionsProperly";
             Account acc = new Account();
             acc.Email = tester;

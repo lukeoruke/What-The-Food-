@@ -13,7 +13,7 @@ async static void Main()
 {
 }
 
-AccountDBOperations accdbops = new(new EFAccountGateway(), new EFAuthorizationGateway(), new EFFlagGateway());
+AccountDBOperations accdbops = new(new EFAccountGateway(), new EFAuthorizationGateway(), new EFFlagGateway(),new EFAMRGateway(), new EFActiveSessionTrackerGateway());
 
 await accdbops.UserSignUpAsync(new Account()
 {

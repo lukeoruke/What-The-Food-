@@ -11,10 +11,12 @@ namespace Console_Runner.AccountService
             try
             {
                 await _efContext.ActiveSessionTracker.AddAsync(new ActiveSessionTracker(userId, jwt));
+                await _efContext.SaveChangesAsync();
                 return true;
             }catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message + " Microservice_Food.EFActiveSessionTrackerGateway");
+                Console.WriteLine(ex.InnerException + " Microservice_Food.EFActiveSessionTrackerGateway");
                 throw (new Exception("starting a new active session failed UserID: " + userId.ToString() + " \n JWT: " + jwt));
             }
             

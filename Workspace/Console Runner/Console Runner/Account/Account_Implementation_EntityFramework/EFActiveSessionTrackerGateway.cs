@@ -9,6 +9,7 @@
             try
             {
                 await _efContext.ActiveSessionTracker.AddAsync(new ActiveSessionTracker(userId, jwt));
+                await _efContext.SaveChangesAsync(); 
                 return true;
             }catch (Exception ex)
             {

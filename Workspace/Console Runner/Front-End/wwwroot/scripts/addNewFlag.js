@@ -14,7 +14,7 @@ async function addFlagCheckBoxes() {
 
     await getIngs();
     displayIngs();
-    console.log(JWT);
+
 }
 
 
@@ -67,7 +67,7 @@ function displayIngs() {
 
 async function getIngs() {
 
-    await fetch('http://localhost-:49202/api/GetNIngredients?' + page)
+    await fetch('http://localhost:49202/api/GetNIngredients?' + page)
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 }
@@ -217,15 +217,12 @@ async function sendNewFlag(e) {
             counter += 1;
         }
     }
-    var jsonData = localStorage.getItem('JWT');
-    var obj = JSON.parse(jsonData);
-    obj = JSON.stringify(obj.token);
-    itemsToAdd[counter + 1] = obj;
+
     alert("Flag(s) added to your account!");
 
 
 
-    await fetch('http://localhost:49202/api/AccountAddFlags', {
+    await fetch('http://localhost:49202/api/AccountAddFlags?'+JWT, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

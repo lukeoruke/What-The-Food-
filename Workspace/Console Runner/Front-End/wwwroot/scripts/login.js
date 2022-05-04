@@ -24,8 +24,11 @@ async function sendLogin(e) {
 
     if (postResponse == 200) {
         // HTTP Get Request
-        await fetch('http://localhost:49202/api/AccountLogin').then(async response => localStorage.setItem('JWT', await response.json())).then(data => console.log(data));
-        console.log("JWT TOKEN: " + localStorage.getItem('JWT').toString());
+        await fetch('http://localhost:49202/api/AccountLogin').then(async response => localStorage.setItem('JWT', JSON.stringify(await response.json()))).then(data => console.log(data));
+        
+        var jsonData = localStorage.getItem('JWT');
+        var obj = JSON.parse(jsonData);
+        obj= JSON.stringify(obj.token);
     }
 
 

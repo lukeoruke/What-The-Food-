@@ -12,13 +12,15 @@ namespace Console_Runner.AccountService
         private readonly IAuthorizationGateway _permissionService;
         private readonly IFlagGateway _flagService;
         private readonly IAMRGateway _amrGateway;
+        private readonly IActiveSessionTrackerGateway _activeSessionTrackerGateway;
 
-        public AccountDBOperations(IAccountGateway accountAccess, IAuthorizationGateway permissionService, IFlagGateway flagGateway, IAMRGateway aMRGateway)
+        public AccountDBOperations(IAccountGateway accountAccess, IAuthorizationGateway permissionService, IFlagGateway flagGateway, IAMRGateway aMRGateway, IActiveSessionTrackerGateway activeSessionTrackerGateway)
         {
             this._accountAccess = accountAccess;
             this._permissionService = permissionService;
             this._flagService = flagGateway;
             this._amrGateway = aMRGateway;
+            this._activeSessionTrackerGateway = activeSessionTrackerGateway;
         }
         
         /// <summary>
@@ -682,6 +684,15 @@ namespace Console_Runner.AccountService
             return await _amrGateway.GetAMRAsync(userID, logService);
         }
 
+
+        public async Task<bool> startSessionAsync(int userID, string jwt)
+        {
+            return await _activeSessionTrackerGateway.StartSessionAsync(userID, jwt);
+        }
+        public async Task<int> getActiveUserAsync(string jwt)
+        {
+            return await _activeSessionTrackerGateway.GetActiveUserAsync(jwt);
+        }
 
 
     }

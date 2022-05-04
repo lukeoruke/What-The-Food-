@@ -9,9 +9,11 @@ using System.Text.Json.Nodes;
 using System.Web;
 using Microsoft.Extensions.Configuration;
 
+
+///////////////////////////////////////////////////////////////////////////////TODO MAKE INMEM VERSION AND CREATE UNIT TESTS!///////////////////////////////////////////////////////////////////////////////
 namespace Console_Runner.AccountService.Authentication
 {
-    public class JWTAuthenticationService : IAuthenticationService
+    public class JWTAuthenticationService : IAuthenticationService 
     {
         private readonly string _key;
 

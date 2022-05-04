@@ -18,6 +18,7 @@ namespace Microservice.AccountLogin.Controllers
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
         private readonly IAuthenticationService _JWTAuthenticationService = new JWTAuthenticationService("TESTDATAHERE");
         private readonly IAMRGateway _aMRGateway = new EFAMRGateway();
+        private readonly IActiveSessionTrackerGateway _EFActiveSessionTrackerGateway = new EFActiveSessionTrackerGateway();
         private Account? account = new Account();
 
 
@@ -36,7 +37,7 @@ namespace Microservice.AccountLogin.Controllers
         public async void Post()
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations
-                (_accountAccess, _permissionService, _flagGateway, _aMRGateway);
+                (_accountAccess, _permissionService, _flagGateway, _aMRGateway, _EFActiveSessionTrackerGateway);
             Console.WriteLine("SUCCESSS!!!");
             Console.WriteLine("Received Post from LoginController");
             //Console.WriteLine(Request.Form("username"));
@@ -69,9 +70,11 @@ namespace Microservice.AccountLogin.Controllers
         public string GET()
         {
             string jwtToken = _JWTAuthenticationService.GenerateToken(account.Email);
-            Console.WriteLine("TOKEN BELLOW VVVV");
-            Console.WriteLine(jwtToken);
-            return jwtToken;
+            Console.WriteLine("validToken VVV");
+            Console.WriteLine(_JWTAuthenticationService.ValidateToken(jwtToken));
+            string json = "{"+"\"token\": " + $"\"{jwtToken}\"" +"}";
+            _EFActiveSessionTrackerGateway.StartSessionAsync(account.UserID, jwtToken);
+            return json;
         }
     }
 }

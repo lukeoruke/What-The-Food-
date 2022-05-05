@@ -26,9 +26,11 @@ namespace Console_Runner.AccountService
         {
             try
             {
-                ActiveSessionTracker  session = await _efContext.ActiveSessionTracker.FindAsync(jwt);
+                ActiveSessionTracker session = await _efContext.ActiveSessionTracker.FindAsync(jwt);
+                Console.WriteLine("JWT: " + jwt);
                 if (session == null)
                 {
+                    Console.WriteLine("SESSION WAS NULL!, PROVIDED JWT DOESNT EXIST");
                     return -1;
                 }
                 return session.UserID;

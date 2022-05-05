@@ -43,12 +43,17 @@ namespace Food.Controllers
                     return;
                 }
                 string input = Request.QueryString.Value;
+                Console.Write(input);
+
                 string[] inputarr = input.Split('?');
                 string JWT = inputarr[1];
-
+                string[] temp = JWT.Split("%22");
+                JWT = temp[1];
                 Console.WriteLine("token status: " + _JWTAuthenticationService.ValidateToken(JWT).ToString());
                 Console.WriteLine(JWT);
+
                 userId = await _accountDBOperations.getActiveUserAsync(JWT);
+                Console.WriteLine("USER ID: " + userId.ToString());
                 for (int i = 0; i < ingsId.Length; i++)
                 {
                     await _accountDBOperations.AddFlagToAccountAsync(userId, int.Parse(ingsId[i]), logger);

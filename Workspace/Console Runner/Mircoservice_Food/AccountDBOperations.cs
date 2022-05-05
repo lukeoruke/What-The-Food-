@@ -684,7 +684,6 @@ namespace Console_Runner.AccountService
             return await _amrGateway.GetAMRAsync(userID, logService);
         }
 
-
         public async Task<bool> StartSessionAsync(int userID, string jwt)
         {
             return await _activeSessionTrackerGateway.StartSessionAsync(userID, jwt);
@@ -693,8 +692,6 @@ namespace Console_Runner.AccountService
         {
             return await _activeSessionTrackerGateway.GetActiveUserAsync(jwt);
         }
-
-
     }
 
 

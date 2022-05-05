@@ -40,21 +40,16 @@ namespace Microservice.AccountLogin.Controllers
 
             try
             {
-               
-
                 account = await _accountDBOperations.SignInAsync(formData["email"].ToString(), formData["password"].ToString());
                 if (account != null)
                 {
                     string jwtToken = _JWTAuthenticationService.GenerateToken(account.Email);
-                    Console.WriteLine("validToken VVV");
-                    Console.WriteLine(_JWTAuthenticationService.ValidateToken(jwtToken));
+
                     string json = "{" + "\"token\": " + $"\"{jwtToken}\"" + "}";
                     await _accountDBOperations.StartSessionAsync(account.UserID, jwtToken);
                     return json;
-                    Console.WriteLine("ACCOUNT HAD SOME DATA " + account.ToString());
                 }
                 return null;
-                
             }
             catch (FileNotFoundException e)
             {

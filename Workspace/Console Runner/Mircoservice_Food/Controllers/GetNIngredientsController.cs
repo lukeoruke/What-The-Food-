@@ -17,15 +17,14 @@ namespace Food.Controllers
             private readonly IFoodGateway _foodGateway = new EFFoodGateway();
             private readonly IFoodUpdateGateway _foodUpdateGateway = new EFFoodUpdateGateway();
             [HttpGet]
-            public async Task<ActionResult<string>> GET()
+            public async Task<ActionResult<string>> GET(string page)
             {
                 FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
                 LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
                 // TODO: replace this string with the user email when we can get it
                 logger.UserID = "placeholder";
                 logger.DefaultTimeOut = 5000;
-                string page = Request.QueryString.Value;
-                page = page.Substring(1);
+
                 try
                 {
                     Console.WriteLine("Page " + page);

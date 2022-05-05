@@ -23,8 +23,9 @@ namespace Food.Controllers
 
         [HttpPost]
 
-        public async void Post()
+        public async void Post(string token)
         {
+           
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
@@ -32,7 +33,7 @@ namespace Food.Controllers
             logger.DefaultTimeOut = 5000;
 
 
-
+            
             using (var reader = new StreamReader(Request.Body))
             {
                 var body = await reader.ReadToEndAsync();
@@ -42,17 +43,9 @@ namespace Food.Controllers
                 {
                     return;
                 }
-                string input = Request.QueryString.Value;
-                Console.Write(input);
+                string rToken = token.Split("\"")[1];
+                userId = await _accountDBOperations.getActiveUserAsync(rToken);
 
-                string[] inputarr = input.Split('?');
-                string JWT = inputarr[1];
-                string[] temp = JWT.Split("%22");
-                JWT = temp[1];
-                Console.WriteLine("token status: " + _JWTAuthenticationService.ValidateToken(JWT).ToString());
-                Console.WriteLine(JWT);
-
-                userId = await _accountDBOperations.getActiveUserAsync(JWT);
                 Console.WriteLine("USER ID: " + userId.ToString());
                 for (int i = 0; i < ingsId.Length; i++)
                 {

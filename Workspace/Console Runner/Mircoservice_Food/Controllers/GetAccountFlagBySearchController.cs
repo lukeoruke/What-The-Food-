@@ -21,24 +21,23 @@ namespace Food.Controllers
         private readonly IFoodUpdateGateway _foodUpdateGateway = new EFFoodUpdateGateway();
         private readonly IActiveSessionTrackerGateway _EFActiveSessionTrackerGateway = new EFActiveSessionTrackerGateway();
         [HttpGet]
-        public async Task<ActionResult<string>> GET()
+        public async Task<ActionResult<string>> GET(string page, string token, string search)
         {
-            int userID = 0;//TODO GET USER ID
+            int userId = 0;//TODO GET USER ID
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
             FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
             logger.UserID = "placeholder";
             logger.DefaultTimeOut = 5000;
-            string input = Request.QueryString.Value;
-            string[] inputarr = input.Split('?');
-            string search = inputarr[1];
 
-            string page = inputarr[2];
-            int numberOfItemsDisplayedAtOnce = 1;
+            string rToken = token.Split("\"")[1];
+            userId = await _accountDBOperations.getActiveUserAsync(rToken);
+
+            int numberOfItemsDisplayedAtOnce = 5;
             try
             {
-                var allFlags =  await _accountDBOperations.GetAllAccountFlagsAsync(userID, logger);
+                var allFlags =  await _accountDBOperations.GetAllAccountFlagsAsync(userId, logger);
                 List<Ingredient> ingredients = new List<Ingredient>();
                 for(int i = 0; i < allFlags.Count; i++)
                 {

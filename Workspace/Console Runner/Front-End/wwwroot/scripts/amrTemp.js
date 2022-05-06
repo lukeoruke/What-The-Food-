@@ -1,4 +1,4 @@
-﻿console.log("TOP OF FILE");
+﻿
 
 async function sendAmrData(e) {
     e.preventDefault();

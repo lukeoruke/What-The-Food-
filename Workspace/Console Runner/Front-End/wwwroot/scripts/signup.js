@@ -13,8 +13,33 @@ async function sendSignup(e) {
         return;
     }
 
+    // Check if email is valid
+    for (const c of email) {
+        let code = c.charCodeAt(0);
+        if (!(c === '.' || c === ',' || c === '@' || c === '!') &&
+            !((code > 47 && code < 58) || (code > 64 && code < 91) || (code > 96 && code < 123))) {
+            alert('Invalid character in email!');
+            return;
+        }
+    }
+
+    // Check if password is valid
     if (password === confirmPassword) {
         console.log('Matched');
+
+        if (password.length < 8) {
+            alert('Password is too short!');
+            return;
+        } else {
+            for (const c of password) {
+                let code = c.charCodeAt(0);
+                if (!(c === ' ' || c === '.' || c === ',' || c === '@' || c === '!') &&
+                    !((code > 47 && code < 58) || (code > 64 && code < 91) || (code > 96 && code < 123))) {
+                    alert('Invalid character in password!');
+                    return;
+                }
+            }
+        }
     } else {
         console.log('Doesn\'t Match');
         document.getElementById('confirmLabel').innerText = 'Passwords must match.';

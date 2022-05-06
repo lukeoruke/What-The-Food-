@@ -16,22 +16,18 @@ namespace Food.Controllers
         private readonly IFoodUpdateGateway _foodUpdateGateway = new EFFoodUpdateGateway();
 
         [HttpGet]
-        public async Task<ActionResult<string>> GET()
+        public async Task<ActionResult<string>> GET(string page,  string search)
         {
             FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
-            logger.UserID = "placeholder";
+
             logger.DefaultTimeOut = 5000;
+
 
             try
             {
-                string input = Request.QueryString.Value;
-                Console.WriteLine("(accountSearchController)input: " + input);
-                string[] inputarr = input.Split('?');
-                string search = inputarr[1];
 
-                string page = inputarr[2];
                 int numberOfItemsDisplayedAtOnce = 2;
                 Console.WriteLine("GET " + search);
                 var allIngredientList = await _foodDBOperations.GetIngredientBySearchAsync(search, numberOfItemsDisplayedAtOnce * int.Parse(page)

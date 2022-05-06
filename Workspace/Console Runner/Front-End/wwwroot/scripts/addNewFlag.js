@@ -7,7 +7,7 @@ var page = "0";
 var currentPage = "default";
 
 var jsonData = JSON.parse(localStorage.getItem('JWT'));
-var JWT = JSON.stringify(jsonData.token);
+var jwt = JSON.stringify(jsonData.token);
 
 //inital function call to set up the page
 async function addFlagCheckBoxes() {
@@ -67,7 +67,7 @@ function displayIngs() {
 
 async function getIngs() {
 
-    await fetch('http://localhost:49202/api/GetNIngredients?' + page)
+    await fetch('http://localhost:49202/api/GetNIngredients?' + new URLSearchParams({page: page}))
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 }
@@ -100,7 +100,9 @@ async function getUserFlags(e) {
 
 
     deleteCurrentData(e);
-    await fetch('http://localhost:49202/api/GetNAccountFlags?' + page)
+    await fetch('http://localhost:49202/api/GetNAccountFlags?' + new URLSearchParams({
+        page: page, token: jwt
+    }))
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 
@@ -121,7 +123,9 @@ async function searchAccountFlags(e) {
         let search = document.getElementById('search').value;
 
 
-        await fetch('http://localhost:49202/api/GetAccountFlagBySearch?' + search + "?" + page)
+        await fetch('http://localhost:49202/api/GetAccountFlagBySearch?' + new URLSearchParams({
+            page: page, token: jwt, search : search
+        }))
 
             .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
             .then(data => console.log(data));
@@ -147,7 +151,9 @@ async function searchIngs(e) {
     currentPage = "searchIngredients";
     let search = document.getElementById('search').value;
 
-    await fetch('http://localhost:49202/api/FlagSearchIngredients?' + search + "?" + page)
+    await fetch('http://localhost:49202/api/FlagSearchIngredients?' + new URLSearchParams({
+        page: page,  search: search
+    }))
         .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 
@@ -222,7 +228,9 @@ async function sendNewFlag(e) {
 
 
 
-    await fetch('http://localhost:49202/api/AccountAddFlags?'+JWT, {
+    await fetch('http://localhost:49202/api/AccountAddFlags?' + new URLSearchParams({
+        token: jwt
+    }), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -248,7 +256,9 @@ async function removeFlag(e) {
         }
     }
 
-    await fetch('http://localhost:49202/api/AccountRemoveFlag?' + page, {
+    await fetch('http://localhost:49202/api/AccountRemoveFlag?' + new URLSearchParams({
+        page: page, token: jwt
+    }), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

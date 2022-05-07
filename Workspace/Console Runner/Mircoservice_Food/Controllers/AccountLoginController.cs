@@ -44,12 +44,11 @@ namespace Microservice.AccountLogin.Controllers
                 if (account != null)
                 {
                     string jwtToken = _JWTAuthenticationService.GenerateToken(account.Email);
-
                     string json = "{" + "\"token\": " + $"\"{jwtToken}\"" + "}";
                     await _accountDBOperations.StartSessionAsync(account.UserID, jwtToken);
                     return json;
                 }
-                return null;
+                return "{" + "\"token\": \"\"}"; ;
             }
             catch (FileNotFoundException e)
             {

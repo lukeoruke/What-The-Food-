@@ -22,7 +22,7 @@ async function addFlagCheckBoxes() {
 
 function displayIngs() {
 
-    var jsonData = localStorage.getItem('allIngredients');
+    var jsonData = sessionStorage.getItem('allIngredients');
     
 
     const jsonConst = JSON.parse(jsonData);
@@ -68,7 +68,7 @@ function displayIngs() {
 async function getIngs() {
 
     await fetch('http://localhost:49202/api/GetNIngredients?' + new URLSearchParams({page: page}))
-        .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
+        .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 }
 
@@ -103,7 +103,7 @@ async function getUserFlags(e) {
     await fetch('http://localhost:49202/api/GetNAccountFlags?' + new URLSearchParams({
         page: page, token: jwt
     }))
-        .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
+        .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 
 
@@ -127,7 +127,7 @@ async function searchAccountFlags(e) {
             page: page, token: jwt, search : search
         }))
 
-            .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
+            .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
             .then(data => console.log(data));
 
 
@@ -154,7 +154,7 @@ async function searchIngs(e) {
     await fetch('http://localhost:49202/api/FlagSearchIngredients?' + new URLSearchParams({
         page: page,  search: search
     }))
-        .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
+        .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 
     displayIngs();

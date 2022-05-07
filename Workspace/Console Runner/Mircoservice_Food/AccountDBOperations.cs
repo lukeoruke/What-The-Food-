@@ -277,6 +277,7 @@ namespace Console_Runner.AccountService
         /// <returns>true if the password matches false if it does not</returns>
         public async Task<bool> AuthenticateUserPassAsync(string email, string userPass, LogService? logService = null)
         {
+
             int userID = await _accountAccess.GetIDFromEmailIdAsync(email, logService);
             if (userID == -1)
             {
@@ -311,28 +312,34 @@ namespace Console_Runner.AccountService
         /// <returns>an instance of the users account object if the operation was successful, null otherwise</returns>
         public async Task<Account> SignInAsync(string email, string userPass, LogService? logService = null)
         {
-            
-            if (await AuthenticateUserPassAsync(email, userPass))
+            try
             {
-                int ID = await _accountAccess.GetIDFromEmailIdAsync(email, logService);
-                Account acc = await GetUserAccountAsync(ID);
-                acc.IsActive = true;
-                if (logService?.UserID != null)
+                if (await AuthenticateUserPassAsync(email, userPass))
                 {
-                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.Business, DateTime.Now,
-                                                       $"User {acc.UserID} successfully signed in.");
+                    int ID = await _accountAccess.GetIDFromEmailIdAsync(email, logService);
+                    Account acc = await GetUserAccountAsync(ID);
+                    acc.IsActive = true;
+                    if (logService?.UserID != null)
+                    {
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.Business, DateTime.Now,
+                                                           $"User {acc.UserID} successfully signed in.");
+                    }
+                    return acc;
                 }
-                return acc;
-            }
-            else
+                else
+                {
+                    if (logService?.UserID != null)
+                    {
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.Business, DateTime.Now,
+                                                           $"User failed to sign in. Authentication failed.");
+                    }
+                    return null;
+                }
+            }catch (ArgumentException ex)
             {
-                if (logService?.UserID != null)
-                {
-                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.Business, DateTime.Now,
-                                                       $"User failed to sign in. Authentication failed.");
-                }
                 return null;
             }
+
         }
 
         /// <summary>
@@ -688,9 +695,15 @@ namespace Console_Runner.AccountService
         {
             return await _activeSessionTrackerGateway.StartSessionAsync(userID, jwt);
         }
-        public async Task<int> getActiveUserAsync(string jwt)
+
+        public async Task<int> GetActiveUserAsync(string jwt)
         {
             return await _activeSessionTrackerGateway.GetActiveUserAsync(jwt);
+        }
+
+        public async Task<bool> ValidateToken(string jwt)
+        {
+            return await _activeSessionTrackerGateway.ValidateToken(jwt);
         }
     }
 

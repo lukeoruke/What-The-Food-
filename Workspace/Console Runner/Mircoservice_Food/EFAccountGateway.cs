@@ -169,6 +169,10 @@ namespace Console_Runner.AccountService
         public async Task<int> GetIDFromEmailIdAsync(string email, LogService? logService = null)
         {
             var userEmail = _efContext.Accounts.Where(r => r.Email == email);
+            if(userEmail.Count() == 0)
+            {
+                throw new ArgumentException("EFAccountGateway.GetIDFromEmailIdAsync: Invalid email");
+            }
             List<Account> tempAcc = await userEmail.ToListAsync();
             if (logService?.UserID != null)
             {

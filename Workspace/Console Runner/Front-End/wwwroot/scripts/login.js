@@ -18,7 +18,19 @@ async function sendLogin(e) {
     await fetch('http://localhost:49202/api/AccountLogin', {
         method: 'POST',
         body: formData,
-    }).then(async response => localStorage.setItem('JWT', JSON.stringify(await response.json()))).then(data => console.log(data));
+    }).then(response => response.json())
+        .then((response) => {
+            console.log(response)
+            if (response.token !== "") {
+                localStorage.setItem('JWT', response.token);
+                window.location.replace("https://localhost:49199/index.html");
+            } else {
+                alert('Invalid login');
+            }
+        })
+
+
+        //.then(async response => localStorage.setItem('JWT', JSON.stringify(await response.json()))).then(data => console.log(data));
 
 
 
@@ -28,5 +40,5 @@ async function sendLogin(e) {
 
 
 
-    alert('Successfully sent login request!');
+    
 }

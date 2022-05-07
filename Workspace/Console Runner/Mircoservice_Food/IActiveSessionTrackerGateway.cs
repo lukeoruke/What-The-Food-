@@ -6,5 +6,7 @@
 
         public Task<bool> StartSessionAsync(int userId, string jwt);
 
+        public Task<bool> ValidateToken(string jwt);
+
     }
 }

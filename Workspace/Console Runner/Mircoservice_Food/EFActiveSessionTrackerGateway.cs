@@ -1,4 +1,5 @@
 ﻿using Console_Runner.AccountService;
+using Console_Runner.AccountService.Authentication;
 
 namespace Console_Runner.AccountService
 {
@@ -40,6 +41,11 @@ namespace Console_Runner.AccountService
                 throw (new Exception("geting the active user from JWT token failed."));
             }
             
+        }
+        public async Task<bool> ValidateToken(string jwt)
+        {
+            JWTAuthenticationService authentService = new JWTAuthenticationService("TESTDATAHERE");
+            return authentService.ValidateToken(jwt);
         }
        
     }

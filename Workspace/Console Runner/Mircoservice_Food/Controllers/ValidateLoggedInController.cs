@@ -13,17 +13,17 @@ namespace Mircoservice_Food.Controllers
         private readonly IActiveSessionTrackerGateway _EFActiveSessionTrackerGateway = new EFActiveSessionTrackerGateway();
         private readonly IAuthenticationService _JWTAuthenticationService = new JWTAuthenticationService("TESTDATAHERE");
         private int userId = 0;
+
         [HttpGet]
-        public async void Get(string token)
+        public async Task<ActionResult<string>> Get(string token)
         {
+            Console.WriteLine("In validate login controller");
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
             string rToken = token.Split("\"")[1];
-            //return await _accountDBOperations.
+
+            string isValid = "{isValid: "+(await _accountDBOperations.ValidateToken(rToken)).ToString()+"}";
+            return isValid;
         }
-
-           
-        
-
     }
 }
 

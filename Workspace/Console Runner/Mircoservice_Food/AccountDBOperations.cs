@@ -688,9 +688,15 @@ namespace Console_Runner.AccountService
         {
             return await _activeSessionTrackerGateway.StartSessionAsync(userID, jwt);
         }
-        public async Task<int> getActiveUserAsync(string jwt)
+
+        public async Task<int> GetActiveUserAsync(string jwt)
         {
             return await _activeSessionTrackerGateway.GetActiveUserAsync(jwt);
+        }
+
+        public async Task<bool> ValidateToken(string jwt)
+        {
+            return await _activeSessionTrackerGateway.ValidateToken(jwt);
         }
     }
 

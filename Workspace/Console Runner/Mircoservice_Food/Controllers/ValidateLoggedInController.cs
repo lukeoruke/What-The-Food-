@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mircoservice_Food.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ValidateLoggedInController : ControllerBase
     {
         private readonly IAccountGateway _accountAccess = new EFAccountGateway();

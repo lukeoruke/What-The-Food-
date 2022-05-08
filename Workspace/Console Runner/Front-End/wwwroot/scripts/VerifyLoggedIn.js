@@ -1,13 +1,12 @@
 ﻿
 
 (async () => {
-    var jsonData = JSON.parse(localStorage.getItem('JWT'));
-    var jwt = JSON.stringify(jsonData.token);
+    var jwt = localStorage.getItem('JWT');
+
     await fetch('http://localhost:49202/api/ValidateLoggedIn?' + new URLSearchParams({ token: jwt }))
         .then(response => response.text())
         .then((response) => {
-            console.log(response)
-            if (response == "false") {
+            if (response === "False") {
                 window.location.replace("https://localhost:49199/login.html");
             }
         })

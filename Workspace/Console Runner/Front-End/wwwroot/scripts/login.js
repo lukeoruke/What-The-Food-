@@ -1,3 +1,6 @@
+
+localStorage.clear();
+sessionStorage.clear();
 async function sendLogin(e) {
     e.preventDefault();
 

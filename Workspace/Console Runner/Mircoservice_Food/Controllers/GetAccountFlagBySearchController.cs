@@ -31,8 +31,8 @@ namespace Food.Controllers
             logger.UserID = "placeholder";
             logger.DefaultTimeOut = 5000;
 
-            string rToken = token.Split("\"")[1];
-            userId = await _accountDBOperations.GetActiveUserAsync(rToken);
+
+            userId = await _accountDBOperations.GetActiveUserAsync(token);
 
             int numberOfItemsDisplayedAtOnce = 5;
             try

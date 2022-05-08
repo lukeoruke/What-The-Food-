@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="styles/settingPage.css">
     <script type="text/javascript" src="/scripts/verifyLoggedIn.js"></script>
     <script type="text/javascript" src="/scripts/amrTemp.js"></script>
+    <script type="text/javascript" src="scripts/logout.js"></script>
 </head>
 <body>
     <h1></h1>
@@ -16,8 +17,9 @@
     <a href="customAMR.html"><button class="button">Custom AMR</button></a>
     <a href="history.html"><button class="button">History</button></a>
     <a href="settingPage.html"><button class="button">Settings</button></a>
-    <div id="setting">
+    <button class="button" onclick="sendLogout()">Log Out</button>
 
+    <div id="setting">
         <span>Custom AMR</span>
         <div class="box2">
             <form action="">
@@ -46,7 +48,7 @@
                 <button style="position: relative; left: 600px; top: -200px" class="button button2" onclick="alert('Calculating AMR')">Calculate</button>
                 <button style="position: relative; left: 600px; top: -200px; " class="button button2" onclick="alert('Resting AMR')">Reset</button>
             </form>
-           
+
         </div>
     </div>
 

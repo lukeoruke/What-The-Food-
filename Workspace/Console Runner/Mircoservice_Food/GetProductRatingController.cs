@@ -45,7 +45,7 @@ namespace Food.Controllers
             try
             {
                 HttpClient client = new HttpClient();
-                string[] amazonRatings = await getAmazonRatings(productName, client);
+                string[] amazonRatings = await GetAmazonRatings(productName, client);
                 Console.WriteLine(amazonRatings[0]);
                 Console.WriteLine(amazonRatings[1]);
                 totalRatings[0] = amazonRatings[0];
@@ -76,7 +76,7 @@ namespace Food.Controllers
 
         // Function to get ratings of product from Amazon
         [NonAction]
-        public async Task<string[]> getAmazonRatings(String productName, HttpClient client)
+        public async Task<string[]> GetAmazonRatings(String productName, HttpClient client)
         {
             string[] ratings = new string[2];
             // Call asynchronous network methods in a try/catch block to handle exceptions

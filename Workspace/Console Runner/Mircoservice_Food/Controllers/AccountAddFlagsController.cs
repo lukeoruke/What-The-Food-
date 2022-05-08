@@ -43,8 +43,9 @@ namespace Food.Controllers
                 {
                     return;
                 }
-                string rToken = token.Split("\"")[1];
-                userId = await _accountDBOperations.GetActiveUserAsync(rToken);
+
+               
+                userId = await _accountDBOperations.GetActiveUserAsync(token);
 
                 Console.WriteLine("USER ID: " + userId.ToString());
                 for (int i = 0; i < ingsId.Length; i++)

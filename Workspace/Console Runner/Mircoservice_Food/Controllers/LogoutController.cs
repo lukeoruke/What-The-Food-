@@ -1,12 +1,15 @@
 ﻿using Console_Runner.AccountService;
-using Console_Runner.AccountService.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microservice.AccountLogin.Controllers;
+using Console_Runner.Logging;
+using Console_Runner.AccountService.Authentication;
 
 namespace Mircoservice_Food.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ValidateLoggedInController : ControllerBase
+    public class LogoutController : ControllerBase
     {
         private readonly IAccountGateway _accountAccess = new EFAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
@@ -14,21 +17,12 @@ namespace Mircoservice_Food.Controllers
         private readonly IAMRGateway _amRGateway = new EFAMRGateway();
         private readonly IActiveSessionTrackerGateway _EFActiveSessionTrackerGateway = new EFActiveSessionTrackerGateway();
         private readonly IAuthenticationService _JWTAuthenticationService = new JWTAuthenticationService("TESTDATAHERE");
-
-        [HttpGet]
-        public async Task<ActionResult<string>> Get(string token)
+        public async void Post(string token)
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
 
-
-            string isValid = (await _accountDBOperations.ValidateToken(token)).ToString();
-            Console.WriteLine(isValid);
-            return isValid;
+            int userId = await _accountDBOperations.GetActiveUserAsync(token);
+            await _accountDBOperations.Logout(userId);
         }
     }
 }
-
-
-
-
-

@@ -705,6 +705,21 @@ namespace Console_Runner.AccountService
         {
             return await _activeSessionTrackerGateway.ValidateToken(jwt);
         }
+
+        public async Task<bool> Logout(int userID)
+        {
+            try
+            {
+                await _activeSessionTrackerGateway.RemoveToken(await _activeSessionTrackerGateway.GetTokenFromUserID(userID));
+                var acc = await _accountAccess.GetAccountAsync(userID);
+                acc.IsActive = false;
+                return true;
+            }catch (Exception ex)
+            {
+                throw new Exception("AccountDBOperations.Logout: Failed to logout");
+            }
+
+        }
     }
 
 

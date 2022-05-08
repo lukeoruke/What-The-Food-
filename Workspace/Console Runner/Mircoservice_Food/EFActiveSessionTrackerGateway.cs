@@ -47,6 +47,26 @@ namespace Console_Runner.AccountService
             JWTAuthenticationService authentService = new JWTAuthenticationService("TESTDATAHERE");
             return authentService.ValidateToken(jwt);
         }
+
+        public async Task<bool> RemoveToken(string jwt)
+        {
+            try
+            {
+                var itemBeingRemoved = _efContext.ActiveSessionTracker.Where(r => r.jwt == jwt).ElementAt(0);
+                _efContext.ActiveSessionTracker.Remove(itemBeingRemoved);
+                _efContext.SaveChanges();
+                return true;
+            }catch (Exception ex)
+            {
+                throw new Exception("EfActiveSessionGateway.RemoveToken: No account is associated with the provided token");
+            }
+
+        }
+
+        public async Task<string> GetTokenFromUserID(int userID)
+        {
+            return _efContext.ActiveSessionTracker.Where(r => r.UserID == userID).ElementAt(0).jwt;
+        }
        
     }
 }

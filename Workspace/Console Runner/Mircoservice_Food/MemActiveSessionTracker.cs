@@ -14,6 +14,16 @@ namespace Console_Runner.Account.Account_Implementation_InMemory
             throw new NotImplementedException();
         }
 
+        public Task<string> GetTokenFromUserID(int userID)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> RemoveToken(string jwt)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<bool> StartSessionAsync(int userId, string jwt)
         {
             throw new NotImplementedException();

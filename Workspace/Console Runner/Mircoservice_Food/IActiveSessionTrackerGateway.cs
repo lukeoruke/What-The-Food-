@@ -8,5 +8,9 @@
 
         public Task<bool> ValidateToken(string jwt);
 
+        public Task<bool> RemoveToken(string jwt);
+
+        public Task<string> GetTokenFromUserID(int userID);
+
     }
 }

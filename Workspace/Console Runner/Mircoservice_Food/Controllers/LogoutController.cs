@@ -20,8 +20,8 @@ namespace Mircoservice_Food.Controllers
         public async void Post(string token)
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
-            string rToken = token.Split("\"")[1];
-            int userId = await _accountDBOperations.GetActiveUserAsync(rToken);
+
+            int userId = await _accountDBOperations.GetActiveUserAsync(token);
             await _accountDBOperations.Logout(userId);
         }
     }

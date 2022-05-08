@@ -52,7 +52,9 @@ namespace Console_Runner.AccountService
         {
             try
             {
-                var itemBeingRemoved = _efContext.ActiveSessionTracker.Where(r => r.jwt == jwt).ElementAt(0);
+
+                Console.WriteLine(jwt);
+                var itemBeingRemoved = (_efContext.ActiveSessionTracker.Where(r => r.jwt == jwt)).ToList()[0];
                 _efContext.ActiveSessionTracker.Remove(itemBeingRemoved);
                 _efContext.SaveChanges();
                 return true;
@@ -65,7 +67,7 @@ namespace Console_Runner.AccountService
 
         public async Task<string> GetTokenFromUserID(int userID)
         {
-            return _efContext.ActiveSessionTracker.Where(r => r.UserID == userID).ElementAt(0).jwt;
+            return (_efContext.ActiveSessionTracker.Where(r => r.UserID == userID).ToList())[0].jwt;
         }
        
     }

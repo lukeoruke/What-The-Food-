@@ -6,8 +6,8 @@ var search;
 var page = "0";
 var currentPage = "default";
 
-var jsonData = JSON.parse(localStorage.getItem('JWT'));
-var jwt = JSON.stringify(jsonData.token);
+
+var jwt = localStorage.getItem('JWT');
 
 //inital function call to set up the page
 async function addFlagCheckBoxes() {

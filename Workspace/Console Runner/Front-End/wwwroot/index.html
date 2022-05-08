@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
     <script type="text/javascript" src="/scripts/verifyLoggedIn.js"></script>
+    <script type="text/javascript" src="scripts/logout.js"></script>
     <link rel="stylesheet" href="styles/index.css">
 </head>
 <body>
@@ -14,7 +15,9 @@
     <a href="history.html"><button class="button">History</button></a>
     <a href="calorieFrameOfReference.html"><button class="button">Calorie Frame of Reference</button>
     <a href="settingPage.html"><button class="button">Settings</button></a>
-    <div id="setting">
+    <button class="button" onclick="sendLogout()">Log Out</button>
+
+        <div id="setting">
         <!-- Create structure in which news will be displayed  -->
         <span>Homepage</span>
         <div class="news-scroll">

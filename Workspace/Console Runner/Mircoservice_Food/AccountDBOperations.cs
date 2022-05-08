@@ -716,6 +716,27 @@ namespace Console_Runner.AccountService
 
 
         }
+        public async Task<bool> DeleteAllUserData(int userID)
+        {
+            try
+            {
+                List<FoodFlag> flagList = await _flagService.GetAllAccountFlagsAsync(userID);
+                for (int i = 0; i < flagList.Count; i++)
+                {
+                    await _flagService.RemoveFoodFlagAsync(flagList[i].UserID, flagList[i].IngredientID);
+                }
+                await _amrGateway.RemoveAMRAsync(await _amrGateway.GetAMRAsync(userID));
+
+                await _accountAccess.RemoveAccountAsync(await _accountAccess.GetAccountAsync(userID));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("a critical error occured while attempting to delete the users data. Try again or contact the system admin");
+            }
+
+
+        }
     }
 
 

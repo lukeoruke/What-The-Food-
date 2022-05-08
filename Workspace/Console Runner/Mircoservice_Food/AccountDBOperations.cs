@@ -378,22 +378,22 @@ namespace Console_Runner.AccountService
                 Account? acc = await _accountAccess.GetAccountAsync(userID, logService);
                 if (_permissionService.IsAdmin(currentUser.UserID, logService) && (_permissionService.AdminCount(logService) > 1))
                 {
+                    acc.Enabled = false;
+                    acc.IsActive = false;
+                    await _accountAccess.UpdateAccountAsync(acc, logService);
                     if (logService?.UserID != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
-                                                           $"User {userID} could not be disabled. Disabling this user will result in no active admins.");
+                                                           $"User {userID} successfully disabled.");
                     }
-                    throw new ArgumentException("Disabling this account would result in there being no admins.");
+                    return true;
                 }
-                acc.Enabled = false;
-                acc.IsActive = false;
-                await _accountAccess.UpdateAccountAsync(acc, logService);
                 if (logService?.UserID != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
-                                                       $"User {userID} successfully disabled.");
+                                                       $"User {userID} could not be disabled. Disabling this user will result in no active admins.");
                 }
-                return true;
+                throw new ArgumentException("Disabling this account would result in there being no admins.");
             }
             catch (Exception ex)
             {

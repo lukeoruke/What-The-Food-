@@ -9,7 +9,7 @@ namespace Mircoservice_Food.Controllers
     [ApiController]
     public class UserManagementController : ControllerBase
     {
-        [Route("api/[controller]/[action]")]
+        [Route("[action]")]
         [HttpPost]
         public async Task<IActionResult> AddUser([FromBody] Account acc, string token)
         {
@@ -59,7 +59,7 @@ namespace Mircoservice_Food.Controllers
             }
         }
 
-        [Route("api/[controller]/[action]")]
+        [Route("[action]")]
         [HttpPost]
         public async Task<IActionResult> UpdateUser([FromBody] Account acc, string token)
         {
@@ -103,7 +103,7 @@ namespace Mircoservice_Food.Controllers
             }
         }
 
-        [Route("api/[controller]/[action]")]
+        [Route("[action]")]
         [HttpPost]
         public async Task<IActionResult> RemoveUser(int userId, string token)
         {
@@ -154,7 +154,7 @@ namespace Mircoservice_Food.Controllers
             }
         }
 
-        [Route("api/[controller]/[action]")]
+        [Route("[action]")]
         [HttpPost]
         public async Task<IActionResult> EnableUser(int userId, string token)
         {
@@ -205,7 +205,7 @@ namespace Mircoservice_Food.Controllers
             }
         }
 
-        [Route("api/[controller]/[action]")]
+        [Route("[action]")]
         [HttpPost]
         public async Task<IActionResult> DisableUser(int userId, string token)
         {

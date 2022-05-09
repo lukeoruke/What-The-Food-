@@ -4,7 +4,7 @@
 <head>
     <link rel="stylesheet" href="styles/index.css">
     <script type="text/javascript" src="/scripts/verifyLoggedIn.js"></script>
-    <script src="/scripts/usermanagement.js"></script>
+    <script type="text/javascript" src="/scripts/usermanagement.js"></script>
 </head>
 <body>
     <!-- Create overall strucutre of webpage including category buttons  -->
@@ -19,7 +19,17 @@
         <!-- Create structure in which news will be displayed  -->
         <h1>User Management</h1>
         <div>
-            <button class="button" onclick=""></button>
+            <button class="button" onclick="activateUmAction('ADD')">Add User</button>
+            <button class="button" onclick="activateUmAction('UPDATE')">Update User</button>
+            <button class="button" onclick="activateUmAction('DELETE')">Delete User</button>
+            <button class="button" onclick="activateUmAction('ENABLE')">Enable User</button>
+            <button class="button" onclick="activateUmAction('DISABLE')">Disable User</button>
+        </div>
+        <div id="container">
+
+        </div>
+        <div id="message">
+
         </div>
     </div>
 </body>

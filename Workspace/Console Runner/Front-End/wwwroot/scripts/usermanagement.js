@@ -1,256 +1,231 @@
 ﻿// Global vars for managing pagination
-var page = 0;
-var getFoodFailed = false;
+const UmAction = {
+    ADD: 1,
+    UPDATE: 2,
+    DELETE: 3,
+    ENABLE: 4,
+    DISABLE: 5
+}
+Object.freeze(UmAction);
 
+currentAction = UmAction.ADD;
 
-// Call on pageload - get the 0th page of foods and display them
-async function pageLoad() {
-    const data = await getFoods();
-    displayFoods(data);
+function getFullAccountForm(action) {
+    let base = document.createElement("form");
+    base.id = "umform";
+    base.name = "umform";
+    base.append(...createLabeledInput("User Id"));
+    base.append(...createLabeledInput("Email"));
+    base.append(...createLabeledInput("Password"));
+    base.append(...createLabeledInput("First Name"));
+    base.append(...createLabeledInput("Last Name"));
+    base.append(...createNewsBiasInput());
+    base.append(...createIsEnabledInput());
+    base.appendChild(createSubmitButton(action));
+    return base;
 }
 
-/**
- * Displays the fills the content div with food items from foodList
- * @param {any} foodList - The array of food items to display.
- */
-function displayFoods(foodList) {
-    // clear the current page of food items
-    deleteCurrentData();
-
-    for (data in foodList) {
-        // create a new div for each food item in the list, create an anchor tag with the item's name
-        // anchor onclick calls getAndDisplayUpdates with the respective food item's barcode
-        var itemDiv = document.createElement("div");
-        itemDiv.id = foodList[data].Barcode.toString();
-        itemDiv.classList.add('foodItemEntry');
-        var text = document.createElement("a");
-        text.href = "#";
-        var textAsHeader = document.createElement("h1");
-        textAsHeader.appendChild(text);
-        text.setAttribute("onclick", `getAndDisplayUpdates('${foodList[data].Barcode}');`);
-        var name = document.createTextNode(foodList[data].ProductName);
-        text.appendChild(name);
-        itemDiv.appendChild(textAsHeader);
-        document.getElementById('container').appendChild(itemDiv);
-    }
+function getUserIdForm(action) {
+    let base = document.createElement("form");
+    base.id = "umform";
+    base.name = "umform";
+    base.append(...createLabeledInput("User Id"));
+    base.appendChild(createSubmitButton(action));
+    return base;
 }
 
-/**
- * Fetch a page of food items from the backend.
- */
-async function getFoods() {
-    const response = await fetch('http://47.151.24.23:49202/api/ViewFoodItems?' + new URLSearchParams({
-        pageno: page
-    }));
-    const data = await response.json();
-    // if fetched data is not a JSON object or is an empty array, then return null
-    if (data === undefined || data.length === 0) {
-        getFoodFailed = true;
-        return Promise.resolve(null);
+function activateUmAction(actionStr) {
+    console.log(`received action ${actionStr}`);
+    currentAction = UmAction[actionStr];
+    console.log(`current action ${currentAction}`)
+    let container = document.getElementById("container");
+    removeAllChildrenNodes(container);
+    if (currentAction === UmAction.ADD || currentAction === UmAction.UPDATE) {
+        container.appendChild(getFullAccountForm(currentAction));
     }
-    else {
-        return Promise.resolve(data);
+    else if (currentAction === UmAction.DELETE || currentAction === UmAction.ENABLE || currentAction === UmAction.DISABLE) {
+        container.appendChild(getUserIdForm(currentAction));
     }
 }
 
-/**
- * Increment page number and attempt to get foods for that page.
- * @param {any} e - The calling element, to prevent default behavior of.
- */
-async function loadNextPage(e) {
-    e.preventDefault();
-    page++;
-    const foods = await getFoods();
-    if (getFoodFailed) {
-        page--;
-        pageAlert("Could not reach the desired page.");
-        getFoodFailed = false;
+function sendAction() {
+    console.log(`sendaction called - action: ${currentAction}`);
+    let form = document.querySelector("form");
+    console.log(form);
+    const formData = new FormData(form);
+    for (var [key, value] of formData.entries()) {
+        console.log(key, value);
     }
-    else {
-        displayFoods(foods);
+    let dataToSubmit;
+
+    switch (currentAction) {
+        case UmAction.ADD:
+            dataToSubmit = {
+                userID: parseInt(formData.get('userid')),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                fName: formData.get('firstname'),
+                lName: formData.get('lastname'),
+                newsBias: parseInt(formData.get('newsbias')),
+                isActive: true,
+                enabled: formData.get('isenabled') === 'true' ? true : false,
+                salt: ""
+            }
+            fetch("http://localhost:49202/api/UserManagement/AddUser?" + new URLSearchParams({
+                token: localStorage.getItem('JWT')
+            }), {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataToSubmit)
+            })
+            .then((response) => response.status)
+            .then((statuscode) => displayResponse(statuscode));
+            break;
+        case UmAction.UPDATE:
+            dataToSubmit = {
+                userID: parseInt(formData.get('userid')),
+                email: formData.get('email'),
+                password: formData.get('password'),
+                fName: formData.get('firstname'),
+                lName: formData.get('lastname'),
+                newsBias: parseInt(formData.get('newsbias')),
+                isActive: true,
+                enabled: formData.get('isenabled') === 'true' ? true : false,
+                salt: ""
+            }
+            fetch("http://localhost:49202/api/UserManagement/UpdateUser?" + new URLSearchParams({
+                token: localStorage.getItem('JWT')
+            }), {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(dataToSubmit)
+            })
+            .then((response) => response.status)
+            .then((statuscode) => displayResponse(statuscode));
+            break;
+        case UmAction.DELETE:
+            fetch("http://localhost:49202/api/UserManagement/RemoveUser?" + new URLSearchParams({
+                token: localStorage.getItem('JWT'),
+                userId: formData.get('userid') 
+            }), {
+                method: "POST"
+            })
+            .then((response) => response.status)
+            .then((statuscode) => displayResponse(statuscode));
+            break;
+        case UmAction.ENABLE:
+            fetch("http://localhost:49202/api/UserManagement/EnableUser?" + new URLSearchParams({
+                token: localStorage.getItem('JWT'),
+                userId: formData.get('userid')
+            }), {
+                method: "POST"
+            })
+                .then((response) => response.status)
+                .then((statuscode) => displayResponse(statuscode));
+            break;
+        case UmAction.DISABLE:
+            fetch("http://localhost:49202/api/UserManagement/DisableUser?" + new URLSearchParams({
+                token: localStorage.getItem('JWT'),
+                userId: formData.get('userid')
+            }), {
+                method: "POST"
+            })
+                .then((response) => response.status)
+                .then((statuscode) => displayResponse(statuscode));
+            break;
     }
 }
 
-/**
- * Decrement page number and attempt to get foods for that page.
- * @param {any} e - The calling element, to prevent default behavior of.
- */
-async function loadPreviousPage(e) {
-    e.preventDefault();
-    if (page > 0) {
-        page--;
-        var foods = await getFoods();
-        if (getFoodFailed) {
-            page++;
-            pageAlert("Could not reach the desired page.");
-            getFoodFailed = false;
-        }
-        else {
-            displayFoods(foods);
-        }
+function displayResponse(statuscode) {
+    let messageNode = document.getElementById("message");
+    let message = document.createElement("h1");
+    removeAllChildrenNodes(messageNode);
+    switch (statuscode) {
+        case 200:
+            message.innerHTML = "User management action successful.";
+            break;
+        case 400:
+            message.innerHTML = "Action failed. Something seems wrong with your input.";
+            break;
+        case 401:
+            message.innerHTML = "Action failed. You are not authorized to perform this action.";
+            break;
+        case 500:
+            message.innerHTML = "Action failed. Something went wrong in the server.";
+            break;
+        default:
+            message.innerHTML = "Action failed. Something went wrong in the server.";
     }
-    else {
-        pageAlert("There are no more previous pages.");
+    messageNode.appendChild(message);
+}
+
+function removeAllChildrenNodes(node) {
+    while (node.firstChild) {
+        node.removeChild(node.firstChild);
     }
 }
 
-
-/**
- * Empty the current page of food items to prep for next page.
- */
-function deleteCurrentData() {
-    var parent = document.getElementById('container');
-    while (parent.firstChild) {
-        parent.removeChild(parent.firstChild);
-    }
+function createLabeledInput(name) {
+    let label = document.createElement("label");
+    label.setAttribute("for", name.toLowerCase().replaceAll(" ", ""));
+    label.innerHTML = name;
+    let textBox = document.createElement("input");
+    textBox.id = name.toLowerCase().replaceAll(" ", "");
+    textBox.name = name.toLowerCase().replaceAll(" ", "");
+    textBox.placeholder = name;
+    return [label, textBox, document.createElement("br")];
 }
 
-/**
- * Add a message on the page to alert the user.
- * @param {string} - The string to display to the user.
- */
-function pageAlert(message) {
-    document.getElementById('pageAlert').innerHTML = message;
+function createNewsBiasInput() {
+    let label = document.createElement("label");
+    label.setAttribute("for", "newsbias");
+    label.innerHTML = "News Bias";
+    let selector = document.createElement("select");
+    selector.id = "newsbias";
+    selector.name = "newsbias";
+    selector.appendChild(new Option('0', '0', true));
+    selector.appendChild(new Option('1', '1', false));
+    selector.appendChild(new Option('2', '2', false));
+    selector.appendChild(new Option('3', '3', false));
+    return [label, selector, document.createElement("br")];
+
 }
 
-/** 
- * If the div has not been expanded, get the div's respective updates and display them inside the div.
- * If the div has already been expanded, empty it.
- */
-async function getAndDisplayUpdates(clickedDivId) {
-    let clickedDiv = document.getElementById(clickedDivId);
-    // if the div has more than 1 child, then it contains updates.
-    if (clickedDiv.childElementCount > 1) {
-        while (clickedDiv.childElementCount > 1) {
-            clickedDiv.removeChild(clickedDiv.lastChild);
-        }
-    }
-    // the div is not showing updates yet - get and display its updates
-    else {
-        // fetch updates from the backend and parse the json into an object
-        const fetchData = await fetch("http://47.151.24.23:49202/api/GetUpdatesFromBarcode?" + new URLSearchParams({
-            barcode: clickedDivId
-        }));
-        const dataAsObject = await fetchData.json();
-        // create an element to add to the div
-        let message = document.createElement('h2');
-        // if the fetched response is not json or is an empty array, then just use this message
-        if (dataAsObject === undefined || dataAsObject.length === 0) {
-            message.innerHTML = 'No updates are available for this food item.';
-        }
-        else {
-            message = convertUpdateListToHtml(dataAsObject);
-        }
-        clickedDiv.appendChild(message);
-    }
-}
-/* Updates are structured like so:
- * {
- *  "UpdateType":"FoodIngredientChange",
- *  "UpdateInfo":
- *     {
- *      (Update type-specific parameters i.e. IngredientUpdates or Locations/LotNumbers/ExpirationDates),
- *      "UpdateTime":"2022-04-26T00:00:00",
- *      "Message":"ing change for monster"
- *     }
- * }
- */ 
+function createIsEnabledInput() {
+    let label = document.createElement("p");
+    label.innerHTML = "Enabled";
 
+    let trueLabel = document.createElement("label");
+    trueLabel.htmlFor = "isEnabledTrue";
+    trueLabel.innerHTML = "True";
+    let trueButton = document.createElement("input");
+    trueButton.type = "radio";
+    trueButton.id = "isEnabledTrue";
+    trueButton.value = "true";
+    trueButton.name = "isenabled";
+    trueButton.checked = true;
 
-/**
- * Returns a div containing a div for each update object in updateList.
- * Each inner div contains its date and message, as well as its specific update info
- * @param {Update[]} updateList - An array of update objects parsed from the backend.
- */
-function convertUpdateListToHtml(updateList) {
-    let updateListAsHtml = document.createElement("div");
-    updateList.forEach(update => {
-        // date and message are common across all food update types
-        let updateHeader = document.createElement("div");
-        // add update date
-        let updateDate = document.createElement("h2");
-        updateDate.innerHTML = `Update on ${getDateOnly(update.UpdateInfo.UpdateTime)}:`;
-        updateHeader.appendChild(updateDate);
-        // add update message
-        let updateMessage = document.createElement("h2");
-        updateMessage.innerHTML = update.UpdateInfo.Message;
-        updateHeader.appendChild(updateMessage);
-        // if the update is a FoodIngredientChange, then it has property IngredientUpdates
-        if (update.UpdateType === "FoodIngredientChange") {
-            let addIngHeader = document.createElement("h3");
-            addIngHeader.innerHTML = "Added Ingredients:";
-            // get only the ingredients that were added and parse into an HTML list
-            let addedIngredients = update.UpdateInfo.IngredientUpdates.filter(ing => ing.IsAdded);
-            let addIngList = getHtmlListOrErrorMessage(addedIngredients, ing => ing.IngredientName);
+    let falseLabel = document.createElement("label");
+    falseLabel.htmlFor = "isEnabledFalse";
+    falseLabel.innerHTML = "False";
+    let falseButton = document.createElement("input");
+    falseButton.type = "radio";
+    falseButton.id = "isEnabledFalse";
+    falseButton.value = "true";
+    falseButton.name = "isenabled";
 
-            let remIngHeader = document.createElement("h3");
-            remIngHeader.innerHTML = "Removed Ingredients:";
-            // get only the ingredients that were removed and parse into an HTML list
-            let removedIngredients = update.UpdateInfo.IngredientUpdates.filter(ing => !ing.IsAdded);
-            let remIngList = getHtmlListOrErrorMessage(removedIngredients, ing => ing.IngredientName);
-
-            updateHeader.appendChild(addIngHeader);
-            updateHeader.appendChild(addIngList);
-            updateHeader.appendChild(remIngHeader);
-            updateHeader.appendChild(remIngList);
-        }
-        // if the update is a FoodRecall, then it has property Locations, LotNumbers, and ExpirationDates
-        else if (update.UpdateType === "FoodRecall") {
-            let locationHeader = document.createElement("h3");
-            locationHeader.innerHTML = "Locations:";
-            let locationList = getHtmlListOrErrorMessage(update.UpdateInfo.Locations);
-            updateHeader.appendChild(locationHeader);
-            updateHeader.appendChild(locationList);
-
-            let lotNumberHeader = document.createElement("h3");
-            lotNumberHeader.innerHTML = "Lot Numbers:";
-            let lotNumberList = getHtmlListOrErrorMessage(update.UpdateInfo.LotNumbers);
-            updateHeader.appendChild(lotNumberHeader);
-            updateHeader.appendChild(lotNumberList);
-
-            let expDateHeader = document.createElement("h3");
-            expDateHeader.innerHTML = "Expiration Dates:";
-            let expDateList = getHtmlListOrErrorMessage(update.UpdateInfo.ExpirationDates, exp => getDateOnly(exp));
-            updateHeader.appendChild(expDateHeader);
-            updateHeader.appendChild(expDateList);
-        }
-        updateListAsHtml.appendChild(updateHeader);
-    });
-    return updateListAsHtml;
+    return [label, trueLabel, trueButton, falseLabel, falseButton, document.createElement("br")];
 }
 
-/**
- * Takes a date-time string formatted by .NET JsonSerializer.Serialize and parse it to only get the date.
- * @param {string} dateTimeString - The DateTime string to get the date from.
- */
-function getDateOnly(dateTimeString) {
-    return dateTimeString.split('T')[0];
-}
-
-/**
- * Returns either: a <ul> element containing each element of the mapping of elementList with propertyMapping as <li> elements,
- * or a <p> element containing "None found." if elementList is undefined or empty.
- * @param {any} elementList - The list of objects to map and convert into li elements of the unordered list.
- * @param {function} propertyMapping - The anonymous function to map elementList with. Default returns the object itself (i.e. use if elementList is an array of strings).
- */
-function getHtmlListOrErrorMessage(elementList, propertyMapping = (obj => obj)) {
-    // if elementList is undefined or an empty array, return an error message instead.
-    if (elementList === undefined || elementList.length == 0) {
-        listHead = document.createElement("p");
-        listHead.innerHTML = "None found.";
-        return listHead;
-    }
-    // elementList is a non-empty array
-    else {
-        let listHead = document.createElement("ul");
-        // map elementList to list of <li>s containing the desired properties
-        propertyList = elementList.map(el => {
-            let listItem = document.createElement("li");
-            listItem.innerHTML = propertyMapping(el).toString();
-            return listItem;
-        });
-        // append <li>s to <ul> and return
-        propertyList.forEach(property => listHead.appendChild(property));
-        return listHead;
-    }
+function createSubmitButton(action) {
+    let button = document.createElement("button");
+    button.id = "submit-button";
+    button.type = "button";
+    button.innerHTML = "Submit";
+    button.onclick = sendAction;
+    return button;
 }

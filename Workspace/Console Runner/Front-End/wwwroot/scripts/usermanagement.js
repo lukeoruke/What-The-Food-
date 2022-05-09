@@ -14,8 +14,21 @@ function getFullAccountForm(action) {
     let base = document.createElement("form");
     base.id = "umform";
     base.name = "umform";
-    base.append(...createLabeledInput("User Id"));
     base.append(...createLabeledInput("Email"));
+    base.append(...createLabeledInput("Password"));
+    base.append(...createLabeledInput("First Name"));
+    base.append(...createLabeledInput("Last Name"));
+    base.append(...createNewsBiasInput());
+    base.append(...createIsEnabledInput());
+    base.appendChild(createSubmitButton(action));
+    return base;
+}
+
+function getAccountUpdateForm(action) {
+    let base = document.createElement("form");
+    base.id = "umform";
+    base.name = "umform";
+    base.append(...createLabeledInput("User Id", "number"));
     base.append(...createLabeledInput("Password"));
     base.append(...createLabeledInput("First Name"));
     base.append(...createLabeledInput("Last Name"));
@@ -35,13 +48,14 @@ function getUserIdForm(action) {
 }
 
 function activateUmAction(actionStr) {
-    console.log(`received action ${actionStr}`);
     currentAction = UmAction[actionStr];
-    console.log(`current action ${currentAction}`)
     let container = document.getElementById("container");
     removeAllChildrenNodes(container);
-    if (currentAction === UmAction.ADD || currentAction === UmAction.UPDATE) {
+    if (currentAction === UmAction.ADD) {
         container.appendChild(getFullAccountForm(currentAction));
+    }
+    else if (currentAction === UmAction.UPDATE) {
+        container.appendChild(getAccountUpdateForm(currentAction));
     }
     else if (currentAction === UmAction.DELETE || currentAction === UmAction.ENABLE || currentAction === UmAction.DISABLE) {
         container.appendChild(getUserIdForm(currentAction));
@@ -49,19 +63,13 @@ function activateUmAction(actionStr) {
 }
 
 function sendAction() {
-    console.log(`sendaction called - action: ${currentAction}`);
     let form = document.querySelector("form");
-    console.log(form);
     const formData = new FormData(form);
-    for (var [key, value] of formData.entries()) {
-        console.log(key, value);
-    }
     let dataToSubmit;
 
     switch (currentAction) {
         case UmAction.ADD:
             dataToSubmit = {
-                userID: parseInt(formData.get('userid')),
                 email: formData.get('email'),
                 password: formData.get('password'),
                 fName: formData.get('firstname'),
@@ -85,8 +93,8 @@ function sendAction() {
             break;
         case UmAction.UPDATE:
             dataToSubmit = {
-                userID: parseInt(formData.get('userid')),
-                email: formData.get('email'),
+                userId: parseInt(formData.get('userid')),
+                email: 'placeholder',
                 password: formData.get('password'),
                 fName: formData.get('firstname'),
                 lName: formData.get('lastname'),
@@ -169,7 +177,7 @@ function removeAllChildrenNodes(node) {
     }
 }
 
-function createLabeledInput(name) {
+function createLabeledInput(name, type = "") {
     let label = document.createElement("label");
     label.setAttribute("for", name.toLowerCase().replaceAll(" ", ""));
     label.innerHTML = name;
@@ -177,6 +185,16 @@ function createLabeledInput(name) {
     textBox.id = name.toLowerCase().replaceAll(" ", "");
     textBox.name = name.toLowerCase().replaceAll(" ", "");
     textBox.placeholder = name;
+    // disable pressing enter to submit, else it refreshes the page
+    textBox.onkeypress = function (e) {
+        var key = e.charCode || e.keyCode || 0;
+        if (key == 13) {
+            return false;
+        }
+    };
+    if (type !== "") {
+        textBox.type = type;
+    }
     return [label, textBox, document.createElement("br")];
 }
 

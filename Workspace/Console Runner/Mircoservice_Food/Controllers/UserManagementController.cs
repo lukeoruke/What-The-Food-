@@ -26,7 +26,15 @@ namespace Mircoservice_Food.Controllers
             if(await accountService.ValidateToken(strippedToken))
             {
                 activeUserId = await accountService.GetActiveUserAsync(strippedToken);
-                logger.UserID = activeUserId.ToString();
+                Account? activeUser = await accountService.GetUserAccountAsync(activeUserId);
+                if (activeUser?.CollectData ?? false)
+                {
+                    logger.UserEmail = activeUser!.Email;
+                }
+                else
+                {
+                    logger.UserEmail = null;
+                }
             }
             else
             {
@@ -76,7 +84,15 @@ namespace Mircoservice_Food.Controllers
             if (await accountService.ValidateToken(strippedToken))
             {
                 activeUserId = await accountService.GetActiveUserAsync(strippedToken);
-                logger.UserID = activeUserId.ToString();
+                Account? activeUser = await accountService.GetUserAccountAsync(activeUserId);
+                if (activeUser?.CollectData ?? false)
+                {
+                    logger.UserEmail = activeUser!.Email;
+                }
+                else
+                {
+                    logger.UserEmail = null;
+                }
             }
             else
             {
@@ -120,7 +136,15 @@ namespace Mircoservice_Food.Controllers
             if (await accountService.ValidateToken(strippedToken))
             {
                 activeUserId = await accountService.GetActiveUserAsync(strippedToken);
-                logger.UserID = activeUserId.ToString();
+                Account? activeUser = await accountService.GetUserAccountAsync(activeUserId);
+                if (activeUser?.CollectData ?? false)
+                {
+                    logger.UserEmail = activeUser!.Email;
+                }
+                else
+                {
+                    logger.UserEmail = null;
+                }
             }
             else
             {
@@ -171,7 +195,15 @@ namespace Mircoservice_Food.Controllers
             if (await accountService.ValidateToken(strippedToken))
             {
                 activeUserId = await accountService.GetActiveUserAsync(strippedToken);
-                logger.UserID = activeUserId.ToString();
+                Account? activeUser = await accountService.GetUserAccountAsync(activeUserId);
+                if (activeUser?.CollectData ?? false)
+                {
+                    logger.UserEmail = activeUser!.Email;
+                }
+                else
+                {
+                    logger.UserEmail = null;
+                }
             }
             else
             {
@@ -222,7 +254,15 @@ namespace Mircoservice_Food.Controllers
             if (await accountService.ValidateToken(strippedToken))
             {
                 activeUserId = await accountService.GetActiveUserAsync(strippedToken);
-                logger.UserID = activeUserId.ToString();
+                Account? activeUser = await accountService.GetUserAccountAsync(activeUserId);
+                if (activeUser?.CollectData ?? false)
+                {
+                    logger.UserEmail = activeUser!.Email;
+                }
+                else
+                {
+                    logger.UserEmail = null;
+                }
             }
             else
             {

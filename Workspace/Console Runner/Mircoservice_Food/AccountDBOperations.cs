@@ -60,8 +60,8 @@ namespace Console_Runner.AccountService
             try
             {
                 string salt = GenerateSalt();
-                acc.salt = salt;
-                byte[] saltBytes = Encoding.ASCII.GetBytes(acc.salt);
+                acc.Salt = salt;
+                byte[] saltBytes = Encoding.ASCII.GetBytes(acc.Salt);
                 byte[] passBytes = Encoding.ASCII.GetBytes(acc.Password);
                 acc.Password = ComputeHash(saltBytes, passBytes);
 

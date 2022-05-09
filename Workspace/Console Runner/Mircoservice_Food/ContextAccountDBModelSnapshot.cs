@@ -63,6 +63,13 @@ namespace Console_Runner.Migrations
                     b.Property<string>("jwt")
                         .HasColumnType("varchar(255)");
 
+                    b.Property<int>("UserID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("timeStamp")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("jwt");
 
                     b.ToTable("ActiveSessionTracker");

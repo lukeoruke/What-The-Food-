@@ -30,11 +30,17 @@ namespace Food.Controllers
             FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
-            logger.UserID = "placeholder";
             logger.DefaultTimeOut = 5000;
             int userId = -1;
 
-            userId = await _accountDBOperations.GetActiveUserAsync(token);
+            if ((await _accountDBOperations.GetUserAccountAsync(userId)).CollectData)
+            {
+                logger.UserEmail = (await _accountDBOperations.GetUserAccountAsync(userId)).Email;
+            }
+            else
+            {
+                logger.UserEmail = null;
+            }
             int numberOfItemsDisplayedAtOnce = 2;
             try
             {

@@ -30,7 +30,7 @@ namespace Console_Runner.AccountService
             {
                 if(account.UserID == userID)
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                            $"Retrieved password salt for user {userID}");
@@ -38,7 +38,7 @@ namespace Console_Runner.AccountService
                     return account.salt;
                 }
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                                                    $"Password salt for user {userID} does not exist");
@@ -54,7 +54,7 @@ namespace Console_Runner.AccountService
         public async Task<bool>AccountExistsAsync(int userID, LogService? logService = null)
         {
             var toReturn = await _efContext.Accounts.FindAsync(userID) != null;
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                    $"Checked if account {userID} exists - {toReturn}");
@@ -72,7 +72,7 @@ namespace Console_Runner.AccountService
             {
                 await _efContext.Accounts.AddAsync(acc);
                 await _efContext.SaveChangesAsync();
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                        $"Created account for {acc.Email}");
@@ -95,7 +95,7 @@ namespace Console_Runner.AccountService
             {
                 if(acc.UserID == userID)
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                            $"Retrieved account {userID}");
@@ -103,7 +103,7 @@ namespace Console_Runner.AccountService
                     return acc;
                 }
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                    $"Could not retrieve account {userID}");
@@ -123,7 +123,7 @@ namespace Console_Runner.AccountService
                 {
                     _efContext.Remove(acc);
                     _efContext.SaveChanges();
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                            $"Removed account {acc.UserID}");
@@ -148,7 +148,7 @@ namespace Console_Runner.AccountService
                 //TODO NEED TO VERIFY THIS WONT SKIP OVER UPDATE BEFORE GOING TO SAVE CHANGES. 
                 _efContext.Accounts.Update(acc);
                 await _efContext.SaveChangesAsync(true);
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                        $"Updated account {acc.UserID}");
@@ -174,7 +174,7 @@ namespace Console_Runner.AccountService
                 throw new ArgumentException("EFAccountGateway.GetIDFromEmailIdAsync: Invalid email");
             }
             List<Account> tempAcc = await userEmail.ToListAsync();
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                    $"Retrieved email for user {tempAcc[0].UserID}");
@@ -193,7 +193,7 @@ namespace Console_Runner.AccountService
             {
                 counter++;
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                    $"Retrieved total number of accounts");

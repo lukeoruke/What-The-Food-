@@ -22,7 +22,10 @@
 
         public bool Enabled { get; set; }
 
+        public bool CollectData { get; set; }
         public string salt { get; set; }
+
+
         //TODO: Constructor values?
 
         public Account()

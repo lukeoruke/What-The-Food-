@@ -32,7 +32,7 @@ namespace Console_Runner.FoodService
             contextFoodDB.Entry(foodUpdate.FoodItem).State = EntityState.Unchanged;
             await contextFoodDB.AddAsync(foodUpdate);
             await contextFoodDB.SaveChangesAsync();
-            if(logService?.UserID != null)
+            if(logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Data, DateTime.Now,
                         $"Created {foodUpdate.GetType().Name} FoodUpdate for FoodItem {foodUpdate.FoodItem.Barcode} to database.");
@@ -67,7 +67,7 @@ namespace Console_Runner.FoodService
                         break;
                 }
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Data, DateTime.Now,
                         $"Retrieved all FoodUpdates for FoodItem {barcode} from database ({foodUpdates.Count} instances).");
@@ -87,7 +87,7 @@ namespace Console_Runner.FoodService
             using ContextFoodDB contextFoodDB = new ContextFoodDB();
             contextFoodDB.Remove(new FoodUpdate() { Id = updateId });
             await contextFoodDB.SaveChangesAsync();
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Data, DateTime.Now,
                         $"Deleted FoodUpdate {updateId} from the database.");
@@ -106,7 +106,7 @@ namespace Console_Runner.FoodService
             using ContextFoodDB contextFoodDB = new ContextFoodDB();
             contextFoodDB.Update(foodUpdate);
             await contextFoodDB.SaveChangesAsync();
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Data, DateTime.Now,
                         $"Updated FoodUpdate {foodUpdate.Id} in the database.");

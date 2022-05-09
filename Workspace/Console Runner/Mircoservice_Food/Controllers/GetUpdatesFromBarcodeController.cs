@@ -17,11 +17,11 @@ namespace Food.Controllers
             LogService logService = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
 
             // TODO: replace this with user ID from jwt token once implemented
-            logService.UserID = "placeholder";
+            logService.UserEmail = "placeholder";
             logService.DefaultTimeOut = 5000;
 
             await logService.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Info, Category.Business, DateTime.Now,
-                $"Received request from {logService.UserID} to get all updates for food item {barcode}.");
+                $"Received request from {logService.UserEmail} to get all updates for food item {barcode}.");
 
             // JsonSerializer.Serialize only encodes base type properties, so...
             List<FoodUpdate> updates = await foodService.GetAllUpdatesForBarcodeAsync(barcode, logService);

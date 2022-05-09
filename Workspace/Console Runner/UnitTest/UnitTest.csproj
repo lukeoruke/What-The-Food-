@@ -59,7 +59,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Console Runner\Console Runner.csproj" />
+    <ProjectReference Include="..\Mircoservice_Food\Mircoservice_Food.csproj" />
   </ItemGroup>
 
 </Project>

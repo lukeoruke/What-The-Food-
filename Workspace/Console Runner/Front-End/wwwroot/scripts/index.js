@@ -4,6 +4,22 @@
 const APIFOOD = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=section_name:(%22Food%22)&sort=newest&api-key=TK2GSBMDBO2kHDUABQFh4tlpE0Bu8cuf'
 const APIHEALTH = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=section_name:(%22Health%22)&sort=newest&api-key=TK2GSBMDBO2kHDUABQFh4tlpE0Bu8cuf'
 
+// add admin options if user is an admin
+fetch('http://localhost:49202/api/ValidateAdminLoggedIn?' + new URLSearchParams({ token: localStorage.getItem('JWT')}))
+    .then(response => response.text())
+    .then((response) => {
+        if (response === "true") {
+            let umButtonContainer = document.createElement("a");
+            umButtonContainer.href = "usermanagement.html";
+            let umButton = document.createElement("button");
+            umButton.className = "button";
+            umButton.innerHTML = "User Management";
+            umButtonContainer.appendChild(umButton);
+            document.getElementById("button-bar").appendChild(umButtonContainer);
+        }
+    })
+
+
 //Create a global variable which will store all News
 let array = [];
 //the level of which we want to display health realted news

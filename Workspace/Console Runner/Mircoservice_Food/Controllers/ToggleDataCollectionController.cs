@@ -21,7 +21,7 @@ namespace Mircoservice_Food.Controllers
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
             int userId = await _accountDBOperations.GetActiveUserAsync(token);
-            (await _accountDBOperations.GetUserAccountAsync(userId)).CollectData = false;
+            await _accountDBOperations.ToggleDataCollectionStatus(userId);
         }
     }
 }

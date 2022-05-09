@@ -736,8 +736,11 @@ namespace Console_Runner.AccountService
             {
                 throw new Exception("a critical error occured while attempting to delete the users data. Try again or contact the system admin");
             }
-            
+        }
 
+        public async Task<bool> ToggleDataCollectionStatus(int userID)
+        {
+            return (await _accountAccess.ToggleDataCollectionStatus(userID));
         }
     }
 

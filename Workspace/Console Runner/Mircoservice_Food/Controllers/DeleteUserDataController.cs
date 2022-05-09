@@ -1,4 +1,4 @@
-﻿using Console_Runner.AccountService;
+﻿ using Console_Runner.AccountService;
 using Console_Runner.AccountService.Authentication;
 using Console_Runner.Logging;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +21,7 @@ namespace Mircoservice_Food.Controllers
         public async void Post(string token)
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
+            Console.WriteLine("In controller rn");
             await _accountDBOperations.DeleteAllUserData(await _accountDBOperations.GetActiveUserAsync(token));
             await _userIDGateway.RemoveUserIdAsync(token);
         }

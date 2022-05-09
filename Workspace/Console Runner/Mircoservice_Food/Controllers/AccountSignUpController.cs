@@ -22,16 +22,13 @@ namespace Microservice.AccountLogin.Controllers
             AccountDBOperations _accountDBOperations = new AccountDBOperations
                 (_accountAccess, _permissionService, _flagGateway, _aMRGateway, _EFActiveSessionTrackerGateway);
  
-            Console.WriteLine("SUCCESSS!!!");
-            Console.WriteLine("Received Post from LoginController");
+
             //Console.WriteLine(Request.Form("username"));
-            Console.WriteLine("Above read form data");
+
 
             IFormCollection formData = Request.Form;
-            Console.WriteLine("UNDER read form data");
 
-            Console.WriteLine(formData["email"]);
-            Console.WriteLine(formData["password"]);
+
 
             try
             {

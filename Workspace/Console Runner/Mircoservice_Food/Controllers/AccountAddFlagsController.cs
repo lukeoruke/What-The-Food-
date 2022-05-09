@@ -18,7 +18,7 @@ namespace Food.Controllers
         private readonly IAMRGateway _amRGateway = new EFAMRGateway();
         private readonly IActiveSessionTrackerGateway _EFActiveSessionTrackerGateway = new EFActiveSessionTrackerGateway();
         private readonly IAuthenticationService _JWTAuthenticationService = new JWTAuthenticationService("TESTDATAHERE");
-        private int userId = 0;
+        private int userId = -1;
 
 
         [HttpPost]
@@ -29,11 +29,20 @@ namespace Food.Controllers
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
-            logger.UserID = "placeholder";
+            
             logger.DefaultTimeOut = 5000;
 
+            userId = await _accountDBOperations.GetActiveUserAsync(token);
 
-            
+            if ((await _accountDBOperations.GetUserAccountAsync(userId)).CollectData)
+            {
+                logger.UserEmail = (await _accountDBOperations.GetUserAccountAsync(userId)).Email;
+            }
+            else
+            {
+                logger.UserEmail = null;
+            }
+
             using (var reader = new StreamReader(Request.Body))
             {
                 var body = await reader.ReadToEndAsync();
@@ -44,9 +53,8 @@ namespace Food.Controllers
                     return;
                 }
 
-               
-                userId = await _accountDBOperations.GetActiveUserAsync(token);
 
+                
                 Console.WriteLine("USER ID: " + userId.ToString());
                 for (int i = 0; i < ingsId.Length; i++)
                 {

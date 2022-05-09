@@ -22,7 +22,7 @@ namespace Console_Runner.AccountService
             try
             {
                 _memAuthContext.Add(permissionToAdd);
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                         $"Created authorization for user {permissionToAdd.UserID} and resource {permissionToAdd.Permission}");
@@ -51,7 +51,7 @@ namespace Console_Runner.AccountService
                         Message = $"Created authorization for user {permission.UserID} and resource {permission.Permission}"
                     });
                 }
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogListWithSetUserAsync(dbActionLogs);
                 }
@@ -74,7 +74,7 @@ namespace Console_Runner.AccountService
                     count++;
                 }
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                     $"Retrieved admin count");
@@ -94,7 +94,7 @@ namespace Console_Runner.AccountService
                     defaultPermsToAdd.Add(temp);
                 }
                 await AddPermissionsAsync(defaultPermsToAdd);
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                         $"Created default admin permissions for user {userID}");
@@ -119,7 +119,7 @@ namespace Console_Runner.AccountService
                     defaultPermsToAdd.Add(temp);
                 }
                 await AddPermissionsAsync(defaultPermsToAdd);
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                         $"Created default user permissions for user {userID}");
@@ -140,7 +140,7 @@ namespace Console_Runner.AccountService
             {
                 permissions.Add(perms);
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                     $"Retrieved all authorizations for user {userID}");
@@ -154,7 +154,7 @@ namespace Console_Runner.AccountService
             {
                 if(perm.UserID == userID && perm.Permission == permission)
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                             $"Retrieved authorization for user {userID} and resource {permission}");
@@ -171,7 +171,7 @@ namespace Console_Runner.AccountService
             {
                 if(permission.UserID == userID && permission.Permission == "createAdmin")
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                             $"Retrieved whether user {userID} is admin (true)");
@@ -179,7 +179,7 @@ namespace Console_Runner.AccountService
                     return true;
                 }
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                     $"Retrieved all authorizations for user {userID} (false)");
@@ -206,7 +206,7 @@ namespace Console_Runner.AccountService
                         });
                     }
                 }
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogListWithSetUserAsync(dbActionLogs);
                 }
@@ -226,7 +226,7 @@ namespace Console_Runner.AccountService
                 Authorization temp = new Authorization(permission);
                 temp.UserID = userID;
                 _memAuthContext.Remove(temp);
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                        $"Removed authorization for user {userID} and resource {permission}");

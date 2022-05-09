@@ -16,7 +16,7 @@ namespace Console_Runner.AccountService
             {
                 await _efContext.AMRs.AddAsync(amrToAdd);
                 await _efContext.SaveChangesAsync();
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                        $"Created AMR for user {amrToAdd.UserID}");
@@ -32,7 +32,7 @@ namespace Console_Runner.AccountService
         public async Task<bool> AMRExistsAsync(int userID, LogService? logService = null)
         {
             var toReturn = await _efContext.AMRs.FindAsync(userID) != null;
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                    $"Retrieved AMR for user {userID}");
@@ -47,7 +47,7 @@ namespace Console_Runner.AccountService
                 AMR? foundAMR = await _efContext.AMRs.FindAsync(userID);
                 if (foundAMR != null)
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                            $"Retrieved AMR for user {userID}");
@@ -56,7 +56,7 @@ namespace Console_Runner.AccountService
                 }
                 else
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                            $"Could not retrieve AMR for user {userID}");
@@ -78,7 +78,7 @@ namespace Console_Runner.AccountService
                 {
                     _efContext.Remove(amrToRemove);
                     await _efContext.SaveChangesAsync();
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                            $"Removed AMR for user {amrToRemove.UserID}");
@@ -98,7 +98,7 @@ namespace Console_Runner.AccountService
             {
                 _efContext.AMRs.Update(amrToUpdate);
                 await _efContext.SaveChangesAsync(true);
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                        $"Updated AMR for user {amrToUpdate.UserID}");

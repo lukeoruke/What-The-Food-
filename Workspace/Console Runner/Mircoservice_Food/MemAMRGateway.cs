@@ -11,7 +11,7 @@ namespace Console_Runner.AccountService
             try
             {
                 _amrDB.Add(amrToAdd);
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                        $"Created AMR for user {amrToAdd.UserID}");
@@ -30,7 +30,7 @@ namespace Console_Runner.AccountService
             {
                 if(amr.UserID == userID)
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                            $"Retrieved AMR for user {userID}");
@@ -47,7 +47,7 @@ namespace Console_Runner.AccountService
             {
                 if (amr.UserID == userID)
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                            $"Retrieved AMR for user {userID}");
@@ -63,7 +63,7 @@ namespace Console_Runner.AccountService
             try
             {
                 _amrDB.Remove(amrToRemove);
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                        $"Removed AMR for user {amrToRemove.UserID}");
@@ -83,7 +83,7 @@ namespace Console_Runner.AccountService
                 if(_amrDB[index].UserID == amrToUpdate.UserID)
                 {
                     _amrDB[index] = amrToUpdate;
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                            $"Updated AMR for user {amrToUpdate.UserID}");

@@ -16,7 +16,7 @@ namespace Console_Runner.AccountService
             {
                 if(account.UserID == userID)
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                            $"Retrieved password salt for user {userID}");
@@ -24,7 +24,7 @@ namespace Console_Runner.AccountService
                     return account.salt;
                 }
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                                                    $"Password salt for user {userID} does not exist");
@@ -35,7 +35,7 @@ namespace Console_Runner.AccountService
 
         public int NumberOfAccounts(LogService? logService = null)
         {
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                    $"Retrieved total number of accounts");
@@ -46,7 +46,7 @@ namespace Console_Runner.AccountService
         public async Task<bool> AccountExistsAsync(int userID, LogService? logService = null)
         {
             var toReturn = _memContextAccount.Find((acc => acc.UserID == userID)) != null;
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                    $"Checked if account {userID} exists - {toReturn}");
@@ -65,7 +65,7 @@ namespace Console_Runner.AccountService
                     acc.UserID = random.Next(1,01000);
                 }
                 _memContextAccount.Add(acc);
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                        $"Created account for {acc.Email}");
@@ -84,7 +84,7 @@ namespace Console_Runner.AccountService
             {
                 if (account.UserID == userID)
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                            $"Retrieved account {userID}");
@@ -92,7 +92,7 @@ namespace Console_Runner.AccountService
                     return account;
                 }
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                    $"Could not retrieve account {userID}");
@@ -106,7 +106,7 @@ namespace Console_Runner.AccountService
             {
                 if (account.Email == email)
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                            $"Retrieved email for user {account.UserID}");
@@ -122,7 +122,7 @@ namespace Console_Runner.AccountService
             try
             {
                 _memContextAccount.Remove(acc);
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                        $"Removed account {acc.UserID}");
@@ -145,7 +145,7 @@ namespace Console_Runner.AccountService
                     {
                         _memContextAccount[i] = acc;
                         _memContextAccount[i].IsActive = false;
-                        if (logService?.UserID != null)
+                        if (logService?.UserEmail != null)
                         {
                             _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                                $"Updated account {acc.UserID}");

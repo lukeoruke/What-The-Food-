@@ -22,7 +22,7 @@ namespace Food.Controllers
                 FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
                 LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
                 // TODO: replace this string with the user email when we can get it
-                logger.UserID = "placeholder";
+                logger.UserEmail = "placeholder";
                 logger.DefaultTimeOut = 5000;
 
                 try

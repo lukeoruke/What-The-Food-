@@ -35,7 +35,7 @@ namespace Console_Runner.AccountService
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                                            $"Retrieved password salt for user {userID}");
                     }
-                    return account.salt;
+                    return account.Salt;
                 }
             }
             if (logService?.UserEmail != null)

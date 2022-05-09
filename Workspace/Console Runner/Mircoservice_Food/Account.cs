@@ -1,4 +1,6 @@
-﻿namespace Console_Runner.AccountService
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+
+namespace Console_Runner.AccountService
 {
     /*
      * Account class that will represent the contents of a user's account
@@ -8,6 +10,7 @@
         //User ID getter and setter
         //Using Auto Incrementer, research on that
         //[System.ComponentModel.DataAnnotations.Key]
+        [BindNever]
         public int UserID { get; set; }
 
         public string Email { get; set; }
@@ -23,7 +26,8 @@
         public bool Enabled { get; set; }
 
         public bool CollectData { get; set; }
-        public string salt { get; set; }
+        [BindNever]
+        public string Salt { get; set; }
 
 
         //TODO: Constructor values?

@@ -5,7 +5,7 @@ const APIFOOD = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=sec
 const APIHEALTH = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=section_name:(%22Health%22)&sort=newest&api-key=TK2GSBMDBO2kHDUABQFh4tlpE0Bu8cuf'
 
 // add admin options if user is an admin
-fetch('http://47.151.24.23:49202/api/ValidateAdminLoggedIn?' + new URLSearchParams({ token: localStorage.getItem('JWT')}))
+fetch('http://localhost:49202/api/ValidateAdminLoggedIn?' + new URLSearchParams({ token: localStorage.getItem('JWT')}))
     .then(response => response.text())
     .then((response) => {
         if (response === "true") {

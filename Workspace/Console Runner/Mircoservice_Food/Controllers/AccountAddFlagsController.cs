@@ -29,18 +29,7 @@ namespace Food.Controllers
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
-            
             logger.DefaultTimeOut = 5000;
-
-
-            if ((await _accountDBOperations.GetUserAccountAsync(userId))?.CollectData ?? false)
-            {
-                logger.UserEmail = (await _accountDBOperations.GetUserAccountAsync(userId))!.Email;
-            }
-            else
-            {
-                logger.UserEmail = null;
-            }
 
             using (var reader = new StreamReader(Request.Body))
             {

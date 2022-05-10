@@ -1,4 +1,6 @@
-﻿namespace Console_Runner.Logging
+﻿using System.Linq;
+
+namespace Console_Runner.Logging
 {
     public class LogService
     {
@@ -183,16 +185,40 @@
             }
         }
 
-        public int GetLogsAfterDate(DateTime dateToQuery)
+        public Dictionary<DateTime, int> GetLogsAfterDate(DateTime dateToQuery)
         {
-            return _logAccess.GetLogsWhere(log => log.Timestamp.ToUniversalTime() > dateToQuery.ToUniversalTime()).Count;
+            List<Log> logsToParse = _logAccess.GetLogsWhere(log => log.Timestamp.ToUniversalTime() > dateToQuery.ToUniversalTime());
+            Dictionary<DateTime, int> result = new Dictionary<DateTime, int>();
+            // query logsToParse
+            var loginsByDay = from log in logsToParse
+                              // group list of logs by date
+                              group log by log.Timestamp.Date into dateGroup
+                              orderby dateGroup.Key
+                              //get all groups
+                              select dateGroup;
+            foreach (var dategroup in loginsByDay)
+            {
+                result.Add(dategroup.Key, dategroup.Count());
+            }
+            return result;
         }
         
-        /*public Dictionary<DateTime, int> GetLoginTrends(DateTime since)
+        public Dictionary<DateTime, int> GetLoginTrends(DateTime since)
         {
-            List<Log> loginLogs = _logAccess.GetLogsWhere((log) => (log.CallSiteFile == "AccountLoginController.cs") && (log.LogLevel == LogLevel.Info)),
-                                                           (log));
-        }*/
+            List<Log> loginLogs = _logAccess.GetLogsWhere((log) => (log.CallSiteFile == "AccountLoginController.cs") && (log.LogLevel == LogLevel.Info),
+                                                          (log) => log.Timestamp > since);
+            Dictionary<DateTime, int> result = new Dictionary<DateTime, int>();
+            //
+            var loginsByDay = from loginLog in loginLogs
+                              group loginLog by loginLog.Timestamp.Date into dateGroup
+                              orderby dateGroup.Key
+                              select dateGroup;
+            foreach(var dategroup in loginsByDay)
+            {
+                result.Add(dategroup.Key, dategroup.Count());
+            }
+            return result;
+        }
 
 
         private async Task<UserIdentifier> GetOrCreateUserID(string uid, CancellationToken token = default)

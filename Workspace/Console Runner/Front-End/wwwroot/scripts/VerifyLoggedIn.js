@@ -25,11 +25,8 @@ function placeLocalStorage(newViewName, time) {
         .then(response => response.text())
         .then((response) => {
             if (response === "False") {
+                console.log("Not verified");
                 window.location.replace("https://localhost:49199/login.html");
             }
         })
-    
-
 })();
-
-

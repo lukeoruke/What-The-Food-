@@ -160,5 +160,10 @@ namespace Console_Runner.AccountService
                 return false;
             }
         }
+
+        public Task<bool> ToggleDataCollectionStatus(int userID)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -122,6 +122,7 @@ namespace Console_Runner.AccountService
                 if (await AccountExistsAsync(acc.UserID))
                 {
                     _efContext.Remove(acc);
+                    Console.WriteLine("account was deleted");
                     _efContext.SaveChanges();
                     if (logService?.UserEmail != null)
                     {
@@ -200,6 +201,20 @@ namespace Console_Runner.AccountService
             }
             return counter;
         }
+        public async Task<bool> ToggleDataCollectionStatus(int userID)
+        {
+            try
+            {
+                Account acc = await _efContext.Accounts.FindAsync(userID);
+                acc.CollectData = !acc.CollectData;
+                _efContext.Accounts.Update(acc);
+                await _efContext.SaveChangesAsync();
+                return true;
+            }catch (Exception ex)
+            {
+                throw new Exception("Failed to toggle data collection status");
+            }
 
+        }
     }
 }

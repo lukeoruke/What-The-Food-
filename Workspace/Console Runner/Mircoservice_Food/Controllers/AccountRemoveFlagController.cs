@@ -25,20 +25,20 @@ namespace Food.Controllers
 
             logger.DefaultTimeOut = 5000;
             int userId = 0;
-            userId = await _accountDBOperations.GetActiveUserAsync(token);
-
-            if ((await _accountDBOperations.GetUserAccountAsync(userId)).CollectData)
-            {
-                logger.UserEmail = (await _accountDBOperations.GetUserAccountAsync(userId)).Email;
-            }
-            else
-            {
-                logger.UserEmail = null;
-            }
             using (var reader = new StreamReader(Request.Body))
             {
                 var body = await reader.ReadToEndAsync();
 
+                userId = await _accountDBOperations.GetActiveUserAsync(token);
+
+                if ((await _accountDBOperations.GetUserAccountAsync(userId)).CollectData)
+                {
+                    logger.UserEmail = (await _accountDBOperations.GetUserAccountAsync(userId)).Email;
+                }
+                else
+                {
+                    logger.UserEmail = null;
+                }
                 var ingsId = body.Split(",");
                 if (ingsId[0] == "" || ingsId[0] == null)
                 {

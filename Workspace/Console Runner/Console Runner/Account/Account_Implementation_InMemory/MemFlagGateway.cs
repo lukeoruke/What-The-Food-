@@ -125,5 +125,10 @@ namespace Console_Runner.AccountService
             }
             return false;
         }
+
+        public Task<bool> RemoveFoodFlagAsync(FoodFlag foodFlag, LogService? logService = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

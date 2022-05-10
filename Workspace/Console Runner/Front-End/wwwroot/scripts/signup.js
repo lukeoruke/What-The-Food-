@@ -8,8 +8,15 @@ async function sendSignup(e) {
     let password = document.getElementById('password').value;
     let confirmPassword = document.getElementById('confirmPassword').value;
 
+    // Verify all fields are filled
     if (name === '' || email === '' || password === '' || confirmPassword === '') {
         alert('Please fill out all fields!');
+        return;
+    }
+
+    // Verify name consists of first and last name
+    if (name.indexOf(' ') === -1) {
+        alert('Please enter first and last name!');
         return;
     }
 
@@ -71,4 +78,5 @@ async function sendSignup(e) {
     });
     console.log("this is right UNDER the fetch");
     alert('Successfully sent sign up request!');
+    window.location.replace('http://whatthefood.xyz/login.html');
 }

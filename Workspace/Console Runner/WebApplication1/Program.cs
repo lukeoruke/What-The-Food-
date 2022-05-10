@@ -1,17 +1,5 @@
 var builder = WebApplication.CreateBuilder(args);
 
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy =>
-                      {
-                          policy.AllowAnyOrigin();
-                          policy.AllowAnyMethod();
-                          policy.AllowAnyHeader();
-                      });
-});
-
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -28,12 +16,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseHttpsRedirection();
-
-app.UseCors(MyAllowSpecificOrigins);
+app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
 app.MapControllers();
 
-app.Run("http://192.168.254.21:49202");
+app.Run();

@@ -1,4 +1,5 @@
 using Console_Runner.AccountService;
+using Console_Runner.AccountService.Authentication;
 using Console_Runner.FoodService;
 using Console_Runner.Logging;
 using Microservice_Food;
@@ -15,6 +16,8 @@ namespace Food.Controllers
     [ApiController]
     public class GetFoodProductFromBarCodeController : ControllerBase
     {
+        private readonly IAMRGateway _amRGateway = new EFAMRGateway();
+        private readonly IAuthenticationService _JWTAuthenticationService = new JWTAuthenticationService("TESTDATAHERE");
         private ScanHelper FDC = new ScanHelper();
         private const string UM_CATEGORY = "Data Store";
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();
@@ -29,7 +32,7 @@ namespace Food.Controllers
         private List<Ingredient> flaggedIngredients = new();
         private readonly IAMRGateway _amrGateway = new EFAMRGateway();
         private readonly IActiveSessionTrackerGateway _EFActiveSessionTrackerGateway = new EFActiveSessionTrackerGateway();
-
+        int userID = -1;
         /// <summary>
         /// HttpGet request for recieving a food product from a barcode
         /// </summary>
@@ -37,12 +40,12 @@ namespace Food.Controllers
         ///
         [EnableCors]
         [HttpGet]
-        public async Task<ActionResult<string>> GET()
+        public async Task<ActionResult<string>> GET(string barcode, string token)
         {
             Console.WriteLine("Recieved");
-            //get request info and format it
-            barcode = Request.QueryString.Value;
-            barcode = barcode.Substring(1);
+
+            AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
+            userID = await _accountDBOperations.GetActiveUserAsync(token);
 
             //creation of foodDB objs
             List<Ingredient> ingredients = new();
@@ -91,7 +94,7 @@ namespace Food.Controllers
 
                 //get list of ingredients and check for user flags
                 ingredients = await _foodDB.GetIngredientsListAsync(barcode, logger);
-                int userID = 0; //TODO NEED THE ACTUAL USER ID;
+
                 List<FoodFlag> flags = await _accountDBOperations.GetAllAccountFlagsAsync(userID, logger);
                
                 for( int i = 0; i < flags.Count; i++)

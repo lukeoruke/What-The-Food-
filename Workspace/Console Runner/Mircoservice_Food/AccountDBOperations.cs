@@ -72,7 +72,7 @@ namespace Console_Runner.AccountService
                 if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Business, DateTime.Now,
-                                                       $"User {acc.Email} successfully signed up.");
+                                                       $"User successfully signed up.");
                 }
                 return true;
             }
@@ -81,7 +81,7 @@ namespace Console_Runner.AccountService
                 if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
-                                                       $"User {acc.Email} could not be signed up. Unknown error: {ex.Message}");
+                                                       $"User could not be signed up. Unknown error: {ex.Message}");
                 }
                 throw;
             }
@@ -314,7 +314,7 @@ namespace Console_Runner.AccountService
         {
             try
             {
-                if (await AuthenticateUserPassAsync(email, userPass))
+                if (await AuthenticateUserPassAsync(email, userPass, logService))
                 {
                     int ID = await _accountAccess.GetIDFromEmailIdAsync(email, logService);
                     Account acc = await GetUserAccountAsync(ID);

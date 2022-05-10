@@ -202,6 +202,7 @@ namespace Console_Runner.Logging
             }
             return result;
         }
+
         
         public Dictionary<string, int> GetLoginTrends(DateTime since)
         {
@@ -214,6 +215,22 @@ namespace Console_Runner.Logging
                               orderby dateGroup.Key
                               select dateGroup;
             foreach(var dategroup in loginsByDay)
+            {
+                result.Add(dategroup.Key.ToShortDateString(), dategroup.Count());
+            }
+            return result;
+        }
+
+        public Dictionary<string, int> GetSignupTrends(DateTime since)
+        {
+            List<Log> signupLogs = _logAccess.GetLogsWhere((log) => (log.CallSiteFile == "AccountSignUpController.cs") && (log.CallSiteMethod == "Post"),
+                                                           (log) => log.Timestamp > since);
+            Dictionary<string, int> result = new();
+            var signupsByDay = from signupLog in signupLogs
+                               group signupLog by signupLog.Timestamp.Date into dateGroup
+                               orderby dateGroup.Key
+                               select dateGroup;
+            foreach(var dategroup in signupsByDay)
             {
                 result.Add(dategroup.Key.ToShortDateString(), dategroup.Count());
             }

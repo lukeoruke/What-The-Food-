@@ -1,6 +1,9 @@
 ﻿using Console_Runner.AccountService;
 using Microsoft.AspNetCore.Mvc;
 using  Microservice.AccountLogin;
+using Console_Runner.Logging;
+
+
 namespace Microservice.AccountLogin.Controllers
 {
     [Route("api/[controller]")]
@@ -21,28 +24,26 @@ namespace Microservice.AccountLogin.Controllers
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations
                 (_accountAccess, _permissionService, _flagGateway, _aMRGateway, _EFActiveSessionTrackerGateway);
- 
 
-            //Console.WriteLine(Request.Form("username"));
-
-
+            LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
+            logger.DefaultTimeOut = 5000;
             IFormCollection formData = Request.Form;
-
-
 
             try
             {
                 AMR amr = new AMR();
                 Account account = new Account();
                 account.Email = formData["email"].ToString();
+                logger.UserEmail = account.Email;
                 account.Password = formData["password"].ToString();
                 string name = formData["name"];
                 string[] fullName = name.Split(" ");
                 account.FName = fullName[0];
                 account.LName = fullName[1];
-                await _accountDBOperations.UserSignUpAsync(account);
+                await _accountDBOperations.UserSignUpAsync(account, logger);
 
-                Console.WriteLine(account.ToString());
+                _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Info, Category.Business, DateTime.Now,
+                                               $"User signed up successfully.");
             }
             catch (FileNotFoundException e)
             {

@@ -16,7 +16,14 @@ namespace Mircoservice_Food.Controllers
             try
             {
                 var loginTrend = logger.GetLoginTrends(DateTime.Now.AddMonths(-3));
-                return JsonSerializer.Serialize(loginTrend);
+                var signupTrend = logger.GetSignupTrends(DateTime.Now.AddMonths(-3));
+                Console.WriteLine(loginTrend);
+                Console.WriteLine(signupTrend);
+                return JsonSerializer.Serialize(new
+                {
+                    logins = loginTrend,
+                    signups = signupTrend
+                });
             }
             catch (Exception ex)
             {

@@ -11,13 +11,18 @@ namespace Console_Runner.AccountService
         private readonly IAccountGateway _accountAccess;
         private readonly IAuthorizationGateway _permissionService;
         private readonly IFlagGateway _flagService;
-        public AccountDBOperations(IAccountGateway accountAccess, IAuthorizationGateway permissionService, IFlagGateway flagGateway)
+        private readonly IAMRGateway _amrGateway;
+        private readonly IActiveSessionTrackerGateway _activeSessionTrackerGateway;
+
+        public AccountDBOperations(IAccountGateway accountAccess, IAuthorizationGateway permissionService, IFlagGateway flagGateway, IAMRGateway aMRGateway, IActiveSessionTrackerGateway activeSessionTrackerGateway)
         {
             this._accountAccess = accountAccess;
             this._permissionService = permissionService;
             this._flagService = flagGateway;
+            this._amrGateway = aMRGateway;
+            this._activeSessionTrackerGateway = activeSessionTrackerGateway;
         }
-        
+
         /// <summary>
         /// Computes the hash from provided information
         /// </summary>
@@ -66,7 +71,7 @@ namespace Console_Runner.AccountService
                 await _permissionService.AssignDefaultUserPermissions(acc.UserID, logService);
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Business, DateTime.Now,
                                                        $"User {acc.Email} successfully signed up.");
                 }
                 return true;
@@ -75,7 +80,7 @@ namespace Console_Runner.AccountService
             {
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                        $"User {acc.Email} could not be signed up. Unknown error: {ex.Message}");
                 }
                 throw;
@@ -83,25 +88,25 @@ namespace Console_Runner.AccountService
 
         }
 
-            /// <summary>
-            /// Deletes a user from the DB
-            /// </summary>
-            /// <param name="currentUser"></param>
-            /// <param name="userID"></param>
-            /// <param name="logService"></param>
-            /// <returns>true if successful false otherwise</returns>
-            /// <exception cref="InvalidOperationException"></exception>
-            /// <exception cref="UserNotAuthorizedException"></exception>
+        /// <summary>
+        /// Deletes a user from the DB
+        /// </summary>
+        /// <param name="currentUser"></param>
+        /// <param name="userID"></param>
+        /// <param name="logService"></param>
+        /// <returns>true if successful false otherwise</returns>
+        /// <exception cref="InvalidOperationException"></exception>
+        /// <exception cref="UserNotAuthorizedException"></exception>
         public async Task<bool> UserDeleteAsync(Account currentUser, int userID, LogService? logService = null)
         {
             try
             {
                 // cancel if the account to delete does not exist
-                if (! await _accountAccess.AccountExistsAsync(userID, logService))
+                if (!await _accountAccess.AccountExistsAsync(userID, logService))
                 {
                     if (logService?.UserID != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Error, Category.Business, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Error, Category.Business, DateTime.Now,
                                                            $"User {userID} could not be deleted. Account does not exist.");
                     }
                     throw new InvalidOperationException("Account to be deleted does not exist.");
@@ -112,17 +117,17 @@ namespace Console_Runner.AccountService
                 {
                     if (logService?.UserID != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                            $"User {userID} could not be deleted. User {currentUser.UserID} does not have authorization to delete.");
                     }
                     throw new UserNotAuthorizedException("User has insufficient permission.");
                 }
                 // cancel if this results in no admins
-                if(currentUser.UserID == userID &&  (_permissionService.AdminCount(logService) == 1))
+                if (currentUser.UserID == userID && (_permissionService.AdminCount(logService) == 1))
                 {
                     if (logService?.UserID != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                            $"User {userID} could not be deleted. Deletion will result in no admins remaining.");
                     }
                     throw new InvalidOperationException("This operation will result in no admins and can not be completed.");
@@ -132,7 +137,7 @@ namespace Console_Runner.AccountService
                 await _accountAccess.RemoveAccountAsync(acc, logService);
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Business, DateTime.Now,
                                                        $"Deleted user {userID}.");
                 }
                 return true;
@@ -141,7 +146,7 @@ namespace Console_Runner.AccountService
             {
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Business, DateTime.Now,
                                                        $"User {userID} could not be deleted. Unknown error: {ex.Message}");
                 }
                 throw;
@@ -162,12 +167,12 @@ namespace Console_Runner.AccountService
                 {
                     if (toReturn != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                             $"Retrieved user {userID} from the database.");
                     }
                     else
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                             $"Could not retrieve user {userID} from the database. User does not exist.");
                     }
                 }
@@ -177,7 +182,7 @@ namespace Console_Runner.AccountService
             {
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Error, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Error, Category.Business, DateTime.Now,
                                                        $"Could not retrieve user {userID}. Unknown error: {ex.Message}");
                 }
                 throw new Exception("Unknown error");
@@ -195,11 +200,11 @@ namespace Console_Runner.AccountService
             string fTemp = "", lTemp = "", pTemp = "";
             if (currentUser.UserID != userID)
             {
-                if ((! await _permissionService.HasPermissionAsync(currentUser.UserID, "editOtherAccount", logService)) || (!currentUser.IsActive))
+                if ((!await _permissionService.HasPermissionAsync(currentUser.UserID, "editOtherAccount", logService)) || (!currentUser.IsActive))
                 {
                     if (logService?.UserID != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                            $"User {userID} could not be updated. User {currentUser.UserID} does not have authorization to update.");
                     }
                     throw new UserNotAuthorizedException($"User {currentUser.UserID} not authorized to update user {userID}");
@@ -212,7 +217,7 @@ namespace Console_Runner.AccountService
                 {
                     if (logService?.UserID != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                            $"User {userID} could not be updated. User does not exist.");
                     }
                     throw new ArgumentException($"User {userID} does not exist");
@@ -246,7 +251,7 @@ namespace Console_Runner.AccountService
                    // _logger.LogAccountNameChange(UM_CATEGORY, "test page", true, "", acc.Email, pTemp, npassword);*/
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Business, DateTime.Now,
                                                        $"User {userID} successfully updated.");
                 }
                 return true;
@@ -255,7 +260,7 @@ namespace Console_Runner.AccountService
             {
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Business, DateTime.Now,
                                                        $"User {userID} could not be updated. Unknown error: {ex.Message}");
                 }
                 throw;
@@ -277,7 +282,7 @@ namespace Console_Runner.AccountService
             {
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                        $"Authentication for email address {email} failed. Email address does not exist.");
                 }
                 return false;
@@ -290,7 +295,7 @@ namespace Console_Runner.AccountService
             bool toReturn = (acc != null && acc.Password == hashedPass);
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Business, DateTime.Now,
                                                    toReturn ? $"Authentication successful for email address {email}." :
                                                    $"Authentication for email address {email} failed. Password does not match.");
             }
@@ -306,7 +311,7 @@ namespace Console_Runner.AccountService
         /// <returns>an instance of the users account object if the operation was successful, null otherwise</returns>
         public async Task<Account> SignInAsync(string email, string userPass, LogService? logService = null)
         {
-            
+
             if (await AuthenticateUserPassAsync(email, userPass))
             {
                 int ID = await _accountAccess.GetIDFromEmailIdAsync(email, logService);
@@ -314,7 +319,7 @@ namespace Console_Runner.AccountService
                 acc.IsActive = true;
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.Business, DateTime.Now,
                                                        $"User {acc.UserID} successfully signed in.");
                 }
                 return acc;
@@ -323,7 +328,7 @@ namespace Console_Runner.AccountService
             {
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.Business, DateTime.Now,
                                                        $"User failed to sign in. Authentication failed.");
                 }
                 return null;
@@ -342,21 +347,21 @@ namespace Console_Runner.AccountService
         public async Task<bool> DisableAccountAsync(Account currentUser, int userID, LogService? logService = null)
         {
             // cancel if acting user does not have permission to disable
-            if (! await _permissionService.HasPermissionAsync(currentUser.UserID, "disableAccount", logService) || !currentUser.IsActive)
+            if (!await _permissionService.HasPermissionAsync(currentUser.UserID, "disableAccount", logService) || !currentUser.IsActive)
             {
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                        $"User {userID} could not be disabled. User {currentUser.UserID} does not have authorization to disable.");
                 }
                 throw new UserNotAuthorizedException("The account does not have required permissions to disable another account");
             }
             // cancel if target user does not exist
-            if (! await _accountAccess.AccountExistsAsync(userID, logService))
+            if (!await _accountAccess.AccountExistsAsync(userID, logService))
             {
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                        $"User {userID} could not be disabled. User {userID} does not exist.");
                 }
                 throw new ArgumentException("The account being requested for deletion does not exist");
@@ -368,7 +373,7 @@ namespace Console_Runner.AccountService
                 {
                     if (logService?.UserID != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                            $"User {userID} could not be disabled. Disabling this user will result in no active admins.");
                     }
                     throw new ArgumentException("Disabling this account would result in there being no admins.");
@@ -378,7 +383,7 @@ namespace Console_Runner.AccountService
                 await _accountAccess.UpdateAccountAsync(acc, logService);
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                        $"User {userID} successfully disabled.");
                 }
                 return true;
@@ -387,7 +392,7 @@ namespace Console_Runner.AccountService
             {
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                        $"User {userID} could not be disabled. Unknown error: {ex.Message}");
                 }
                 throw;
@@ -403,22 +408,22 @@ namespace Console_Runner.AccountService
         public async Task<bool> EnableAccountAsync(Account currentUser, int userID, LogService? logService = null)
         {
             // cancel if acting user does not have permission
-            if (! await _permissionService.HasPermissionAsync(currentUser.UserID, "enableAccount", logService) || !currentUser.IsActive)
+            if (!await _permissionService.HasPermissionAsync(currentUser.UserID, "enableAccount", logService) || !currentUser.IsActive)
             {
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                        $"User {userID} could not be enabled. User {userID} does not exist.");
                 }
                 return false;
             }
             try
             {
-                if (! await _accountAccess.AccountExistsAsync(userID, logService))
+                if (!await _accountAccess.AccountExistsAsync(userID, logService))
                 {
                     if (logService?.UserID != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                            $"User {userID} could not be enabled. User {currentUser.UserID} does not have authorization to enable.");
                     }
                     return false;
@@ -428,7 +433,7 @@ namespace Console_Runner.AccountService
                 await _accountAccess.UpdateAccountAsync(acc, logService);
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                        $"User {userID} successfully enabled.");
                 }
                 return true;
@@ -437,7 +442,7 @@ namespace Console_Runner.AccountService
             {
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Error, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Error, Category.Business, DateTime.Now,
                                                        $"User {userID} could not be enabled. Unknown error: {ex.Message}");
                 }
                 throw;
@@ -455,7 +460,7 @@ namespace Console_Runner.AccountService
             bool toReturn = await _accountAccess.AccountExistsAsync(userID, logService);
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Business, DateTime.Now,
                                                    $"Checked whether {userID} exists ({toReturn})");
             }
             return toReturn;
@@ -480,7 +485,7 @@ namespace Console_Runner.AccountService
                     {
                         if (logService?.UserID != null)
                         {
-                            _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                            _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                                $"User {userID} could not be promoted to admin. User {userID} does not exist.");
                         }
                         throw new ArgumentException("The requested account does not exist");
@@ -490,14 +495,14 @@ namespace Console_Runner.AccountService
                     await _accountAccess.UpdateAccountAsync(acc, logService);
                     if (logService?.UserID != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Info, Category.Business, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.Business, DateTime.Now,
                                                            $"User {userID} successfully promoted to admin.");
                     }
                     return true;
                 }
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                        $"User {userID} could not be promoted to admin. User {currentUser.UserID} does not have authorization to enable.");
                 }
                 return false;
@@ -506,7 +511,7 @@ namespace Console_Runner.AccountService
             {
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                        $"User {userID} could not be enabled. Unknown error: {ex.Message}");
                 }
                 throw;
@@ -522,16 +527,16 @@ namespace Console_Runner.AccountService
         /// <returns>true if successful false otherwise</returns>
         public async Task<bool> addPermissionAsync(Account currentUser, int userID, string PermissionToBeAdded, LogService? logService = null)
         {
-            if(IsAdmin(currentUser.UserID))
+            if (IsAdmin(currentUser.UserID))
             {
-                if(await HasPermissionAsync(currentUser.UserID, PermissionToBeAdded, logService))
+                if (await HasPermissionAsync(currentUser.UserID, PermissionToBeAdded, logService))
                 {
                     Authorization newPerm = new(PermissionToBeAdded);
                     newPerm.UserID = userID;
                     await _permissionService.AddPermissionAsync(newPerm, logService);
                     if (logService?.UserID != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Business, DateTime.Now,
                                                            $"Successfully added permission for user {userID} and resource {PermissionToBeAdded}.");
                     }
                     return true;
@@ -540,7 +545,7 @@ namespace Console_Runner.AccountService
                 {
                     if (logService?.UserID != null)
                     {
-                        _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                        _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                            $"Cannot add permission for user {userID} and resource {PermissionToBeAdded}. " +
                                                            $"User {currentUser.UserID} does not have the permission to be granted.");
                     }
@@ -550,7 +555,7 @@ namespace Console_Runner.AccountService
             {
                 if (logService?.UserID != null)
                 {
-                    _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                    _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                        $"Cannot add permission for user {userID} and resource {PermissionToBeAdded}. " +
                                                        $"User {currentUser.UserID} is not authorized to grant permissions.");
                 }
@@ -558,7 +563,7 @@ namespace Console_Runner.AccountService
 
             return false;
         }
-        
+
         /// <summary>
         /// Checks if a user has a specific permission
         /// </summary>
@@ -571,7 +576,7 @@ namespace Console_Runner.AccountService
             bool toReturn = await _permissionService.HasPermissionAsync(userID, permission, logService);
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Business, DateTime.Now,
                                                    $"Checked if user {userID} has permission for resource {permission} ({toReturn}).");
             }
             return toReturn;
@@ -588,7 +593,7 @@ namespace Console_Runner.AccountService
             bool toReturn = _permissionService.IsAdmin(userID, logService);
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Business, DateTime.Now,
                                                    $"Checked if user {userID} is admin ({toReturn}).");
             }
             return toReturn;
@@ -607,7 +612,7 @@ namespace Console_Runner.AccountService
             bool toReturn = await _flagService.AddFlagAsync(foodFlag, logService);
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Warning, Category.Business, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Warning, Category.Business, DateTime.Now,
                                                    $"Successfully created food flag between user {userID} and ingredient {IngredientID}.");
             }
             return toReturn;
@@ -624,7 +629,7 @@ namespace Console_Runner.AccountService
             bool toReturn = await _flagService.RemoveFoodFlagAsync(userID, IngredientID, logService);
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Business, DateTime.Now,
                                                    $"Successfully removed food flag between user {userID} and ingredient {IngredientID}.");
             }
             return toReturn;
@@ -641,7 +646,7 @@ namespace Console_Runner.AccountService
             bool toReturn = await _flagService.AccountHasFlagAsync(userID, IngredientID, logService);
             if (logService?.UserID != null)
             {
-                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Business, DateTime.Now,
+                _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.Business, DateTime.Now,
                                                    $"Checked for food flag between user {userID} and ingredient {IngredientID} ({toReturn}).");
             }
             return toReturn;
@@ -658,6 +663,11 @@ namespace Console_Runner.AccountService
             return await _flagService.GetNAccountFlagsAsync(userID, skip, take, logService);
         }
 
+        public async Task<bool> AddAMRAsync(int userID, bool isMale, int weight, float height, int age, ActivityLevel activity)
+        {
+            await _amrGateway.AddAMRAsync(new AMR(isMale, weight, height, age, activity) { UserID = userID });
+            return true;
+        }
 
         /// <summary>
         /// 
@@ -669,9 +679,27 @@ namespace Console_Runner.AccountService
             return await _flagService.GetAllAccountFlagsAsync(userID, logService);
         }
 
+        public async Task<AMR> GetAMRAsync(int userID, LogService? logService = null)
+        {
+            return await _amrGateway.GetAMRAsync(userID, logService);
+        }
+
+
+        public async Task<bool> startSessionAsync(int userID, string jwt)
+        {
+            return await _activeSessionTrackerGateway.StartSessionAsync(userID, jwt);
+        }
+        public async Task<int> getActiveUserAsync(string jwt)
+        {
+            return await _activeSessionTrackerGateway.GetActiveUserAsync(jwt);
+        }
 
 
     }
+
+
+
+
     public class UserNotAuthorizedException : Exception
     {
         public UserNotAuthorizedException()

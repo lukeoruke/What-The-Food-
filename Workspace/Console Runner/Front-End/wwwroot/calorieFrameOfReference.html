@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styles/index.css">
+    <script type="text/javascript" src="/scripts/verifyLoggedIn.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts/scanBarcode.js"></script>
+</head>
+<body>
+    <a href="index.html"><img src="images/apple.png" alt="What The Food?!" width="200" height="200"></a>
+    <a href="scanBarcode.html"><button class="button">Scan</button></a>
+    <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
+    <a href="customAMR.html"><button class="button">Custom AMR</button></a>
+    <a href="history.html"><button class="button">History</button></a>
+    <a href="calorieFrameOfReference.html"><button class="button">Calorie Frame of Reference</button></a>
+    <a href="settingPage.html"><button class="button">Settings</button></a>
+    <button class="button" onclick="sendLogout()">Log Out</button>
+
+    <div height ="10" width ="10"><canvas id="myChart"></canvas></div>
+    <input id="pushValue" type="text" class="form-control mb-3">
+    <button id="push" class="btn btn-dark btn-sm w-100">Enter Barcode</button>
+    <label for="labelItems">Choose a label item to compare:</label>
+    <select name="labelItems" id="labelItems">
+        <option value="Calories" selected>calories</option>
+        <option value="Servings">servings</option>
+        <option value="ServingSize">serving size</option>
+        <option value="TotalFat">total fat</option>
+        <option value="SaturatedFat">saturated fat</option>
+        <option value="TransFat">trans fat</option>
+        <option value="Cholesterol">cholesterol</option>
+        <option value="Sodium">sodium</option>
+        <option value="TotalCarbohydrate">total-carbohydrates</option>
+        <option value="DietaryFiber">dietary fiber</option>
+        <option value="TotalSugar">total sugar</option>
+        <option value="AddedSugar">added sugar</option>
+        <option value="Protein">protein</option>
+    </select>
+
+
+    <script src="scripts/graph.js"></script>
+
+
+</body>
+</html>

@@ -1,3 +1,6 @@
+
+localStorage.clear();
+sessionStorage.clear();
 async function sendLogin(e) {
     e.preventDefault();
 
@@ -12,18 +15,33 @@ async function sendLogin(e) {
     console.log(email);
     console.log(password);
 
-    // HTTP Get Request
-    await fetch('http://localhost:49201/api/AccountLogin')
-        .then(response => console.log(response.text()))
-        .then(data => console.log(data));
 
-    // HTTP Post Request
-    await fetch('http://localhost:49201/api/AccountLogin', {
+    var postResponse;
+    // HTTP Post Request\
+    await fetch('http://localhost:49202/api/AccountLogin', {
         method: 'POST',
         body: formData,
-    }).then(function (response) {
-        console.log(response.status); // returns 200;
-    });
+    }).then(response => response.json())
+        .then((response) => {
+            console.log(response)
+            if (response.token !== "") {
+                localStorage.setItem('JWT', response.token);
+                window.location.replace("https://localhost:49199/index.html");
+            } else {
+                alert('Invalid login');
+            }
+        })
 
-    alert('Successfully sent login request!');
+
+        //.then(async response => localStorage.setItem('JWT', JSON.stringify(await response.json()))).then(data => console.log(data));
+
+
+
+
+        
+
+
+
+
+    
 }

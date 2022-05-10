@@ -1,4 +1,4 @@
-﻿console.log("TOP OF FILE");
+﻿
 var checkBoxList = [];
 var getIDs = [];
 var searching = false;
@@ -6,17 +6,23 @@ var search;
 var page = "0";
 var currentPage = "default";
 
-//Initalization of the page, creates the various check boxes and populates the information
+
+var jwt = localStorage.getItem('JWT');
+
+//inital function call to set up the page
 async function addFlagCheckBoxes() {
 
     await getIngs();
     displayIngs();
+
 }
 
-//Displays the page content with information recieved from a json that was kept in local storage
+
+//displays whatever the current ingredient names saved in localstorage are
+
 function displayIngs() {
 
-    var jsonData = localStorage.getItem('allIngredients');
+    var jsonData = sessionStorage.getItem('allIngredients');
     
 
     const jsonConst = JSON.parse(jsonData);
@@ -25,7 +31,9 @@ function displayIngs() {
     getIDs = jsonConst.IngredientID;
 
 
+
     //gets the names of each ingredient
+
     for (data in getNames) {
 
 
@@ -53,11 +61,14 @@ function displayIngs() {
     }
 }
 
-//gets the ingredients from the DB
+
+
+//Gets ingredients from the DB 
+
 async function getIngs() {
 
-    await fetch('http://47.151.24.23:49202/api/GetNIngredients?' + page)
-        .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
+    await fetch('http://localhost:49202/api/GetNIngredients?' + new URLSearchParams({page: page}))
+        .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 }
 
@@ -66,6 +77,7 @@ async function getUserFlagButtonPressed(e) {
 
     getUserFlags(e);
 }
+
 
 //retrieves the flags associated with our current user
 async function getUserFlags(e) {
@@ -88,8 +100,10 @@ async function getUserFlags(e) {
 
 
     deleteCurrentData(e);
-    await fetch('http://47.151.24.23:49202/api/GetNAccountFlags?' + page)
-        .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
+    await fetch('http://localhost:49202/api/GetNAccountFlags?' + new URLSearchParams({
+        page: page, token: jwt
+    }))
+        .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 
 
@@ -98,7 +112,9 @@ async function getUserFlags(e) {
 
 }
 
-//Uses a user provided string as a search param to look through the users flags
+
+//searchs for a specific flag associated with an account
+
 async function searchAccountFlags(e) {
     e.preventDefault();
     try {
@@ -106,10 +122,14 @@ async function searchAccountFlags(e) {
         currentPage = "searchFlags";
         let search = document.getElementById('search').value;
 
-        await fetch('http://47.151.24.23:49202/api/GetAccountFlagBySearch?' + search + "?" + page)
-            .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
+
+        await fetch('http://localhost:49202/api/GetAccountFlagBySearch?' + new URLSearchParams({
+            page: page, token: jwt, search : search
+        }))
+
+            .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
             .then(data => console.log(data));
-        console.log("made it to the otherside of searchAccountFlags");
+
 
         displayIngs();
     } catch (ex) {
@@ -119,7 +139,10 @@ async function searchAccountFlags(e) {
 
 }
 
-//uses a user provided string to search through ingredients
+
+
+//searches for a specifc ingredient by name
+
 async function searchIngs(e) {
     e.preventDefault();
     
@@ -128,8 +151,10 @@ async function searchIngs(e) {
     currentPage = "searchIngredients";
     let search = document.getElementById('search').value;
 
-    await fetch('http://47.151.24.23:49202/api/FlagSearchIngredients?' + search + "?" + page)
-        .then(async response => localStorage.setItem('allIngredients', JSON.stringify(await response.json())))
+    await fetch('http://localhost:49202/api/FlagSearchIngredients?' + new URLSearchParams({
+        page: page,  search: search
+    }))
+        .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         .then(data => console.log(data));
 
     displayIngs();
@@ -183,7 +208,9 @@ async function updateFlagsButtonPressed(e) {
     }
 }
 
-//adds flag(s) to the db
+
+//adds a new flag to the db
+
 async function sendNewFlag(e) {
     e.preventDefault();
 
@@ -196,11 +223,14 @@ async function sendNewFlag(e) {
             counter += 1;
         }
     }
+
     alert("Flag(s) added to your account!");
 
 
 
-    await fetch('http://47.151.24.23:49202/api/AccountAddFlags', {
+    await fetch('http://localhost:49202/api/AccountAddFlags?' + new URLSearchParams({
+        token: jwt
+    }), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -210,8 +240,9 @@ async function sendNewFlag(e) {
     })
 
 }
+ 
+//remvoes a flag from the db
 
-//removes flag(s) from the db
 async function removeFlag(e) {
     e.preventDefault();
 
@@ -225,7 +256,9 @@ async function removeFlag(e) {
         }
     }
 
-    await fetch('http://47.151.24.23:49202/api/AccountRemoveFlag?' + page, {
+    await fetch('http://localhost:49202/api/AccountRemoveFlag?' + new URLSearchParams({
+        page: page, token: jwt
+    }), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -241,7 +274,9 @@ async function removeFlag(e) {
 }
 
 
-//Deletes the current Data being displayed on the page
+
+//removes the currently displayed data from the page
+
 function deleteCurrentData() {
 
     var parent = document.getElementById('container');

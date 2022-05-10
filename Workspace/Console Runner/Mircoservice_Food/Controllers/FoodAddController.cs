@@ -15,7 +15,7 @@ namespace Food.Controllers
             FoodDBOperations foodDB = FoodServiceFactory.GetFoodService(FoodServiceFactory.DataStoreType.EntityFramework);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
-            logger.UserID = "placeholder";
+            logger.UserEmail = null;
             logger.DefaultTimeOut = 5000;
 
             IFormCollection formData = Request.Form;

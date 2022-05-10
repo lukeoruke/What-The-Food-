@@ -1,4 +1,6 @@
-﻿using Console_Runner.AccountService;
+﻿
+using Console_Runner.Account.Account_Implementation_InMemory;
+using Console_Runner.AccountService;
 using Console_Runner.FoodService;
 using System;
 using System.Collections.Generic;
@@ -12,14 +14,17 @@ namespace Test.UM
         private readonly IAccountGateway _accountAccess = new MemAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new MemAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new MemFlagGateway();
+        private readonly IAMRGateway _aMRGateway = new MemAMRGateway();
+        private readonly IActiveSessionTrackerGateway _activeSessionTrackerGateway = new MemActiveSessionTracker();
         private readonly IFoodGateway _foodGateway = new MemFoodGateway();
+        private readonly IFoodUpdateGateway _foodUpdateGateway = new MemFoodUpdateGateway();
         private Random _random = new Random();
         [Fact]
         public async void AddFoodFlagSuccess()
         {
 
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
@@ -37,8 +42,8 @@ namespace Test.UM
         [Fact]
         public async void RemoveFoodFlagSuccess()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
@@ -54,8 +59,8 @@ namespace Test.UM
         [Fact]
         public async void accountHasFlagSuccess()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
@@ -69,8 +74,8 @@ namespace Test.UM
         [Fact]
         public async void getAllAccountFlagsSuccess()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +
@@ -104,8 +109,8 @@ namespace Test.UM
         [Fact]
         public async void GetNFlagsSuccess()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
                "containing dissolved carbon dioxide gas, either artificially injected under " +

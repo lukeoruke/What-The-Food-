@@ -16,18 +16,29 @@ namespace Mircoservice_Food.Controllers
         private readonly IAuthorizationGateway _permissionService = new EFAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
         private readonly IAMRGateway _amRGateway = new EFAMRGateway();
+        private readonly IActiveSessionTrackerGateway _EFActiveSessionTrackerGateway = new EFActiveSessionTrackerGateway();
 
         [EnableCors]
 
         [HttpPost]
-        public async void Post()
+        public async void Post(string token)
         {
-            AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway);
+            AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
-            logger.UserID = "placeholder";
+            int userId = 0;
+            userId = await _accountDBOperations.GetActiveUserAsync(token);
+
+            if ((await _accountDBOperations.GetUserAccountAsync(userId)).CollectData)
+            {
+                logger.UserEmail = (await _accountDBOperations.GetUserAccountAsync(userId)).Email;
+            }
+            else
+            {
+                logger.UserEmail = null;
+            }
             logger.DefaultTimeOut = 5000;
-            int userId = 0;// NEED TO GET USER ID
+            
             
             
             //Request formData from the JS file

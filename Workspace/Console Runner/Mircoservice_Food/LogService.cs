@@ -3,20 +3,20 @@
     public class LogService
     {
         private ILogGateway _logAccess;
-        private IUserIDGateway _userIDAccess;
-        public string? UserID { get; set; }
+        private IUserIDGateway _userEmailAccess;
+        public string? UserEmail { get; set; }
         public int? DefaultTimeOut { get; set; }
         //logging objects
-        public LogService(ILogGateway logAccessor, IUserIDGateway uidAccessor)
+        public LogService(ILogGateway logAccessor, IUserIDGateway userEmailAccessor)
         {
             _logAccess = logAccessor;
-            _userIDAccess = uidAccessor;
+            _userEmailAccess = userEmailAccessor;
         }
-        public LogService(ILogGateway logAccessor, IUserIDGateway uidAccessor, string userID)
+        public LogService(ILogGateway logAccessor, IUserIDGateway userEmailAccessor, string userEmail)
         {
             _logAccess = logAccessor;
-            _userIDAccess = uidAccessor;
-            UserID = userID;
+            _userEmailAccess = userEmailAccessor;
+            UserEmail = userEmail;
         }
 
         /// <summary>
@@ -71,7 +71,7 @@
         /// <returns>A Log object representing the log entry to be written to the database.</returns>
         public async Task<Log> LogWithSetUserAsync(LogLevel level, Category category, DateTime timestamp, string message, int timeout = -1)
         {
-            if(UserID == null)
+            if(UserEmail == null)
             {
                 throw new InvalidOperationException("User ID was not set in LogService before calling LogWithSetUserAsync");
             }
@@ -88,7 +88,7 @@
                     cts.CancelAfter((int)DefaultTimeOut);
                 }
                 token.ThrowIfCancellationRequested();
-                UserIdentifier uid = await GetOrCreateUserID(UserID, token);
+                UserIdentifier uid = await GetOrCreateUserID(UserEmail, token);
                 Log record = new Log(uid, level, category, timestamp.ToUniversalTime(), message);
                 token.ThrowIfCancellationRequested();
                 await _logAccess.WriteLogAsync(record, token);
@@ -138,7 +138,7 @@
 
         public async Task<bool> LogListWithSetUserAsync(IEnumerable<LogData> logsdata, int timeout = -1)
         {
-            if (UserID == null)
+            if (UserEmail == null)
             {
                 throw new InvalidOperationException("User ID was not set in LogService before calling LogListWithSetUserAsync");
             }
@@ -151,7 +151,7 @@
                     cts.CancelAfter(timeout);
                 }
                 token.ThrowIfCancellationRequested();
-                UserIdentifier uid = await GetOrCreateUserID(UserID, token);
+                UserIdentifier uid = await GetOrCreateUserID(UserEmail, token);
                 List<Log> toLog = new();
                 foreach (LogData data in logsdata)
                 {
@@ -173,10 +173,10 @@
 
         private async Task<UserIdentifier> GetOrCreateUserID(string uid, CancellationToken token = default)
         {
-            UserIdentifier? identifier = await _userIDAccess.GetUserIdentifierAsync(uid, token);
+            UserIdentifier? identifier = await _userEmailAccess.GetUserIdentifierAsync(uid, token);
             if (identifier == null)
             {
-                identifier = await _userIDAccess.AddUserIdAsync(uid, token);
+                identifier = await _userEmailAccess.AddUserIdAsync(uid, token);
             }
             return identifier;
         }

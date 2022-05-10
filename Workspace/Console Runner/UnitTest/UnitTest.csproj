@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -8,10 +8,47 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="unit test\jasmine\lib\jasmine-4.1.0\jasmine.css" />
+    <None Remove="unit test\jasmine\lib\jasmine-4.1.0\jasmine_favicon.png" />
+    <None Remove="unit test\jasmine\MIT.LICENSE" />
+    <None Remove="unit test\jasmine\News.js" />
+    <None Remove="unit test\jasmine\SpecRunner.html" />
+    <None Remove="unit test\jasmine\spec\newsSpec.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="unit test\jasmine\lib\jasmine-4.1.0\jasmine.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="unit test\jasmine\lib\jasmine-4.1.0\jasmine_favicon.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="unit test\jasmine\MIT.LICENSE">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="unit test\jasmine\News.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="unit test\jasmine\SpecRunner.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="unit test\jasmine\spec\newsSpec.js">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Chutzpah" Version="4.4.12" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="Node.js" Version="5.3.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -22,7 +59,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Console Runner\Console Runner.csproj" />
+    <ProjectReference Include="..\Mircoservice_Food\Mircoservice_Food.csproj" />
   </ItemGroup>
 
 </Project>

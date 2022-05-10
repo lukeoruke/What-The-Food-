@@ -18,7 +18,7 @@ namespace Console_Runner.FoodService
                 if (!_ingredientIdentifiersList.Contains(labelIngredient) && labelIngredient is not null)
                 {
                     _ingredientIdentifiersList.Add(labelIngredient);
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                 $"Created label-ingredient connection between barcode {labelIngredient.Barcode} and ingredient {labelIngredient.IngredientID}");
@@ -27,7 +27,7 @@ namespace Console_Runner.FoodService
                 }
                 else
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                                 $"Label-ingredient connection between barcode {labelIngredient.Barcode} and ingredient {labelIngredient.IngredientID} already exists");
@@ -49,7 +49,7 @@ namespace Console_Runner.FoodService
                 if (!_nutrientIdentifiersList.Contains(labelNutrient) && labelNutrient is not null)
                 {
                     _nutrientIdentifiersList.Add(labelNutrient);
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                 $"Created label-nutrient connection between barcode {labelNutrient.Barcode} and nutrient {labelNutrient.NutrientID}");
@@ -58,7 +58,7 @@ namespace Console_Runner.FoodService
                 }
                 else
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                                 $"Label-nutrient connection between barcode {labelNutrient.Barcode} and nutrient {labelNutrient.NutrientID} already exists");
@@ -79,7 +79,7 @@ namespace Console_Runner.FoodService
             try
             {
                 _foodsList.Add(foodItem);
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                             $"Created food item \"{foodItem.ProductName}\"");
@@ -104,7 +104,7 @@ namespace Console_Runner.FoodService
                         if(label.IngredientID == ingredient.IngredientID)
                         {
                             listOfIngredientsInProduct.Add(ingredient);
-                            if (logService?.UserID != null)
+                            if (logService?.UserEmail != null)
                             {
                                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                         $"Retrieved ingredient with ID {ingredient}");
@@ -113,7 +113,7 @@ namespace Console_Runner.FoodService
                     }
                 }
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                         $"Retrieved list of ingredients for nutrition label {barcode}");
@@ -130,7 +130,7 @@ namespace Console_Runner.FoodService
                     Random _random = new Random();
                     ingredient.IngredientID = _random.Next(1, 10000000);
                     _ingredientsList.Add(ingredient);
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                 $"Created ingredient {ingredient.IngredientName}");
@@ -151,7 +151,7 @@ namespace Console_Runner.FoodService
             try
             {
                 _ingredientsList.Remove(ingredient);
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                             $"Removed ingredient {ingredient.IngredientName}");
@@ -171,7 +171,7 @@ namespace Console_Runner.FoodService
             {
                 if(fooditem.Barcode == barcode)
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                 $"Retrieved food item {fooditem?.ProductName ?? "undefined"}");
@@ -187,7 +187,7 @@ namespace Console_Runner.FoodService
             {
                 if(label.Barcode == barcode)
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                 $"Retrieved nutrition label {barcode}");
@@ -203,7 +203,7 @@ namespace Console_Runner.FoodService
             try
             {
                 _nutritionLabelsList.Add(nutritionLabel);
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                             $"Created nutrition label for food item {nutritionLabel.Barcode}");
@@ -225,7 +225,7 @@ namespace Console_Runner.FoodService
                     Random random = new Random();
                     nutrient.NutrientID = random.Next(1,10000000);
                     _nutrientsList.Add(nutrient);
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                                 $"Created nutrient {nutrient.Name}");
@@ -256,7 +256,7 @@ namespace Console_Runner.FoodService
                     }
                 }
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                         $"Retrieved list of nutrients by ID");
@@ -274,7 +274,7 @@ namespace Console_Runner.FoodService
                     list.Add(_nutrientIdentifiersList[i]);
                 }
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Debug, Category.DataStore, DateTime.Now,
                         $"Retrieved list of label-nutrient connections for label {barcode}");
@@ -325,6 +325,21 @@ namespace Console_Runner.FoodService
                 take--;
             }
             return ingsList;
+        }
+
+        public async Task<List<FoodItem>> RetrieveNFoodItemsAsync(int skip, int take, LogService? logService = null)
+        {
+            List<FoodItem> foodList = new();
+            for (int i = skip; i < _foodsList.Count; i++)
+            {
+                if (take == 0)
+                {
+                    return foodList;
+                }
+                foodList.Add(_foodsList[i]);
+                take--;
+            }
+            return foodList;
         }
 
         public Ingredient GetIngredient(int id, LogService? logService = null)

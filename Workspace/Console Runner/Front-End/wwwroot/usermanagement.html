@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="styles/index.css">
+    <script type="text/javascript" src="/scripts/verifyAdminLoggedIn.js"></script>
+    <script type="text/javascript" src="/scripts/usermanagement.js"></script>
+</head>
+<body>
+    <!-- Create overall strucutre of webpage including category buttons  -->
+    <a href="index.html"><img src="images/apple.png" alt="What The Food?!" width="200" height="200"></a>
+    <a href="scanBarcode.html"><button class="button">Scan</button></a>
+    <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
+    <a href="customAMR.html"><button class="button">Custom AMR</button></a>
+    <a href="history.html"><button class="button">History</button></a>
+    <a href="calorieFrameOfReference.html"><button class="button">Calorie Frame of Reference</button></a>
+    <a href="settingPage.html"><button class="button">Settings</button></a>
+    <div id="main">
+        <!-- Create structure in which news will be displayed  -->
+        <h1>User Management</h1>
+        <div>
+            <button class="button" onclick="activateUmAction('ADD')">Add User</button>
+            <button class="button" onclick="activateUmAction('UPDATE')">Update User</button>
+            <button class="button" onclick="activateUmAction('DELETE')">Delete User</button>
+            <button class="button" onclick="activateUmAction('ENABLE')">Enable User</button>
+            <button class="button" onclick="activateUmAction('DISABLE')">Disable User</button>
+        </div>
+        <div id="container">
+
+        </div>
+        <div id="message">
+
+        </div>
+    </div>
+</body>
+</html>

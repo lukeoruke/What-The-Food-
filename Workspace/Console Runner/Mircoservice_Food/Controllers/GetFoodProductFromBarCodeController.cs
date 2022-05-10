@@ -18,6 +18,7 @@ namespace Food.Controllers
         private ScanHelper FDC = new ScanHelper();
         private const string UM_CATEGORY = "Data Store";
         private readonly IFoodGateway _foodServiceGateway = new EFFoodGateway();
+        private readonly IFoodUpdateGateway _foodUpdateGateway = new EFFoodUpdateGateway();
         private  FoodDBOperations _foodDB;
         private IFormCollection formData;
         private readonly IAccountGateway _accountAccess = new EFAccountGateway();
@@ -27,6 +28,7 @@ namespace Food.Controllers
         private string barcode;
         private List<Ingredient> flaggedIngredients = new();
         private readonly IAMRGateway _amrGateway = new EFAMRGateway();
+        private readonly IActiveSessionTrackerGateway _EFActiveSessionTrackerGateway = new EFActiveSessionTrackerGateway();
 
         /// <summary>
         /// HttpGet request for recieving a food product from a barcode
@@ -46,14 +48,11 @@ namespace Food.Controllers
             List<Ingredient> ingredients = new();
             FoodItem foodItem;
             NutritionLabel label;
-
-            _foodDB = new FoodDBOperations(_foodServiceGateway); //dependency injection
-
-            _foodDB = new FoodDBOperations(_foodServiceGateway);
-            _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amrGateway);
+            _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amrGateway, _EFActiveSessionTrackerGateway);
+            _foodDB = new FoodDBOperations(_foodServiceGateway, _foodUpdateGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
-            logger.UserID = "placeholder";
+            logger.UserEmail = "placeholder";
             logger.DefaultTimeOut = 5000;
 
             try

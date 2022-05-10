@@ -1,4 +1,4 @@
-﻿console.log("TOP OF FILE");
+﻿
 
 async function sendAmrData(e) {
     e.preventDefault();
@@ -33,7 +33,9 @@ async function sendAmrData(e) {
     console.log(activity);
 
     /**
-    await fetch('http://localhost:49202/api/AddAMR', {
+    await fetch('http://47.151.24.23:49202/api/AddAMR'+ new URLSearchParams({
+        page: page, token: jwt
+    }), {
         method: 'POST',
         body: formData,
     }).then(function (response) {

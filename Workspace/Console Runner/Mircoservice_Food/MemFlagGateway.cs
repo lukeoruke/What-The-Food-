@@ -16,7 +16,7 @@ namespace Console_Runner.AccountService
             {
                 if(flag.UserID == userID && flag.IngredientID == ingredientID)
                 {
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                             $"Retrieved food flag for user {userID} and ingredient {ingredientID} - exists? {true}");
@@ -32,7 +32,7 @@ namespace Console_Runner.AccountService
             if (flag != null && !_flagsListDB.Contains(flag))
             {
                 _flagsListDB.Add(flag);
-                if (logService?.UserID != null)
+                if (logService?.UserEmail != null)
                 {
                     _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                         $"Created food flag for user {flag.UserID} and ingredient {flag.IngredientID}");
@@ -52,7 +52,7 @@ namespace Console_Runner.AccountService
                     accountFlags.Add(flag);
                 }
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                     $"Retrieved all food flags for user {userID}");
@@ -70,7 +70,7 @@ namespace Console_Runner.AccountService
                     accountFlags.Add(flag);
                 }
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                     $"Retrieved all food flags for user {userID}");
@@ -100,7 +100,7 @@ namespace Console_Runner.AccountService
                 take--;
 
             }
-            if (logService?.UserID != null)
+            if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                     $"Retrieved {take} food flags after {skip} for user {userID}");
@@ -115,7 +115,7 @@ namespace Console_Runner.AccountService
                 if (flag.UserID == userID && flag.IngredientID == ingredientID)
                 {
                    _flagsListDB.Remove(flag);
-                    if (logService?.UserID != null)
+                    if (logService?.UserEmail != null)
                     {
                         _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
                             $"Removed food flag for user {userID} and ingredient {ingredientID}");

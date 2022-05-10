@@ -20,22 +20,31 @@ namespace Food.Controllers
         private readonly IFlagGateway _flagGateway = new EFFlagGateway();
         private readonly IFoodGateway _foodGateway = new EFFoodGateway();
         private readonly IAMRGateway _amRGateway = new EFAMRGateway();
+        private readonly IActiveSessionTrackerGateway _EFActiveSessionTrackerGateway = new EFActiveSessionTrackerGateway();
+        private readonly IFoodUpdateGateway _foodUpdateGateway = new EFFoodUpdateGateway();
         [HttpGet]
-        public async Task<ActionResult<string>> GET()
+        public async Task<ActionResult<string>> GET(string page, string token)
         {
-            int userID = 0;//TODO GET USER ID
-            AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway);
-            FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway);
+            
+            AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
+            FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
-            logger.UserID = "placeholder";
             logger.DefaultTimeOut = 5000;
-            string page = Request.QueryString.Value;
-            page = page.Substring(1);
+            int userId = -1;
+
+            if ((await _accountDBOperations.GetUserAccountAsync(userId)).CollectData)
+            {
+                logger.UserEmail = (await _accountDBOperations.GetUserAccountAsync(userId)).Email;
+            }
+            else
+            {
+                logger.UserEmail = null;
+            }
             int numberOfItemsDisplayedAtOnce = 2;
             try
             {
-                var allFlags = await _accountDBOperations.GetNAccountFlagsAsync(userID, numberOfItemsDisplayedAtOnce * int.Parse(page)
+                var allFlags = await _accountDBOperations.GetNAccountFlagsAsync(userId, numberOfItemsDisplayedAtOnce * int.Parse(page)
                     , numberOfItemsDisplayedAtOnce, logger);
                 List<Ingredient> ingredients = new List<Ingredient>();
                 for(int i = 0; i < allFlags.Count; i++)

@@ -48,7 +48,7 @@
                 }
                 token.ThrowIfCancellationRequested();
                 UserIdentifier uid = await GetOrCreateUserID(actorID, token);
-                Log record = new Log(uid, level, category, timestamp.ToUniversalTime(), message);
+                Log record = new Log(uid, level, category, Path.GetFileName(callerFile), callerMethod, timestamp.ToUniversalTime(), message);
                 token.ThrowIfCancellationRequested();
                 await _logAccess.WriteLogAsync(record, token);
                 return record;
@@ -72,7 +72,10 @@
         /// <param name="message">A string containing a message to be included with the log entry.</param>
         /// <param name="timeout">The time in milliseconds that are allowed to elapse before the log attempt is considered failed.</param>
         /// <returns>A Log object representing the log entry to be written to the database.</returns>
-        public async Task<Log> LogWithSetUserAsync(LogLevel level, Category category, DateTime timestamp, string message, int timeout = -1)
+        public async Task<Log> LogWithSetUserAsync(LogLevel level, Category category, DateTime timestamp, string message,
+            [System.Runtime.CompilerServices.CallerFilePath] string callerFile = "unknown",
+            [System.Runtime.CompilerServices.CallerMemberName] string callerMethod = "unknown",
+            int timeout = -1)
         {
             if(UserEmail == null)
             {
@@ -92,7 +95,7 @@
                 }
                 token.ThrowIfCancellationRequested();
                 UserIdentifier uid = await GetOrCreateUserID(UserEmail, token);
-                Log record = new Log(uid, level, category, timestamp.ToUniversalTime(), message);
+                Log record = new Log(uid, level, category, Path.GetFileName(callerFile), callerMethod, timestamp.ToUniversalTime(), message);
                 token.ThrowIfCancellationRequested();
                 await _logAccess.WriteLogAsync(record, token);
                 return record;
@@ -107,7 +110,10 @@
             }
         }
 
-        public async Task<bool> LogListAsync(string actorID, IEnumerable<LogData> logsdata, int timeout = -1)
+        public async Task<bool> LogListAsync(string actorID, IEnumerable<LogData> logsdata,
+            [System.Runtime.CompilerServices.CallerFilePath] string callerFile = "unknown",
+            [System.Runtime.CompilerServices.CallerMemberName] string callerMethod = "unknown",
+            int timeout = -1)
         {
 
             CancellationTokenSource cts = new CancellationTokenSource();
@@ -123,7 +129,7 @@
                 List<Log> toLog = new();
                 foreach (LogData data in logsdata)
                 {
-                    toLog.Add(new Log(uid, data.LogLevel, data.Category, data.Timestamp.ToUniversalTime(), data.Message));
+                    toLog.Add(new Log(uid, data.LogLevel, data.Category, Path.GetFileName(callerFile), callerMethod, data.Timestamp.ToUniversalTime(), data.Message));
                 }
                 token.ThrowIfCancellationRequested();
                 await _logAccess.WriteLogsAsync(toLog, token);
@@ -139,7 +145,10 @@
             }
         }
 
-        public async Task<bool> LogListWithSetUserAsync(IEnumerable<LogData> logsdata, int timeout = -1)
+        public async Task<bool> LogListWithSetUserAsync(IEnumerable<LogData> logsdata,
+            [System.Runtime.CompilerServices.CallerFilePath] string callerFile = "unknown",
+            [System.Runtime.CompilerServices.CallerMemberName] string callerMethod = "unknown",
+            int timeout = -1)
         {
             if (UserEmail == null)
             {
@@ -158,7 +167,7 @@
                 List<Log> toLog = new();
                 foreach (LogData data in logsdata)
                 {
-                    toLog.Add(new Log(uid, data.LogLevel, data.Category, data.Timestamp.ToUniversalTime(), data.Message));
+                    toLog.Add(new Log(uid, data.LogLevel, data.Category, Path.GetFileName(callerFile), callerMethod, data.Timestamp.ToUniversalTime(), data.Message));
                 }
                 token.ThrowIfCancellationRequested();
                 await _logAccess.WriteLogsAsync(toLog, token);

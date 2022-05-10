@@ -188,7 +188,11 @@
             return _logAccess.GetLogsWhere(log => log.Timestamp.ToUniversalTime() > dateToQuery.ToUniversalTime()).Count;
         }
         
-        
+        /*public Dictionary<DateTime, int> GetLoginTrends(DateTime since)
+        {
+            List<Log> loginLogs = _logAccess.GetLogsWhere((log) => (log.CallSiteFile == "AccountLoginController.cs") && (log.LogLevel == LogLevel.Info)),
+                                                           (log));
+        }*/
 
 
         private async Task<UserIdentifier> GetOrCreateUserID(string uid, CancellationToken token = default)

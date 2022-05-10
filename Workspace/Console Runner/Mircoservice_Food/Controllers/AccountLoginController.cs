@@ -33,7 +33,7 @@ namespace Microservice.AccountLogin.Controllers
 
 
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
-
+            logger.DefaultTimeOut = 5000;
             IFormCollection formData = Request.Form;
   
             try
@@ -53,6 +53,9 @@ namespace Microservice.AccountLogin.Controllers
             }
             catch (FileNotFoundException e)
             {
+
+                _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Error, Category.Business, DateTime.Now,
+                        $"{account.UserID} could not login successfully");
                 Console.WriteLine(e.ToString());
                 return null;
             }

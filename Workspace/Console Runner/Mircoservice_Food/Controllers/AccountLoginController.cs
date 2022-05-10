@@ -44,18 +44,25 @@ namespace Microservice.AccountLogin.Controllers
                     string jwtToken = _JWTAuthenticationService.GenerateToken(account.Email);
                     string json = "{" + "\"token\": " + $"\"{jwtToken}\"" + "}";
                     await _accountDBOperations.StartSessionAsync(account.UserID, jwtToken);
-                    logger.UserEmail = account.Email;
-                    _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Info, Category.Business, DateTime.Now,
-                                $"{account.UserID} Logged in successfully");
+                    if (account.CollectData)
+                    {
+                        logger.UserEmail = account.Email;
+                        _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Info, Category.Business, DateTime.Now,
+                                    $"User {account.UserID} Logged in successfully");
+                    }
+                    else
+                    {
+                        _ = logger.LogAsync("Unknown", Console_Runner.Logging.LogLevel.Info, Category.Business, DateTime.Now,
+                                            "Anonymous user logged in successfully");
+                    }
                     return json;
                 }
-                return "{" + "\"token\": \"\"}"; ;
+                return "{" + "\"token\": \"\"}";
             }
             catch (FileNotFoundException e)
             {
-
-                _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Error, Category.Business, DateTime.Now,
-                        $"{account.UserID} could not login successfully");
+                _ = logger.LogAsync("Unknown", Console_Runner.Logging.LogLevel.Error, Category.Business, DateTime.Now,
+                        $"A user could not login successfully");
                 Console.WriteLine(e.ToString());
                 return null;
             }

@@ -33,6 +33,8 @@ namespace UnitTest
             Assert.Equal(firstLog.Item3, firstSuccess.Category);
             Assert.Equal(firstLog.Item4, firstSuccess.Timestamp);
             Assert.Equal(firstLog.Item5, firstSuccess.Message);
+            Assert.Equal("LoggingShould.cs", firstSuccess.CallSiteFile);
+            Assert.Equal("WriteLogsProperly", firstSuccess.CallSiteMethod);
 
             Assert.Equal(await _userIDGateway.GetUserHashAsync(secondLog.Item1), await _userIDGateway.GetUserHashAsync(secondSuccess.UserIdentifier.UserId));
             Assert.Equal(secondLog.Item2, secondSuccess.LogLevel);
@@ -52,9 +54,9 @@ namespace UnitTest
         {
             LogService logger = new LogService(_logGateway, _userIDGateway);
             var firstLog = ("example@email.com", LogLevel.Info, Category.Server, DateTime.Now.ToUniversalTime(), "Example log message.");
-            Func<Task> attempt = async () => await logger.LogAsync(firstLog.Item1, firstLog.Item2, firstLog.Item3, firstLog.Item4, firstLog.Item5, 0);
+            Func<Task> attempt = async () => await logger.LogAsync(firstLog.Item1, firstLog.Item2, firstLog.Item3, firstLog.Item4, firstLog.Item5, timeout:0);
             await Assert.ThrowsAsync<OperationCanceledException>(attempt);
-            Func<Task> secondAttempt = async () => await logger.LogAsync(firstLog.Item1, firstLog.Item2, firstLog.Item3, firstLog.Item4, firstLog.Item5, 10);
+            Func<Task> secondAttempt = async () => await logger.LogAsync(firstLog.Item1, firstLog.Item2, firstLog.Item3, firstLog.Item4, firstLog.Item5, timeout:10);
             await Assert.ThrowsAsync<OperationCanceledException>(attempt);
         }
         

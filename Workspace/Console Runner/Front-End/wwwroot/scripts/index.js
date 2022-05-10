@@ -16,6 +16,14 @@ fetch('http://localhost:49202/api/ValidateAdminLoggedIn/ValidateToken?' + new UR
             umButton.innerHTML = "User Management";
             umButtonContainer.appendChild(umButton);
             document.getElementById("button-bar").appendChild(umButtonContainer);
+
+            let metricsButtonContainer = document.createElement("a");
+            metricsButtonContainer.href = "usageAnalysisDashboard.html";
+            let metricsButton = document.createElement("button");
+            metricsButton.className = "button";
+            metricsButton.innerHTML = "Usage Analysis Dashboard";
+            metricsButtonContainer.appendChild(metricsButton);
+            document.getElementById("button-bar").appendChild(metricsButtonContainer);
         }
     })
 

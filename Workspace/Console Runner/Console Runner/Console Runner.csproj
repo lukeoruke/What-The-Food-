@@ -32,8 +32,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Mircoservice_Food\Mircoservice_Food.csproj" />
-  </ItemGroup>
-
 </Project>

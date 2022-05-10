@@ -26,17 +26,21 @@
         public LogLevel LogLevel { get; set; }
         public Category Category { get; set; }
         public DateTime Timestamp { get; set; }
+        public string CallSiteFile { get; set; }
+        public string CallSiteMethod { get; set; }
         public string Message { get; set; }
 
         public Log()
         {
 
         }
-        public Log(UserIdentifier userId, LogLevel logLevel, Category category, DateTime timestamp, string message)
+        public Log(UserIdentifier userId, LogLevel logLevel, Category category, string callSiteFile, string callSiteMethod, DateTime timestamp, string message)
         {
             UserIdentifier = userId;
             LogLevel = logLevel;
             Category = category;
+            CallSiteFile = callSiteFile;
+            CallSiteMethod = callSiteMethod;
             Timestamp = timestamp.ToUniversalTime();
             Message = message;
         }

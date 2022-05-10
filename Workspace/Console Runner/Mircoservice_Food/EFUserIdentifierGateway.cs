@@ -41,12 +41,19 @@ namespace Console_Runner.Logging
 
         public async Task<bool> RemoveUserIdAsync(string idToRemove, CancellationToken cancellationToken = default)
         {
-            using ContextLoggingDB efContext = new ContextLoggingDB();
-            UserIdentifier uid = new UserIdentifier(idToRemove);
-            cancellationToken.ThrowIfCancellationRequested();
-            efContext.UIDs.Remove(uid);
-            await efContext.SaveChangesAsync(cancellationToken);
-            return true;
+            try
+            {
+                using ContextLoggingDB efContext = new ContextLoggingDB();
+                UserIdentifier uid = new UserIdentifier(idToRemove);
+                cancellationToken.ThrowIfCancellationRequested();
+                efContext.UIDs.Remove(uid);
+                await efContext.SaveChangesAsync(cancellationToken);
+                return true;
+            }catch(Exception ex)
+            {
+                return false;
+            }
+
         }
     }
 }

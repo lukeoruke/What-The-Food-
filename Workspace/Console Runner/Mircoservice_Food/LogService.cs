@@ -351,6 +351,38 @@ namespace Console_Runner.Logging
             return toReturn;
         }
 
+        public Dictionary<string, int> GetMostFlaggedIngredients()
+        {
+            List<Log> viewLogs = _logAccess.GetLogsWhere((log) => (log.CallSiteFile == "AccountAddFlagsController.cs") && (log.Category == Category.Business)
+                                                                  && (log.LogLevel == LogLevel.Info) && (log.CallSiteMethod == "Post"));
+            Dictionary<string, int> result = new Dictionary<string, int>();
+            foreach (Log log in viewLogs)
+            {
+                string[] words = log.Message.Split(" ");
+                int ingredientIndex = Array.IndexOf(words, "ingredient");
+                if (ingredientIndex == -1)
+                {
+                    continue;
+                }
+                string ingId = words[ingredientIndex + 1];
+                int currentCount = 0;
+                result.TryGetValue(ingId, out currentCount);
+                result[ingId] = currentCount + 1;
+            }
+            var myList = result.ToList();
+            myList.Sort((entry1, entry2) => entry2.Value.CompareTo(entry1.Value));
+            Dictionary<string, int> toReturn = new Dictionary<string, int>();
+            if (myList.Count > 5)
+            {
+                toReturn = new Dictionary<string, int>(myList.GetRange(0, 5));
+            }
+            else
+            {
+                toReturn = new Dictionary<string, int>(myList);
+            }
+            return toReturn;
+        }
+
 
         private async Task<UserIdentifier> GetOrCreateUserID(string uid, CancellationToken token = default)
         {

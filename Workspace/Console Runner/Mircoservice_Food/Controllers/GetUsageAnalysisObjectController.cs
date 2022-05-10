@@ -20,13 +20,15 @@ namespace Mircoservice_Food.Controllers
                 var mostViewedPages = logger.GetMostViewedPages();
                 var highestAverageDurationPages = logger.GetHighestAverageDurationPages();
                 var mostScannedBarcodes = logger.GetMostScannedBarcodes();
+                var mostFlaggedIngredients = logger.GetMostFlaggedIngredients();
                 return JsonSerializer.Serialize(new
                 {
                     logins = loginTrend,
                     signups = signupTrend,
                     mostViewedPages = mostViewedPages,
                     highestAverageDurationPages = highestAverageDurationPages,
-                    mostScannedBarcodes = mostScannedBarcodes
+                    mostScannedBarcodes = mostScannedBarcodes,
+                    mostFlaggedIngredients = mostFlaggedIngredients
                 });
             }
             catch (Exception ex)

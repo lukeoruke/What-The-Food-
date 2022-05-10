@@ -117,5 +117,21 @@ namespace Console_Runner.AccountService
                 throw new Exception("Remove flag failed: " + ex.ToString());
             }
         }
+        public async Task<bool> RemoveFoodFlagAsync(FoodFlag foodFlag, LogService? logService = null)
+        {
+            try
+            {
+
+                _efContext.FoodFlags.Remove(foodFlag);
+                await _efContext.SaveChangesAsync();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Remove flag failed: " + ex.ToString());
+            }
+        }
     }
 }

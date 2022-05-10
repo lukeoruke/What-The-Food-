@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Console_Runner.AccountService;
 using Console_Runner.AccountService.Authentication;
+using Console_Runner.Logging;
 
 namespace Microservice.AccountLogin.Controllers
 {
@@ -31,8 +32,10 @@ namespace Microservice.AccountLogin.Controllers
                 (_accountAccess, _permissionService, _flagGateway, _aMRGateway, _EFActiveSessionTrackerGateway);
 
 
-            IFormCollection formData = Request.Form;
+            LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
 
+            IFormCollection formData = Request.Form;
+  
             try
             {
                 account = await _accountDBOperations.SignInAsync(formData["email"].ToString(), formData["password"].ToString());
@@ -41,6 +44,9 @@ namespace Microservice.AccountLogin.Controllers
                     string jwtToken = _JWTAuthenticationService.GenerateToken(account.Email);
                     string json = "{" + "\"token\": " + $"\"{jwtToken}\"" + "}";
                     await _accountDBOperations.StartSessionAsync(account.UserID, jwtToken);
+
+                    _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Info, Category.Business, DateTime.Now,
+                                $"{account.UserID} Logged in successfully");
                     return json;
                 }
                 return "{" + "\"token\": \"\"}"; ;

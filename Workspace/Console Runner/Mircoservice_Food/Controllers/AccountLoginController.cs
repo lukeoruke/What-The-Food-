@@ -33,9 +33,9 @@ namespace Microservice.AccountLogin.Controllers
 
 
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
-
+            logger.DefaultTimeOut = 5000;
             IFormCollection formData = Request.Form;
-  
+            
             try
             {
                 account = await _accountDBOperations.SignInAsync(formData["email"].ToString(), formData["password"].ToString());
@@ -44,7 +44,7 @@ namespace Microservice.AccountLogin.Controllers
                     string jwtToken = _JWTAuthenticationService.GenerateToken(account.Email);
                     string json = "{" + "\"token\": " + $"\"{jwtToken}\"" + "}";
                     await _accountDBOperations.StartSessionAsync(account.UserID, jwtToken);
-
+                    logger.UserEmail = account.Email;
                     _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Info, Category.Business, DateTime.Now,
                                 $"{account.UserID} Logged in successfully");
                     return json;
@@ -53,6 +53,9 @@ namespace Microservice.AccountLogin.Controllers
             }
             catch (FileNotFoundException e)
             {
+
+                _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Error, Category.Business, DateTime.Now,
+                        $"{account.UserID} could not login successfully");
                 Console.WriteLine(e.ToString());
                 return null;
             }

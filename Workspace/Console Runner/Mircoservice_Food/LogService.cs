@@ -183,6 +183,12 @@
             }
         }
 
+        /*public async Task<List<Log>> GetLogsWhereAsync(params Func<Log, bool>[] predicates)
+        {
+
+        }*/
+
+
         private async Task<UserIdentifier> GetOrCreateUserID(string uid, CancellationToken token = default)
         {
             UserIdentifier? identifier = await _userEmailAccess.GetUserIdentifierAsync(uid, token);

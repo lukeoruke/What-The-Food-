@@ -21,7 +21,7 @@ function placeLocalStorage(newViewName, time) {
     if (timeViewed === null) {
         timeViewed = 0;
     }
-    fetch('http://localhost:49202/api/ValidateAdminLoggedIn?' + new URLSearchParams({ token: jwt }))
+    fetch('http://localhost:49202/api/ValidateAdminLoggedIn/ValidateOnView?' + new URLSearchParams({ token: jwt, previousViewName: prevView, currentViewName: htmlName, time: timeViewed }))
         .then(response => response.text())
         .then((response) => {
             if (response === "false") {

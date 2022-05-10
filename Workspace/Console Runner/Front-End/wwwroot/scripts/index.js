@@ -5,7 +5,7 @@ const APIFOOD = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=sec
 const APIHEALTH = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=section_name:(%22Health%22)&sort=newest&api-key=TK2GSBMDBO2kHDUABQFh4tlpE0Bu8cuf'
 
 // add admin options if user is an admin
-fetch('http://localhost:49202/api/ValidateAdminLoggedIn/ValidateToken?' + new URLSearchParams({ token: localStorage.getItem('JWT')}))
+fetch('http://47.151.24.23:49202/api/ValidateAdminLoggedIn?' + new URLSearchParams({ token: localStorage.getItem('JWT')}))
     .then(response => response.text())
     .then((response) => {
         if (response === "true") {
@@ -18,7 +18,8 @@ fetch('http://localhost:49202/api/ValidateAdminLoggedIn/ValidateToken?' + new UR
             document.getElementById("button-bar").appendChild(umButtonContainer);
         }
     })
-
+//jwt
+var jwt = localStorage.getItem('JWT');
 
 //Create a global variable which will store all News
 let array = [];
@@ -145,7 +146,9 @@ async function getCategory(index) {
 async function getHealthFilter() {
     //access the backend and increment
     //if the value is set at 4 already, then we do not need to increment it no more
-    const response = await fetch('http://47.151.24.23:49202/api/News', {
+    const response = await fetch('http://47.151.24.23:49202/api/News' + new URLSearchParams({
+        page: page, token: jwt
+    }), {
         method: 'GET'
     })
     //get response body as text
@@ -157,7 +160,9 @@ async function getHealthFilter() {
  */
 async function incrementHealthFilter() {
     //access the backend and increment
-    await fetch('http://47.151.24.23:49202/api/NewsIncrement', {
+    await fetch('http://47.151.24.23:49202/api/NewsIncrement' + new URLSearchParams({
+        page: page, token: jwt
+    }), {
         method: 'POST'
     })
 }
@@ -166,8 +171,9 @@ async function incrementHealthFilter() {
  */
 async function decrementHealthFilter() {
     //access the backend and decrement
-    await fetch('http://47.151.24.23:49202/api/NewsDecrement', {
+    await fetch('http://47.151.24.23:49202/api/NewsDecrement' + new URLSearchParams({
+        page: page, token: jwt
+    }), {
         method: 'POST'
     })
 }
-

@@ -31,7 +31,7 @@ namespace Console_Runner.AccountService
 
         public async Task<bool> AMRExistsAsync(int userID, LogService? logService = null)
         {
-            var toReturn = await _efContext.AMRs.FindAsync(userID) != null;
+            var toReturn = (await _efContext.AMRs.FindAsync(userID)) != null;
             if (logService?.UserEmail != null)
             {
                 _ = logService.LogWithSetUserAsync(Logging.LogLevel.Info, Category.DataStore, DateTime.Now,
@@ -74,6 +74,10 @@ namespace Console_Runner.AccountService
         {
             try
             {
+                if(amrToRemove == null)
+                {
+                    return true;
+                }
                 if (await AMRExistsAsync(amrToRemove.UserID))
                 {
                     _efContext.Remove(amrToRemove);

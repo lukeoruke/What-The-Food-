@@ -21,11 +21,11 @@ function placeLocalStorage(newViewName, time) {
     if (timeViewed === null) {
         timeViewed = 0;
     }
-    fetch('http://localhost:49202/api/ValidateAdminLoggedIn/ValidateOnView?' + new URLSearchParams({ token: jwt, previousViewName: prevView, currentViewName: htmlName, time: timeViewed }))
+    fetch('http://47.151.24.23:49202/api/ValidateAdminLoggedIn/ValidateOnView?' + new URLSearchParams({ token: jwt, previousViewName: prevView, currentViewName: htmlName, time: timeViewed }))
         .then(response => response.text())
         .then((response) => {
             if (response === "false") {
-                window.location.replace("https://localhost:49199/login.html");
+                window.location.replace("http://whatthefood.xyz/login.html");
             }
         })
 })();

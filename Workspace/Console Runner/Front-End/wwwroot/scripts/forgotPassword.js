@@ -26,12 +26,12 @@ async function sendForgotPassword(e) {
     console.log(confirmEmail);
 
     // HTTP Get Request
-    await fetch('https://localhost:49200/gateway/AccountLogin')
+    await fetch('http://47.151.24.23:49202/gateway/AccountLogin')
         .then(response => console.log(response.text()))
         .then(data => console.log(data));
 
     // HTTP Post Request
-    await fetch('https://localhost:49200/gateway/AccountLogin', {
+    await fetch('http://47.151.24.23:49202/gateway/AccountLogin', {
         method: 'POST',
         body: formData,
     }).then(function (response) {

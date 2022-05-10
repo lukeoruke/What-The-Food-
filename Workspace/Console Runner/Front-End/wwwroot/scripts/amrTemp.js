@@ -33,7 +33,9 @@ async function sendAmrData(e) {
     console.log(activity);
 
     /**
-    await fetch('http://47.151.24.23:49202/api/AddAMR', {
+    await fetch('http://47.151.24.23:49202/api/AddAMR'+ new URLSearchParams({
+        page: page, token: jwt
+    }), {
         method: 'POST',
         body: formData,
     }).then(function (response) {
@@ -102,6 +104,7 @@ async function calculate(gender, weight, height, age, activity) {
     console.log("-------------------------");
     console.log('User AMR Value Calculated');
     console.log(amr.toFixed(2) + " kcal/day");
+    document.getElementById("results").innerHTML = amr.toFixed(2) + " kcal/day";
 
 
 }

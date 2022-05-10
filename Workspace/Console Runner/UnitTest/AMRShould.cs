@@ -62,10 +62,13 @@ namespace Test.UM
             validNonCustomCase.Age = invalidAge;
 
             // Assert
+            // Make sure it actually compares negatives reference off calculate
             Assert.Equal(validWeight, validNonCustomCase.Weight);
             Assert.Equal(validHeight, validNonCustomCase.Height);
             Assert.Equal(validAge, validNonCustomCase.Age);
         }
+
+        //take in actually possible data
 
         [Fact]
         public void CalculateProperAMR()

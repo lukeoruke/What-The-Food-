@@ -59,5 +59,6 @@ namespace Console_Runner.AccountService
         /// <returns>The salt associated with a user</returns>
         public string getSalt(int userID, LogService? logService = null);
 
+        public  Task<bool> ToggleDataCollectionStatus(int userID);
     }
 }

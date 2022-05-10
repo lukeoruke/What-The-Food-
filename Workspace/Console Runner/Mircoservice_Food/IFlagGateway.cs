@@ -37,5 +37,6 @@ namespace Console_Runner.AccountService
         /// <param name="flag">The flag to be added</param>
         /// <returns>true if successful false otherwise</returns>
         public Task<bool> AddFlagAsync(FoodFlag flag, LogService? logService = null);
+        public Task<bool> RemoveFoodFlagAsync(FoodFlag foodFlag, LogService? logService = null);
     }
 }

@@ -258,7 +258,15 @@ namespace Console_Runner.Logging
             var myList = result.ToList();
             myList.Sort((entry1, entry2) => entry2.Value.CompareTo(entry1.Value));
 
-            Dictionary<string, int> toReturn = new Dictionary<string, int>(myList.GetRange(0,5));
+            Dictionary<string, int> toReturn = new Dictionary<string, int>();
+            if (myList.Count > 5)
+            {
+                toReturn = new Dictionary<string, int>(myList.GetRange(0, 5));
+            }
+            else
+            {
+                toReturn = new Dictionary<string, int>(myList);
+            }
             return toReturn;
         }
 
@@ -297,7 +305,49 @@ namespace Console_Runner.Logging
             var myListAsAverageDurations = myList.ConvertAll<KeyValuePair<string, int>>((kvp) => new KeyValuePair<string, int>(kvp.Key, (kvp.Value.Item2/kvp.Value.Item1)));
             myListAsAverageDurations.Sort((entry1, entry2) => entry2.Value.CompareTo(entry1.Value));
 
-            Dictionary<string, int> toReturn = new Dictionary<string, int>(myListAsAverageDurations.GetRange(0,5));
+            Dictionary<string, int> toReturn = new Dictionary<string, int>();
+            if (myList.Count > 5)
+            {
+                toReturn = new Dictionary<string, int>(myListAsAverageDurations.GetRange(0, 5));
+            }
+            else
+            {
+                toReturn = new Dictionary<string, int>(myListAsAverageDurations);
+            }
+            return toReturn;
+        }
+
+        public Dictionary<string, int> GetMostScannedBarcodes()
+        {
+            List<Log> viewLogs = _logAccess.GetLogsWhere((log) => (log.CallSiteFile == "GetFoodProductFromBarCodeController.cs") && (log.Category == Category.Business)
+                                                                  && (log.LogLevel == LogLevel.Info) && (log.CallSiteMethod == "GET"));
+            Dictionary<string, int> result = new Dictionary<string, int>();
+            
+            foreach(Log log in viewLogs)
+            {
+                string[] words = log.Message.Split(" ");
+                int barcodeIndex = Array.IndexOf(words, "barcode");
+                if(barcodeIndex == -1)
+                {
+                    continue;
+                }
+                string barcode = words[barcodeIndex + 1];
+                int currentCount = 0;
+                result.TryGetValue(barcode, out currentCount);
+                result[barcode] = currentCount + 1;
+            }
+
+            var myList = result.ToList();
+            myList.Sort((entry1, entry2) => entry2.Value.CompareTo(entry1.Value));
+            Dictionary<string, int> toReturn = new Dictionary<string, int>();
+            if(myList.Count > 5)
+            {
+                toReturn = new Dictionary<string, int>(myList.GetRange(0, 5));
+            }
+            else
+            {
+                toReturn = new Dictionary<string, int>(myList);
+            }
             return toReturn;
         }
 

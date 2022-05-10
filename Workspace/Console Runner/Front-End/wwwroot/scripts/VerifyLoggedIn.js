@@ -1,33 +1,26 @@
-﻿
-
-var previousViewName = '';
-var currentViewName = '';
-var time = 0;
-
-
-//Search localstorage for time and name of view to fetch call
+﻿//Search localstorage for time and name of view to fetch call
 //Save current time and name of new view to localstorage
-function placeLocalStorage(previousViewName, currentViewName, time) {
-    //If localstorage doesn't contain any information, place viewNames and time
-    if (localStorage.getItem(this.previousViewName != null) {
-        localStorage.setItem(this.previousViewName, previousViewName);
-    }
-    if (localStorage.getItem(this.currentViewName != null){
-        localStorage.setItem(this.currentViewName, currentViewName);
-    }
-    if (localStorage.getItem(this.time != null)) {
-        localStorage.setItem(this.time, Date().getTime());
-    }
-
-
-});
+function placeLocalStorage(newViewName, time) {
+    let prevView = sessionStorage.getItem("currentViewName");
+    let prevTime = Date.parse(sessionStorage.getItem("viewTimestamp")).getTime() - time.getTime();
+    sessionStorage.setItem("currentViewName", newViewName);
+    sessionStorage.setItem("viewTimestamp", time);
+    return { prevView: prevView, timeViewed: prevTime };
+};
 
 
 (async () => {
     var jwt = localStorage.getItem('JWT');
-    //viewName: string
-    //time: int
-    await fetch('http://localhost:49202/api/ValidateLoggedIn?' + new URLSearchParams({ token: jwt, previousViewName: previousViewName, currentViewName: currentViewName, time: time, }))
+    let resourceName = window.location.pathname.split("/").slice(-1);
+    let htmlName = resourceName.split("?")[0];
+    let { prevView, timeViewed } = placeLocalStorage(htmlName, Date.now());
+    if (prevView === null) {
+        prevView = "";
+    }
+    if (timeViewed === null) {
+        timeViewed = 0;
+    }
+    await fetch('http://localhost:49202/api/ValidateLoggedIn?' + new URLSearchParams({ token: jwt, previousViewName: prevView, currentViewName: htmlName, time: timeViewed }))
         .then(response => response.text())
         .then((response) => {
             if (response === "False") {

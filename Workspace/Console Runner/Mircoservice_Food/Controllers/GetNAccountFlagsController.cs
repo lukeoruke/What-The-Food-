@@ -29,10 +29,9 @@ namespace Food.Controllers
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
             FoodDBOperations _foodDBOperations = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
-            // TODO: replace this string with the user email when we can get it
             logger.DefaultTimeOut = 5000;
             int userId = -1;
-
+            userId = await _accountDBOperations.GetActiveUserAsync(token);
             if ((await _accountDBOperations.GetUserAccountAsync(userId)).CollectData)
             {
                 logger.UserEmail = (await _accountDBOperations.GetUserAccountAsync(userId)).Email;
@@ -41,7 +40,7 @@ namespace Food.Controllers
             {
                 logger.UserEmail = null;
             }
-            int numberOfItemsDisplayedAtOnce = 2;
+            int numberOfItemsDisplayedAtOnce = 5;
             try
             {
                 var allFlags = await _accountDBOperations.GetNAccountFlagsAsync(userId, numberOfItemsDisplayedAtOnce * int.Parse(page)

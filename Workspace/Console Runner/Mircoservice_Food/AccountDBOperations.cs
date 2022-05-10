@@ -723,7 +723,8 @@ namespace Console_Runner.AccountService
                 List<FoodFlag> flagList = await _flagService.GetAllAccountFlagsAsync(userID);
                 for (int i = 0; i < flagList.Count; i++)
                 {
-                    await _flagService.RemoveFoodFlagAsync(flagList[i].UserID, flagList[i].IngredientID);
+                    await _flagService.RemoveFoodFlagAsync(flagList[i]);
+
                 }
                 await _amrGateway.RemoveAMRAsync(await _amrGateway.GetAMRAsync(userID));
 

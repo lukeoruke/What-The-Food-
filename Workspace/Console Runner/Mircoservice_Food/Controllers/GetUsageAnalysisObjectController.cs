@@ -13,9 +13,16 @@ namespace Mircoservice_Food.Controllers
         public async Task<ActionResult<string>> Get() {
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
 
-            logger.LogListAsync();
-            await logger.LogAsync(logger.UserEmail, Console_Runner.Logging.LogLevel.Info, Category.Data, DateTime.Now,
-                "Received Usage Analysis Data ");
+            try
+            {
+                var loginTrend = logger.GetLoginTrends(DateTime.Now.AddMonths(-3));
+                return JsonSerializer.Serialize(loginTrend);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return new StatusCodeResult(500);
+            }
         
         }
 

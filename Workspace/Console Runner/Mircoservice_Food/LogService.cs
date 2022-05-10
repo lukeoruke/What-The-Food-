@@ -203,11 +203,11 @@ namespace Console_Runner.Logging
             return result;
         }
         
-        public Dictionary<DateTime, int> GetLoginTrends(DateTime since)
+        public Dictionary<string, int> GetLoginTrends(DateTime since)
         {
             List<Log> loginLogs = _logAccess.GetLogsWhere((log) => (log.CallSiteFile == "AccountLoginController.cs") && (log.LogLevel == LogLevel.Info),
                                                           (log) => log.Timestamp > since);
-            Dictionary<DateTime, int> result = new Dictionary<DateTime, int>();
+            Dictionary<string, int> result = new Dictionary<string, int>();
             //
             var loginsByDay = from loginLog in loginLogs
                               group loginLog by loginLog.Timestamp.Date into dateGroup
@@ -215,7 +215,7 @@ namespace Console_Runner.Logging
                               select dateGroup;
             foreach(var dategroup in loginsByDay)
             {
-                result.Add(dategroup.Key, dategroup.Count());
+                result.Add(dategroup.Key.ToShortDateString(), dategroup.Count());
             }
             return result;
         }

@@ -2,11 +2,11 @@
 //Save current time and name of new view to localstorage
 function placeLocalStorage(newViewName, time) {
     let prevView = sessionStorage.getItem("currentViewName");
-    let prevTime = Date.parse(sessionStorage.getItem("viewTimestamp"));
-    let timeDiffInSecs = (prevTime - time) / 1000;
+    let prevTime = parseInt(sessionStorage.getItem("viewTimestamp"));
+    let timeDiffInSecs = Math.floor((time - prevTime) / 1000);
     sessionStorage.setItem("currentViewName", newViewName);
     sessionStorage.setItem("viewTimestamp", time);
-    return { prevView: prevView, timeViewed: prevTime };
+    return { prevView: prevView, timeViewed: timeDiffInSecs };
 };
 
 

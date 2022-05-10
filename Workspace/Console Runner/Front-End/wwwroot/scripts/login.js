@@ -15,9 +15,6 @@ async function sendLogin(e) {
     formData.append('email', email);
     formData.append('password', password);
 
-    console.log(email);
-    console.log(password);
-
 
     var postResponse;
     // HTTP Post Request\

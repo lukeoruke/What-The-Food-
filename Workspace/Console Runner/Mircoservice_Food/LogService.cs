@@ -183,10 +183,10 @@
             }
         }
 
-        /*public async Task<List<Log>> GetLogsWhereAsync(params Func<Log, bool>[] predicates)
+        public int GetLogsAfterDate(DateTime dateToQuery)
         {
-
-        }*/
+            return _logAccess.GetLogsWhere((log => log.Timestamp.ToUniversalTime() > dateToQuery.ToUniversalTime())).Count();
+        }
 
 
         private async Task<UserIdentifier> GetOrCreateUserID(string uid, CancellationToken token = default)

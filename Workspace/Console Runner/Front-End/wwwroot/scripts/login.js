@@ -1,6 +1,9 @@
 
 localStorage.clear();
 sessionStorage.clear();
+sessionStorage.setItem("currentViewName", "login.html");
+sessionStorage.setItem("viewTimestamp", Date.now());
+
 async function sendLogin(e) {
     e.preventDefault();
 

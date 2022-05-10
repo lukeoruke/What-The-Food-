@@ -2,7 +2,8 @@
 //Save current time and name of new view to localstorage
 function placeLocalStorage(newViewName, time) {
     let prevView = sessionStorage.getItem("currentViewName");
-    let prevTime = Date.parse(sessionStorage.getItem("viewTimestamp")).getTime() - time.getTime();
+    let prevTime = Date.parse(sessionStorage.getItem("viewTimestamp"));
+    let timeDiffInSecs = (prevTime - time) / 1000;
     sessionStorage.setItem("currentViewName", newViewName);
     sessionStorage.setItem("viewTimestamp", time);
     return { prevView: prevView, timeViewed: prevTime };
@@ -11,7 +12,7 @@ function placeLocalStorage(newViewName, time) {
 
 (async () => {
     var jwt = localStorage.getItem('JWT');
-    let resourceName = window.location.pathname.split("/").slice(-1);
+    let resourceName = window.location.pathname.split("/").slice(-1)[0];
     let htmlName = resourceName.split("?")[0];
     let { prevView, timeViewed } = placeLocalStorage(htmlName, Date.now());
     if (prevView === null) {

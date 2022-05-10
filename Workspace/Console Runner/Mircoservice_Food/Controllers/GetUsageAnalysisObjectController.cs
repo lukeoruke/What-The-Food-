@@ -17,12 +17,12 @@ namespace Mircoservice_Food.Controllers
             {
                 var loginTrend = logger.GetLoginTrends(DateTime.Now.AddMonths(-3));
                 var signupTrend = logger.GetSignupTrends(DateTime.Now.AddMonths(-3));
-                Console.WriteLine(loginTrend);
-                Console.WriteLine(signupTrend);
+                var mostViewedPages = logger.GetMostViewedPages();
                 return JsonSerializer.Serialize(new
                 {
                     logins = loginTrend,
-                    signups = signupTrend
+                    signups = signupTrend,
+                    mostViewedPages = mostViewedPages
                 });
             }
             catch (Exception ex)

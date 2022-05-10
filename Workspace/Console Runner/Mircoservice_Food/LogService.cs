@@ -220,6 +220,31 @@ namespace Console_Runner.Logging
             return result;
         }
 
+        public Dictionary<string, int> GetMostViewedPages() {
+            
+            List<Log> viewLogs = _logAccess.GetLogsWhere((log) => (log.CallSiteFile == "ValidateLoggedInController.cs") && (log.Category == Category.View));
+            Dictionary<string, int> result = new Dictionary<string, int>();
+
+            var mostViewedPages = from viewLog in viewLogs                                
+                                  select viewLog.Message;
+            foreach(var messagegroup in mostViewedPages)
+            {
+                string viewName = "";
+                string[] words = messagegroup.Split(' ');
+                int fromIndex = Array.IndexOf(words, "from");
+                viewName = words[fromIndex + 1];
+                int currentCount = 0;
+                result.TryGetValue(viewName, out currentCount);
+                result[viewName] = currentCount + 1;
+            }
+
+            var myList = result.ToList();
+            myList.Sort((entry1, entry2) => entry2.Value.CompareTo(entry1.Value));
+
+            Dictionary<string, int> toReturn = new Dictionary<string, int>(myList.GetRange(0,5));
+            return toReturn;
+        }
+
 
         private async Task<UserIdentifier> GetOrCreateUserID(string uid, CancellationToken token = default)
         {

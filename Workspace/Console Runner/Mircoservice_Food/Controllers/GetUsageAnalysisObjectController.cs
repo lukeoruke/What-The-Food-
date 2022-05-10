@@ -16,7 +16,8 @@ namespace Mircoservice_Food.Controllers
             try
             {
                 var loginTrend = logger.GetLoginTrends(DateTime.Now.AddMonths(-3));
-                return JsonSerializer.Serialize(loginTrend);
+                var mostViewedPages = logger.GetMostViewedPages();
+                return JsonSerializer.Serialize(mostViewedPages);
             }
             catch (Exception ex)
             {

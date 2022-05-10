@@ -71,9 +71,13 @@ namespace UnitTest
             await logger.LogAsync("Someone", LogLevel.Info, Category.Server, DateTime.Parse("2000-04-01"), "message");
             await logger.LogAsync("Someone", LogLevel.Info, Category.Server, DateTime.Parse("2000-04-02"), "message");
             await logger.LogAsync("Someone", LogLevel.Info, Category.Server, DateTime.Parse("2000-04-03"), "message");
+            await logger.LogAsync("Someone", LogLevel.Info, Category.Server, DateTime.Parse("2000-04-03"), "message");
+            await logger.LogAsync("Someone", LogLevel.Info, Category.Server, DateTime.Parse("2000-04-03"), "message");
             await logger.LogAsync("Someone", LogLevel.Info, Category.Server, DateTime.Parse("2000-04-04"), "message");
 
-            Assert.Equal(2, logger.GetLogsAfterDate(DateTime.Parse("2000-04-02")));
+            var dic = logger.GetLogsAfterDate(DateTime.Parse("2000-03-01"));
+            Assert.Equal(1, dic[DateTime.Parse("2000-04-01")]);
+            Assert.Equal(3, dic[DateTime.Parse("2000-04-03")]);
         }
         
     }

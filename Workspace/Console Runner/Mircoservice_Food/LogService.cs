@@ -262,6 +262,45 @@ namespace Console_Runner.Logging
             return toReturn;
         }
 
+        public Dictionary<string, int> GetHighestAverageDurationPages() {
+            
+            List<Log> viewLogs = _logAccess.GetLogsWhere((log) => (log.CallSiteFile == "ValidateLoggedInController.cs") && (log.Category == Category.View));
+            Dictionary<string, (int, int)> result = new Dictionary<string, (int, int)>();
+
+            var mostViewedPages = from viewLog in viewLogs                                
+                                  select viewLog.Message;
+            foreach(var messagegroup in mostViewedPages)
+            {
+                string[] words = messagegroup.Split(' ');
+                int fromIndex = Array.IndexOf(words, "from");
+                int afterIndex = Array.IndexOf(words, "after");
+                if(fromIndex == -1 || afterIndex == -1)
+                {
+                    continue;
+                }
+                string viewName = words[fromIndex + 1];
+                string duration = words[afterIndex + 1];
+                int actualDuration = -1;
+                Int32.TryParse(duration, out actualDuration);
+                if(actualDuration == -1)
+                {
+                    continue;
+                }
+                var currentViewData = (0,0);
+                result.TryGetValue(viewName, out currentViewData);
+                currentViewData.Item1 = currentViewData.Item1 + 1;
+                currentViewData.Item2 = currentViewData.Item2 + actualDuration;
+                result[viewName] = currentViewData;
+            }
+
+            var myList = result.ToList();
+            var myListAsAverageDurations = myList.ConvertAll<KeyValuePair<string, int>>((kvp) => new KeyValuePair<string, int>(kvp.Key, (kvp.Value.Item2/kvp.Value.Item1)));
+            myListAsAverageDurations.Sort((entry1, entry2) => entry2.Value.CompareTo(entry1.Value));
+
+            Dictionary<string, int> toReturn = new Dictionary<string, int>(myListAsAverageDurations.GetRange(0,5));
+            return toReturn;
+        }
+
 
         private async Task<UserIdentifier> GetOrCreateUserID(string uid, CancellationToken token = default)
         {

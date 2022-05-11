@@ -59,13 +59,18 @@ namespace Console_Runner.AccountService
             {
                 table.UserID
             });
+            builder.Entity<ActiveSessionTracker>().HasKey(table => new
+            {
+
+                table.jwt
+            });
         }
         public DbSet<Account> Accounts { get; set; } = null!;
 
         public DbSet<FoodFlag> FoodFlags { get; set; } = null!;
         public DbSet<History> Historys { get; set; } = null!;
         public DbSet<AMR> AMRs { get; set; } = null!;
-
+        public DbSet<ActiveSessionTracker> ActiveSessionTracker { get; set; } = null!;
         public DbSet<Authorization> Authorizations { get; set; } = null!;
 
     }

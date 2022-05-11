@@ -4,11 +4,11 @@ var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
-                      builder =>
+                      policy =>
                       {
-                          builder.AllowAnyOrigin();
-                          builder.AllowAnyMethod();
-                          builder.AllowAnyHeader();
+                          policy.AllowAnyOrigin();
+                          policy.AllowAnyMethod();
+                          policy.AllowAnyHeader();
                       });
 });
 
@@ -34,6 +34,12 @@ app.UseAuthorization();
 
 app.UseCors(MyAllowSpecificOrigins);
 
+/**app.UseCors(x => x
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .SetIsOriginAllowed(origin => true) // allow any origin
+    .AllowCredentials()); // allow credentials
+**/
 app.MapControllers();
 
-app.Run("http://localhost:49200");
+app.Run("http://localhost:49202");

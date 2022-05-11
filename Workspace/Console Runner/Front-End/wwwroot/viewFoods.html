@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>View Foods</title>
+    <script type="text/javascript" src="/scripts/verifyLoggedIn.js"></script>
+    <script type="text/javascript" src="/scripts/viewFoods.js"></script>
+    <link rel="stylesheet" href="styles/default.css">
+</head>
+
+
+<body onload="pageLoad()">
+    <div class="main">
+        <a href="index.html"><img class="logo" src="images/apple.png" alt="What The Food?!"></a>
+        <header class="header">
+            <div id="container"></div>
+        </header>
+
+    </div>
+    <form class="form" onsubmit="loadNextPage(event);">
+        <input class="input" type="submit" value="Next Page" />
+    </form>
+    <form class="form" onsubmit="loadPreviousPage(event);">
+        <input class="input" type="submit" value="Previous Page" />
+    </form>
+    <div class="pageAlert", id="pageAlert"></div>
+</body>
+</html>
+

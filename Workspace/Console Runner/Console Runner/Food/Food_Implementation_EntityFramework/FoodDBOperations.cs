@@ -5,9 +5,11 @@ namespace Console_Runner.FoodService
     public class FoodDBOperations
     {
         private readonly IFoodGateway _foodItemAccess;
-        public FoodDBOperations(IFoodGateway foodItemAccess)
+        private readonly IFoodUpdateGateway _foodUpdateGateway;
+        public FoodDBOperations(IFoodGateway foodItemAccess, IFoodUpdateGateway foodUpdateAccess)
         {
             _foodItemAccess = foodItemAccess;
+            _foodUpdateGateway = foodUpdateAccess;
         }
 
         /// <summary>
@@ -232,7 +234,8 @@ namespace Console_Runner.FoodService
             FoodItem?foodItem = await _foodItemAccess.RetrieveScannedFoodItemAsync(barcode);
             if(foodItem == null)
             {
-                throw (new Exception("No such product exists in the DB"));
+                //throw (new Exception("No such product exists in the DB"));
+                return null;
             }
             if(logService?.UserID != null)
             {
@@ -240,6 +243,39 @@ namespace Console_Runner.FoodService
                         $"Retrieved food item \"{foodItem.ProductName}\"");
             }
             return foodItem;
+        }
+
+        public async Task<bool> AddFoodUpdateAsync(FoodUpdate foodUpdate, LogService? logService = null)
+        {
+            await _foodUpdateGateway.AddAsync(foodUpdate, logService);
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Data, DateTime.Now,
+                        $"Adding FoodUpdate for FoodItem {foodUpdate.FoodItem.Barcode} to database through gateway");
+            }
+            return true;
+        }
+
+        public async Task<List<FoodUpdate>> GetAllUpdatesForBarcodeAsync(string barcode, LogService? logService = null)
+        {
+            List<FoodUpdate> updates = await _foodUpdateGateway.GetAllByBarcodeAsync(barcode, logService);
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Data, DateTime.Now,
+                        $"Retrieving all FoodUpdates for FoodItem {barcode} from database through gateway");
+            }
+            return updates;
+        }
+
+        public async Task<bool> RemoveFoodUpdateByIdAsync(int id, LogService? logService = null)
+        {
+            await _foodUpdateGateway.RemoveAsync(id, logService);
+            if (logService?.UserID != null)
+            {
+                _ = logService.LogWithSetUserAsync(LogLevel.Debug, Category.Data, DateTime.Now,
+                        $"Removed FoodUpdate {id} from database through gateway");
+            }
+            return true;
         }
     }
 }

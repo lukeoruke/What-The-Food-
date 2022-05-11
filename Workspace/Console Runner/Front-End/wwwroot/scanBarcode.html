@@ -1,0 +1,46 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Scan Barcode</title>
+    <link rel="stylesheet" href="styles/default.css">
+    <script type="text/javascript" src="/scripts/verifyLoggedIn.js"></script>
+    <script type="text/javascript" src="scripts/logout.js"></script>
+    <script src="scripts/scanBarcode.js"></script>
+</head>
+<body>
+    <div class="button-bar">
+        <a href="index.html"><img class="logo" src="images/apple.png" alt="What The Food?!"></a>
+        <a href="scanBarcode.html"><button class="button">Scan</button></a>
+        <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
+        <a href="userAMR.html"><button class="button">Custom AMR</button></a>
+        <a href="history.html"><button class="button">History</button></a>
+        <a href="settingPage.html"><button class="button">Settings</button></a>
+        <button class="button" onclick="sendLogout()">Log Out</button>
+    </div>
+
+    <div class="box">
+        <span>Barcode Scan</span>
+        <div class="box2" style="display: flex; justify-content: center; align-items: center;">
+            <form class="form" onsubmit="getFoodObject(event)">
+                <section class="section">
+                    <label>barcode:</label>
+                    <label>
+                        <input class="input" type="text" id="barcode" name="barcode" placeholder="barcode"/>
+                    </label>
+                    <input class="input" type="submit" value="Submit"/>
+                </section>
+            </form>
+            <div class="scan-barcode-box" style="display: flex; flex-direction: column; padding-top: 50px;">
+                <label style="font-size: 20px;">Scan Barcode</label>
+                <img style="font-size: 20px;" src="images/barcode.png" alt="scan here" width="250" height="150">
+                <label style="text-align: center; color: blue; font-size: 14px;">Upload a Photo</label>
+                <label style="text-align: center; color: blue; font-size: 14px;">Take a Photo</label>
+            </div>
+        </div>
+
+
+    </div>
+
+</body>
+</html>

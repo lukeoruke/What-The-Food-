@@ -11,12 +11,11 @@ namespace UnitTest
 {
     public class LoggingShould
     {
-        private readonly ILogGateway _logGateway = new MemLogGateway();
-        private readonly IUserIDGateway _userIDGateway = new MemUserIdentifierGateway();
-
         [Fact]
         public async void WriteLogsProperly()
         {
+            ILogGateway _logGateway = new MemLogGateway();
+            IUserIDGateway _userIDGateway = new MemUserIdentifierGateway();
             LogService logger = new LogService(_logGateway, _userIDGateway);
             var firstLog = ("example@email.com", LogLevel.Info, Category.Server, DateTime.Now.ToUniversalTime(), "Example log message.");
             var secondLog = ("example@email.com", LogLevel.Info, Category.Server, DateTime.Now.ToUniversalTime(), "Another example log message.");
@@ -33,6 +32,8 @@ namespace UnitTest
             Assert.Equal(firstLog.Item3, firstSuccess.Category);
             Assert.Equal(firstLog.Item4, firstSuccess.Timestamp);
             Assert.Equal(firstLog.Item5, firstSuccess.Message);
+            Assert.Equal("LoggingShould.cs", firstSuccess.CallSiteFile);
+            Assert.Equal("WriteLogsProperly", firstSuccess.CallSiteMethod);
 
             Assert.Equal(await _userIDGateway.GetUserHashAsync(secondLog.Item1), await _userIDGateway.GetUserHashAsync(secondSuccess.UserIdentifier.UserId));
             Assert.Equal(secondLog.Item2, secondSuccess.LogLevel);
@@ -50,12 +51,33 @@ namespace UnitTest
         [Fact]
         public async void ThrowsOperationCanceledExceptionOnTimeout()
         {
+            ILogGateway _logGateway = new MemLogGateway();
+            IUserIDGateway _userIDGateway = new MemUserIdentifierGateway();
             LogService logger = new LogService(_logGateway, _userIDGateway);
             var firstLog = ("example@email.com", LogLevel.Info, Category.Server, DateTime.Now.ToUniversalTime(), "Example log message.");
-            Func<Task> attempt = async () => await logger.LogAsync(firstLog.Item1, firstLog.Item2, firstLog.Item3, firstLog.Item4, firstLog.Item5, 0);
+            Func<Task> attempt = async () => await logger.LogAsync(firstLog.Item1, firstLog.Item2, firstLog.Item3, firstLog.Item4, firstLog.Item5, timeout:0);
             await Assert.ThrowsAsync<OperationCanceledException>(attempt);
-            Func<Task> secondAttempt = async () => await logger.LogAsync(firstLog.Item1, firstLog.Item2, firstLog.Item3, firstLog.Item4, firstLog.Item5, 10);
+            Func<Task> secondAttempt = async () => await logger.LogAsync(firstLog.Item1, firstLog.Item2, firstLog.Item3, firstLog.Item4, firstLog.Item5, timeout:10);
             await Assert.ThrowsAsync<OperationCanceledException>(attempt);
+        }
+
+        [Fact]
+        public async void QueriesLogsProperly()
+        {
+            ILogGateway _logGateway = new MemLogGateway();
+            IUserIDGateway _userIDGateway = new MemUserIdentifierGateway();
+            LogService logger = new LogService(_logGateway, _userIDGateway);
+
+            await logger.LogAsync("Someone", LogLevel.Info, Category.Server, DateTime.Parse("2000-04-01"), "message");
+            await logger.LogAsync("Someone", LogLevel.Info, Category.Server, DateTime.Parse("2000-04-02"), "message");
+            await logger.LogAsync("Someone", LogLevel.Info, Category.Server, DateTime.Parse("2000-04-03"), "message");
+            await logger.LogAsync("Someone", LogLevel.Info, Category.Server, DateTime.Parse("2000-04-03"), "message");
+            await logger.LogAsync("Someone", LogLevel.Info, Category.Server, DateTime.Parse("2000-04-03"), "message");
+            await logger.LogAsync("Someone", LogLevel.Info, Category.Server, DateTime.Parse("2000-04-04"), "message");
+
+            var dic = logger.GetLogsAfterDate(DateTime.Parse("2000-03-01"));
+            Assert.Equal(1, dic[DateTime.Parse("2000-04-01")]);
+            Assert.Equal(3, dic[DateTime.Parse("2000-04-03")]);
         }
         
     }

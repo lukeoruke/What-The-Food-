@@ -9,11 +9,12 @@ namespace Test.FM
     {
         private Random _random = new Random();
         private readonly IFoodGateway _foodGateway = new MemFoodGateway();
+        private readonly IFoodUpdateGateway _foodUpdateGateway = new MemFoodUpdateGateway();
         [Fact]
         public async void AddNewProductSuccess()
         {
 
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
 
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
@@ -41,7 +42,7 @@ namespace Test.FM
         public async void GetScannedFoodItemSuccess()
         {
 
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
 
 
             string barcode = "lao109341";
@@ -56,7 +57,7 @@ namespace Test.FM
         [Fact]
         public async void GetNutritionLabelSuccess()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
 
 
 
@@ -77,7 +78,7 @@ namespace Test.FM
         [Fact]
         public async void GetIngredientList()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
 
             Ingredient ingredient2 =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +
@@ -117,7 +118,7 @@ namespace Test.FM
         [Fact]
         public async void GetIngredient()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
 
             Ingredient ingredient = new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water "
                 + "containing dissolved carbon dioxide gas, either artificially injected under " +
@@ -137,7 +138,7 @@ namespace Test.FM
         [Fact]
         public async void GeIngredientBySearchAsyncSuccess()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
 
             Ingredient ingredient = new Ingredient("AAAAAAAAAA", "bubbly water", "Carbonated water is water " 
                 + "containing dissolved carbon dioxide gas, either artificially injected under " + 
@@ -168,7 +169,7 @@ namespace Test.FM
         [Fact]
         public async void GetNIngredientsAsyncSuccess()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
 
             Ingredient ingredient = new Ingredient("Carbinated", "bubbly water", "Carbonated water is water "
                 + "containing dissolved carbon dioxide gas, either artificially injected under " +
@@ -198,7 +199,7 @@ namespace Test.FM
         [Fact]
         public async void GetNutrientListForUserDisplaySuccess()
         {
-            FoodDBOperations fm = new FoodDBOperations(_foodGateway);
+            FoodDBOperations fm = new FoodDBOperations(_foodGateway, _foodUpdateGateway);
 
             Ingredient ingredient =
                new Ingredient("Carbinated Water", "bubbly water", "Carbonated water is water " +

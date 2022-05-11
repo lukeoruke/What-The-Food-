@@ -1,6 +1,7 @@
 using Xunit;
 using Console_Runner.AccountService;
 using System;
+using Console_Runner.Account.Account_Implementation_InMemory;
 
 namespace Test.UM
 {
@@ -10,14 +11,15 @@ namespace Test.UM
         private readonly IAccountGateway _accountAccess = new MemAccountGateway();
         private readonly IAuthorizationGateway _permissionService = new MemAuthorizationGateway();
         private readonly IFlagGateway _flagGateway = new MemFlagGateway();
+        private readonly IAMRGateway _aMRGateway = new MemAMRGateway();
+        private readonly IActiveSessionTrackerGateway _activeSessionTrackerGateway = new MemActiveSessionTracker();
 
-
-       [Fact]
+        [Fact]
         public async void CreateUserSuccess()
         {
 
             //Arange
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
 
             string tester = "unitTester";
             Account acc = new Account();
@@ -52,7 +54,7 @@ namespace Test.UM
         public async void DeleteUserSuccess()
         {
 
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
 
             Account admin = new Account();
             admin.Email = "deleteUserSuccessAdminEmailvda";
@@ -86,7 +88,7 @@ namespace Test.UM
         public async void UpdateSuccess()
         {
             //Arrange
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
 
 
             Account admin = new Account();
@@ -121,7 +123,7 @@ namespace Test.UM
         public async void DisableSuccess()
         {
             //arange 
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
 
             Account admin = new Account();
             admin.Email = "disableSuccessAdminEmail";
@@ -154,7 +156,7 @@ namespace Test.UM
         public async void EnableSuccess()
         {
             //Arange 
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
 
             Account admin = new Account();
             admin.Email = "enableSuccessAdminEmail";
@@ -190,7 +192,7 @@ namespace Test.UM
         public async void GetUserSuccess()
         {
             //arange 
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
 
             Account acc = new Account();
             acc.Email = "getUserSuccess";
@@ -208,7 +210,7 @@ namespace Test.UM
         [Fact]
         public async void AuthenticatePasswordSuccess()
         {
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
 
             Account acc = new Account();
             acc.Email = "authenticatePasswordSuccess";
@@ -224,7 +226,7 @@ namespace Test.UM
         public async void SignInSuccess()
         {
             //arange 
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
 
             Account acc = new Account();
             acc.Email = "signInSuccess";
@@ -240,7 +242,7 @@ namespace Test.UM
         public async void PromoteToAdminSuccess()
         {
             //arange 
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
 
             Account admin = new Account();
             admin.Email = "PromoteToAdminSuccessAdmin";
@@ -272,7 +274,7 @@ namespace Test.UM
         [Fact]
         public async void getUserWithID1()
         {
-            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway);
+            AccountDBOperations um = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _aMRGateway, _activeSessionTrackerGateway);
             Account acc = new Account();
             acc.Email = "USERWITHID1";
             acc.Password = "pass";

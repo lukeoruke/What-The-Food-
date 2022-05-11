@@ -1,10 +1,22 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title></title>
+    <script type="text/javascript" src="/scripts/verifyLoggedIn.js"></script>
+    <script type="text/javascript" src="scripts/logout.js"></script>
+    <link rel="stylesheet" href="styles/index.css">
 </head>
 <body>
-
+    <!-- Create overall strucutre of webpage including category buttons  -->
+    <a href="index.html"><img src="images/apple.png" alt="What The Food?!" width="200" height="200"></a>
+    <div id="button-bar">
+        <a href="scanBarcode.html"><button class="button">Scan</button></a>
+        <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
+        <a href="customAMR.html"><button class="button">Custom AMR</button></a>
+        <a href="history.html"><button class="button">History</button></a>
+        <a href="viewfoods.html"><button class="button">Foods And Updates</button></a>
+        <a href="calorieFrameOfReference.html"><button class="button">Calorie Frame of Reference</button></a>
+        <a href="settingPage.html"><button class="button">Settings</button></a>
+        <button class="button" onclick="sendLogout()">Log Out</button>
+    </div>
 </body>
 </html>

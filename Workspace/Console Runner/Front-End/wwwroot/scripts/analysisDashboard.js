@@ -150,15 +150,18 @@ let flaggedIngredients = new Chart(mostFlaggedIngredients, {
 
 });
 
-async function getUsageAnalysisObject(e)
+async function getUsageAnalysisObject()
 {
-    e.preventDefault();
     //HTTP Get Request
     await fetch('http://localhost:49202/api/GetUsageAnalysisObject?' + new URLSearchParams({
         token: localStorage.getItem('JWT')
     })).then(async response => localStorage.setItem('usageAnalysisObject', JSON.stringify(await response.json())))
             
 }
+
+var intervalId = window.setInterval(function () {
+    getUsageAnalysisObject()
+}, 1000)
 
 function populateDictionary() {
     var jsonData = localStorage.getItem('usageAnalysisObject');

@@ -4,13 +4,13 @@ async function sendAmrData(e) {
     e.preventDefault();
     //console.log('Sending AMR Info');
 
-
+    
     var gender = document.getElementById('gender').value;
     var weight = document.getElementById('weight').value;
     var height = document.getElementById('height').value;
     var age = document.getElementById('age').value;
     var activity = document.getElementById('activity').value;
-
+    
     /**
     let gender = document.getElementById('gender').value;
     let weight = document.getElementById('weight').value;
@@ -26,12 +26,13 @@ async function sendAmrData(e) {
     formData.append('age', age);
     formData.append('activity', activity);
 
-    //console.log(gender);
-    //console.log(weight);
-    //console.log(height);
-    //console.log(age);
-    //console.log(activity);
-
+    /**
+    console.log(gender);
+    console.log(weight);
+    console.log(height);
+    console.log(age);
+    console.log(activity);
+    **/
     /**
     await fetch('http://47.151.24.23:49202/api/AddAMR'+ new URLSearchParams({
         page: page, token: jwt
@@ -75,14 +76,14 @@ async function activityCheck(activity) {
 /// kg and cm conversions are referenced to https://www.metric-conversions.org/weight/pounds-to-kilograms.htm
 
 async function calculate(gender, weight, height, age, activity) {
-
+    
     //converts to float
 
     var userWeight = parseFloat(weight) / 2.2; //coverts lb to kg
     var userHeight = parseFloat(height) * 2.54; //converts inches to centimeters
     var userAge = parseFloat(age);
 
-    //await changes promise
+    //await changes promise 
     var userActivity = await activityCheck(activity);
 
 
@@ -102,9 +103,11 @@ async function calculate(gender, weight, height, age, activity) {
 
     var amr2 = amr.toFixed(2);
 
-    //console.log("-------------------------");
-    //console.log('User AMR Value Calculated');
-    //console.log(amr2 + " kcal/day");
+    /**
+    console.log("-------------------------");
+    console.log('User AMR Value Calculated');
+    console.log(amr2 + " kcal/day");
+    **/
     document.getElementById("results").innerHTML = amr2 + " kcal/day";
 
     amrChart(amr2)

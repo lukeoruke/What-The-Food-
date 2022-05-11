@@ -2,14 +2,19 @@
 
 <html lang="en">
 <head>
+    <title>Homepage</title>
     <script type="text/javascript" src="/scripts/verifyLoggedIn.js"></script>
     <script type="text/javascript" src="scripts/logout.js"></script>
+    <link rel="stylesheet" href="styles/default.css">
     <link rel="stylesheet" href="styles/index.css">
 </head>
 <body>
-    <!-- Create overall strucutre of webpage including category buttons  -->
-    <a href="index.html"><img src="images/apple.png" alt="What The Food?!" width="200" height="200"></a>
-    <div id="button-bar">
+    <!-- Create overall structure of webpage including category buttons  -->
+    <h1>What the Food?!</h1>
+    <img class="big-logo" src="images/orange.png" alt="What The Food?!">
+    <a href="index.html"><img class="big-logo" src="images/apple.png" alt="What The Food?!"></a>
+    <img class="big-logo" src="images/strawberry.png" alt="What The Food?!">
+    <div class="button-bar">
         <a href="scanBarcode.html"><button class="button">Scan</button></a>
         <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
         <a href="customAMR.html"><button class="button">Custom AMR</button></a>
@@ -20,7 +25,7 @@
         <button class="button" onclick="sendLogout()">Log Out</button>
     </div>
 
-        <div id="setting">
+        <div class="box">
         <!-- Create structure in which news will be displayed  -->
         <span>Homepage</span>
         <div class="news-scroll">

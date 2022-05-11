@@ -17,7 +17,7 @@ async function sendLogin(e) {
 
 
     var postResponse;
-    // HTTP Post Request\
+    // HTTP Post Request
     await fetch('http://47.151.24.23:49202/api/AccountLogin', {
         method: 'POST',
         body: formData,
@@ -38,10 +38,10 @@ async function sendLogin(e) {
 
 
 
-        
 
 
 
 
-    
+
+
 }

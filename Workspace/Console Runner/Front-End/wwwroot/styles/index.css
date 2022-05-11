@@ -1,105 +1,59 @@
-﻿body {
-    background-color: #ffffff;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-#logo {
+﻿.big-logo {
+    width: 150px;
     height: 150px;
-    width: 175px;
-    background-color: lightgreen;
-    padding-top: 20px;
-    margin: 4px 2px;
-    display: inline-block;
-    text-align: center;
-    font-size: 25px;
-}
-
-.button {
-    background-color: lightblue;
     color: black;
-    padding: 15px 32px;
-    text-align: center;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-}
-
-.button2 {
-    background-color: lightgray;
-    color: black;
-    padding: 10px 24px;
-    text-align: center;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-}
-
-#setting {
-    position: relative;
-    height: 500px;
-    width: 980px;
-    background-color: lightgreen;
-    margin: 20px;
-    display: inline-block;
-    text-align: left;
-    font-size: 25px;
 }
 
 .news-scroll {
-    margin:auto;
-    height: 450px;
-    width: 950px;
+    margin: auto;
     background-color: white;
+    width: 950px;
+    height: 450px;
     overflow-x: hidden;
     overflow-y: auto;
 }
 
 .news-box {
-    height: 150px;
-    width: 950px;
     border: 1px solid black;
+    width: 950px;
+    height: 150px;
     overflow: hidden;
 }
-.image-box  {
-    height: 150px;
-    width: 200px;
-    object-fit:fill;
-    overflow: hidden;
+
+.image-box {
     float: left;
+    width: 200px;
+    height: 150px;
+    overflow: hidden;
     border-collapse: separate;
     border-spacing: 15px;
+    object-fit: fill;
 }
+
 img {
-    aspect-ratio: auto 200 / 200;
-    height: 150px;
     width: 190px;
+    height: 150px;
+    aspect-ratio: auto 200 / 200;
 }
-.center{
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-  height: 100%;
-}
+
 .headline-box {
     display: inline-block;
-    height: 50px;
+    position: relative;
     width: 728px;
+    height: 50px;
     overflow: auto;
     border-collapse: separate;
-    font-size:17px;
-    font-weight: bold;
     word-wrap: break-word;
-    position:relative;
+    font-size: 17px;
+    font-weight: bold;
 }
+
 .text-box {
     display: inline-block;
-    height: 150px;
-    width: 728px;
-    overflow: auto;
-    font-size: 13px;
     position: relative;
     bottom: 45px;
+    width: 728px;
+    height: 150px;
+    overflow: auto;
+    font-size: 13px;
 }

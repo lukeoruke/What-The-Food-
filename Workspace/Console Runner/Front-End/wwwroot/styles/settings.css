@@ -1,0 +1,19 @@
+.main-settings {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.button-settings {
+    display: flex;
+    flex-direction: column;
+}
+
+.badge-settings {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+

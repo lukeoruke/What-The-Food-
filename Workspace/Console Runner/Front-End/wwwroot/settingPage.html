@@ -2,42 +2,49 @@
 
 <html lang="en">
 <head>
+    <title>Settings</title>
     <script type="text/javascript" src="/scripts/verifyLoggedIn.js"></script>
     <script type="text/javascript" src="scripts/logout.js"></script>
-    <link rel="stylesheet" href="styles/settingPage.css">
+    <link rel="stylesheet" href="styles/default.css">
+    <link rel="stylesheet" href="styles/settings.css">
 </head>
 <body>
-    <h1></h1>
-    <p></p>
-    <a href="index.html"><img src="images/apple.png" alt="What The Food?!" width="200" height="200"></a>
-    <a href="scanBarcode.html"><button class="button">Scan</button></a>
-    <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
-    <a href="customAMR.html"><button class="button">Custom AMR</button></a>
-    <a href="history.html"><button class="button">History</button></a>
-    <a href="settingPage.html"><button class="button">Settings</button></a>
-    <button class="button" onclick="sendLogout()">Log Out</button>
+    <div class="button-bar">
+        <a href="index.html"><img class="logo" src="images/apple.png" alt="What The Food?!"></a>
+        <a href="scanBarcode.html"><button class="button">Scan</button></a>
+        <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
+        <a href="customAMR.html"><button class="button">Custom AMR</button></a>
+        <a href="history.html"><button class="button">History</button></a>
+        <a href="settingPage.html"><button class="button">Settings</button></a>
+        <button class="button" onclick="sendLogout()">Log Out</button>
+    </div>
 
-    <div id="setting">
+    <div class="box">
         <span>Settings</span>
-        <div class="box">
-            <div class="image">Profile Picture</div>
-            <form action="">
-                <label style="position: relative; left: 220px; top: 20px; font-size: 20px;">First name:</label>
-                <input style="position: relative; left: 220px; top: 20px; font-size: 20px;"><br><br>
-                <label style="position:relative; left:220px; font-size: 20px;">Last name:</label>
-                <input style="position:relative; left:220px; font-size: 20px;">
-                <br><br>
-            </form>
+        <div class="box2">
+            <div class="main-settings">
+                <div class="circle">Profile Picture</div>
+                <form action="">
+                    <label>Name:</label>
+                    <input><br><br>
+                    <label>Email:</label>
+                    <input>
+                    <br><br>
+                </form>
+                <div class="button-settings">
+                    <a href="addNewFlag.html"><button class="button2">Food Flags</button></a>
+                    <a href="userAMR.html"><button class="button2">User AMR</button></a>
+                    <br><br>
+                    <button class="button button2" id="deleteUser" onclick="deleteUserData()">Delete User</button>
+                    <button class="button button2" id="requestData" onclick="alert('Requesting Data')">Request Data</button>
+                    <button class="button button2" id="optOut" onclick=toggleDataCollection()>Opt Out of Data</button>
+                </div>
+            </div>
+            <div class="badge-settings">
+                <div class="circle circle2">Badges</div>
+                <button class="button button2" onclick="alert('Change and Display Your Badges')">Change Badges</button>
+            </div>
         </div>
-
-        <a href="addNewFlag.html"><button style="position: relative; left: 740px; top: -200px" class="button button2">Food Flags</button></a>
-        <a href="userAMR.html"><button style="position: relative; left: 600px; top: -130px" class="button button2">User AMR</button></a>
-        <button class="button button2" id="deleteUser" onclick="deleteUserData()">Delete User</button>
-        <button class="button button2" id="requestData" onclick="alert('Requesting Data')">Request Data</button>
-        <button class="button button2" id="optOut" onclick=toggleDataCollection()>Opt Out of Data</button>
-
-        <div style="position: relative; left: 400px; top: -250px;" class="circle circle2">Badges</div>
-        <button style="position: relative; left: 390px; top: -240px; " class="button button2" onclick="alert('Change and Display Your Badges')">Change Badges</button>
     </div>
 </body>
 </html>

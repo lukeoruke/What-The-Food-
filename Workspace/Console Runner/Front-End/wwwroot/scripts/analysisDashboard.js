@@ -159,4 +159,4 @@ var intervalId = window.setInterval(function () {
     generateMostScannedBarcodes(jsonConst);
     Chart.getChart("flaggedIngredients").destroy();
     generateMostFlaggedIngredients(jsonConst);
-}, 1000)
+}, 60000)

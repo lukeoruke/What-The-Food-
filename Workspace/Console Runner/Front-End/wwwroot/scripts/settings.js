@@ -1,7 +1,7 @@
 async function loadSettings() {
     let jwt = localStorage.getItem('JWT');
 
-    await fetch('http://localhost:49202/api/AccountSettings?' + new URLSearchParams({
+    await fetch('http://47.151.24.23:49202/api/AccountSettings?' + new URLSearchParams({
         token: jwt
     }))
         .then(async response => sessionStorage.setItem('userInfo', JSON.stringify(await response.json())))

@@ -67,7 +67,7 @@ function displayIngs() {
 
 async function getIngs() {
 
-    await fetch('http://localhost:49202/api/GetNIngredients?' + new URLSearchParams({page: page}))
+    await fetch('http://47.151.24.23:49202/api/GetNIngredients?' + new URLSearchParams({page: page}))
         .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
         //.then(data => console.log(data));
 }
@@ -100,7 +100,7 @@ async function getUserFlags(e) {
 
 
     deleteCurrentData(e);
-    await fetch('http://localhost:49202/api/GetNAccountFlags?' + new URLSearchParams({
+    await fetch('http://47.151.24.23:49202/api/GetNAccountFlags?' + new URLSearchParams({
         page: page, token: jwt
     }))
         .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
@@ -123,7 +123,7 @@ async function searchAccountFlags(e) {
         let search = document.getElementById('search').value;
 
 
-        await fetch('http://localhost:49202/api/GetAccountFlagBySearch?' + new URLSearchParams({
+        await fetch('http://47.151.24.23:49202/api/GetAccountFlagBySearch?' + new URLSearchParams({
             page: page, token: jwt, search : search
         }))
 
@@ -151,7 +151,7 @@ async function searchIngs(e) {
     currentPage = "searchIngredients";
     let search = document.getElementById('search').value;
 
-    await fetch('http://localhost:49202/api/FlagSearchIngredients?' + new URLSearchParams({
+    await fetch('http://47.151.24.23:49202/api/FlagSearchIngredients?' + new URLSearchParams({
         page: page,  search: search
     }))
         .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
@@ -228,7 +228,7 @@ async function sendNewFlag(e) {
 
 
 
-    await fetch('http://localhost:49202/api/AccountAddFlags?' + new URLSearchParams({
+    await fetch('http://47.151.24.23:49202/api/AccountAddFlags?' + new URLSearchParams({
         token: jwt
     }), {
         method: 'POST',
@@ -256,7 +256,7 @@ async function removeFlag(e) {
         }
     }
 
-    await fetch('http://localhost:49202/api/AccountRemoveFlag?' + new URLSearchParams({
+    await fetch('http://47.151.24.23:49202/api/AccountRemoveFlag?' + new URLSearchParams({
         page: page, token: jwt
     }), {
         method: 'POST',

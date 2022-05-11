@@ -7,7 +7,7 @@ async function postFoodName() {
     //console.log(foodName);
 
     // HTTP Post Request
-    await fetch('http://localhost:49202/api/GetProductRating', {
+    await fetch('http://47.151.24.23:49202/api/GetProductRating', {
         method: 'POST',
         body: formData,
     }).then(function (response) {
@@ -21,7 +21,7 @@ async function getProductRating(e) {
 
     let rating;
     // HTTP Get Request
-    await fetch('http://localhost:49202/api/GetProductRating')
+    await fetch('http://47.151.24.23:49202/api/GetProductRating')
         .then(async function (response) {
             rating = JSON.stringify(await response.json())
             const jsonConst = JSON.parse(rating);

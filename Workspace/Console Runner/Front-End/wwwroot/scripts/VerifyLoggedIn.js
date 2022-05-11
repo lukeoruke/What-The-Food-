@@ -24,7 +24,7 @@ function placeLocalStorage(newViewName, time) {
     await fetch('http://47.151.24.23:49202/api/ValidateLoggedIn?' + new URLSearchParams({ token: jwt, previousViewName: prevView, currentViewName: htmlName, time: timeViewed }))
         .then(response => response.text())
         .then((response) => {
-            if (response === "False") {
+            if (response !== "True") {
                 //console.log("Not verified");
                 window.location.replace("http://whatthefood.xyz/login.html");
             }

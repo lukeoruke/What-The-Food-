@@ -17,7 +17,7 @@ async function sendLogin(e) {
 
 
     var postResponse;
-    // HTTP Post Request\
+    // HTTP Post Request
     await fetch('http://localhost:49202/api/AccountLogin', {
         method: 'POST',
         body: formData,
@@ -34,14 +34,4 @@ async function sendLogin(e) {
 
 
         //.then(async response => localStorage.setItem('JWT', JSON.stringify(await response.json()))).then(data => console.log(data));
-
-
-
-
-
-
-
-
-
-
 }

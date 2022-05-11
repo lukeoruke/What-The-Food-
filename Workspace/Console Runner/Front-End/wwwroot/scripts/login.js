@@ -26,7 +26,7 @@ async function sendLogin(e) {
             //console.log(response)
             if (response.token !== "") {
                 localStorage.setItem('JWT', response.token);
-                window.location.replace("https://localhost:49199/index.html");
+                window.location.replace("http://whatthefood.xyz/index.html");
             } else {
                 alert('Invalid login');
             }

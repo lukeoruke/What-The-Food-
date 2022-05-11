@@ -100,13 +100,14 @@ async function calculate(gender, weight, height, age, activity) {
 
     var amr = bmr * userActivity;
 
+    var amr2 = amr.toFixed(2);
 
     console.log("-------------------------");
     console.log('User AMR Value Calculated');
-    console.log(amr.toFixed(2) + " kcal/day");
-    document.getElementById("results").innerHTML = amr.toFixed(2) + " kcal/day";
+    console.log(amr2 + " kcal/day");
+    document.getElementById("results").innerHTML = amr2 + " kcal/day";
 
-
+    document.getElementById("amrData").innerHTML = amr2;
 }
 
 

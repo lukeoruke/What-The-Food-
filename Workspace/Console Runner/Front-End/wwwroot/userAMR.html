@@ -4,12 +4,14 @@
 <head>
     <title>User AMR</title>
     <meta charset="UTF-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script type="text/javascript" src="/scripts/verifyLoggedIn.js"></script>
     <script type="text/javascript" src="scripts/amrTemp.js"></script>
 </head>
 <body>
     <div class="main">
         <a href="index.html"><img src="images/orange.png" alt="What The Food?!" width="200" height="200"></a>
+
         <header>
             <label style="position: relative; left: 20px; top: 16px; font-size: 16px;" for="gender">Gender:</label>
 
@@ -47,7 +49,40 @@
     <p style="position: relative; left: 20px; top: -10px; font-size: 16px;">Reccommended Daily Calorie Intake for Men: 2500 Calories</p>
     <p style="position: relative; left: 20px; top: -10px; font-size: 16px;">Reccommended Daily Calorie Intake for Women: 2000 Calories</p>
     <div style="position: relative; left: 20px; top: -10px;" id="results"></div>
+    <canvas id="amrChart" style="width:100%;max-width:700px"></canvas>
+    <a data-id="amrData">link</a>
+    <script>
 
+        var xVal = ["Men", "Women", "Yours"];
+        var yVal = [2500, 2000, amrData];
+        var barColors = ['red', "orange", "blue"];
+
+        new Chart("amrChart", {
+            type: "bar",
+            data: {
+                labels: xVal,
+                datasets: [{
+                    backgroundColor: barColors,
+                    data: yVal
+                }]
+            },
+            options: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: "Daily Recommend Calorie Intake"
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }],
+                }
+            }
+        });
+
+    </script>
 
 </body>
 </html>

@@ -38,8 +38,8 @@ namespace Mircoservice_Food.Controllers
             }
             else
             {
-                _ = await logger.LogAsync("Unknown", Console_Runner.Logging.LogLevel.Debug, Console_Runner.Logging.Category.Server, DateTime.Now,
-                                          $"UserManagementController.AddUser: Received invalid JWT token.");
+                _ = logger.LogAsync("Unknown", Console_Runner.Logging.LogLevel.Debug, Console_Runner.Logging.Category.Server, DateTime.Now,
+                                          $"Received invalid JWT token.");
                 return new UnprocessableEntityResult();
             }
             if (accountService.IsAdmin(activeUserId))
@@ -49,20 +49,40 @@ namespace Mircoservice_Food.Controllers
                     var successfullyAdded = await accountService.UserSignUpAsync(acc, logger);
                     if (successfullyAdded)
                     {
+                        if(logger.UserEmail != null)
+                        {
+                            _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Debug, Category.Business, DateTime.Now,
+                                                           $"Admin {activeUserId} created new account.");
+                        }
                         return new OkResult();
                     }
                     else
                     {
+                        if(logger.UserEmail != null)
+                        {
+                            _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Error, Category.Business, DateTime.Now,
+                                                           $"Admin {activeUserId} failed to create new account. Bad arguments.");
+                        }
                         return new BadRequestResult();
                     }
                 }
                 catch (Exception ex)
                 {
+                    if(logger.UserEmail != null)
+                    {
+                        _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Error, Category.Business, DateTime.Now,
+                                                       $"Admin {activeUserId} could not create account. Unknown error {ex.Message}");
+                    }
                     return StatusCode(500);
                 }
             }
             else
             {
+                if(logger.UserEmail != null)
+                {
+                    _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Warning, Category.Business, DateTime.Now,
+                                                   $"User {activeUserId} is unauthorized to create accounts.");
+                }
                 return new UnauthorizedResult();
             }
         }
@@ -97,7 +117,7 @@ namespace Mircoservice_Food.Controllers
             else
             {
                 _ = await logger.LogAsync("Unknown", Console_Runner.Logging.LogLevel.Debug, Console_Runner.Logging.Category.Server, DateTime.Now,
-                                          $"UserManagementController.AddUser: Received invalid JWT token.");
+                                          $"Received invalid JWT token.");
                 return new UnprocessableEntityResult();
             }
             if (accountService.IsAdmin(activeUserId))
@@ -106,15 +126,30 @@ namespace Mircoservice_Food.Controllers
                 bool success = await accountService.UserUpdateDataAsync(adminAccount!, acc.UserID, acc.FName, acc.LName, acc.Password, logger);
                 if (success)
                 {
+                    if(logger.UserEmail != null)
+                    {
+                        _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Debug, Category.Business, DateTime.Now,
+                                                       $"Admin {activeUserId} updated account {acc.UserID}.");
+                    }
                     return new OkResult();
                 }
                 else
                 {
+                    if(logger.UserEmail != null)
+                    {
+                        _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Error, Category.Business, DateTime.Now,
+                                                       $"Admin {activeUserId} could not update account {acc.UserID}. Bad arguments.");
+                    }
                     return new BadRequestResult();
                 }
             }
             else
             {
+                if(logger.UserEmail != null)
+                {
+                    _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Warning, Category.Business, DateTime.Now,
+                                                   $"User {activeUserId} is not authorized to update account {acc.UserID}.");
+                }
                 return new UnauthorizedResult();
             }
         }
@@ -149,7 +184,7 @@ namespace Mircoservice_Food.Controllers
             else
             {
                 _ = await logger.LogAsync("Unknown", Console_Runner.Logging.LogLevel.Debug, Console_Runner.Logging.Category.Server, DateTime.Now,
-                                          $"UserManagementController.AddUser: Received invalid JWT token.");
+                                          $"Received invalid JWT token.");
                 return new UnprocessableEntityResult();
             }
             if (accountService.IsAdmin(activeUserId))
@@ -160,20 +195,40 @@ namespace Mircoservice_Food.Controllers
                     bool success = await accountService.UserDeleteAsync(adminAccount!, userId, logger);
                     if (success)
                     {
+                        if (logger.UserEmail != null)
+                        {
+                            _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Debug, Category.Business, DateTime.Now,
+                                                           $"Admin {activeUserId} deleted account {userId}.");
+                        }
                         return new OkResult();
                     }
                     else
                     {
+                        if (logger.UserEmail != null)
+                        {
+                            _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Error, Category.Business, DateTime.Now,
+                                                           $"Admin {activeUserId} could not delete account {userId}. Bad arguments.");
+                        }
                         return new BadRequestResult();
                     }
                 }
                 catch (Exception ex)
                 {
+                    if (logger.UserEmail != null)
+                    {
+                        _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Debug, Category.Business, DateTime.Now,
+                                                       $"Admin {activeUserId} could not delete account {userId}. Unknown error {ex.Message}");
+                    }
                     return new StatusCodeResult(500);
                 }
             }
             else
             {
+                if (logger.UserEmail != null)
+                {
+                    _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Warning, Category.Business, DateTime.Now,
+                                                   $"User {activeUserId} is not authorized to delete account {userId}.");
+                }
                 return new UnauthorizedResult();
             }
         }
@@ -219,20 +274,40 @@ namespace Mircoservice_Food.Controllers
                     bool success = await accountService.EnableAccountAsync(adminAccount!, userId);
                     if (success)
                     {
+                        if (logger.UserEmail != null)
+                        {
+                            _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Debug, Category.Business, DateTime.Now,
+                                                           $"Admin {activeUserId} enabled account {userId}.");
+                        }
                         return new OkResult();
                     }
                     else
                     {
+                        if (logger.UserEmail != null)
+                        {
+                            _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Error, Category.Business, DateTime.Now,
+                                                           $"Admin {activeUserId} could not enable account {userId}. Bad arguments.");
+                        }
                         return new BadRequestResult();
                     }
                 }
                 catch(Exception ex)
                 {
+                    if (logger.UserEmail != null)
+                    {
+                        _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Error, Category.Business, DateTime.Now,
+                                                       $"Admin {activeUserId} could not enable account {userId}. Unknown error {ex.Message}");
+                    }
                     return new StatusCodeResult(500);
                 }
             }
             else
             {
+                if (logger.UserEmail != null)
+                {
+                    _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Warning, Category.Business, DateTime.Now,
+                                                   $"User {activeUserId} is not authorized to enable account {userId}.");
+                }
                 return new UnauthorizedResult();
             }
         }
@@ -278,20 +353,40 @@ namespace Mircoservice_Food.Controllers
                     bool success = await accountService.DisableAccountAsync(adminAccount!, userId);
                     if (success)
                     {
+                        if (logger.UserEmail != null)
+                        {
+                            _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Debug, Category.Business, DateTime.Now,
+                                                           $"Admin {activeUserId} disabled account {userId}.");
+                        }
                         return new OkResult();
                     }
                     else
                     {
+                        if (logger.UserEmail != null)
+                        {
+                            _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Error, Category.Business, DateTime.Now,
+                                                           $"Admin {activeUserId} could not disable account {userId}. Bad arguments.");
+                        }
                         return new BadRequestResult();
                     }
                 }
                 catch (Exception ex)
                 {
+                    if (logger.UserEmail != null)
+                    {
+                        _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Error, Category.Business, DateTime.Now,
+                                                       $"Admin {activeUserId} could not disable account {userId}. Unknown error {ex.Message}");
+                    }
                     return new StatusCodeResult(500);
                 }
             }
             else
             {
+                if (logger.UserEmail != null)
+                {
+                    _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Warning, Category.Business, DateTime.Now,
+                                                   $"User {activeUserId} is not authorized to disable account {userId}.");
+                }
                 return new UnauthorizedResult();
             }
         }

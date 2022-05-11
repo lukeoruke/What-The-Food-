@@ -54,24 +54,22 @@ push.addEventListener('click', getFoodObject);
 async function getFoodObject(e) {
     e.preventDefault();
 
-    console.log('Attempting to Scan...');
+    
     let barcode = document.getElementById('pushValue').value;
     const formData = new FormData();
     formData.append('barcode', barcode);
     //JSON.stringify(formData);
-    console.log(barcode);
+    
 
     // HTTP Get Request
     await fetch('http://47.151.24.23:49202/api/GetFoodProductFromBarCode?' + barcode)
         .then(async response => localStorage.setItem('foodInfo', JSON.stringify(await response.json())))
-        .then(data => console.log(data))
         .then(populateDictionary)
 }
     
 function populateDictionary() {
     var jsonData = localStorage.getItem('foodInfo');
     const jsonConst = JSON.parse(jsonData);
-    console.log(jsonConst);
     labelObjects.ProductName.push(jsonConst.ProductName);
     labelObjects.Calories.push(jsonConst.Calories);
     labelObjects.Servings.push(jsonConst.Servings);
@@ -87,7 +85,7 @@ function populateDictionary() {
     labelObjects.AddedSugar.push(jsonConst.AddedSugar);
     labelObjects.Protein.push(jsonConst.Protein);
     barGraph.update();
-    localStorage.clear();
+    localStorage.removeItem('foodInfo');
  };
     
 

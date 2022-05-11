@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="styles/index.css">
+    <script type="text/javascript" src="/scripts/verifyLoggedIn.js"></script>
+    <script type="text/javascript" src="scripts/logout.js"></script>
+
+</head>
+<body onload="getUsageAnalysisObject()">
+    <!-- Create overall strucutre of webpage including category buttons  -->
+    <a href="index.html"><img src="images/apple.png" alt="What The Food?!" width="200" height="200"></a>
+    <div id="button-bar">
+        <a href="scanBarcode.html"><button class="button">Scan</button></a>
+        <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
+        <a href="customAMR.html"><button class="button">Custom AMR</button></a>
+        <a href="history.html"><button class="button">History</button></a>
+        <a href="viewfoods.html"><button class="button">Foods And Updates</button></a>
+        <a href="calorieFrameOfReference.html"><button class="button">Calorie Frame of Reference</button></a>
+        <a href="settingPage.html"><button class="button">Settings</button></a>
+        <button class="button" onclick="sendLogout()">Log Out</button>
+    </div>
+    <div style="position:center; width:500px; height:500px;">
+        <h1>Usage Analysis Dashboard</h1>
+        <h2>Logins per day</h2>
+        <canvas id="loginTrend" width="100" height="100"></canvas>
+        <h2>Signups per day</h2>
+        <canvas id="signupTrend" width="100" height="100"></canvas>
+        <h2>Most Viewed Pages</h2>
+        <canvas id="mostViewed" width="100" height="100"></canvas>
+        <h2>Highest Average Duration on a Page</h2>
+        <canvas id="averageDuration" width="100" height="100"></canvas>
+        <h2>Most Scanned Barcodes</h2>
+        <canvas id="scannedBarcodes" width="100" height="100"></canvas>
+        <h2>Most Flagged Ingredients</h2>
+        <canvas id="flaggedIngredients" width="100" height="100"></canvas>
+    </div>
+    
+</body>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript" src="scripts/analysisDashboard.js"></script>
+</html>

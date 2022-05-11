@@ -31,5 +31,15 @@
                 Console.WriteLine(log);
             }
         }
+
+        public List<Log> GetLogsWhere(params Func<Log, bool>[] predicates)
+        {
+            var toReturn = _logsDB.AsQueryable();
+            foreach (var predicate in predicates)
+            {
+                toReturn = toReturn.Where(predicate).AsQueryable();
+            }
+            return toReturn.ToList();
+        }
     }
 }

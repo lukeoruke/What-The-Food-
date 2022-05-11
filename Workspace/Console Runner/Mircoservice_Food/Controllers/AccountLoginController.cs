@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Console_Runner.AccountService;
 using Console_Runner.AccountService.Authentication;
+using Console_Runner.Logging;
 
 namespace Microservice.AccountLogin.Controllers
 {
@@ -31,8 +32,10 @@ namespace Microservice.AccountLogin.Controllers
                 (_accountAccess, _permissionService, _flagGateway, _aMRGateway, _EFActiveSessionTrackerGateway);
 
 
+            LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
+            logger.DefaultTimeOut = 5000;
             IFormCollection formData = Request.Form;
-
+            
             try
             {
                 account = await _accountDBOperations.SignInAsync(formData["email"].ToString(), formData["password"].ToString());
@@ -41,12 +44,25 @@ namespace Microservice.AccountLogin.Controllers
                     string jwtToken = _JWTAuthenticationService.GenerateToken(account.Email);
                     string json = "{" + "\"token\": " + $"\"{jwtToken}\"" + "}";
                     await _accountDBOperations.StartSessionAsync(account.UserID, jwtToken);
+                    if (account.CollectData)
+                    {
+                        logger.UserEmail = account.Email;
+                        _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Info, Category.Business, DateTime.Now,
+                                    $"User {account.UserID} Logged in successfully");
+                    }
+                    else
+                    {
+                        _ = logger.LogAsync("Unknown", Console_Runner.Logging.LogLevel.Info, Category.Business, DateTime.Now,
+                                            "Anonymous user logged in successfully");
+                    }
                     return json;
                 }
-                return "{" + "\"token\": \"\"}"; ;
+                return "{" + "\"token\": \"\"}";
             }
             catch (FileNotFoundException e)
             {
+                _ = logger.LogAsync("Unknown", Console_Runner.Logging.LogLevel.Error, Category.Business, DateTime.Now,
+                        $"A user could not login successfully");
                 Console.WriteLine(e.ToString());
                 return null;
             }

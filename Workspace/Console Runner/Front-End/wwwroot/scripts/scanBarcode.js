@@ -18,7 +18,7 @@ async function getFoodObject(e) {
         .then(data => console.log(data));
 
     // HTTP Post Request
-    await fetch('http://47.151.24.23:49202/api/GetFoodProductFromBarCode', {
+    await fetch('http://localhost:49202/api/GetFoodProductFromBarCode', {
         method: 'POST',
         body: formData,
     }).then(function (response) {

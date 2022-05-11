@@ -29,10 +29,7 @@ namespace Food.Controllers
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
             LogService logger = LogServiceFactory.GetLogService(LogServiceFactory.DataStoreType.EntityFramework);
             // TODO: replace this string with the user email when we can get it
-            
             logger.DefaultTimeOut = 5000;
-
-
 
             using (var reader = new StreamReader(Request.Body))
             {
@@ -58,7 +55,8 @@ namespace Food.Controllers
                 Console.WriteLine("USER ID: " + userId.ToString());
                 for (int i = 0; i < ingsId.Length; i++)
                 {
-                    Console.WriteLine(int.Parse(ingsId[i]));
+                    _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Info, Category.Business, DateTime.Now,
+                                                   $"User flagged ingredient {ingsId[i]}.");
                     await _accountDBOperations.AddFlagToAccountAsync(userId, int.Parse(ingsId[i]), logger);
                 }
             }

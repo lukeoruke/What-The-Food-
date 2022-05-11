@@ -1,6 +1,9 @@
 
 localStorage.clear();
 sessionStorage.clear();
+sessionStorage.setItem("currentViewName", "login.html");
+sessionStorage.setItem("viewTimestamp", Date.now());
+
 async function sendLogin(e) {
     e.preventDefault();
 
@@ -12,13 +15,10 @@ async function sendLogin(e) {
     formData.append('email', email);
     formData.append('password', password);
 
-    console.log(email);
-    console.log(password);
-
 
     var postResponse;
-    // HTTP Post Request
-    await fetch('http://47.151.24.23:49202/api/AccountLogin', {
+    // HTTP Post Request\
+    await fetch('http://localhost:49202/api/AccountLogin', {
         method: 'POST',
         body: formData,
     }).then(response => response.json())
@@ -26,7 +26,7 @@ async function sendLogin(e) {
             console.log(response)
             if (response.token !== "") {
                 localStorage.setItem('JWT', response.token);
-                window.location.replace("http://whatthefood.xyz/index.html");
+                window.location.replace("https://localhost:49199/index.html");
             } else {
                 alert('Invalid login');
             }

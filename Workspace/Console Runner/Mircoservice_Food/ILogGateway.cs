@@ -11,5 +11,6 @@
         public Task<bool> WriteLogAsync(Log toSave, CancellationToken ct = default);
         public Task<bool> WriteLogsAsync(List<Log> toSave, CancellationToken ct = default);
 
+        public List<Log> GetLogsWhere(params Func<Log, bool>[] predicates);
     }
 }

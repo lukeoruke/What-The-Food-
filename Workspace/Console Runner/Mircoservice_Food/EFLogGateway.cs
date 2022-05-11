@@ -31,5 +31,16 @@ namespace Console_Runner.Logging
             await efContext.SaveChangesAsync(ct);
             return true;
         }
+
+        public List<Log> GetLogsWhere(params Func<Log, bool>[] predicates)
+        {
+            using ContextLoggingDB efContext = new ContextLoggingDB();
+            var logsQuery = efContext.Logs.AsQueryable();
+            foreach(Func<Log, bool> predicate in predicates)
+            {
+                logsQuery = logsQuery.Where(predicate).AsQueryable();
+            }
+            return logsQuery.ToList();
+        }
     }
 }

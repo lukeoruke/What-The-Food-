@@ -2,8 +2,9 @@
 
 async function sendAmrData(e) {
     e.preventDefault();
+    /**
     console.log('Sending AMR Info');
-
+    **/
     
     var gender = document.getElementById('gender').value;
     var weight = document.getElementById('weight').value;
@@ -26,11 +27,13 @@ async function sendAmrData(e) {
     formData.append('age', age);
     formData.append('activity', activity);
 
+    /**
     console.log(gender);
     console.log(weight);
     console.log(height);
     console.log(age);
     console.log(activity);
+    **/
 
     /**
     await fetch('http://47.151.24.23:49202/api/AddAMR'+ new URLSearchParams({
@@ -102,9 +105,11 @@ async function calculate(gender, weight, height, age, activity) {
 
     var amr2 = amr.toFixed(2);
 
+    /**
     console.log("-------------------------");
     console.log('User AMR Value Calculated');
     console.log(amr2 + " kcal/day");
+    **/
     document.getElementById("results").innerHTML = amr2 + " kcal/day";
 
     amrChart(amr2)

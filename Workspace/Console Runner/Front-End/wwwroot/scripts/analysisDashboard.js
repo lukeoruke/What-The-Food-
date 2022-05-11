@@ -1,21 +1,25 @@
-﻿
+﻿async function getUsageAnalysisObject() {
+    //HTTP Get Request
+    await fetch('http://localhost:49202/api/GetUsageAnalysisObject?' + new URLSearchParams({
+        token: localStorage.getItem('JWT')
+    })).then(async response => localStorage.setItem('usageAnalysisObject', JSON.stringify(await response.json())))
+
+}
+
+var jsonData = localStorage.getItem('usageAnalysisObject');
+const jsonConst = JSON.parse(jsonData)
+console.log(jsonConst)
+
 //Generate Login Trend
 const login = document.getElementById("loginTrend").getContext("2d");
 console.log(login);
 let loginTrend = new Chart(login, {
     type: 'line',
     data: {
-        labels: [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June'
-        ],
+        labels: Object.keys(jsonConst.logins),
         datasets: [{
-            label: 'My First Dataset',
-            data: [65, 59, 80, 81, 56, 55, 40],
+            label: 'Logins',
+            data: jsonConst.logins,
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
@@ -31,17 +35,10 @@ console.log(signup);
 let signupTrend = new Chart(signup, {
     type: 'line',
     data: {
-        labels: [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June'
-        ],
+        labels: Object.keys(jsonConst.signups),
         datasets: [{
-            label: 'My First Dataset',
-            data: [65, 59, 80, 81, 56, 55, 40],
+            label: 'Signups',
+            data: jsonConst.signups,
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
@@ -56,17 +53,10 @@ console.log(mostView);
 let mostViewed = new Chart(mostView, {
     type: 'bar',
     data: {
-        labels: [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June'
-        ],
+        labels: Object.keys(jsonConst.mostViewedPages),
         datasets: [{
-            label: 'My First Dataset',
-            data: [65, 59, 80, 81, 56, 55, 40],
+            label: 'Viewed Page',
+            data: jsonConst.mostViewedPages,
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
@@ -81,17 +71,10 @@ console.log(highAveragePage);
 let averageDuration = new Chart(highAveragePage, {
     type: 'bar',
     data: {
-        labels: [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June'
-        ],
+        labels: Object.keys(jsonConst.highestAverageDurationPages),
         datasets: [{
-            label: 'My First Dataset',
-            data: [65, 59, 80, 81, 56, 55, 40],
+            label: 'Average Duration in a page',
+            data: jsonConst.highestAverageDurationPages,
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
@@ -106,17 +89,10 @@ console.log(mostScannedBarcodes);
 let scannedBarcodes = new Chart(mostScannedBarcodes, {
     type: 'bar',
     data: {
-        labels: [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June'
-        ],
+        labels: Object.keys(jsonConst.mostScannedBarcodes),
         datasets: [{
-            label: 'My First Dataset',
-            data: [65, 59, 80, 81, 56, 55, 40],
+            label: 'Most Scanned Barcode',
+            data: jsonConst.mostScannedBarcodes,
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
@@ -131,17 +107,10 @@ console.log(mostFlaggedIngredients);
 let flaggedIngredients = new Chart(mostFlaggedIngredients, {
     type: 'bar',
     data: {
-        labels: [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June'
-        ],
+        labels: Object.keys(jsonConst.mostFlaggedIngredients),
         datasets: [{
-            label: 'My First Dataset',
-            data: [65, 59, 80, 81, 56, 55, 40],
+            label: 'Most Flagged Ingredients',
+            data: jsonConst.mostFlaggedIngredients,
             fill: false,
             borderColor: 'rgb(75, 192, 192)',
             tension: 0.1
@@ -150,22 +119,12 @@ let flaggedIngredients = new Chart(mostFlaggedIngredients, {
 
 });
 
-async function getUsageAnalysisObject()
-{
-    //HTTP Get Request
-    await fetch('http://localhost:49202/api/GetUsageAnalysisObject?' + new URLSearchParams({
-        token: localStorage.getItem('JWT')
-    })).then(async response => localStorage.setItem('usageAnalysisObject', JSON.stringify(await response.json())))
-            
-}
-
 var intervalId = window.setInterval(function () {
-    getUsageAnalysisObject()
+    getUsageAnalysisObject();
+    loginTrend.update();
+    signupTrend.update();
+    mostViewed.update();
+    averageDuration.update();
+    scannedBarcodes.update();
+    flaggedIngredients.update();
 }, 1000)
-
-function populateDictionary() {
-    var jsonData = localStorage.getItem('usageAnalysisObject');
-    const jsonConst = JSON.parse(jsonData)
-    console.log(jsonConst)
-
-}

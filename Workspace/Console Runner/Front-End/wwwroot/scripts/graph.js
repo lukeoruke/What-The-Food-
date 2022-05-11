@@ -85,7 +85,7 @@ function populateDictionary() {
     labelObjects.AddedSugar.push(jsonConst.AddedSugar);
     labelObjects.Protein.push(jsonConst.Protein);
     barGraph.update();
-    localStorage.clear();
+    localStorage.removeItem('foodInfo');
  };
     
 

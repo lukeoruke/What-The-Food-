@@ -23,7 +23,7 @@ async function addFlagCheckBoxes() {
 function displayIngs() {
 
     var jsonData = sessionStorage.getItem('allIngredients');
-    
+
 
     const jsonConst = JSON.parse(jsonData);
 
@@ -39,7 +39,7 @@ function displayIngs() {
 
         var text = "Ingredient Name: " + getNames[data];
 
-        var label = document.createElement("data"); 
+        var label = document.createElement("data");
         var description = document.createTextNode(text);
 
         var checkbox = document.createElement("input");
@@ -63,13 +63,13 @@ function displayIngs() {
 
 
 
-//Gets ingredients from the DB 
+//Gets ingredients from the DB
 
 async function getIngs() {
 
     await fetch('http://localhost:49202/api/GetNIngredients?' + new URLSearchParams({page: page}))
         .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
-        .then(data => console.log(data));
+        //.then(data => console.log(data));
 }
 
 async function getUserFlagButtonPressed(e) {
@@ -82,7 +82,7 @@ async function getUserFlagButtonPressed(e) {
 //retrieves the flags associated with our current user
 async function getUserFlags(e) {
     e.preventDefault();
-   
+
     currentPage = "displayFlags";
 
 
@@ -104,7 +104,7 @@ async function getUserFlags(e) {
         page: page, token: jwt
     }))
         .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
-        .then(data => console.log(data));
+        //.then(data => console.log(data));
 
 
 
@@ -128,12 +128,12 @@ async function searchAccountFlags(e) {
         }))
 
             .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
-            .then(data => console.log(data));
+            //.then(data => console.log(data));
 
 
         displayIngs();
     } catch (ex) {
-        console.log("searchAccountFlags: " + ex);
+        //console.log("searchAccountFlags: " + ex);
         throw ex;
     }
 
@@ -145,7 +145,7 @@ async function searchAccountFlags(e) {
 
 async function searchIngs(e) {
     e.preventDefault();
-    
+
 
     deleteCurrentData(e);
     currentPage = "searchIngredients";
@@ -155,7 +155,7 @@ async function searchIngs(e) {
         page: page,  search: search
     }))
         .then(async response => sessionStorage.setItem('allIngredients', JSON.stringify(await response.json())))
-        .then(data => console.log(data));
+        //.then(data => console.log(data));
 
     displayIngs();
 }
@@ -240,7 +240,7 @@ async function sendNewFlag(e) {
     })
 
 }
- 
+
 //remvoes a flag from the db
 
 async function removeFlag(e) {

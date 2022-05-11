@@ -7,7 +7,7 @@ sessionStorage.setItem("viewTimestamp", Date.now());
 async function sendLogin(e) {
     e.preventDefault();
 
-    console.log('Attempting to login...');
+    //console.log('Attempting to login...');
     let email = document.getElementById('email').value;
     let password = document.getElementById('password').value;
 
@@ -23,7 +23,7 @@ async function sendLogin(e) {
         body: formData,
     }).then(response => response.json())
         .then((response) => {
-            console.log(response)
+            //console.log(response)
             if (response.token !== "") {
                 localStorage.setItem('JWT', response.token);
                 window.location.replace("https://localhost:49199/index.html");

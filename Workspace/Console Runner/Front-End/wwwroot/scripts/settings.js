@@ -5,7 +5,7 @@ async function loadSettings() {
         token: jwt
     }))
         .then(async response => sessionStorage.setItem('userInfo', JSON.stringify(await response.json())))
-        .then(data => console.log(data));
+        //.then(data => console.log(data));
 
     let userInfo = sessionStorage.getItem('userInfo');
     const jsonConst = JSON.parse(userInfo);

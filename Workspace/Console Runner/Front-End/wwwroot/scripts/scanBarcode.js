@@ -11,14 +11,14 @@ async function getFoodObject(e) {
     //console.log(barcode);
 
     // HTTP Get Request
-    await fetch('http://47.151.24.23:49202/api/GetFoodProductFromBarCode?' + new URLSearchParams({
+    await fetch('http://localhost:49202/api/GetFoodProductFromBarCode?' + new URLSearchParams({
         barcode: barcode, token: jwt
     }))
         .then(async response => localStorage.setItem('foodInfo', JSON.stringify(await response.json())))
         //.then(data => console.log(data));
 
     // HTTP Post Request
-    await fetch('http://47.151.24.23:49202/api/GetFoodProductFromBarCode', {
+    await fetch('http://localhost:49202/api/GetFoodProductFromBarCode', {
         method: 'POST',
         body: formData,
     }).then(function (response) {

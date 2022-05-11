@@ -11,20 +11,22 @@
     <script src="scripts/logout.js"></script>
 </head>
 <body onload="populateFoodInfo();postFoodName()">
-    <a href="index.html"><img class="logo" src="images/apple.png" alt="What The Food?!"></a>
-    <a href="scanBarcode.html"><button class="button">Scan</button></a>
-    <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
-    <a href="userAMR.html"><button class="button">Custom AMR</button></a>
-    <a href="history.html"><button class="button">History</button></a>
-    <a href="settingPage.html"><button class="button">Settings</button></a>
-    <button class="button" onclick="sendLogout()">Log Out</button>
+    <div class="button-bar">
+        <a href="index.html"><img class="logo" src="images/apple.png" alt="What The Food?!"></a>
+        <a href="scanBarcode.html"><button class="button">Scan</button></a>
+        <a href="foodAlternative.html"><button class="button">Food Alternative</button></a>
+        <a href="userAMR.html"><button class="button">Custom AMR</button></a>
+        <a href="history.html"><button class="button">History</button></a>
+        <a href="settingPage.html"><button class="button">Settings</button></a>
+        <button class="button" onclick="sendLogout()">Log Out</button>
+    </div>
 
     <div class="box">
         <span>Food Information</span>
         <div class="setting">
             <div class="box2">
                 <section>
-                    <span id="foodName">Food Name</span> - <span id="barcodeNumber">Barcode Number</span>
+                    <span id="foodName">Food Name</span> - <span id="companyName">Company Name</span> - <span id="barcodeNumber">Barcode Number</span>
                     <br>
                     <a href="foodAlternative.html">Find an Alternative</a>
                 </section>

@@ -107,7 +107,39 @@ async function calculate(gender, weight, height, age, activity) {
     console.log(amr2 + " kcal/day");
     document.getElementById("results").innerHTML = amr2 + " kcal/day";
 
-    document.getElementById("amrData").innerHTML = amr2;
+    amrChart(amr2)
 }
 
+async function amrChart(amr) {
+
+    var xVal = ["Men", "Women", "Yours"];
+    var yVal = [2500, 2000, amr];
+    var barColors = ['red', "orange", "blue"];
+
+    new Chart("amrChart", {
+        type: "bar",
+        data: {
+            labels: xVal,
+            datasets: [{
+                backgroundColor: barColors,
+                data: yVal
+            }]
+        },
+        options: {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: "Daily Recommend Calorie Intake"
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }],
+            }
+        }
+    });
+
+}
 

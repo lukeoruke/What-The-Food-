@@ -50,39 +50,6 @@
     <p style="position: relative; left: 20px; top: -10px; font-size: 16px;">Reccommended Daily Calorie Intake for Women: 2000 Calories</p>
     <div style="position: relative; left: 20px; top: -10px;" id="results"></div>
     <canvas id="amrChart" style="width:100%;max-width:700px"></canvas>
-    <a data-id="amrData">link</a>
-    <script>
-
-        var xVal = ["Men", "Women", "Yours"];
-        var yVal = [2500, 2000, amrData];
-        var barColors = ['red', "orange", "blue"];
-
-        new Chart("amrChart", {
-            type: "bar",
-            data: {
-                labels: xVal,
-                datasets: [{
-                    backgroundColor: barColors,
-                    data: yVal
-                }]
-            },
-            options: {
-                legend: { display: false },
-                title: {
-                    display: true,
-                    text: "Daily Recommend Calorie Intake"
-                },
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }],
-                }
-            }
-        });
-
-    </script>
 
 </body>
 </html>

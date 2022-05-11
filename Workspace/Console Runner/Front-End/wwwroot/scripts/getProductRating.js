@@ -1,17 +1,17 @@
 ﻿// Function to send foodName to the back-end
 async function postFoodName() {
-    console.log('Attempting to get product rating...');
+    //console.log('Attempting to get product rating...');
     let foodName = document.getElementById('foodName').innerText;
     const formData = new FormData();
     formData.append('foodName', foodName);
-    console.log(foodName);
+    //console.log(foodName);
 
     // HTTP Post Request
     await fetch('http://47.151.24.23:49202/api/GetProductRating', {
         method: 'POST',
         body: formData,
     }).then(function (response) {
-        console.log(response.status); // returns 200
+        //console.log(response.status); // returns 200
     });
 }
 
@@ -25,9 +25,9 @@ async function getProductRating(e) {
         .then(async function (response) {
             rating = JSON.stringify(await response.json())
             const jsonConst = JSON.parse(rating);
-            console.log(jsonConst);
+            //console.log(jsonConst);
             rating = 'Rating: ' + jsonConst.starRating + ' (' + jsonConst.rating + ') ' + jsonConst.ratingCount + ' ratings';
-            console.log(jsonConst.ratingCount);
+            //console.log(jsonConst.ratingCount);
             document.getElementById("rating").innerText = rating;
         });
 }

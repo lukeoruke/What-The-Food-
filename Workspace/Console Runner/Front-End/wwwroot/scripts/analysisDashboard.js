@@ -21,12 +21,12 @@ getUsageAnalysisObject().then(() => {
 
 //var jsonData = localStorage.getItem('usageAnalysisObject');
 //const jsonConst = JSON.parse(jsonData)
-console.log(jsonConst)
+//console.log(jsonConst)
 
 //Generate Login Trend
 function generateLoginTrend(jsonConst) {
     const login = document.getElementById("loginTrend").getContext("2d");
-    console.log(login);
+    //console.log(login);
     let loginTrend = new Chart(login, {
         type: 'line',
         data: {
@@ -47,7 +47,7 @@ function generateLoginTrend(jsonConst) {
 //Generate Signup Trend
 function generateSignupTrend(jsonConst) {
     const signup = document.getElementById("signupTrend").getContext("2d");
-    console.log(signup);
+    //console.log(signup);
     let signupTrend = new Chart(signup, {
         type: 'line',
         data: {
@@ -67,7 +67,7 @@ function generateSignupTrend(jsonConst) {
 //Generate Most Viewed Pages
 function generateMostViewed(jsonConst) {
     const mostView = document.getElementById("mostViewed").getContext("2d");
-    console.log(mostView);
+    //console.log(mostView);
     let mostViewed = new Chart(mostView, {
         type: 'bar',
         data: {
@@ -87,7 +87,7 @@ function generateMostViewed(jsonConst) {
 //Generate Highest Average Page Duration
 function generateHighestAverageDuration(jsonConst) {
     const highAveragePage = document.getElementById("averageDuration").getContext("2d");
-    console.log(highAveragePage);
+    //console.log(highAveragePage);
     let averageDuration = new Chart(highAveragePage, {
         type: 'bar',
         data: {
@@ -107,7 +107,7 @@ function generateHighestAverageDuration(jsonConst) {
 //Generate Most Scanned Barcodes
 function generateMostScannedBarcodes(jsonConst) {
     const mostScannedBarcodes = document.getElementById("scannedBarcodes").getContext("2d");
-    console.log(mostScannedBarcodes);
+    //console.log(mostScannedBarcodes);
     let scannedBarcodes = new Chart(mostScannedBarcodes, {
         type: 'bar',
         data: {
@@ -128,7 +128,7 @@ function generateMostScannedBarcodes(jsonConst) {
 //Generate Most Flagged Ingredients
 function generateMostFlaggedIngredients(jsonConst) {
     const mostFlaggedIngredients = document.getElementById("flaggedIngredients").getContext("2d");
-    console.log(mostFlaggedIngredients);
+    //console.log(mostFlaggedIngredients);
     let flaggedIngredients = new Chart(mostFlaggedIngredients, {
         type: 'bar',
         data: {

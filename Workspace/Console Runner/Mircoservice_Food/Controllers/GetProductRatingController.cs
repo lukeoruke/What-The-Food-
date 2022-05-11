@@ -85,20 +85,16 @@ namespace Food.Controllers
                 // Connect to external site
                 String url = "http://www.amazon.com/s?k=" + productName;
                 string responseBody = await client.GetStringAsync(url);
-
                 // Get product from search
                 int index = responseBody.IndexOf("data-component-type=\"s-search-result\"");
                 String asin = responseBody.Substring(index - 76, 10);
-
                 // Get reviews from product
                 url = "https://www.amazon.com/gp/customer-reviews/widgets/average-customer-review/popover/ref=dpx_acr_pop_?&asin=" + asin;
                 responseBody = await client.GetStringAsync(url);
-
                 // Get product rating
                 index = responseBody.IndexOf("class=\"a-icon-alt\">") + 19;
                 int endIndex = responseBody.IndexOf("</span>");
                 int length = endIndex - index;
-
                 String rating = responseBody.Substring(index, length);
                 Console.WriteLine(rating);
 
@@ -110,7 +106,6 @@ namespace Food.Controllers
                 index = responseBody.IndexOf("totalRatingCount") + 18;
                 endIndex = responseBody.IndexOf("global ratings") + 14;
                 length = endIndex - index;
-
                 String ratingCount = responseBody.Substring(index, length);
                 Console.WriteLine(ratingCount);
 

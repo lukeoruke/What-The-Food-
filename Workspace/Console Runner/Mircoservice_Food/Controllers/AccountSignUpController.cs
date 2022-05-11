@@ -40,6 +40,7 @@ namespace Microservice.AccountLogin.Controllers
                 string[] fullName = name.Split(" ");
                 account.FName = fullName[0];
                 account.LName = fullName[1];
+                account.NewsBias = 1;
                 await _accountDBOperations.UserSignUpAsync(account, logger);
 
                 _ = logger.LogWithSetUserAsync(Console_Runner.Logging.LogLevel.Info, Category.Business, DateTime.Now,

@@ -5,6 +5,9 @@ var names = [], calories = [], servings = [], servingSize = [],
 totalFat = [], saturatedFat = [], transFat = [], cholesterol = [], sodium = [],
 totalCarb = [], fiber = [], totalSugar = [], addedSugar = [], protein = [];
 
+//jwt
+var jwt = localStorage.getItem('JWT');
+
 //Create dictionary that will store all graph data objects from JSON
 var labelObjects = {
     'ProductName': names,
@@ -62,7 +65,9 @@ async function getFoodObject(e) {
     
 
     // HTTP Get Request
-    await fetch('http://47.151.24.23:49202/api/GetFoodProductFromBarCode?' + barcode)
+    await fetch('http://47.151.24.23:49202/api/GetFoodProductFromBarCode?' + new URLSearchParams({
+        barcode: barcode, token: jwt
+    }))
         .then(async response => localStorage.setItem('foodInfo', JSON.stringify(await response.json())))
         .then(populateDictionary)
 }

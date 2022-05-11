@@ -29,9 +29,10 @@ namespace Food.Controllers
         public async Task<ActionResult<int>> Get(string token)
         {
             AccountDBOperations _accountDBOperations = new AccountDBOperations(_accountAccess, _permissionService, _flagGateway, _amRGateway, _EFActiveSessionTrackerGateway);
-            userID = await _accountDBOperations.GetActiveUserAsync(token);
+
             try
             {
+                userID = await _accountDBOperations.GetActiveUserAsync(token);
                 _dbOperations = new NewsDBOperations(efNews);
                 return await _dbOperations.GetHealthBias(userID);
             }

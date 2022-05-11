@@ -70,7 +70,7 @@ async function sendSignup(e) {
 
     //console.log("this is right above the fetch");
     // HTTP Post Request
-    await fetch('http://47.151.24.23:49202/api/AccountSignUp', {
+    await fetch('http://47.151.24.23:49201/api/AccountSignUp', {
         method: 'POST',
         body: formData,
     }).then(function (response) {

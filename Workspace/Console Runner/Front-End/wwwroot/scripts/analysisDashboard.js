@@ -1,6 +1,6 @@
 ﻿async function getUsageAnalysisObject() {
     //HTTP Get Request
-    await fetch('http://47.151.24.23:49202/api/GetUsageAnalysisObject?' + new URLSearchParams({
+    await fetch('http://47.151.24.23:49201/api/GetUsageAnalysisObject?' + new URLSearchParams({
         token: localStorage.getItem('JWT')
     })).then(async response => localStorage.setItem('usageAnalysisObject', JSON.stringify(await response.json())))
     return true;

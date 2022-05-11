@@ -5,7 +5,7 @@ const APIFOOD = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=sec
 const APIHEALTH = 'https://api.nytimes.com/svc/search/v2/articlesearch.json?fq=section_name:(%22Health%22)&sort=newest&api-key=TK2GSBMDBO2kHDUABQFh4tlpE0Bu8cuf'
 
 // add admin options if user is an admin
-fetch('http://47.151.24.23:49202/api/ValidateAdminLoggedIn/ValidateToken?' + new URLSearchParams({ token: localStorage.getItem('JWT')}))
+fetch('http://47.151.24.23:49201/api/ValidateAdminLoggedIn/ValidateToken?' + new URLSearchParams({ token: localStorage.getItem('JWT')}))
     .then(response => response.text())
     .then((response) => {
         if (response === "true") {
@@ -154,7 +154,7 @@ async function getCategory(index) {
 async function getHealthFilter() {
     //access the backend and increment
     //if the value is set at 4 already, then we do not need to increment it no more
-    const response = await fetch('http://47.151.24.23:49202/api/News?' + new URLSearchParams({
+    const response = await fetch('http://47.151.24.23:49203/api/News?' + new URLSearchParams({
         token: jwt
     }), {
         method: 'GET'
@@ -168,7 +168,7 @@ async function getHealthFilter() {
  */
 async function incrementHealthFilter() {
     //access the backend and increment
-    await fetch('http://47.151.24.23:49202/api/NewsIncrement?' + new URLSearchParams({
+    await fetch('http://47.151.24.23:49203/api/NewsIncrement?' + new URLSearchParams({
         token: jwt
     }), {
         method: 'POST'
@@ -179,7 +179,7 @@ async function incrementHealthFilter() {
  */
 async function decrementHealthFilter() {
     //access the backend and decrement
-    await fetch('http://47.151.24.23:49202/api/NewsDecrement?' + new URLSearchParams({
+    await fetch('http://47.151.24.23:49203/api/NewsDecrement?' + new URLSearchParams({
         token: jwt
     }), {
         method: 'POST'

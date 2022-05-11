@@ -79,7 +79,7 @@ function sendAction() {
                 enabled: formData.get('isenabled') === 'true' ? true : false,
                 salt: ""
             }
-            fetch("http://47.151.24.23:49202/api/UserManagement/AddUser?" + new URLSearchParams({
+            fetch("http://47.151.24.23:49201/api/UserManagement/AddUser?" + new URLSearchParams({
                 token: localStorage.getItem('JWT')
             }), {
                 method: "POST",
@@ -103,7 +103,7 @@ function sendAction() {
                 enabled: formData.get('isenabled') === 'true' ? true : false,
                 salt: ""
             }
-            fetch("http://47.151.24.23:49202/api/UserManagement/UpdateUser?" + new URLSearchParams({
+            fetch("http://47.151.24.23:49201/api/UserManagement/UpdateUser?" + new URLSearchParams({
                 token: localStorage.getItem('JWT')
             }), {
                 method: "POST",
@@ -116,7 +116,7 @@ function sendAction() {
             .then((statuscode) => displayResponse(statuscode));
             break;
         case UmAction.DELETE:
-            fetch("http://47.151.24.23:49202/api/UserManagement/RemoveUser?" + new URLSearchParams({
+            fetch("http://47.151.24.23:49201/api/UserManagement/RemoveUser?" + new URLSearchParams({
                 token: localStorage.getItem('JWT'),
                 userId: formData.get('userid') 
             }), {
@@ -126,7 +126,7 @@ function sendAction() {
             .then((statuscode) => displayResponse(statuscode));
             break;
         case UmAction.ENABLE:
-            fetch("http://47.151.24.23:49202/api/UserManagement/EnableUser?" + new URLSearchParams({
+            fetch("http://47.151.24.23:49201/api/UserManagement/EnableUser?" + new URLSearchParams({
                 token: localStorage.getItem('JWT'),
                 userId: formData.get('userid')
             }), {
@@ -136,7 +136,7 @@ function sendAction() {
                 .then((statuscode) => displayResponse(statuscode));
             break;
         case UmAction.DISABLE:
-            fetch("http://47.151.24.23:49202/api/UserManagement/DisableUser?" + new URLSearchParams({
+            fetch("http://47.151.24.23:49201/api/UserManagement/DisableUser?" + new URLSearchParams({
                 token: localStorage.getItem('JWT'),
                 userId: formData.get('userid')
             }), {

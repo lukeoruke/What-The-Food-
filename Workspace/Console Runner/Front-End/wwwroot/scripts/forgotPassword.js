@@ -31,7 +31,7 @@ async function sendForgotPassword(e) {
         .then(data => console.log(data));*/
 
     // HTTP Post Request
-    await fetch('http://47.151.24.23:49202/gateway/AccountLogin', {
+    await fetch('http://47.151.24.23:49201/gateway/AccountLogin', {
         method: 'POST',
         body: formData,
     }).then(function (response) {
